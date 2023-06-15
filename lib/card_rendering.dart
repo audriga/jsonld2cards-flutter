@@ -21,42 +21,76 @@ import 'package:url_launcher/url_launcher.dart';
 ///  and `return null` lines will have to be replaced with exceptions.
 /// For now the form of a nullable function was chosen, as the caller can
 ///  decide themselves what alternative widget to return.
+///  todo check if it is a problem if this is called within a ListView, and markup argument is also list.
 Widget? renderCard(
+    dynamic markup,
+    {
+      required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
+    }
+    ) {
+  if (markup is List<Map<String, dynamic>>) {
+    return renderCardMulti(markup, postFunction: postFunction);
+  }  else if (markup is Map<String, dynamic>) {
+    return renderCardSingle(markup, postFunction: postFunction);
+  } else if (markup is List<dynamic>) {
+    List<Map<String, dynamic>> recastMarkup = [];
+    markup.map((element) => recastMarkup
+        .add(element as Map<String, dynamic>))
+        .toList();
+    return renderCardMulti(recastMarkup, postFunction: postFunction);
+  }
+  throw FormatException(
+    'markup should either be Map<String, dynamic> or a list of those',
+    markup,
+  );
+}
+
+/// Renders a Card consisting of multiple elements
+/// Note: Cards are often Displayed within ListViews.
+/// This means there will likely be infinite space in the vertical direction
+/// So returning another Scrollable Widget, like ListView here is probably not
+/// a great idea.
+Widget? renderCardMulti(
+    List<Map<String, dynamic>> markupList,
+    {
+      required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
+    }
+    ) {
+  List<Widget> subCards = [];
+  for (var markup in markupList) {
+    var subCard = renderCardSingle(markup, postFunction: postFunction);
+    if (subCard != null) subCards.add(subCard);
+  }
+
+  // todo acutally render offer card here
+  return null;
+  // return ListView.builder(
+  //   scrollDirection: Axis.horizontal,
+  //   //shrinkWrap: true,
+  //   itemCount: markupList.length * 2,
+  //   padding: const EdgeInsets.all(16.0),
+  //   itemBuilder: (context, i) {
+  //     if (i.isOdd) return const Divider();
+  //     final index = i ~/ 2;
+  //     return renderCard(markupList[index], postFunction: postFunction);
+  //   },
+  // );
+}
+
+Widget? renderCardSingle(
     Map<String, dynamic> markup,
     {
       required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
     }
     ) {
   String context = markup['@context'];
-  if (!['http://schema.org', 'https://schema.org', 'http://schema.googleapis.com/'].contains(context)) {
+  if (!['http://schema.org', 'http://schema.org/', 'https://schema.org', 'http://schema.googleapis.com/'].contains(context)) {
     return null;
   }
   String type = markup['@type'];
   switch (type) {
     case 'EmailMessage': {
-      String description = markup['description'];
-      Map<String, dynamic>  potentialAction = markup['potentialAction'];
-      Widget button = PotentialActionButton(
-        potentialAction : potentialAction,
-        postFunction: postFunction,
-      );
-      return Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              title: Text(description),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                button,
-                const SizedBox(width: 8),
-              ],
-            ),
-          ],
-        ),
-      );
+      return EmailMessage(markup: markup, postFunction: postFunction);
     }
     case 'Place': {
       return Place(markup: markup, postFunction: postFunction);
@@ -73,39 +107,84 @@ Widget? renderCard(
       return MusicCard(markup: markup, musicType: MusicType.album, postFunction: postFunction);
     }
     case 'FlightReservation': {
-      // var out = applyTemplate(markup);
-      // developer.log('Got HTML: $out', name: 'markup_cards.card_rendering',);
-      // /// sanitize or query document here
-      // Widget html = Html(customRenders: {
-      //   tableMatcher(): tableRender(),
-      // },
-      //   data: out,
-      //   // document: document,
-      // );
-
-      FlightReservationWidget flightView = FlightReservationWidget(markup: markup);
-      var potentialAction = markup['potentialAction'];
-
-      var cardContents = <Widget>[
-        ListTile(
-          title: flightView,
-        ),
-      ];
-      if (potentialAction != null) {
-        cardContents.add(PotentialActionRow(
-          potentialAction: potentialAction,
-          postFunction: postFunction,
-        ));
-      }
-      return Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: cardContents,
-        ),
-      );
+      return FlightReservationCard(markup: markup, postFunction: postFunction);
     }
   }
   return null;
+}
+
+class FlightReservationCard extends StatelessWidget {
+  const FlightReservationCard({
+    super.key,required this.markup,
+    required this.postFunction,
+  });
+
+  final Map<String, dynamic> markup;
+  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
+
+
+  @override
+  Widget build(BuildContext context) {
+    FlightReservationWidget flightView = FlightReservationWidget(markup: markup);
+    var potentialAction = markup['potentialAction'];
+
+    var cardContents = <Widget>[
+      ListTile(
+        title: flightView,
+      ),
+    ];
+    if (potentialAction != null) {
+      cardContents.add(PotentialActionRow(
+        potentialAction: potentialAction,
+        postFunction: postFunction,
+      ));
+    }
+    return Card(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: cardContents,
+      ),
+    );
+  }
+}
+
+class EmailMessage extends StatelessWidget {
+  const EmailMessage({
+    super.key,
+    required this.markup,
+    required this.postFunction,
+  });
+
+  final Map<String, dynamic> markup;
+  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
+
+
+  @override
+  Widget build(BuildContext context) {
+    String description = markup['description'];
+    Map<String, dynamic>  potentialAction = markup['potentialAction'];
+    Widget button = PotentialActionButton(
+      potentialAction : potentialAction,
+      postFunction: postFunction,
+    );
+    return Card(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            title: Text(description),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              button,
+              const SizedBox(width: 8),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class Place extends StatefulWidget {

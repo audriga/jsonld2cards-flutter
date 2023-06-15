@@ -193,7 +193,7 @@ class _CardSamplesState extends State<CardSamples> {
   late Map<String, dynamic> emailMarkupReservationFlight;
   late Map<String, dynamic> musicAlbumMarkup;
   late Map<String, dynamic> placeMarkup;
-  late Future<List<Map<String, dynamic>>> assetMarkups;
+  late Future<List<dynamic>> assetMarkups;
 
   @override
   void initState() {
@@ -207,15 +207,18 @@ class _CardSamplesState extends State<CardSamples> {
     assetMarkups = loadMarkupsFromAssets();
   }
 
-  Future<List<Map<String, dynamic>>> loadMarkupsFromAssets() async {
-    List<Map<String, dynamic>> markups = [];
+  Future<List<dynamic>> loadMarkupsFromAssets() async {
+    List<dynamic> markups = [];
     final musicSchoolString = DefaultAssetBundle.of(context).loadString('assets/sampleMarkup/musicSchool.json');
+    final promotabString = DefaultAssetBundle.of(context).loadString('assets/sampleMarkup/promotab.json');
     final musicSchoolMarkup = jsonDecode(await musicSchoolString);
+    final promotabMarkup = jsonDecode(await promotabString);
     markups.add(musicSchoolMarkup);
+    markups.add(promotabMarkup);
     return markups;
   }
 
-  List<Widget> itemBuilder(List<Map<String, dynamic>> markups) {
+  List<Widget> itemBuilder(List<dynamic> markups) {
     List<Widget> widgets = [];
     for (var markup in markups){
       var card = renderCard(markup, postFunction: postUrl);
