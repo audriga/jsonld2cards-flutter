@@ -1,0 +1,10 @@
+{
+  "@context": "http://schema.org",
+  "@type": "EmailMessage",
+  "description": "Watch the Avengers movie online",
+  "potentialAction": {
+    "@type": "ViewAction",
+    "url": "https://watch-movies.com/?id=abc123",
+    "name": "Watch"
+  }
+}
