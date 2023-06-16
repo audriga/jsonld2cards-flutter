@@ -3,6 +3,7 @@ library card_rendering;
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:markup_cards/promo_tab_data.dart';
 import 'GeoData/geo_data.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,6 @@ import 'package:url_launcher/url_launcher.dart';
 ///  and `return null` lines will have to be replaced with exceptions.
 /// For now the form of a nullable function was chosen, as the caller can
 ///  decide themselves what alternative widget to return.
-///  todo check if it is a problem if this is called within a ListView, and markup argument is also list.
 Widget? renderCard(
     dynamic markup,
     {
@@ -48,8 +48,8 @@ Widget? renderCard(
 /// Renders a Card consisting of multiple elements
 /// Note: Cards are often Displayed within ListViews.
 /// This means there will likely be infinite space in the vertical direction
-/// So returning another Scrollable Widget, like ListView here is probably not
-/// a great idea.
+/// So returning another Widget that is Scrollable in the same direction
+/// here is probably not a great idea.
 Widget? renderCardMulti(
     List<Map<String, dynamic>> markupList,
     {
@@ -62,90 +62,7 @@ Widget? renderCardMulti(
       && types.contains('DiscountOffer')
       && types.contains('PromotionCard')
   ) {
-    // todo
-    //  [] get format of text just right
-    //  [] Three letter currency to symbol, and treat according to standard, e.g. $15 vs 15€
-    //  [] Apply discount value to price
-    //  [] Make entire card clickable
-    //  [] Error handling for image
-    //  [] handle expected attributes not being present
-    //  [] make its own widget or function
-
-    var promoMarkupList = markupList.where((element) => element['@type'] == 'PromotionCard').toList();
-    var organization = markupList.firstWhere((element) => element['@type'] == 'Organization');
-    var emailMessage = markupList.firstWhere((element) => element['@type'] == 'EmailMessage');
-    var discountOffer = markupList.firstWhere((element) => element['@type'] == 'DiscountOffer');
-
-
-    const promoCardPerScreen = 3;
-    const viewportFractionPerItem = 1.0 / promoCardPerScreen;
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final itemSize = constraints.maxWidth * viewportFractionPerItem;
-        // Alternatively Specify Aspect Ratio? But in the nested listview, neither height nor width are restricted.
-        return Card(
-        child: Column(
-          children: [
-            ListTile(
-              title: Text(emailMessage['subjectLine']),
-              subtitle: Text(discountOffer['description']),
-              leading:  UriImage(
-                  content: organization['logo'],
-                  height: 16.0,
-                  width:  16.0,
-                  fit: BoxFit.scaleDown
-              ),
-              trailing: const Text('Expires'),
-            ),
-            SizedBox(
-              // width: itemSize,
-              height: constraints.maxWidth * 2.0 / 3.0,
-              child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    //shrinkWrap: true,
-                    itemCount: promoMarkupList.length * 2,
-                    padding: const EdgeInsets.all(16.0), // Do i need padding AND divider?
-                    itemBuilder: (context, i) {
-                      if (i.isOdd) return const Divider();
-                      final index = i ~/ 2;
-                      var currentPromo = promoMarkupList[index];
-                      return SizedBox(
-                        width: itemSize,
-                        // height: itemSize,
-                        child: Card(
-                          elevation: 0,
-                          clipBehavior: Clip.antiAlias,
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: Theme.of(context).colorScheme.outline,
-                            ),
-                            borderRadius: const BorderRadius.all(Radius.circular(12)),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              UriImage(
-                                content: currentPromo['image'],
-                                fit: BoxFit.scaleDown
-                              ),
-                              ListTile(
-                                title: Text(currentPromo['headline']),
-                                subtitle: Text('${currentPromo['priceCurrency']}${currentPromo['price']}'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                      // return renderCard(markupList[index], postFunction: postFunction);
-                    },
-                  ),
-            ),
-          ],
-        )
-        );
-      }
-    );
+    return PromoTabCard(markupList: markupList,);
   }
   List<Widget> subCards = [];
   for (var markup in markupList) {
@@ -162,9 +79,170 @@ Widget? renderCardMulti(
   //   itemBuilder: (context, i) {
   //     if (i.isOdd) return const Divider();
   //     final index = i ~/ 2;
+  // // this gives the card infinite horizontal space. Should be wrapped in LayoutBuilder + SizedBox
   //     return renderCard(markupList[index], postFunction: postFunction);
   //   },
   // );
+}
+
+class PromoTabCard extends StatelessWidget {
+  const PromoTabCard({
+    super.key,
+    required this.markupList,
+  });
+
+  final List<Map<String, dynamic>> markupList;
+
+  // todo
+  //  [] get format of text just right
+  //  [] Three letter currency to symbol, and treat according to standard, e.g. $15 vs 15€
+  //  [] Apply discount value to price
+  //  [] Make entire card clickable
+  //  [] Error handling for image
+  //  [] handle expected attributes not being present
+  //  [] make its own widget or function
+
+  // var promoMarkupList = markupList.where((element) => element['@type'] == 'PromotionCard').toList();
+  // var organization = markupList.firstWhere((element) => element['@type'] == 'Organization');
+  // var emailMessage = markupList.firstWhere((element) => element['@type'] == 'EmailMessage');
+  // var discountOffer = markupList.firstWhere((element) => element['@type'] == 'DiscountOffer');
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    var promoTabData = PromoTabData.fromJsonList(markupList);
+    String expiryString = 'Expired';
+    var now = DateTime.now();
+    if (promoTabData.discountOffer.availabilityStarts.isAfter(now)) {
+      var difference = promoTabData.discountOffer.availabilityStarts.difference(now);
+      expiryString = 'Starts in ${difference.inHours} hours';
+    } else if (promoTabData.discountOffer.availabilityEnds.isAfter(now)) {
+      var difference = promoTabData.discountOffer.availabilityEnds.difference(now);
+      expiryString = 'Expires in ${difference.inHours} hours';
+    }
+
+    const promoCardPerScreen = 3;
+    const viewportFractionPerItem = 1.0 / promoCardPerScreen;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final itemSize = constraints.maxWidth * viewportFractionPerItem;
+        // Alternatively Specify Aspect Ratio? But in the nested listview, neither height nor width are restricted.
+        return Card(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                UriImage(
+                    content: promoTabData.organization.logo,
+                    height: 32.0,
+                    width:  32.0,
+                    fit: BoxFit.scaleDown
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      expiryString,
+                      style: theme.textTheme.labelLarge,
+                    ),
+                    Text(
+                      promoTabData.emailMessage.subjectLine,
+                      style: theme.textTheme.titleMedium,
+                      softWrap: true,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.lightGreen,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: Text(
+                              promoTabData.discountOffer.description,
+                            ),
+                          ),
+                        ),
+                        const Text(' Code '),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: theme.highlightColor,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: Text(promoTabData.discountOffer.discountCode),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(
+              // width: itemSize,
+              height: constraints.maxWidth * 2.0 / 3.0,
+              child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    //shrinkWrap: true,
+                    itemCount: promoTabData.promotionCards.length * 2,
+                    padding: const EdgeInsets.all(16.0), // Do i need padding AND divider?
+                    itemBuilder: (context, i) {
+                      if (i.isOdd) return const Divider();
+                      final index = i ~/ 2;
+                      var currentPromo = promoTabData.promotionCards[index];
+                      return SizedBox(
+                        width: itemSize,
+                        // height: itemSize,
+                        child: Card(
+                          elevation: 0,
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
+                            borderRadius: const BorderRadius.all(Radius.circular(12)),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              UriImage(
+                                content: currentPromo.image,
+                                fit: BoxFit.scaleDown
+                              ),
+                              ListTile(
+                                title: Text(currentPromo.headline),
+                                subtitle: Text.rich(TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: currentPromo.priceInCurrency,
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: ' ${currentPromo.discountedPriceInCurrency}',
+                                    ),
+                                  ],
+                                )
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                      // return renderCard(markupList[index], postFunction: postFunction);
+                    },
+                  ),
+            ),
+          ],
+        )
+        );
+      }
+    );
+  }
 }
 
 Widget? renderCardSingle(
