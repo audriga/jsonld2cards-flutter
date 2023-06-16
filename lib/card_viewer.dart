@@ -123,7 +123,7 @@ class FuturePreviews extends StatelessWidget {
             //     },
             //   );
             // } else
-              if (decodedMarkup is List<Map<String, dynamic>> || decodedMarkup is Map<String, dynamic>) {
+              if (decodedMarkup is List<dynamic> || decodedMarkup is Map<String, dynamic>) {
               return renderCard(decodedMarkup, postFunction: postFunction) ??
                   const Text('Could not load card');
               // todo this is an error case, so treat it like the other error cases too/ give more info
