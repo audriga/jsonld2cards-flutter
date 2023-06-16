@@ -140,6 +140,7 @@ class PromoTabCard extends StatelessWidget {
           // Alternatively Specify Aspect Ratio? But in the nested listview, neither height nor width are restricted.
           return Card(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     children: [
@@ -150,6 +151,7 @@ class PromoTabCard extends StatelessWidget {
                           fit: BoxFit.scaleDown
                       ),
                       Column(
+                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
