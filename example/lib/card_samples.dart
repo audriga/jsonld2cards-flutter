@@ -241,13 +241,13 @@ class _CardSamplesState extends State<CardSamples> {
           if (snapshot.hasData) {
             return ListView(
               children: [
+                ...itemBuilder(snapshot.requireData),
                 renderCard(emailMarkupActionGoto, postFunction: postUrl) ?? const Placeholder(),
                 renderCard(emailMarkupActionOneClick, postFunction: postUrl) ?? const Placeholder(),
                 renderCard(emailMarkupReservationFlightBasic, postFunction: postUrl) ?? const Placeholder(),
                 renderCard(emailMarkupReservationFlight, postFunction: postUrl) ?? const Placeholder(),
                 renderCard(musicAlbumMarkup, postFunction: postUrl) ?? const Placeholder(),
                 renderCard(placeMarkup, postFunction: postUrl) ?? const Placeholder(),
-                ...itemBuilder(snapshot.requireData)
               ],
             );
           }  else if (snapshot.hasError) {

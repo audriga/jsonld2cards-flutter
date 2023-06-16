@@ -56,13 +56,103 @@ Widget? renderCardMulti(
       required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
     }
     ) {
+  var types = markupList.map((e) => e['@type']);
+  if (types.contains('Organization')
+      && types.contains('EmailMessage')
+      && types.contains('DiscountOffer')
+      && types.contains('PromotionCard')
+  ) {
+    // todo
+    //  [] get format of text just right
+    //  [] Three letter currency to symbol, and treat according to standard, e.g. $15 vs 15€
+    //  [] Apply discount value to price
+    //  [] Make entire card clickable
+    //  [] Error handling for image
+    //  [] handle expected attributes not being present
+    //  [] make its own widget or function
+
+    var promoMarkupList = markupList.where((element) => element['@type'] == 'PromotionCard').toList();
+    var organization = markupList.firstWhere((element) => element['@type'] == 'Organization');
+    var emailMessage = markupList.firstWhere((element) => element['@type'] == 'EmailMessage');
+    var discountOffer = markupList.firstWhere((element) => element['@type'] == 'DiscountOffer');
+
+
+    const promoCardPerScreen = 3;
+    const viewportFractionPerItem = 1.0 / promoCardPerScreen;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final itemSize = constraints.maxWidth * viewportFractionPerItem;
+        // Alternatively Specify Aspect Ratio? But in the nested listview, neither height nor width are restricted.
+        return Card(
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(emailMessage['subjectLine']),
+              subtitle: Text(discountOffer['description']),
+              leading:  UriImage(
+                  content: organization['logo'],
+                  height: 16.0,
+                  width:  16.0,
+                  fit: BoxFit.scaleDown
+              ),
+              trailing: const Text('Expires'),
+            ),
+            SizedBox(
+              // width: itemSize,
+              height: constraints.maxWidth * 2.0 / 3.0,
+              child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    //shrinkWrap: true,
+                    itemCount: promoMarkupList.length * 2,
+                    padding: const EdgeInsets.all(16.0), // Do i need padding AND divider?
+                    itemBuilder: (context, i) {
+                      if (i.isOdd) return const Divider();
+                      final index = i ~/ 2;
+                      var currentPromo = promoMarkupList[index];
+                      return SizedBox(
+                        width: itemSize,
+                        // height: itemSize,
+                        child: Card(
+                          elevation: 0,
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
+                            borderRadius: const BorderRadius.all(Radius.circular(12)),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              UriImage(
+                                content: currentPromo['image'],
+                                fit: BoxFit.scaleDown
+                              ),
+                              ListTile(
+                                title: Text(currentPromo['headline']),
+                                subtitle: Text('${currentPromo['priceCurrency']}${currentPromo['price']}'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                      // return renderCard(markupList[index], postFunction: postFunction);
+                    },
+                  ),
+            ),
+          ],
+        )
+        );
+      }
+    );
+  }
   List<Widget> subCards = [];
   for (var markup in markupList) {
     var subCard = renderCardSingle(markup, postFunction: postFunction);
     if (subCard != null) subCards.add(subCard);
   }
 
-  // todo acutally render offer card here
   return null;
   // return ListView.builder(
   //   scrollDirection: Axis.horizontal,
@@ -671,3 +761,83 @@ class PotentialActionButton extends StatelessWidget {
   }
 }
 
+/// Renders an image based on the given Uri.
+/// When URI is a http/ https URL pointing to a web resource, returns the corresponding network image
+/// When URI is a data URI containing a B64 encoded image, renders that image
+/// todo use this function for geo cards, as this is duplicated from there
+class UriImage extends StatelessWidget {
+  const UriImage({
+    super.key,
+    required this.content,
+    this.width,
+    this.height,
+    this.color,
+    this.colorBlendMode,
+    this.fit,
+    this.alignment = Alignment.center,
+    this.repeat = ImageRepeat.noRepeat,
+    this.matchTextDirection = false,
+    this.filterQuality = FilterQuality.low,
+  });
+  
+  final dynamic content;
+  final double? width;
+  final double? height;
+  final BoxFit? fit;
+  final Alignment alignment;
+  final ImageRepeat repeat;
+  final bool matchTextDirection;
+  final Color? color;
+  final BlendMode? colorBlendMode;
+  final FilterQuality filterQuality;
+
+
+  @override
+  Widget build(BuildContext context) {
+      Uri? jsonImageUri;
+      // Uri? imageB64;
+      Uri? imageUrl;
+      if (content is Uri) {
+        jsonImageUri = content;
+      } else if (content is String) {
+        jsonImageUri = Uri.tryParse(content);
+      }
+      if (jsonImageUri != null) {
+        var imageUriData = jsonImageUri.data;
+        if (imageUriData != null && imageUriData.isBase64) {
+          // imageB64 = jsonImageUri;
+          return Image.memory(
+            base64Decode(imageUriData.contentText),
+            width: width,
+            height: height,
+            color: color,
+            colorBlendMode: colorBlendMode,
+            fit: fit,
+            alignment: alignment,
+            repeat: repeat,
+            matchTextDirection: matchTextDirection,
+            filterQuality: filterQuality,
+          );
+        } else if (['http', 'https'].contains(jsonImageUri.scheme)) {
+          imageUrl = jsonImageUri;
+          return CachedNetworkImage(
+            imageUrl: imageUrl.toString(),
+            width: width,
+            height: height,
+            color: color,
+            colorBlendMode: colorBlendMode,
+            fit: fit,
+            alignment: alignment,
+            repeat: repeat,
+            matchTextDirection: matchTextDirection,
+            filterQuality: filterQuality,
+          );
+        } else {
+          throw FormatException('Unexpected scheme: ${jsonImageUri.scheme}', content);
+        }
+      } else {
+        //Unknown scheme
+        throw FormatException('Content is not a uri', content);
+      }
+  }
+}
