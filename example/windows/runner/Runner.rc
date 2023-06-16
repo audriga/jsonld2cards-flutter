@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.audriga" "\0"
-            VALUE "FileDescription", "markup_cards_example" "\0"
+            VALUE "FileDescription", "jsonld2cards_example" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "markup_cards_example" "\0"
+            VALUE "InternalName", "jsonld2cards_example" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.audriga. All rights reserved." "\0"
-            VALUE "OriginalFilename", "markup_cards_example.exe" "\0"
-            VALUE "ProductName", "markup_cards_example" "\0"
+            VALUE "OriginalFilename", "jsonld2cards_example.exe" "\0"
+            VALUE "ProductName", "jsonld2cards_example" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

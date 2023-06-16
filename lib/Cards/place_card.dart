@@ -77,7 +77,7 @@ class _PlaceState extends State<Place> {
       } else {
         developer.log(
           'Unexpected scheme: ${imageUrl.scheme}\n$imageUrl',
-          name: 'markup_cards.card_rendering',
+          name: 'jsonld2cards.card_rendering',
         );
       }
     }

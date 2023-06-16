@@ -1,11 +1,11 @@
 {
-    "name": "markup_cards_example",
-    "short_name": "markup_cards_example",
+    "name": "jsonld2cards_example",
+    "short_name": "jsonld2cards_example",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Demonstrates how to use the markup_cards plugin.",
+    "description": "Demonstrates how to use the jsonld2cards plugin.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

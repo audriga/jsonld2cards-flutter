@@ -2,7 +2,7 @@ import FlutterMacOS
 import Cocoa
 import XCTest
 
-@testable import markup_cards
+@testable import jsonld2cards
 
 // This demonstrates a simple unit test of the Swift portion of this plugin's implementation.
 //

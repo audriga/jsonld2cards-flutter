@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:markup_cards/GeoData/geo_data.dart';
+import 'package:jsonld2cards/GeoData/geo_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;

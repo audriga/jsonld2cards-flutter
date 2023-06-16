@@ -1,6 +1,6 @@
 library card_rendering;
 
-import 'package:markup_cards/Cards/promo_tab_card.dart';
+import 'package:jsonld2cards/Cards/promo_tab_card.dart';
 import 'Cards/email_message_card.dart';
 import 'Cards/flight_reservation_card.dart';
 import 'Cards/music_card.dart';

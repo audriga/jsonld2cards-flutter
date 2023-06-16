@@ -1,4 +1,4 @@
-package com.audriga.markup_cards
+package com.audriga.jsonld2cards
 
 import io.flutter.embedding.android.FlutterActivity
 

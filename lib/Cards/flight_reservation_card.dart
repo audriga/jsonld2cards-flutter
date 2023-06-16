@@ -1,7 +1,7 @@
 library flight_reservation_card;
 
 import 'package:flutter/material.dart';
-import 'package:markup_cards/Cards/potential_actions.dart';
+import 'package:jsonld2cards/Cards/potential_actions.dart';
 
 class FlightReservationCard extends StatelessWidget {
   const FlightReservationCard({

@@ -1,4 +1,4 @@
-# markup_cards
+# jsonld2cards
 
 Renders Markup as Cards.
 `card_rendering.dart` is where the actual card rendering happens.

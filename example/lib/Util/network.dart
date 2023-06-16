@@ -36,12 +36,12 @@ void postUrl(Uri uriToPost, {String successMessage = 'Sent data', dynamic dataTo
 
     developer.log(
       'Sent post request',
-      name: 'markup_cards.http',
+      name: 'jsonld2cards.http',
     );
     resp.then((value) => {
       developer.log(
         'Received response${value.body}',
-        name: 'markup_cards.network',
+        name: 'jsonld2cards.network',
       ),
     });
     snackBarKey.currentState?.showSnackBar(SnackBar(
@@ -50,7 +50,7 @@ void postUrl(Uri uriToPost, {String successMessage = 'Sent data', dynamic dataTo
   } on Error catch (e) {
     developer.log(
       'Received error posting',
-      name: 'markup_cards.network',
+      name: 'jsonld2cards.network',
       error: e,
     );
     snackBarKey.currentState?.showSnackBar(const SnackBar(

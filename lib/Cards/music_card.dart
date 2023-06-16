@@ -42,7 +42,7 @@ class MusicCard extends StatelessWidget {
           String? imageUrl = snapshot.data;
           developer.log(
             'Got image url:$imageUrl',
-            name: 'markup_cards.card',
+            name: 'jsonld2cards.card',
           );
           return imageUrl != null
               ? CachedNetworkImage(
@@ -54,7 +54,7 @@ class MusicCard extends StatelessWidget {
         } else if (snapshot.hasError) {
           developer.log(
             'Error loading image source',
-            name: 'markup_cards.card',
+            name: 'jsonld2cards.card',
             error: snapshot.error,
           );
           return Icon(
@@ -78,7 +78,7 @@ class MusicCard extends StatelessWidget {
           // children = const <Widget>[SizedBox.square(dimension: 10, child: CircularProgressIndicator(),)];
           developer.log(
             'Loading image source',
-            name: 'markup_cards.card',
+            name: 'jsonld2cards.card',
           );
           return const CircularProgressIndicator();
         }
@@ -126,7 +126,7 @@ class MusicCard extends StatelessWidget {
       if (imageUrls.length > 1) {
         developer.log(
           'Got more image urls than expected:\n$imageUrls',
-          name: 'markup_cards.card',
+          name: 'jsonld2cards.card',
         );
       }
       if (imageUrls.isNotEmpty) return imageUrls.first.attributes['content'];

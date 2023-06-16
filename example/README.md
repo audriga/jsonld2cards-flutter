@@ -1,3 +1,3 @@
-# markup_cards_example
+# jsonld2cards_example
 
-Demonstrates how to use the markup_cards plugin.
+Demonstrates how to use the jsonld2cards plugin.

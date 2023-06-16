@@ -207,6 +207,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
+  jsonld2cards:
+    dependency: "direct main"
+    description:
+      path: ".."
+      relative: true
+    source: path
+    version: "0.0.1"
   latlong2:
     dependency: transitive
     description:
@@ -223,13 +230,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
-  markup_cards:
-    dependency: "direct main"
-    description:
-      path: ".."
-      relative: true
-    source: path
-    version: "0.0.1"
   matcher:
     dependency: transitive
     description:

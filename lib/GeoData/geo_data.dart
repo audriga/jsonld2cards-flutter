@@ -74,19 +74,19 @@ class GeoData {
       ); //base64Encode(tileResponse.bodyBytes);
       developer.log(
         'Done downloading image',
-        name: 'markup_cards.geo_data',
+        name: 'jsonld2cards.geo_data',
       );
     }).onError((error, stackTrace)  {
       developer.log(
         'Error downloading image',
-        name: 'markup_cards.geo_data',
+        name: 'jsonld2cards.geo_data',
         error: error,
       );
     });
 
     developer.log(
       'Done waiting to download image',
-      name: 'markup_cards.geo_data',
+      name: 'jsonld2cards.geo_data',
     );
   }
 
@@ -98,7 +98,7 @@ class GeoData {
     var decodedResponse = jsonDecode(response.body);
     developer.log(
       'Reverse Geocoded Position, got\n$decodedResponse',
-      name: 'markup_cards.geo_data',
+      name: 'jsonld2cards.geo_data',
 
     );
     if (decodedResponse is Map<String, dynamic>) {
@@ -109,7 +109,7 @@ class GeoData {
     } else {
       developer.log(
         'Error decoding reverse geocode request answer',
-        name: 'markup_cards.geo_data',
+        name: 'jsonld2cards.geo_data',
       );
     }
   }
@@ -183,7 +183,7 @@ class GeoData {
     bool updateSuccess = await http.get(liveUri!).then((http.Response response) {
       developer.log(
         'Updated location and got response (${response.statusCode}) ${response.body}',
-        name: 'markup_cards.geo_data',
+        name: 'jsonld2cards.geo_data',
       );
       try {
         String jsonString = response.body;
@@ -193,7 +193,7 @@ class GeoData {
       } on Error catch (e) {
         developer.log(
           'Error updating/ parsing location',
-          name: 'markup_cards.geo_data',
+          name: 'jsonld2cards.geo_data',
           error: e,
         );
         return false;
@@ -202,7 +202,7 @@ class GeoData {
     }).onError((error, stackTrace) {
       developer.log(
         'Error updating location',
-        name: 'markup_cards.geo_data',
+        name: 'jsonld2cards.geo_data',
         error: error,
       );
       return false;
@@ -246,14 +246,14 @@ class GeoData {
           } else {
             developer.log(
               'Unexpected scheme: ${jsonImageUri.scheme}\n$jsonImageUri',
-              name: 'markup_cards.card_rendering',
+              name: 'jsonld2cards.card_rendering',
             );
           }
         } else {
           //Unknown scheme
           developer.log(
             'ImageUri is not a uri\nimageUri: $contentUrl',
-            name: 'markup_cards.geo_data',
+            name: 'jsonld2cards.geo_data',
           );
         }
       }
@@ -268,7 +268,7 @@ class GeoData {
       } {
         developer.log(
           'LiveUri is not a uri\nimageUri: $liveUriVar',
-          name: 'markup_cards.geo_data',
+          name: 'jsonld2cards.geo_data',
         );
       }
     }

@@ -1,8 +1,8 @@
 library card_samples;
 
-import 'package:markup_cards/card_rendering.dart';
-import 'package:markup_cards/card_viewer.dart';
-import 'package:markup_cards/open_card_viewer_dialog.dart';
+import 'package:jsonld2cards/card_rendering.dart';
+import 'package:jsonld2cards/card_viewer.dart';
+import 'package:jsonld2cards/open_card_viewer_dialog.dart';
 
 import 'Util/network.dart';
 import 'dart:convert';

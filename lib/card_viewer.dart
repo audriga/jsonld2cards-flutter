@@ -75,13 +75,13 @@ class _CardViewerState extends State<CardViewer> {
     return await http.get(sourceUri).then<String?>((http.Response response) {
       developer.log(
         'Requested markup at $sourceUri and got response (${response.statusCode}) ${response.body}',
-        name: 'markup_cards.card_viewer',
+        name: 'jsonld2cards.card_viewer',
       );
       return response.body;
     }).onError((error, stackTrace) {
       developer.log(
         'Error requesting markup $error',
-        name: 'markup_cards.geo_data',
+        name: 'jsonld2cards.geo_data',
         error: error,
       );
       return null;
