@@ -107,18 +107,23 @@ class FuturePreviews extends StatelessWidget {
           String? markupString = snapshot.data;
           if (markupString != null) {
             var decodedMarkup = tryDecode(markupString);
-            if (decodedMarkup is List<Map<String, dynamic>>) {
-              return ListView.builder(
-                //shrinkWrap: true,
-                itemCount: decodedMarkup.length * 2,
-                padding: const EdgeInsets.all(16.0),
-                itemBuilder: (context, i) {
-                  if (i.isOdd) return const Divider();
-                  final index = i ~/ 2;
-                  return renderCard(decodedMarkup[index], postFunction: postFunction);
-                },
-              );
-            } else if (decodedMarkup is Map<String, dynamic>) {
+            // if (decodedMarkup is List<Map<String, dynamic>>) {
+            /// If we have multiple markups, this branch renders them individually
+            /// and display them in a list.
+            /// Commented-out for now as we want to let renderCard handle
+            /// the List directly. (So that it can render promoCards).
+            //   return ListView.builder(
+            //     //shrinkWrap: true,
+            //     itemCount: decodedMarkup.length * 2,
+            //     padding: const EdgeInsets.all(16.0),
+            //     itemBuilder: (context, i) {
+            //       if (i.isOdd) return const Divider();
+            //       final index = i ~/ 2;
+            //       return renderCard(decodedMarkup[index], postFunction: postFunction);
+            //     },
+            //   );
+            // } else
+              if (decodedMarkup is List<Map<String, dynamic>> || decodedMarkup is Map<String, dynamic>) {
               return renderCard(decodedMarkup, postFunction: postFunction) ??
                   const Text('Could not load card');
               // todo this is an error case, so treat it like the other error cases too/ give more info

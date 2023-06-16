@@ -8,6 +8,9 @@ import 'Cards/place_card.dart';
 import 'package:flutter/material.dart';
 
 /// Renders a card, based on the given markup.
+///
+/// Assumes `markup` is either a single Map<String, dynamic>, or a `List<Map<String, dynamic>>`
+///
 /// postFunction is the function which is used to post data on action
 ///  buttons that post data (f.e. ConfirmAction button)
 /// Returns the card if it was successfully created and null if the card could not

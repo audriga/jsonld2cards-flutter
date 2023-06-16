@@ -5,6 +5,6 @@ Renders Markup as Cards.
 Read the comment above `renderCard(...)` in `card_rendering.dart`, and the comment above `postUrl` in
 `example/lib/Util/network.dart`.
 
-`card_viewer` downloads a json and renders the cards as a list.
+`CardViewer` in `card_viewer.dart` downloads a json and renders the cards as a list.
 
 See `example` folder for an example project that uses this library.
