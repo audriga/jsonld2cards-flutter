@@ -106,11 +106,11 @@ class PromoTabCard extends StatelessWidget {
   // todo
   //  [] get format of text just right
   //  [] Three letter currency to symbol, and treat according to standard, e.g. $15 vs 15€
-  //  [] Apply discount value to price
+  //  [x] Apply discount value to price
   //  [] Make entire card clickable
   //  [] Error handling for image
   //  [] handle expected attributes not being present
-  //  [] make its own widget or function
+  //  [x] make its own widget or function
 
   // var promoMarkupList = markupList.where((element) => element['@type'] == 'PromotionCard').toList();
   // var organization = markupList.firstWhere((element) => element['@type'] == 'Organization');
