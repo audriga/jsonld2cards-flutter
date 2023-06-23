@@ -44,6 +44,9 @@ Widget? renderCard(
 }
 
 /// Renders a Card consisting of multiple elements
+/// Can always be expected to return a single card or null.
+/// Will *not* return a ListView of multiple cards.
+///
 /// Note: Cards are often Displayed within ListViews.
 /// This means there will likely be infinite space in the vertical direction
 /// So returning another Widget that is Scrollable in the same direction
@@ -62,25 +65,14 @@ Widget? renderCardMulti(
   ) {
     return PromoTabCard(markupList: markupList,);
   }
-  List<Widget> subCards = [];
+
+  // Fallback: Render the first usable card that can be found
   for (var markup in markupList) {
     var subCard = renderCardSingle(markup, postFunction: postFunction);
-    if (subCard != null) subCards.add(subCard);
+    if (subCard != null) return subCard;
   }
 
   return null;
-  // return ListView.builder(
-  //   scrollDirection: Axis.horizontal,
-  //   //shrinkWrap: true,
-  //   itemCount: markupList.length * 2,
-  //   padding: const EdgeInsets.all(16.0),
-  //   itemBuilder: (context, i) {
-  //     if (i.isOdd) return const Divider();
-  //     final index = i ~/ 2;
-  // // this gives the card infinite horizontal space. Should be wrapped in LayoutBuilder + SizedBox
-  //     return renderCard(markupList[index], postFunction: postFunction);
-  //   },
-  // );
 }
 
 Widget? renderCardSingle(

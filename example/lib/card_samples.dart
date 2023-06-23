@@ -209,12 +209,20 @@ class _CardSamplesState extends State<CardSamples> {
 
   Future<List<dynamic>> loadMarkupsFromAssets() async {
     List<dynamic> markups = [];
-    final musicSchoolString = DefaultAssetBundle.of(context).loadString('assets/sampleMarkup/musicSchool.json');
-    final promotabString = DefaultAssetBundle.of(context).loadString('assets/sampleMarkup/promotab.json');
-    final musicSchoolMarkup = jsonDecode(await musicSchoolString);
-    final promotabMarkup = jsonDecode(await promotabString);
-    markups.add(musicSchoolMarkup);
-    markups.add(promotabMarkup);
+
+    var assetsToUse = [
+      'assets/sampleMarkup/musicSchool.json',
+      'assets/sampleMarkup/promotab.json',
+      'assets/sampleMarkup/spiegel.json',
+      'assets/sampleMarkup/lemonde.json',
+      'assets/sampleMarkup/organization_example1.json',
+    ];
+
+    Iterable<Future<String>> futureAssetStrings = assetsToUse.map((assetPath) => DefaultAssetBundle.of(context).loadString(assetPath));
+    for (Future<String> futureAssetString in futureAssetStrings) {
+      String assetString = await futureAssetString;
+      markups.add(jsonDecode(assetString));
+    }
     return markups;
   }
 

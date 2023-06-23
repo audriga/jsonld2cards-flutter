@@ -1,0 +1,84 @@
+[
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "articleSection": "International",
+    "author": {
+      "@type": "Person",
+      "name": "Georg Fahrion"
+    },
+    "dateCreated": "2023-05-17T14:50:48+02:00",
+    "dateModified": "2023-05-17T14:50:48+02:00",
+    "datePublished": "2023-05-17T14:50:48+02:00",
+    "headline": "A Journey Through China's Uyghur Region: The Three Worlds of Xinjiang",
+    "image": [
+      "https://cdn.prod.www.spiegel.de/images/f88bf1f3-8e10-4b05-bf9e-7772e2faedeb_w1200_r1.77_fpx45.3_fpy49.99.jpg",
+      "https://cdn.prod.www.spiegel.de/images/f88bf1f3-8e10-4b05-bf9e-7772e2faedeb_w1200_r1.33_fpx45.3_fpy49.99.jpg",
+      "https://cdn.prod.www.spiegel.de/images/f88bf1f3-8e10-4b05-bf9e-7772e2faedeb_w1200_r1_fpx45.3_fpy49.99.jpg"
+    ],
+    "isAccessibleForFree": true,
+    "keywords": [
+      "China",
+      "Human Rights in China",
+      "World"
+    ],
+    "mainEntityOfPage": "https://www.spiegel.de/international/world/the-three-worlds-of-xinjiang-a-trip-through-china-s-uyghur-region-a-e385b0f5-319a-47b6-acd6-17bd73e90e0c",
+    "name": "a-e385b0f5-319a-47b6-acd6-17bd73e90e0c",
+    "publisher": {
+      "@type": "Organization",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.spiegel.de/public/spon/images/logos/der-spiegel-h60.png"
+      },
+      "name": "DER SPIEGEL"
+    },
+    "thumbnailUrl": [
+      "https://cdn.prod.www.spiegel.de/images/f88bf1f3-8e10-4b05-bf9e-7772e2faedeb_w180_r1.77_fpx45.3_fpy49.99.jpg",
+      "https://cdn.prod.www.spiegel.de/images/f88bf1f3-8e10-4b05-bf9e-7772e2faedeb_w180_r1.33_fpx45.3_fpy49.99.jpg",
+      "https://cdn.prod.www.spiegel.de/images/f88bf1f3-8e10-4b05-bf9e-7772e2faedeb_w180_r1_fpx45.3_fpy49.99.jpg"
+    ],
+    "url": "https://www.spiegel.de/international/world/the-three-worlds-of-xinjiang-a-trip-through-china-s-uyghur-region-a-e385b0f5-319a-47b6-acd6-17bd73e90e0c"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "item": {
+          "@id": "https://www.spiegel.de/",
+          "@type": "WebPage",
+          "name": "Startseite"
+        },
+        "position": 1
+      },
+      {
+        "@type": "ListItem",
+        "item": {
+          "@id": "https://www.spiegel.de/international/",
+          "@type": "WebPage",
+          "name": "International"
+        },
+        "position": 2
+      },
+      {
+        "@type": "ListItem",
+        "item": {
+          "@id": "https://www.spiegel.de/international/world/",
+          "@type": "WebPage",
+          "name": "World"
+        },
+        "position": 3
+      },
+      {
+        "@type": "ListItem",
+        "item": {
+          "@id": "https://www.spiegel.de/international/world/the-three-worlds-of-xinjiang-a-trip-through-china-s-uyghur-region-a-e385b0f5-319a-47b6-acd6-17bd73e90e0c",
+          "image": "https://cdn.prod.www.spiegel.de/images/f88bf1f3-8e10-4b05-bf9e-7772e2faedeb_w1200_r1.77_fpx45.3_fpy49.99.jpg",
+          "name": "The Three Worlds of Xinjiang: A Trip Through China's Uyghur Region"
+        },
+        "position": 4
+      }
+    ]
+  }
+]

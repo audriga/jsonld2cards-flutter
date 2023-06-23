@@ -7,25 +7,24 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
-
 class DefaultMarkupCard extends StatelessWidget {
-
-
   const DefaultMarkupCard({
-    super.key, required this.markup, required this.postFunction,
+    super.key,
+    required this.markup,
+    required this.postFunction,
   });
 
   final Map<String, dynamic> markup;
-  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
+  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage})
+      postFunction;
 
   @override
   Widget build(BuildContext context) {
-
     // Properties the Card might have
     var url = markup['url'];
-    String? name = markup['name'];
+    String? name = markup['headline'] ?? markup['name'];
     String? description = markup['description'];
-    var image  = markup['image'];
+    var image = markup['image'] ?? markup['logo'];
     var potentialAction = markup['potentialAction'];
 
     // Setting title and subtitle, depending on available information
@@ -36,7 +35,7 @@ class DefaultMarkupCard extends StatelessWidget {
       if (description != null) {
         subtitleText = description;
       }
-    }  else if (description != null) {
+    } else if (description != null) {
       titleText = description;
     }
 
@@ -46,14 +45,29 @@ class DefaultMarkupCard extends StatelessWidget {
       try {
         if (image is List<dynamic>) {
           // For array of URLs, unconventional, but used by zeit
-          leadingImage = UriImage(content: image.first, fit: BoxFit.scaleDown,);
+          leadingImage = UriImage(
+            content: image.first,
+            height: 32.0,
+            width:  32.0,
+            fit: BoxFit.scaleDown,
+          );
         } else if (image is Map<String, dynamic>) {
           // image is an ImageObject (https://schema.org/ImageObject)
           var contentUrl = image['contentUrl'] ?? image['url'];
-          leadingImage = UriImage(content: contentUrl, fit: BoxFit.scaleDown,);
+          leadingImage = UriImage(
+            content: contentUrl,
+            height: 32.0,
+            width:  32.0,
+            fit: BoxFit.scaleDown,
+          );
         } else {
           // Probably URL, so flutter type of String or URI
-          leadingImage = UriImage(content: image, fit: BoxFit.scaleDown,);
+          leadingImage = UriImage(
+            content: image,
+            height: 32.0,
+            width:  32.0,
+            fit: BoxFit.scaleDown,
+          );
         }
       } on FormatException catch (_) {
         // Tried giving something that isn't a uri or can't be parsed to a uri to UriImage.
@@ -72,7 +86,8 @@ class DefaultMarkupCard extends StatelessWidget {
     if (potentialAction != null) {
       cardContents.add(PotentialActionRow(
         potentialAction: potentialAction,
-        postFunction: postFunction,));
+        postFunction: postFunction,
+      ));
     }
 
     // Adding a row with a view button if there was a URL
@@ -83,13 +98,12 @@ class DefaultMarkupCard extends StatelessWidget {
         "name": "View"
       };
       cardContents.add(
-          PotentialActionRow(
-            potentialAction: viewUrlActionMarkup,
-            postFunction: postFunction,
-          ),
+        PotentialActionRow(
+          potentialAction: viewUrlActionMarkup,
+          postFunction: postFunction,
+        ),
       );
     }
-
 
     return Card(
       child: Column(
@@ -101,12 +115,13 @@ class DefaultMarkupCard extends StatelessWidget {
 
   Future<String?> getImageSource(Uri? uri) async {
     if (uri == null) return null;
-    http.Response response =  await http.get(uri);
+    http.Response response = await http.get(uri);
     var parsedResponse = parse(response.body);
     var head = parsedResponse.head;
     if (head != null) {
       var metaTags = head.getElementsByTagName('meta');
-      var imageUrls = metaTags.where((script) => script.attributes['name'] == 'twitter:image');
+      var imageUrls = metaTags
+          .where((script) => script.attributes['name'] == 'twitter:image');
       if (imageUrls.length > 1) {
         developer.log(
           'Got more image urls than expected:\n$imageUrls',

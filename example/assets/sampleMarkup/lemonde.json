@@ -1,0 +1,14 @@
+{
+  "@context": "https://schema.org",
+  "@type": "NewsMediaOrganization",
+  "name": "Le Monde",
+  "url": "https://www.lemonde.fr",
+  "logo": "https://asset.lemde.fr/medias/img/social-network/default.png",
+  "sameAs": [
+    "https://www.facebook.com/lemonde.fr",
+    "https://twitter.com/lemondefr",
+    "https://www.instagram.com/lemondefr/",
+    "https://www.youtube.com/user/LeMonde",
+    "https://www.linkedin.com/company/le-monde/"
+  ]
+}

@@ -27,7 +27,12 @@
     <script src="/docs/clipboard/clipboard.min.js"></script>
 
 <link rel="canonical" href="https://schema.org/Organization" />
-   
+        <!--        start flutter head stuff-->
+        <link rel="manifest" href="manifest.json">
+        <!-- This script adds the flutter initialization JS code -->
+        <script src="flutter.js" defer></script>
+        <link rel="stylesheet" type="text/css" href="css/minimal-style.css" />
+        <!--        End flutter head stuff-->
 </head>
 
     
@@ -128,18 +133,10 @@
     
     </div>
     <!-- More Block -->
-    <div>
-            <div id='infobox' style='text-align: right; padding-right: 5px;' role="checkbox" aria-checked="false">
-                <label for="morecheck"><b><span style="cursor: pointer;">[more...]</span></b></label>
-            </div>
-            <input type='checkbox' checked="checked" style='display: none' id=morecheck><div id='infomsg' style='background-color: #EEEEEE; text-align: left; padding: 0.5em;'>
-            <ul><li> <span class="canonicalUrl">Canonical URL: https://schema.org/Organization</span> </li>
-            
-                <!--<li><a href='https://docs.google.com/a/google.com/forms/d/1krxHlWJAO3JgvHRZV9Rugkr9VYnMdrI10xbGsWt733c/viewform?entry.1174568178&entry.41124795=https://schema.org/Organization&entry.882602760=Type'>Leave public feedback on this term &#128172;</a></li>-->
-                <li><a href='https://github.com/schemaorg/schemaorg/issues?q=is%3Aissue+is%3Aopen+Organization'>Check for open issues.</a></li>
-            </ul>
-    </div>
-    </div>
+    <article>
+        <div id="flutter_target"></div>
+    </article>
+</div>
 	
 	<!-- Description of term -->
     <div class="description">An organization such as a school, NGO, corporation, club, etc.</div>
@@ -6891,7 +6888,21 @@ WAAY is channel 7 on Comcast cable.
   ]
 }
 </script>
-    
 
+    <script>
+    window.addEventListener('load', function(ev) {
+      let target = document.querySelector("#flutter_target");
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: async function(engineInitializer) {
+          let appRunner = await engineInitializer.initializeEngine({hostElement: target})
+          await appRunner.runApp();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
