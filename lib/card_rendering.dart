@@ -1,6 +1,7 @@
 library card_rendering;
 
 import 'package:jsonld2cards/Cards/promo_tab_card.dart';
+import 'Cards/default_markup_card.dart';
 import 'Cards/email_message_card.dart';
 import 'Cards/flight_reservation_card.dart';
 import 'Cards/music_card.dart';
@@ -114,6 +115,8 @@ Widget? renderCardSingle(
     case 'FlightReservation': {
       return FlightReservationCard(markup: markup, postFunction: postFunction);
     }
+    default: {
+      return DefaultMarkupCard(markup: markup, postFunction: postFunction);
+    }
   }
-  return null;
 }
