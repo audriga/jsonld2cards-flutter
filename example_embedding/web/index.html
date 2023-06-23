@@ -32,10 +32,7 @@
   <title>jsonld2cards_example</title>
   <link rel="manifest" href="manifest.json">
 
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = null;
-  </script>
+
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
   <link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -101,9 +98,6 @@
       let target = document.querySelector("#flutter_target");
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
         onEntrypointLoaded: async function(engineInitializer) {
           let appRunner = await engineInitializer.initializeEngine({hostElement: target})
           await appRunner.runApp();
