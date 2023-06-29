@@ -102,15 +102,22 @@ class PromoTabCard extends StatelessWidget {
     required this.markupList,
     this.height
   });
+  // todo Ideally height should be determined by contents but that is tricky with
+  //  horizontally scrolling content. See also https://stackoverflow.com/questions/49307677/how-can-i-get-the-height-of-a-widget/60868972#60868972 and
+  //  https://stackoverflow.com/questions/54512171/horizontal-listview-inside-a-vertical-scrollview-in-flutter/67556125#67556125
+
+  // todo check if web scrolling is problematic like described here https://stackoverflow.com/questions/69154468/horizontal-listview-not-scrolling-on-web-but-scrolling-on-mobile
 
   final List<Map<String, dynamic>> markupList;
   final double? height;
 
   // todo
+  // Minor niceties
   //  [] get format of text just right
   //  [] Three letter currency to symbol, and treat according to standard, e.g. $15 vs 15€
   //  [x] Apply discount value to price
   //  [] Make entire card clickable
+  // Better error handling
   //  [] Error handling for image
   //  [] handle expected attributes not being present
   //  [x] make its own widget or function
@@ -141,6 +148,13 @@ class PromoTabCard extends StatelessWidget {
         builder: (context, constraints) {
           final itemSize = constraints.maxWidth * viewportFractionPerItem;
           // Alternatively Specify Aspect Ratio? But in the nested listview, neither height nor width are restricted.
+
+          double heightResult;
+          if (constraints.maxHeight != double.infinity) {
+            heightResult = height ?? constraints.maxHeight;
+          } else {
+            heightResult = height ?? 3.0 * constraints.maxWidth / 4.0;
+          }
           return Card(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -197,7 +211,7 @@ class PromoTabCard extends StatelessWidget {
                   ),
                   ConstrainedBox(
                     // width: itemSize,
-                    constraints: BoxConstraints(maxHeight: height ?? 3.0 *constraints.maxWidth / 4.0),
+                    constraints: BoxConstraints(maxHeight: heightResult),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       //shrinkWrap: true,
@@ -207,7 +221,7 @@ class PromoTabCard extends StatelessWidget {
                         if (i.isOdd) return const Divider();
                         final index = i ~/ 2;
                         var currentPromo = promoTabData.promotionCards[index];
-                        return PromoItem(width: itemSize, promoData: currentPromo);
+                        return PromoItem(width: itemSize, promoCardData: currentPromo);
                         // return renderCard(markupList[index], postFunction: postFunction);
                       },
                     ),
@@ -224,11 +238,11 @@ class PromoItem extends StatelessWidget {
   const PromoItem({
     super.key,
     required this.width,
-    required this.promoData,
+    required this.promoCardData,
   });
 
   final double width;
-  final PromotionCardData promoData;
+  final PromotionCardData promoCardData;
 
   @override
   Widget build(BuildContext context) {
@@ -248,23 +262,23 @@ class PromoItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             UriImage(
-                content: promoData.image,
+                content: promoCardData.image,
                 placeholder: (context, url) => const CircularProgressIndicator(),
                 fit: BoxFit.scaleDown
             ),
             ListTile(
-              title: Text(promoData.headline, softWrap: true),
+              title: Text(promoCardData.headline, softWrap: true),
               subtitle: Text.rich(TextSpan(
                 children: [
                   TextSpan(
-                    text: promoData.priceInCurrency,
+                    text: promoCardData.priceInCurrency,
                     style: const TextStyle(
                       color: Colors.grey,
                       decoration: TextDecoration.lineThrough,
                     ),
                   ),
                   TextSpan(
-                    text: ' ${promoData.discountedPriceInCurrency}',
+                    text: ' ${promoCardData.discountedPriceInCurrency}',
                   ),
                 ],
               )
