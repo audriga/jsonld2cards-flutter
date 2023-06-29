@@ -151,7 +151,7 @@ class PromoTabCard extends StatelessWidget {
 
           double heightResult;
           if (constraints.maxHeight != double.infinity) {
-            heightResult = height ?? constraints.maxHeight;
+            heightResult = height ?? constraints.maxHeight - 100; // todo find a better way to do this
           } else {
             heightResult = height ?? 3.0 * constraints.maxWidth / 4.0;
           }
