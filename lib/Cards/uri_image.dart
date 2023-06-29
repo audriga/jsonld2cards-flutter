@@ -13,6 +13,7 @@ class UriImage extends StatelessWidget {
   const UriImage({
     super.key,
     required this.content,
+    this.placeholder,
     this.width,
     this.height,
     this.color,
@@ -25,6 +26,7 @@ class UriImage extends StatelessWidget {
   });
 
   final dynamic content;
+  final PlaceholderWidgetBuilder? placeholder;
   final double? width;
   final double? height;
   final BoxFit? fit;
@@ -66,6 +68,7 @@ class UriImage extends StatelessWidget {
         imageUrl = jsonImageUri;
         return CachedNetworkImage(
           imageUrl: imageUrl.toString(),
+          placeholder: placeholder,
           width: width,
           height: height,
           color: color,

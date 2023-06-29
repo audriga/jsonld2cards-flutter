@@ -95,13 +95,16 @@ class PromotionCardData {
         discountValue = json['discountValue'];
 }
 
+/// if height is not set, the card will be rendered in a 3:4 aspect ratio
 class PromoTabCard extends StatelessWidget {
   const PromoTabCard({
     super.key,
     required this.markupList,
+    this.height
   });
 
   final List<Map<String, dynamic>> markupList;
+  final double? height;
 
   // todo
   //  [] get format of text just right
@@ -192,9 +195,9 @@ class PromoTabCard extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(
+                  ConstrainedBox(
                     // width: itemSize,
-                    height: constraints.maxWidth * 2.0 / 3.0,
+                    constraints: BoxConstraints(maxHeight: height ?? 3.0 *constraints.maxWidth / 4.0),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       //shrinkWrap: true,
@@ -204,47 +207,7 @@ class PromoTabCard extends StatelessWidget {
                         if (i.isOdd) return const Divider();
                         final index = i ~/ 2;
                         var currentPromo = promoTabData.promotionCards[index];
-                        return SizedBox(
-                          width: itemSize,
-                          // height: itemSize,
-                          child: Card(
-                            elevation: 0,
-                            clipBehavior: Clip.antiAlias,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Theme.of(context).colorScheme.outline,
-                              ),
-                              borderRadius: const BorderRadius.all(Radius.circular(12)),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                UriImage(
-                                    content: currentPromo.image,
-                                    fit: BoxFit.scaleDown
-                                ),
-                                ListTile(
-                                  title: Text(currentPromo.headline),
-                                  subtitle: Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: currentPromo.priceInCurrency,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          decoration: TextDecoration.lineThrough,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: ' ${currentPromo.discountedPriceInCurrency}',
-                                      ),
-                                    ],
-                                  )
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+                        return PromoItem(width: itemSize, promoData: currentPromo);
                         // return renderCard(markupList[index], postFunction: postFunction);
                       },
                     ),
@@ -253,6 +216,63 @@ class PromoTabCard extends StatelessWidget {
               )
           );
         }
+    );
+  }
+}
+
+class PromoItem extends StatelessWidget {
+  const PromoItem({
+    super.key,
+    required this.width,
+    required this.promoData,
+  });
+
+  final double width;
+  final PromotionCardData promoData;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      // height: itemSize,
+      child: Card(
+        elevation: 0,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Theme.of(context).colorScheme.outline,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            UriImage(
+                content: promoData.image,
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                fit: BoxFit.scaleDown
+            ),
+            ListTile(
+              title: Text(promoData.headline, softWrap: true),
+              subtitle: Text.rich(TextSpan(
+                children: [
+                  TextSpan(
+                    text: promoData.priceInCurrency,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      decoration: TextDecoration.lineThrough,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' ${promoData.discountedPriceInCurrency}',
+                  ),
+                ],
+              )
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -24,10 +24,11 @@ Widget? renderCard(
     dynamic markup,
     {
       required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
+      double? height,
     }
     ) {
   if (markup is List<Map<String, dynamic>>) {
-    return renderCardMulti(markup, postFunction: postFunction);
+    return renderCardMulti(markup, postFunction: postFunction, height: height);
   }  else if (markup is Map<String, dynamic>) {
     return renderCardSingle(markup, postFunction: postFunction);
   } else if (markup is List<dynamic>) {
@@ -35,7 +36,7 @@ Widget? renderCard(
     markup.map((element) => recastMarkup
         .add(element as Map<String, dynamic>))
         .toList();
-    return renderCardMulti(recastMarkup, postFunction: postFunction);
+    return renderCardMulti(recastMarkup, postFunction: postFunction, height: height);
   }
   throw FormatException(
     'markup should either be Map<String, dynamic> or a list of those',
@@ -55,6 +56,7 @@ Widget? renderCardMulti(
     List<Map<String, dynamic>> markupList,
     {
       required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
+      double? height,
     }
     ) {
   var types = markupList.map((e) => e['@type']);
@@ -63,7 +65,7 @@ Widget? renderCardMulti(
       && types.contains('DiscountOffer')
       && types.contains('PromotionCard')
   ) {
-    return PromoTabCard(markupList: markupList,);
+    return PromoTabCard(markupList: markupList, height: height,);
   }
 
   // Fallback: Render the first usable card that can be found
