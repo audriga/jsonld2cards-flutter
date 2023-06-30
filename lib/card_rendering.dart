@@ -13,14 +13,32 @@ import 'package:flutter/material.dart';
 /// Assumes `markup` is either a single Map<String, dynamic>, or a `List<Map<String, dynamic>>`
 ///
 /// postFunction is the function which is used to post data on action
-///  buttons that post data (f.e. ConfirmAction button)
+///  buttons that post data (f.e. ConfirmAction button). Can be set to a dummy function if not needed.
+/// height is only used for PromoTab Card, to set the height of the horizontally scrollable part
+///
 /// Returns the card if it was successfully created and null if the card could not
 ///  be rendered.
-/// Alternatively this function could be refactored to a widget declaration,
-///  and `return null` lines will have to be replaced with exceptions.
+///
 /// For now the form of a nullable function was chosen, as the caller can
 ///  decide themselves what alternative widget to return.
 Widget? renderCard(
+    dynamic markup,
+    {
+      required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
+      double? height,
+    }
+    ) {
+  try {
+    return mustRenderCard(markup, postFunction: postFunction);
+  } catch (e) {
+    return null;
+  }
+}
+
+
+/// Same as renderCard, but always returns a card, or thows an exception.
+/// Alternatively this function could be refactored to a widget declaration.
+Widget mustRenderCard(
     dynamic markup,
     {
       required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
@@ -52,7 +70,7 @@ Widget? renderCard(
 /// This means there will likely be infinite space in the vertical direction
 /// So returning another Widget that is Scrollable in the same direction
 /// here is probably not a great idea.
-Widget? renderCardMulti(
+Widget renderCardMulti(
     List<Map<String, dynamic>> markupList,
     {
       required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
@@ -70,14 +88,30 @@ Widget? renderCardMulti(
 
   // Fallback: Render the first usable card that can be found
   for (var markup in markupList) {
-    var subCard = renderCardSingle(markup, postFunction: postFunction);
+    var subCard = tryRenderCardSingle(markup, postFunction: postFunction);
     if (subCard != null) return subCard;
   }
 
-  return null;
+  throw FormatException(
+    'markup does not contain any valid cards',
+    markupList,
+  );
 }
 
-Widget? renderCardSingle(
+Widget? tryRenderCardSingle(
+    Map<String, dynamic> markup,
+    {
+      required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
+    }
+    )  {
+  try {
+    return renderCardSingle(markup, postFunction: postFunction);
+  } catch (e) {
+    return null;
+  }
+}
+
+Widget renderCardSingle(
     Map<String, dynamic> markup,
     {
       required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
@@ -85,7 +119,10 @@ Widget? renderCardSingle(
     ) {
   String context = markup['@context'];
   if (!['http://schema.org', 'http://schema.org/', 'https://schema.org', 'http://schema.googleapis.com/'].contains(context)) {
-    return null;
+    throw FormatException(
+      'Markup does not contain context tag, or context tag does not contain one of the known schema contexts like http://schema.org',
+      markup,
+    );
   }
   String type = markup['@type'];
   switch (type) {
