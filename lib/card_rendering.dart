@@ -36,8 +36,7 @@ Widget? renderCard(
 }
 
 
-/// Same as renderCard, but always returns a card, or thows an exception.
-/// Alternatively this function could be refactored to a widget declaration.
+/// Same as renderCard, but always returns a card, or throws an exception.
 Widget mustRenderCard(
     dynamic markup,
     {
