@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 ///
 /// postFunction is the function which is used to post data on action
 ///  buttons that post data (f.e. ConfirmAction button). Can be set to a dummy function if not needed.
-/// height is only used for PromoTab Card, to set the height of the horizontally scrollable part
 ///
 /// Returns the card if it was successfully created and null if the card could not
 ///  be rendered.
@@ -25,7 +24,6 @@ Widget? renderCard(
     dynamic markup,
     {
       required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
-      double? height,
     }
     ) {
   try {
@@ -41,11 +39,10 @@ Widget mustRenderCard(
     dynamic markup,
     {
       required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
-      double? height,
     }
     ) {
   if (markup is List<Map<String, dynamic>>) {
-    return renderCardMulti(markup, postFunction: postFunction, height: height);
+    return renderCardMulti(markup, postFunction: postFunction);
   }  else if (markup is Map<String, dynamic>) {
     return renderCardSingle(markup, postFunction: postFunction);
   } else if (markup is List<dynamic>) {
@@ -53,7 +50,7 @@ Widget mustRenderCard(
     markup.map((element) => recastMarkup
         .add(element as Map<String, dynamic>))
         .toList();
-    return renderCardMulti(recastMarkup, postFunction: postFunction, height: height);
+    return renderCardMulti(recastMarkup, postFunction: postFunction);
   }
   throw FormatException(
     'markup should either be Map<String, dynamic> or a list of those',
@@ -73,7 +70,6 @@ Widget renderCardMulti(
     List<Map<String, dynamic>> markupList,
     {
       required Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction,
-      double? height,
     }
     ) {
   var types = markupList.map((e) => e['@type']);
@@ -82,7 +78,7 @@ Widget renderCardMulti(
       && types.contains('DiscountOffer')
       && types.contains('PromotionCard')
   ) {
-    return PromoTabCard(markupList: markupList, height: height,);
+    return PromoTabCard(markupList: markupList,);
   }
 
   // Fallback: Render the first usable card that can be found

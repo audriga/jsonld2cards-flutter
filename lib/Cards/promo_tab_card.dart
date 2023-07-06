@@ -101,16 +101,9 @@ class PromoTabCard extends StatelessWidget {
   PromoTabCard({
     super.key,
     required this.markupList,
-    this.height
   });
-  // todo Ideally height should be determined by contents but that is tricky with
-  //  horizontally scrolling content. See also https://stackoverflow.com/questions/49307677/how-can-i-get-the-height-of-a-widget/60868972#60868972 and
-  //  https://stackoverflow.com/questions/54512171/horizontal-listview-inside-a-vertical-scrollview-in-flutter/67556125#67556125
-
-  // todo check if web scrolling is problematic like described here https://stackoverflow.com/questions/69154468/horizontal-listview-not-scrolling-on-web-but-scrolling-on-mobile
 
   final List<Map<String, dynamic>> markupList;
-  final double? height;
   final ScrollController _vertical = ScrollController();
 
   // todo
@@ -118,7 +111,7 @@ class PromoTabCard extends StatelessWidget {
   //  [] get format of text just right
   //  [] Three letter currency to symbol, and treat according to standard, e.g. $15 vs 15€
   //  [x] Apply discount value to price
-  //  [] Make entire card clickable
+  //  [x] Make entire card clickable
   // Better error handling
   //  [] Error handling for image
   //  [] handle expected attributes not being present
@@ -150,14 +143,6 @@ class PromoTabCard extends StatelessWidget {
         builder: (context, constraints) {
           final itemWidth = constraints.maxWidth * viewportFractionPerItem;
           final itemImageHeight = constraints.maxHeight != double.infinity ? constraints.maxHeight -200 : null;
-          // Alternatively Specify Aspect Ratio? But in the nested listview, neither height nor width are restricted.
-
-          double heightResult;
-          if (constraints.maxHeight != double.infinity) {
-            heightResult = height ?? constraints.maxHeight - 100; // todo find a better way to do this
-          } else {
-            heightResult = height ?? 3.0 * constraints.maxWidth / 4.0;
-          }
           return Card(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
