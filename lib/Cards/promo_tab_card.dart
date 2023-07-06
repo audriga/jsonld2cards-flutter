@@ -2,6 +2,7 @@ library promo_tab_card;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/uri_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class PromoTabData {
@@ -95,9 +96,9 @@ class PromotionCardData {
         discountValue = json['discountValue'];
 }
 
-/// if height is not set, the card will be rendered in a 3:4 aspect ratio
+
 class PromoTabCard extends StatelessWidget {
-  const PromoTabCard({
+  PromoTabCard({
     super.key,
     required this.markupList,
     this.height
@@ -110,6 +111,7 @@ class PromoTabCard extends StatelessWidget {
 
   final List<Map<String, dynamic>> markupList;
   final double? height;
+  final ScrollController _vertical = ScrollController();
 
   // todo
   // Minor niceties
@@ -141,12 +143,13 @@ class PromoTabCard extends StatelessWidget {
       expiryString = 'Expires in ${difference.inHours} hours';
     }
 
-    const promoCardPerScreen = 3;
+    const promoCardPerScreen = 2;
     const viewportFractionPerItem = 1.0 / promoCardPerScreen;
 
     return LayoutBuilder(
         builder: (context, constraints) {
-          final itemSize = constraints.maxWidth * viewportFractionPerItem;
+          final itemWidth = constraints.maxWidth * viewportFractionPerItem;
+          final itemImageHeight = constraints.maxHeight != double.infinity ? constraints.maxHeight -200 : null;
           // Alternatively Specify Aspect Ratio? But in the nested listview, neither height nor width are restricted.
 
           double heightResult;
@@ -209,21 +212,21 @@ class PromoTabCard extends StatelessWidget {
                       )
                     ],
                   ),
-                  ConstrainedBox(
-                    // width: itemSize,
-                    constraints: BoxConstraints(maxHeight: heightResult),
-                    child: ListView.builder(
+                  Scrollbar(
+                    controller: _vertical,
+                    child: SingleChildScrollView(
+                      controller: _vertical,
                       scrollDirection: Axis.horizontal,
-                      //shrinkWrap: true,
-                      itemCount: promoTabData.promotionCards.length * 2,
-                      padding: const EdgeInsets.all(16.0), // Do i need padding AND divider?
-                      itemBuilder: (context, i) {
-                        if (i.isOdd) return const Divider();
-                        final index = i ~/ 2;
-                        var currentPromo = promoTabData.promotionCards[index];
-                        return PromoItem(width: itemSize, promoCardData: currentPromo);
-                        // return renderCard(markupList[index], postFunction: postFunction);
-                      },
+                      child: Row(
+                        children: [
+                          for (int i = 0; i < promoTabData.promotionCards.length * 2; ++i)
+                            (i.isOdd) ? const Divider() : PromoItem(
+                                width: itemWidth,
+                                imageHeight: itemImageHeight,
+                                promoCardData:
+                                promoTabData.promotionCards[i ~/ 2]),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -238,53 +241,65 @@ class PromoItem extends StatelessWidget {
   const PromoItem({
     super.key,
     required this.width,
+    required this.imageHeight,
     required this.promoCardData,
   });
 
   final double width;
+  final double? imageHeight;
   final PromotionCardData promoCardData;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      // height: itemSize,
-      child: Card(
-        elevation: 0,
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-            color: Theme.of(context).colorScheme.outline,
+    return GestureDetector(
+      onTap: () => launchUrl(promoCardData.url),
+      child: SizedBox(
+        width: width,
+        child: Card(
+          elevation: 0,
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.outline,
+            ),
+            borderRadius: const BorderRadius.all(Radius.circular(12)),
           ),
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            UriImage(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              imageHeight != null ?
+              ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: imageHeight!),
+                child: UriImage(
+                    content: promoCardData.image,
+                    placeholder: (context, url) => const CircularProgressIndicator(),
+                    fit: BoxFit.scaleDown,
+                ),
+              ) : UriImage(
                 content: promoCardData.image,
                 placeholder: (context, url) => const CircularProgressIndicator(),
-                fit: BoxFit.scaleDown
-            ),
-            ListTile(
-              title: Text(promoCardData.headline, softWrap: true),
-              subtitle: Text.rich(TextSpan(
-                children: [
-                  TextSpan(
-                    text: promoCardData.priceInCurrency,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      decoration: TextDecoration.lineThrough,
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' ${promoCardData.discountedPriceInCurrency}',
-                  ),
-                ],
-              )
+                fit: BoxFit.scaleDown,
               ),
-            ),
-          ],
+              ListTile(
+                title: Text(promoCardData.headline, softWrap: true),
+                subtitle: Text.rich(TextSpan(
+                  children: [
+                    TextSpan(
+                      text: promoCardData.priceInCurrency,
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' ${promoCardData.discountedPriceInCurrency}',
+                    ),
+                  ],
+                )
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

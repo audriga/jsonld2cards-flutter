@@ -187,6 +187,8 @@ class CardSamples extends StatefulWidget {
 }
 
 class _CardSamplesState extends State<CardSamples> {
+  int _selectedIndex = 0;
+
   late Map<String, dynamic> emailMarkupActionGoto;
   late Map<String, dynamic> emailMarkupActionOneClick;
   late Map<String, dynamic> emailMarkupReservationFlightBasic;
@@ -237,6 +239,12 @@ class _CardSamplesState extends State<CardSamples> {
     return widgets;
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -247,17 +255,21 @@ class _CardSamplesState extends State<CardSamples> {
         future: assetMarkups,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView(
-              children: [
-                ...itemBuilder(snapshot.requireData),
-                renderCard(emailMarkupActionGoto, postFunction: postUrl) ?? const Placeholder(),
-                renderCard(emailMarkupActionOneClick, postFunction: postUrl) ?? const Placeholder(),
-                renderCard(emailMarkupReservationFlightBasic, postFunction: postUrl) ?? const Placeholder(),
-                renderCard(emailMarkupReservationFlight, postFunction: postUrl) ?? const Placeholder(),
-                renderCard(musicAlbumMarkup, postFunction: postUrl) ?? const Placeholder(),
-                renderCard(placeMarkup, postFunction: postUrl) ?? const Placeholder(),
-              ],
-            );
+            switch(_selectedIndex) {
+              case 0: return ListView(
+                children: [
+                  ...itemBuilder(snapshot.requireData),
+                  renderCard(emailMarkupActionGoto, postFunction: postUrl) ?? const Placeholder(),
+                  renderCard(emailMarkupActionOneClick, postFunction: postUrl) ?? const Placeholder(),
+                  renderCard(emailMarkupReservationFlightBasic, postFunction: postUrl) ?? const Placeholder(),
+                  renderCard(emailMarkupReservationFlight, postFunction: postUrl) ?? const Placeholder(),
+                  renderCard(musicAlbumMarkup, postFunction: postUrl) ?? const Placeholder(),
+                  renderCard(placeMarkup, postFunction: postUrl) ?? const Placeholder(),
+                ],
+              );
+              case 1: return itemBuilder(snapshot.requireData)[1];
+              default: return const Placeholder();
+            }
           }  else if (snapshot.hasError) {
             return FutureBuilderError(error: snapshot.error,);
           } else {
@@ -272,6 +284,20 @@ class _CardSamplesState extends State<CardSamples> {
         child: const Icon(Icons.download),
         onPressed: () => cardViewerDialog(context),
 
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Multiple Cards',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.credit_card),
+            label: 'Single Card',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
