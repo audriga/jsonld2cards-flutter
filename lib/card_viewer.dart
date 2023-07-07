@@ -43,7 +43,6 @@ class _CardViewerState extends State<CardViewer> {
     futureMarkup = fetchMarkup();
   }
 
-  // todo get arguments of modal route (Minor/ nice to have, maybe add at some point)
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +56,9 @@ class _CardViewerState extends State<CardViewer> {
                   child: ClipRect(
                     child: SizedBox(
                       width: widget.maxWidth,
-                      child: FuturePreviews(futureMarkup: futureMarkup, postFunction: widget.postFunction),
+                      child: widget.cardId != null
+                          ? FuturePreviews(futureMarkup: futureMarkup, postFunction: widget.postFunction)
+                      : const Text('No cardId given'),
                     ),
                   ),
                 )

@@ -8,6 +8,8 @@ import 'Util/network.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:html2jsonld_dart/html2jsonld_dart.dart';
+// Web embedding is web only :)
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
 class CardSamples extends StatefulWidget {
