@@ -4,13 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// Todo make String nullable?
+typedef PostFunction = Function(Uri uriToPost, {dynamic dataToPost, String successMessage});
+
 class PotentialActionRow extends StatelessWidget {
   const PotentialActionRow({
     super.key, required this.potentialAction, required this.postFunction,
   });
 
   final dynamic potentialAction;
-  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
+  final PostFunction postFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +48,14 @@ class PotentialActionRow extends StatelessWidget {
     throw FormatException('Potential action is no map or list of maps', potentialAction);
   }
 }
-
+// todo enum for actiontypes
 class PotentialActionButton extends StatelessWidget {
   const PotentialActionButton({
     super.key, required this.potentialAction, required this.postFunction,
   });
 
   final Map<String, dynamic> potentialAction;
-  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
+  final PostFunction postFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +145,17 @@ class PotentialActionButton extends StatelessWidget {
             }
           },
           child: const Text('Listen Now'),
+        );
+        return button;
+      }
+      /// Special Case for Live Location
+      case 'UpdateAction': {
+        button = IconButton(
+          onPressed: () async {
+            // Misusing postFunction to call update function.
+            postFunction(Uri.base);
+          },
+          icon: const Icon(Icons.refresh),
         );
         return button;
       }

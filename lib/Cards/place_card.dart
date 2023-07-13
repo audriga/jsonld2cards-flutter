@@ -4,7 +4,8 @@ library place_card;
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'potential_actions.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
+import 'BuildingBlocks/potential_actions.dart';
 import '../GeoData/geo_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class Place extends StatefulWidget {
   });
 
   final Map<String, dynamic> markup;
-  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
+  final PostFunction postFunction;
 
   @override
   State<Place> createState() => _PlaceState();
@@ -85,68 +86,41 @@ class _PlaceState extends State<Place> {
 
     var latitude = geoData.latLong.latitude;
     var longitude = geoData.latLong.longitude;
-    Widget button = TextButton(
-      onPressed: () {
 
-        Uri? uriToLaunch = Uri.tryParse('google.navigation:q=$latitude,$longitude');
-        if (uriToLaunch != null) {
-          launchUrl(uriToLaunch);
-        }
+
+    List<Map<String, dynamic>> geoActions =  [
+      {
+        '@type': 'ViewAction',
+        'url': 'google.navigation:q=$latitude,$longitude',
+        'name': 'Navigate to',
       },
-      child: const Text('Navigate to'),
-    );
-
-    Widget button2 = TextButton(
-      onPressed: () {
-
-        Uri? uriToLaunch = Uri.tryParse('geo:$latitude,$longitude'); // todo geo: or geo:// ?
-        if (uriToLaunch != null) {
-          launchUrl(uriToLaunch);
-        }
+      {
+        '@type': 'ViewAction',
+        'url': 'geo:$latitude,$longitude', //todo android special handling
+        'name': 'View',
       },
-      child: const Text('View'),
-    );
+    ];
 
-    Widget updateButton = IconButton(
-      onPressed: () async {
+    if (geoData.isLive ?? false) {
+      geoActions.insert(
+        0,
+        {
+          '@type': 'UpdateAction',
+        },
+      );
+    }
+
+    return SimpleCard(
+      leadingImage: _placeThumb,
+      titleText: geoData.name ?? geoData.addressString ?? 'Shared Location',
+      subtitleText: 'Latitude: $latitude, Longitude: $longitude',
+      potentialAction: geoActions,
+      potentialActionPostFunction: (uriToPost, {dataToPost, successMessage = ""}) async {
         await geoData.updateLive(updateImage: true, updateName: true);
         setState(() {
 
         });
       },
-      icon: const Icon(Icons.refresh),
-    );
-
-    var cardContents = <Widget>[
-      ListTile(
-        leading: _placeThumb,
-        title: Text(
-          geoData.name ?? geoData.addressString ?? 'Shared Location',
-        ),
-        subtitle: Text(
-          'Latitude: $latitude, Longitude: $longitude',),
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          if (geoData.isLive ?? false) updateButton,
-          button ,
-          button2,
-          const SizedBox(width: 8),
-        ],
-      ),
-    ];
-    if (potentialAction != null) {
-      cardContents.add(PotentialActionRow(
-        potentialAction: potentialAction,
-        postFunction: widget.postFunction,
-      ));
-    }
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: cardContents,
-      ),
     );
   }
 }

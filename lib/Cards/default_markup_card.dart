@@ -1,7 +1,8 @@
 library default_markup_card;
 
-import 'package:jsonld2cards/Cards/uri_image.dart';
-import 'potential_actions.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
+import 'BuildingBlocks/potential_actions.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class DefaultMarkupCard extends StatelessWidget {
   });
 
   final Map<String, dynamic> markup;
-  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage})
+  final PostFunction
       postFunction;
 
   @override
@@ -74,45 +75,21 @@ class DefaultMarkupCard extends StatelessWidget {
       }
     }
 
-    var cardContents = <Widget>[
-      ListTile(
-        leading: leadingImage,
-        title: titleText != null ? Text(titleText) : null,
-        subtitle: subtitleText != null ? Text(subtitleText) : null,
-      ),
-    ];
-
-    // Showing Buttons for Potential Actions
-    if (potentialAction != null) {
-      cardContents.add(PotentialActionRow(
-        potentialAction: potentialAction,
-        postFunction: postFunction,
-      ));
-    }
-
-    // Adding a row with a view button if there was a URL
-    if (url != null) {
-      Map<String, dynamic> viewUrlActionMarkup = {
-        "@type": "ViewAction",
-        "url": url,
-        "name": "View"
-      };
-      cardContents.add(
-        PotentialActionRow(
-          potentialAction: viewUrlActionMarkup,
-          postFunction: postFunction,
-        ),
-      );
-    }
-
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: cardContents,
-      ),
+    return SimpleCard(
+      leadingImage: leadingImage,
+      titleText: titleText,
+      subtitleText: subtitleText,
+      potentialAction: potentialAction,
+      potentialActionPostFunction: postFunction,
+      secondaryPotentialAction: (url != null)
+          ? {"@type": "ViewAction", "url": url, "name": "View"}
+          : null,
+      secondaryPotentialActionPostFunction: postFunction,
     );
   }
 
+
+  // todo use html2jsonld  version of this instead of own function
   Future<String?> getImageSource(Uri? uri) async {
     if (uri == null) return null;
     http.Response response = await http.get(uri);

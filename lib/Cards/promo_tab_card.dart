@@ -1,7 +1,7 @@
 library promo_tab_card;
 
 import 'package:flutter/material.dart';
-import 'package:jsonld2cards/Cards/uri_image.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 

@@ -1,7 +1,7 @@
 library flight_reservation_card;
 
 import 'package:flutter/material.dart';
-import 'package:jsonld2cards/Cards/potential_actions.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 
 class FlightReservationCard extends StatelessWidget {
   const FlightReservationCard({
@@ -10,7 +10,7 @@ class FlightReservationCard extends StatelessWidget {
   });
 
   final Map<String, dynamic> markup;
-  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
+  final PostFunction postFunction;
 
 
   @override

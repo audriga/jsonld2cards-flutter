@@ -1,7 +1,8 @@
 library music_card;
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'potential_actions.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
+import 'BuildingBlocks/potential_actions.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class MusicCard extends StatelessWidget {
   });
 
   final Map<String, dynamic> markup;
-  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
+  final PostFunction postFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -95,23 +96,12 @@ class MusicCard extends StatelessWidget {
 
     var potentialAction = markup['potentialAction'];
 
-    var cardContents = <Widget>[
-      ListTile(
-        leading: albumCover,
-        title: Text(markup['name']),
-        subtitle: Text(markup['description']),
-      ),
-    ];
-    if (potentialAction != null) {
-      cardContents.add(PotentialActionRow(
-        potentialAction: potentialAction,
-        postFunction: postFunction,));
-    }
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: cardContents,
-      ),
+    return SimpleCard(
+      leadingImage: albumCover,
+      titleText: markup['name'],
+      subtitleText: markup['description'],
+      potentialAction: potentialAction,
+      potentialActionPostFunction: postFunction,
     );
   }
 
