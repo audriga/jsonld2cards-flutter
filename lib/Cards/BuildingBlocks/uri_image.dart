@@ -68,6 +68,11 @@ class UriImage extends StatelessWidget {
         );
       } else if (['http', 'https'].contains(jsonImageUri.scheme)) {
         imageUrl = jsonImageUri;
+
+        bool attemptToProxy = false;
+        if (kIsWeb && Uri.base.origin != imageUrl.origin) {
+          attemptToProxy = true;
+        }
         return CachedNetworkImage(
           imageUrl: imageUrl.toString(),
           placeholder: placeholder,
@@ -80,7 +85,7 @@ class UriImage extends StatelessWidget {
           repeat: repeat,
           matchTextDirection: matchTextDirection,
           filterQuality: filterQuality,
-          errorWidget: (kIsWeb) ? proxiedImage : null,
+          errorWidget: attemptToProxy ? proxiedImage : null,
         );
       } else {
         throw FormatException('Unexpected scheme: ${jsonImageUri.scheme}', content);
