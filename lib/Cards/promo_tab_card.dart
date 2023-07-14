@@ -136,7 +136,7 @@ class PromoTabCard extends StatelessWidget {
       expiryString = 'Expires in ${difference.inHours} hours';
     }
 
-    const promoCardPerScreen = 2;
+    const promoCardPerScreen = 3;
     const viewportFractionPerItem = 1.0 / promoCardPerScreen;
 
     return LayoutBuilder(
