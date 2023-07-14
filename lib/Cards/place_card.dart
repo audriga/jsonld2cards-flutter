@@ -10,7 +10,6 @@ import '../GeoData/geo_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:developer' as developer;
-import 'package:url_launcher/url_launcher.dart';
 
 class Place extends StatefulWidget {
   const Place({
@@ -121,6 +120,8 @@ class _PlaceState extends State<Place> {
 
         });
       },
+      secondaryPotentialAction: potentialAction,
+      secondaryPotentialActionPostFunction: widget.postFunction,
     );
   }
 }

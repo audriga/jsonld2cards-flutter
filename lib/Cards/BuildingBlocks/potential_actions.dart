@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../Util/conversion.dart';
+
 // Todo make String nullable?
 typedef PostFunction = Function(Uri uriToPost, {dynamic dataToPost, String successMessage});
 
@@ -67,7 +69,7 @@ class PotentialActionButton extends StatelessWidget {
         button = TextButton(
           onPressed: () {
 
-            Uri? uriToLaunch = Uri.tryParse(potentialAction['url']);
+            Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
             if (uriToLaunch != null) {
               launchUrl(uriToLaunch);
             }
@@ -87,7 +89,7 @@ class PotentialActionButton extends StatelessWidget {
         button = TextButton(
           onPressed: () {
 
-            Uri? uriToPost = Uri.tryParse(confirmUri);
+            Uri? uriToPost = tryCastOrParse(confirmUri);
             if (uriToPost != null) {
               postFunction(uriToPost, successMessage: 'Sent Confirmation');
             }
@@ -99,7 +101,7 @@ class PotentialActionButton extends StatelessWidget {
       case 'CancelAction' : {
         button = TextButton(
           onPressed: () {
-            Uri? uriToPost = Uri.tryParse(actionTarget);
+            Uri? uriToPost = tryCastOrParse(actionTarget);
             if (uriToPost != null) {
               postFunction(uriToPost, successMessage: 'Sent Cancellation');
             }
@@ -111,7 +113,7 @@ class PotentialActionButton extends StatelessWidget {
       case 'EditAction' : {
         button = TextButton(
           onPressed: () {
-            Uri? uriToLaunch = Uri.tryParse(actionTarget);
+            Uri? uriToLaunch = tryCastOrParse(actionTarget);
             if (uriToLaunch != null) {
               launchUrl(uriToLaunch);
             }
@@ -124,7 +126,7 @@ class PotentialActionButton extends StatelessWidget {
         button = TextButton(
           onPressed: () {
 
-            Uri? uriToPost = Uri.tryParse(actionTarget);
+            Uri? uriToPost = tryCastOrParse(actionTarget);
             if (uriToPost != null) {
               postFunction(uriToPost, successMessage: 'Sent Check-In');
             }
@@ -137,9 +139,10 @@ class PotentialActionButton extends StatelessWidget {
         button = TextButton(
           onPressed: () {
 
+            // TODO this assumes an order! replace with string prefix search
             Uri? uriToLaunch = defaultTargetPlatform == TargetPlatform.android
-                ? Uri.tryParse(actionTarget[1])
-                : actionTarget[0]['urlTemplate'];
+                ? tryCastOrParse(actionTarget[1])
+                : tryCastOrParse(actionTarget[0]['urlTemplate']);
             if (uriToLaunch != null) {
               launchUrl(uriToLaunch);
             }
