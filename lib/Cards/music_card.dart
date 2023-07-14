@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
+import 'BuildingBlocks/uri_image.dart';
+
 enum MusicType {album, playlist, song}
 class MusicCard extends StatelessWidget {
   final MusicType musicType;
@@ -46,16 +48,16 @@ class MusicCard extends StatelessWidget {
             name: 'jsonld2cards.card',
           );
           return imageUrl != null
-              ? CachedNetworkImage(
+              ? UriImage(
             placeholder: (context, url) => const CircularProgressIndicator(),
-            imageUrl: snapshot.data!,
+            content: snapshot.data!,
             fit: BoxFit.contain,
           )
               : defaultAlbumCover; //const Icon(Icons.album);
         } else if (snapshot.hasError) {
           developer.log(
             'Error loading image source',
-            name: 'jsonld2cards.card',
+            name: 'jsonld2cards.music_card',
             error: snapshot.error,
           );
           return Icon(

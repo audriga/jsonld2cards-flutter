@@ -3,6 +3,7 @@ library uri_image;
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 /// Renders an image based on the given Uri.
@@ -23,6 +24,7 @@ class UriImage extends StatelessWidget {
     this.repeat = ImageRepeat.noRepeat,
     this.matchTextDirection = false,
     this.filterQuality = FilterQuality.low,
+    // todo fallbackwidget
   });
 
   final dynamic content;
@@ -78,6 +80,7 @@ class UriImage extends StatelessWidget {
           repeat: repeat,
           matchTextDirection: matchTextDirection,
           filterQuality: filterQuality,
+          errorWidget: (kIsWeb) ? proxiedImage : null,
         );
       } else {
         throw FormatException('Unexpected scheme: ${jsonImageUri.scheme}', content);
@@ -86,5 +89,21 @@ class UriImage extends StatelessWidget {
       //Unknown scheme
       throw FormatException('Content is not a uri', content);
     }
+  }
+
+  Widget proxiedImage(BuildContext context, String url, error) {
+    return CachedNetworkImage(
+      imageUrl: 'https://www.audriga.eu/test/data/proxyImg.php?url=$url',
+      placeholder: placeholder,
+      width: width,
+      height: height,
+      color: color,
+      colorBlendMode: colorBlendMode,
+      fit: fit,
+      alignment: alignment,
+      repeat: repeat,
+      matchTextDirection: matchTextDirection,
+      filterQuality: filterQuality,
+    );
   }
 }

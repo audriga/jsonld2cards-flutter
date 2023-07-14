@@ -11,6 +11,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:developer' as developer;
 
+import 'BuildingBlocks/uri_image.dart';
+
 class Place extends StatefulWidget {
   const Place({
     super.key, required this.markup, required this.postFunction,
@@ -69,8 +71,8 @@ class _PlaceState extends State<Place> {
     final imageUrl = geoData.imageUrl;
     if (!setThumb && imageUrl != null) {
       if (['http', 'https'].contains(imageUrl.scheme)) {
-        _placeThumb = CachedNetworkImage(
-          imageUrl: imageUrl.toString(),
+        _placeThumb = UriImage(
+          content: imageUrl.toString(),
           fit: BoxFit.scaleDown,
         );
         setThumb = true;
