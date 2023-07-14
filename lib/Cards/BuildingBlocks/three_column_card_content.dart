@@ -1,6 +1,6 @@
 library three_column_card_content;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// The main content of a card with a three column Layout.
 class ThreeColumnCardContent extends StatelessWidget {

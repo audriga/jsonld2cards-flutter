@@ -8,7 +8,7 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import '../GeoData/geo_data.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'dart:developer' as developer;
 import 'package:url_launcher/url_launcher.dart';
 

@@ -6,7 +6,7 @@ import 'Cards/email_message_card.dart';
 import 'Cards/flight_reservation_card.dart';
 import 'Cards/music_card.dart';
 import 'Cards/place_card.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// Renders a card, based on the given markup.
 ///

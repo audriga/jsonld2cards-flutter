@@ -3,7 +3,7 @@ library uri_image;
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// Renders an image based on the given Uri.
 /// When URI is a http/ https URL pointing to a web resource, returns the corresponding network image

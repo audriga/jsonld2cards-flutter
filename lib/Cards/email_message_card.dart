@@ -3,7 +3,7 @@ library email_message_card;
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 
 import 'BuildingBlocks/potential_actions.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class EmailMessage extends StatelessWidget {
   const EmailMessage({

@@ -5,7 +5,7 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'dart:developer' as developer;
 
 class DefaultMarkupCard extends StatelessWidget {
