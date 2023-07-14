@@ -1,8 +1,13 @@
 library simple_card.dart;
 
 import 'package:flutter/material.dart';
+import 'card_with_actions.dart';
 import 'potential_actions.dart';
 
+/// Represents a card with a simple layout,
+/// consisting of a [leadingImage] to the left, a [titleText] rendered in a
+/// larger font, a [subtitleText] rendered in a smaller font below that and
+/// up to two button rows via two [PotentialActionRow]s
 class SimpleCard extends StatelessWidget {
   const SimpleCard(
       {super.key,
@@ -17,46 +22,69 @@ class SimpleCard extends StatelessWidget {
   final Widget? leadingImage;
   final String? titleText;
   final String? subtitleText;
-
   // todo isMultiline to set ListTiles isThreeLine? for f.e. spotify descriptions
+
   // final PotentialActionRow? potentialActionRow;
+  /// Markup representing potential buttons to be shown in a [PotentialActionRow]
+  /// if present.
+  /// Expected to be eiter [Map<String, dynamic>] to represent
+  /// a single [PotentialActionButton], or a
+  /// [List<Map<String, dynamic>>] to represent multiple buttons.
   final dynamic potentialAction;
   /// If null a dummy function will be used instead
   final PostFunction? potentialActionPostFunction;
 
-  /// case for place cards and default card.
+  /// Markup representing potential buttons to be shown in a secondary
+  /// [PotentialActionRow] if present.
+  /// This is currently used for place cards and default card.
   final dynamic secondaryPotentialAction;
   final PostFunction? secondaryPotentialActionPostFunction;
 
   @override
   Widget build(BuildContext context) {
-    var cardContents = <Widget>[
-      ListTile(
-        leading: leadingImage,
-        title: titleText != null ? Text(titleText!) : null,
-        subtitle: subtitleText != null ? Text(subtitleText!) : null,
-      ),
-    ];
-
-    // Showing Buttons for Potential Actions
-    if (potentialAction != null) {
-      cardContents.add(PotentialActionRow(
-        potentialAction: potentialAction,
-        postFunction: potentialActionPostFunction ?? (_ , {dynamic dataToPost, String? successMessage}) {},
-      ));
-    }
-    if (secondaryPotentialAction != null) {
-      cardContents.add(PotentialActionRow(
-        potentialAction: secondaryPotentialAction,
-        postFunction: secondaryPotentialActionPostFunction ?? (_ , {dynamic dataToPost, String? successMessage}) {},
-      ));
-    }
-
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: cardContents,
-      ),
+    var cardContent = SimpleCardContent(
+      leadingImage: leadingImage,
+      titleText: titleText,
+      subtitleText: subtitleText,
     );
+
+    return CardWithActions(
+      cardContents: [cardContent],
+      potentialAction: potentialAction,
+      potentialActionPostFunction: potentialActionPostFunction,
+      secondaryPotentialAction: secondaryPotentialAction,
+      secondaryPotentialActionPostFunction:
+          secondaryPotentialActionPostFunction,
+    );
+  }
+}
+
+/// The main content of a card with a simple Layout.
+/// Currently returns a ListTile, but has been made its own widget to enable
+/// future style changes.
+class SimpleCardContent extends StatelessWidget {
+  const SimpleCardContent({
+    super.key,
+    this.leadingImage,
+    this.titleText,
+    this.subtitleText,
+  });
+
+  /// Image shown on the left of the card.
+  /// This can be Map Tile in [Place] or an Album Cover in a [MusicCard]
+  final Widget? leadingImage;
+  /// Top level text to render in a larger font
+  final String? titleText;
+  /// Secondary text to render in a smaller font
+  final String? subtitleText;
+
+  @override
+  Widget build(BuildContext context) {
+    var cardContents = ListTile(
+      leading: leadingImage,
+      title: titleText != null ? Text(titleText!) : null,
+      subtitle: subtitleText != null ? Text(subtitleText!) : null,
+    );
+    return cardContents;
   }
 }

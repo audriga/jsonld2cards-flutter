@@ -1,47 +1,39 @@
 library flight_reservation_card;
 
 import 'package:flutter/material.dart';
-import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
+
+import 'BuildingBlocks/card_with_actions.dart';
+import 'BuildingBlocks/potential_actions.dart';
+import 'BuildingBlocks/three_column_card_content.dart';
 
 class FlightReservationCard extends StatelessWidget {
   const FlightReservationCard({
-    super.key,required this.markup,
+    super.key,
+    required this.markup,
     required this.postFunction,
   });
 
   final Map<String, dynamic> markup;
   final PostFunction postFunction;
 
-
   @override
   Widget build(BuildContext context) {
-    FlightReservationWidget flightView = FlightReservationWidget(markup: markup);
+    FlightReservationWidget flightView =
+        FlightReservationWidget(markup: markup);
     var potentialAction = markup['potentialAction'];
 
-    var cardContents = <Widget>[
-      ListTile(
-        title: flightView,
-      ),
-    ];
-    if (potentialAction != null) {
-      cardContents.add(PotentialActionRow(
-        potentialAction: potentialAction,
-        postFunction: postFunction,
-      ));
-    }
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: cardContents,
-      ),
+    return CardWithActions(
+      cardContents: [flightView],
+      potentialAction: potentialAction,
+      potentialActionPostFunction: postFunction,
     );
   }
 }
 
 class FlightReservationWidget extends StatelessWidget {
-
   const FlightReservationWidget({
-    super.key, required this.markup,
+    super.key,
+    required this.markup,
   });
 
   final Map<String, dynamic> markup;
@@ -52,57 +44,55 @@ class FlightReservationWidget extends StatelessWidget {
     var reservationFor = markup['reservationFor'];
     var departureAirport = reservationFor['departureAirport'];
     var arrivalAirport = reservationFor['arrivalAirport'];
-    var flightView = Row(
+
+    var leftColumn = Column(
       children: [
-        Expanded(
-          child: Column(
-            children: [
-              Text(
-                departureAirport['iataCode'],
-                style: theme.textTheme.headlineLarge,
-              ),
-              Text(
-                departureAirport['name'],
-                style: theme.textTheme.bodyLarge,
-                softWrap: true,
-              ),
-              Text(
-                reservationFor['departureTime'],
-                style: theme.textTheme.bodyMedium,
-              ),
-            ],
-          ),
+        Text(
+          departureAirport['iataCode'],
+          style: theme.textTheme.headlineLarge,
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Text(reservationFor['airline']['iataCode'] + ' ' + reservationFor['flightNumber']),
-              const Icon(Icons.flight),
-            ],
-          ),
+        Text(
+          departureAirport['name'],
+          style: theme.textTheme.bodyLarge,
+          softWrap: true,
         ),
-        Expanded(
-          child: Column(
-            children: [
-              Text(
-                arrivalAirport['iataCode'],
-                style: theme.textTheme.headlineLarge,
-              ),
-              Text(
-                arrivalAirport['name'],
-                style: theme.textTheme.bodyLarge,
-                softWrap: true,
-              ),
-              Text(
-                reservationFor['arrivalTime'],
-                style: theme.textTheme.bodyMedium,
-              ),
-            ],
-          ),
+        Text(
+          reservationFor['departureTime'],
+          style: theme.textTheme.bodyMedium,
         ),
       ],
     );
+
+    var middleColumn = Column(
+      children: [
+        Text(reservationFor['airline']['iataCode'] +
+            ' ' +
+            reservationFor['flightNumber']),
+        const Icon(Icons.flight),
+      ],
+    );
+
+    var rightColumn = Column(
+      children: [
+        Text(
+          arrivalAirport['iataCode'],
+          style: theme.textTheme.headlineLarge,
+        ),
+        Text(
+          arrivalAirport['name'],
+          style: theme.textTheme.bodyLarge,
+          softWrap: true,
+        ),
+        Text(
+          reservationFor['arrivalTime'],
+          style: theme.textTheme.bodyMedium,
+        ),
+      ],
+    );
+    var flightView = ThreeColumnCardContent(
+        leftColumn: leftColumn,
+        middleColumn: middleColumn,
+        rightColumn: rightColumn);
     return flightView;
   }
 }
