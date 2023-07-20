@@ -3,7 +3,6 @@ library place_card;
 
 import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import '../GeoData/geo_data.dart';

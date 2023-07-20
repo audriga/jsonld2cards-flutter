@@ -90,6 +90,7 @@ class DefaultMarkupCard extends StatelessWidget {
 
 
   // todo use html2jsonld  version of this instead of own function
+  // todo make downloading of missing images optional!
   Future<String?> getImageSource(Uri? uri) async {
     if (uri == null) return null;
     http.Response response = await http.get(uri);

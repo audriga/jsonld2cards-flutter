@@ -213,6 +213,7 @@ class _CardSamplesState extends State<CardSamples> {
     List<dynamic> markups = [];
 
     var assetsToUse = [
+      'assets/sampleMarkup/spotifyEnriched.json',
       'assets/sampleMarkup/musicSchool.json',
       'assets/sampleMarkup/promotab.json',
       'assets/sampleMarkup/spiegel.json',

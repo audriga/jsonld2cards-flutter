@@ -2,6 +2,7 @@ library music_card;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
+import '../Util/conversion.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
@@ -37,7 +38,10 @@ class MusicCard extends StatelessWidget {
         break;
     }
     Widget defaultAlbumCover =  Icon(defaultIcon);
-    Widget albumCover = FutureBuilder<String?>(
+    Uri? imageContentUrl = tryCastOrParse( markup['image']?['contentUrl']);
+    Widget albumCover = (imageContentUrl != null)
+        ? UriImage(placeholder: (context, url) => const CircularProgressIndicator(), content: imageContentUrl, fit: BoxFit.contain,)
+        : FutureBuilder<String?>(
       future: getImageSource(uri),
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
         // List<Widget> children;
