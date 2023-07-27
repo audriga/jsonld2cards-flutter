@@ -207,7 +207,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: c96646e42cf4c413e57289f6bc9ef35f84cb5b23
+      resolved-ref: d7350a21413f2b9a0ab796a770234c56b1e92a19
       url: "git@bitbucket.org:audriga/html2jsonld-dart.git"
     source: git
     version: "1.0.0"

@@ -7,7 +7,7 @@ import 'package:jsonld2cards/open_card_viewer_dialog.dart';
 import 'Util/network.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:html2jsonld_dart/html2jsonld_dart.dart';
+import 'package:html2jsonld_dart/html2jsonld_dart.dart' as ht2j;
 // Web embedding is web only :)
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
@@ -34,7 +34,8 @@ class _CardSamplesState extends State<CardSamples> {
   Future<List<dynamic>> loadMarkupsFromAssets() async {
     List<dynamic> markups = [];
     // todo for now manually fixed compilation error in jsonLdFromHtml...  need to request upstream update
-    Future<Object?> a = jsonLdFromHtml(html.document.head?.innerHtml?? '');
+    ht2j.SchemaOrg schemaOrg = ht2j.SchemaOrg();
+    Future<Object?> a = schemaOrg.jsonLdFromHtml(html.document.head?.innerHtml?? '');
     markups.insert(0, jsonDecode((await a).toString()));
     return markups;
   }
