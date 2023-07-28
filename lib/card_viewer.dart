@@ -14,6 +14,7 @@ class CardViewer extends StatefulWidget {
   const CardViewer({
     super.key,
     this.cardId,
+    this.cardPath,
     this.liveLocationAuthority = 'www.audriga.eu',
     this.liveLocationPathBase = '/test/data/',
     this.maxWidth = 480,
@@ -24,6 +25,8 @@ class CardViewer extends StatefulWidget {
   final String liveLocationAuthority;
   final String liveLocationPathBase;
   final String? cardId;
+  /// Path to a card. To be set instead of an id.
+  final String? cardPath;
   final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
 
   static const String routeName = '/cardViewer';
@@ -56,7 +59,7 @@ class _CardViewerState extends State<CardViewer> {
                   child: ClipRect(
                     child: SizedBox(
                       width: widget.maxWidth,
-                      child: widget.cardId != null
+                      child: (widget.cardId ?? widget.cardPath) != null
                           ? FuturePreviews(futureMarkup: futureMarkup, postFunction: widget.postFunction)
                       : const Text('No cardId given'),
                     ),
@@ -69,10 +72,23 @@ class _CardViewerState extends State<CardViewer> {
   }
 
   Future<String?> fetchMarkup() async {
-    var sourceUri = Uri.https(
-      widget.liveLocationAuthority,
-      '${widget.liveLocationPathBase}${widget.cardId}.json',
-    );
+    Uri sourceUri;
+    if (widget.cardId != null) {
+      sourceUri = Uri.https(
+        widget.liveLocationAuthority,
+        '${widget.liveLocationPathBase}${widget.cardId}.json',
+      );
+    } else if (widget.cardPath != null) {
+      sourceUri = Uri.https(
+        widget.liveLocationAuthority,
+        '${widget.liveLocationPathBase}pathBased.php',
+        {'path': widget.cardPath},
+      );
+    } else {
+      // No markup to fetch given
+      return null;
+    }
+
     return await http.get(sourceUri).then<String?>((http.Response response) {
       developer.log(
         'Requested markup at $sourceUri and got response (${response.statusCode}) ${response.body}',
@@ -82,7 +98,7 @@ class _CardViewerState extends State<CardViewer> {
     }).onError((error, stackTrace) {
       developer.log(
         'Error requesting markup $error',
-        name: 'jsonld2cards.geo_data',
+        name: 'jsonld2cards.card_viewer',
         error: error,
       );
       return null;

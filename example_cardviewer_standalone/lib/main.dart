@@ -51,14 +51,36 @@ class MyApp extends StatelessWidget {
       routes: [
         GoRoute(
           path: '/',
-          builder: cardViewerBuilder
+          redirect: (context, state) => CardViewer.routeName,
         ),
         GoRoute(
           path: CardViewer.routeName,
           builder: cardViewerBuilder
-        )
+        ),
+        GoRoute(
+          path: '/card_getter/:cardPath',
+          builder: (context, state) {
+              final cardPath = state.pathParameters['cardPath']!;
+              developer.log('cardPath: $cardPath}',
+                name: 'card_viewer_standalone.routing',
+              );
+              return CardViewer(cardPath: cardPath, postFunction: postUrl);
+            },
+        ),
       ],
-
+      errorBuilder: (context, state) {
+        final Uri cardPath = state.uri;
+        developer.log('cardPath: ${cardPath}',
+          name: 'card_viewer_standalone.error_routing',
+        );
+          var segments = cardPath.pathSegments;
+          if (segments[0] == 'card_getter') {
+            segments.toList().removeAt(0);
+            return CardViewer(cardPath: segments.join('/'), postFunction: postUrl);
+          }
+        // context.go('/');
+        return cardViewerBuilder(context, state);
+      },
     );
 
 
@@ -103,7 +125,7 @@ class MyApp extends StatelessWidget {
           developer.log('modalRouteArguments: ${modalRouteArguments.toString()} (${modalRouteArguments.runtimeType})',
             name: 'card_viewer_standalone.routing',
           );
-          developer.log('stateQueryParams: ${state.queryParams.toString()} (${state.queryParams.runtimeType})',
+          developer.log('stateQueryParams: ${state.uri.queryParameters.toString()} (${state.uri.queryParameters.runtimeType})',
             name: 'card_viewer_standalone.routing',
           );
           developer.log('cardIdParameter: ${cardIdParameter.toString()} (${cardIdParameter.runtimeType})',
