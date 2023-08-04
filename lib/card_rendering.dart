@@ -1,5 +1,7 @@
 library card_rendering;
 
+import 'package:jsonld2cards/Cards/invoice_card.dart';
+import 'package:jsonld2cards/Cards/order_card.dart';
 import 'package:jsonld2cards/Cards/promo_tab_card.dart';
 import 'Cards/default_markup_card.dart';
 import 'Cards/email_message_card.dart';
@@ -112,6 +114,23 @@ Widget? tryRenderCardSingle(
     return null;
   }
 }
+// todo find a good way to use enums instead of strings in switch below
+// enum SchemaType {
+//   emailMessage,
+//   place,
+//   musicRecording,
+//   musicGroup,
+//   flightReservation,
+// }
+//
+// extension SchemaTypeName on SchemaType {
+//   String get name {
+//     switch(this) {
+//       case SchemaType.emailMessage: return "EmailMessage";
+//       default: return "";
+//     }
+//   }
+// }
 
 Widget renderCardSingle(
     Map<String, dynamic> markup,
@@ -148,6 +167,12 @@ Widget renderCardSingle(
     }
     case 'FlightReservation': {
       return FlightReservationCard(markup: markup, postFunction: postFunction, preview: preview);
+    }
+    case 'Order': {
+      return OrderCard(markup: markup, postFunction: postFunction, preview: preview);
+    }
+    case 'Invoice': {
+      return InvoiceCard(markup: markup, postFunction: postFunction, preview: preview);
     }
     default: {
       return DefaultMarkupCard(markup: markup, postFunction: postFunction, preview: preview);

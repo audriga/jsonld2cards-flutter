@@ -76,14 +76,15 @@ class DefaultMarkupCard extends StatelessWidget {
       }
     }
 
+    bool showDefaultViewAction = (url != null);
     return SimpleCard(
       leadingImage: leadingImage,
       titleText: titleText,
       subtitleText: subtitleText,
       potentialAction: potentialAction,
       potentialActionPostFunction: postFunction,
-      secondaryPotentialAction: (url != null)
-          ? {"@type": "ViewAction", "url": url, "name": "View"}
+      secondaryPotentialAction: showDefaultViewAction
+          ? {"@type": "ViewAction", "url": url, "name": "Visit"}
           : null,
       secondaryPotentialActionPostFunction: postFunction,
       preview: preview,

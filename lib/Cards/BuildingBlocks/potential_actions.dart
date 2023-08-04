@@ -78,13 +78,12 @@ class PotentialActionButton extends StatelessWidget {
       case 'ViewAction': {
         button = TextButton(
           onPressed: preview ? () {} : () {
-
             Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
             if (uriToLaunch != null) {
               launchUrl(uriToLaunch);
             }
           },
-          child: Text(potentialAction['name']),
+          child: Text(potentialAction['name'] ?? 'View'),
         );
         return button;
       }

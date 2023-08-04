@@ -221,6 +221,8 @@ class _CardSamplesState extends State<CardSamples> {
       'assets/sampleMarkup/lemonde.json',
       'assets/sampleMarkup/organization_example1.json',
       'assets/sampleMarkup/live_location.json',
+      'assets/sampleMarkup/invoice.json',
+      'assets/sampleMarkup/order.json',
     ];
 
     Iterable<Future<String>> futureAssetStrings = assetsToUse.map((assetPath) => DefaultAssetBundle.of(context).loadString(assetPath));

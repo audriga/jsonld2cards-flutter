@@ -1,0 +1,37 @@
+{
+  "@context": "http://schema.org",
+  "@type": "Order",
+  "merchant": {
+    "@type": "Organization",
+    "name": "Amazon.com"
+  },
+  "orderNumber": "123-4567890-1234567",
+  "orderStatus": "http://schema.org/OrderProcessing",
+  "priceCurrency": "USD",
+  "price": "29.99",
+  "priceSpecification": {
+    "@type": "PriceSpecification",
+    "validFrom": "2024-12-07T23:30:00-08:00"
+  },
+  "acceptedOffer": {
+    "@type": "Offer",
+    "itemOffered": {
+      "@type": "Product",
+      "name": "Google Chromecast",
+      "sku": "B00DR0PDNE",
+      "url": "http://www.amazon.com/Google-Chromecast-Streaming-Media-Player/dp/B00DR0PDNE/",
+      "image": "http://ecx.images-amazon.com/images/I/811nvG%2BLgML._SY550_.jpg"
+    },
+    "price": "29.99",
+    "priceCurrency": "USD",
+    "eligibleQuantity": {
+      "@type": "QuantitativeValue",
+      "value": "1"
+    }
+  },
+  "url": "https://www.amazon.ca/gp/css/summary/edit.html/orderID=123-4567890-1234567",
+  "potentialAction": {
+    "@type": "ViewAction",
+    "url": "https://www.amazon.ca/gp/css/summary/edit.html/orderID=123-4567890-1234567"
+  }
+}
