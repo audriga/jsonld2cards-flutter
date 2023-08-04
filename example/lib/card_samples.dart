@@ -188,6 +188,7 @@ class CardSamples extends StatefulWidget {
 
 class _CardSamplesState extends State<CardSamples> {
   int _selectedIndex = 0;
+  bool preview = false;
 
   late Map<String, dynamic> emailMarkupActionGoto;
   late Map<String, dynamic> emailMarkupActionOneClick;
@@ -219,6 +220,7 @@ class _CardSamplesState extends State<CardSamples> {
       'assets/sampleMarkup/spiegel.json',
       'assets/sampleMarkup/lemonde.json',
       'assets/sampleMarkup/organization_example1.json',
+      'assets/sampleMarkup/live_location.json',
     ];
 
     Iterable<Future<String>> futureAssetStrings = assetsToUse.map((assetPath) => DefaultAssetBundle.of(context).loadString(assetPath));
@@ -232,7 +234,7 @@ class _CardSamplesState extends State<CardSamples> {
   List<Widget> itemBuilder(List<dynamic> markups) {
     List<Widget> widgets = [];
     for (var markup in markups){
-      var card = renderCard(markup, postFunction: postUrl);
+      var card = renderCard(markup, postFunction: postUrl, preview: preview);
       if (card != null) {
         widgets.add(card);
       }
@@ -260,12 +262,12 @@ class _CardSamplesState extends State<CardSamples> {
               case 0: return ListView(
                 children: [
                   ...itemBuilder(snapshot.requireData),
-                  renderCard(emailMarkupActionGoto, postFunction: postUrl) ?? const Placeholder(),
-                  renderCard(emailMarkupActionOneClick, postFunction: postUrl) ?? const Placeholder(),
-                  renderCard(emailMarkupReservationFlightBasic, postFunction: postUrl) ?? const Placeholder(),
-                  renderCard(emailMarkupReservationFlight, postFunction: postUrl) ?? const Placeholder(),
-                  renderCard(musicAlbumMarkup, postFunction: postUrl) ?? const Placeholder(),
-                  renderCard(placeMarkup, postFunction: postUrl) ?? const Placeholder(),
+                  renderCard(emailMarkupActionGoto, postFunction: postUrl, preview: preview) ?? const Placeholder(),
+                  renderCard(emailMarkupActionOneClick, postFunction: postUrl, preview: preview) ?? const Placeholder(),
+                  renderCard(emailMarkupReservationFlightBasic, postFunction: postUrl, preview: preview) ?? const Placeholder(),
+                  renderCard(emailMarkupReservationFlight, postFunction: postUrl, preview: preview) ?? const Placeholder(),
+                  renderCard(musicAlbumMarkup, postFunction: postUrl, preview: preview) ?? const Placeholder(),
+                  renderCard(placeMarkup, postFunction: postUrl, preview: preview) ?? const Placeholder(),
                 ],
               );
               case 1: return itemBuilder(snapshot.requireData)[1];
@@ -300,6 +302,14 @@ class _CardSamplesState extends State<CardSamples> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
+      persistentFooterButtons: [
+        TextButton(onPressed: (){
+          setState(() {
+            preview = !preview;
+          });
+        },
+            child: Text('Preview mode: ${preview ? 'on' : 'off'}')),
+      ],
     );
   }
 

@@ -10,10 +10,12 @@ class EmailMessage extends StatelessWidget {
     super.key,
     required this.markup,
     required this.postFunction,
+    this.preview = false,
   });
 
   final Map<String, dynamic> markup;
   final PostFunction postFunction;
+  final bool preview;
 
 
   @override
@@ -26,6 +28,7 @@ class EmailMessage extends StatelessWidget {
       titleText: description,
       potentialAction: potentialAction,
       potentialActionPostFunction: postFunction,
+      preview: preview,
     );
   }
 }

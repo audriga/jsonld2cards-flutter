@@ -14,11 +14,15 @@ import 'BuildingBlocks/uri_image.dart';
 
 class Place extends StatefulWidget {
   const Place({
-    super.key, required this.markup, required this.postFunction,
+    super.key,
+    required this.markup,
+    required this.postFunction,
+    this.preview = false,
   });
 
   final Map<String, dynamic> markup;
   final PostFunction postFunction;
+  final bool preview;
 
   @override
   State<Place> createState() => _PlaceState();
@@ -123,6 +127,7 @@ class _PlaceState extends State<Place> {
       },
       secondaryPotentialAction: potentialAction,
       secondaryPotentialActionPostFunction: widget.postFunction,
+      preview: widget.preview,
     );
   }
 }

@@ -9,19 +9,22 @@ import 'potential_actions.dart';
 /// larger font, a [subtitleText] rendered in a smaller font below that and
 /// up to two button rows via two [PotentialActionRow]s
 class SimpleCard extends StatelessWidget {
-  const SimpleCard(
-      {super.key,
-      this.leadingImage,
-      this.titleText,
-      this.subtitleText,
-      this.potentialAction,
-      this.secondaryPotentialAction,
-      this.potentialActionPostFunction,
-      this.secondaryPotentialActionPostFunction});
+  const SimpleCard({
+    super.key,
+    this.leadingImage,
+    this.titleText,
+    this.subtitleText,
+    this.potentialAction,
+    this.secondaryPotentialAction,
+    this.potentialActionPostFunction,
+    this.secondaryPotentialActionPostFunction,
+    this.preview = false,
+  });
 
   final Widget? leadingImage;
   final String? titleText;
   final String? subtitleText;
+  final bool preview;
   // todo isMultiline to set ListTiles isThreeLine? for f.e. spotify descriptions
 
   // final PotentialActionRow? potentialActionRow;
@@ -55,6 +58,7 @@ class SimpleCard extends StatelessWidget {
       secondaryPotentialAction: secondaryPotentialAction,
       secondaryPotentialActionPostFunction:
           secondaryPotentialActionPostFunction,
+      preview: preview,
     );
   }
 }

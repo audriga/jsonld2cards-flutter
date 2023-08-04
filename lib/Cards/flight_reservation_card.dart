@@ -11,10 +11,12 @@ class FlightReservationCard extends StatelessWidget {
     super.key,
     required this.markup,
     required this.postFunction,
+    this.preview = false,
   });
 
   final Map<String, dynamic> markup;
   final PostFunction postFunction;
+  final bool preview;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class FlightReservationCard extends StatelessWidget {
       cardContents: [flightView],
       potentialAction: potentialAction,
       potentialActionPostFunction: postFunction,
+      preview: preview,
     );
   }
 }

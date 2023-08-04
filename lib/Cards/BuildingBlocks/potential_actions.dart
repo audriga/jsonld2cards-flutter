@@ -11,11 +11,15 @@ typedef PostFunction = Function(Uri uriToPost, {dynamic dataToPost, String succe
 
 class PotentialActionRow extends StatelessWidget {
   const PotentialActionRow({
-    super.key, required this.potentialAction, required this.postFunction,
+    super.key,
+    required this.potentialAction,
+    required this.postFunction,
+    this.preview = false,
   });
 
   final dynamic potentialAction;
   final PostFunction postFunction;
+  final bool preview;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +27,7 @@ class PotentialActionRow extends StatelessWidget {
       Widget button = PotentialActionButton(
         potentialAction : potentialAction,
         postFunction: postFunction,
+        preview: preview,
       );
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -38,6 +43,7 @@ class PotentialActionRow extends StatelessWidget {
           PotentialActionButton(
             potentialAction: action,
             postFunction: postFunction,
+            preview: preview,
           ),
         );
       }
@@ -53,11 +59,15 @@ class PotentialActionRow extends StatelessWidget {
 // todo enum for actiontypes
 class PotentialActionButton extends StatelessWidget {
   const PotentialActionButton({
-    super.key, required this.potentialAction, required this.postFunction,
+    super.key,
+    required this.potentialAction,
+    required this.postFunction,
+    this.preview = false,
   });
 
   final Map<String, dynamic> potentialAction;
   final PostFunction postFunction;
+  final bool preview;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +77,7 @@ class PotentialActionButton extends StatelessWidget {
     switch (actionType) {
       case 'ViewAction': {
         button = TextButton(
-          onPressed: () {
+          onPressed: preview ? () {} : () {
 
             Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
             if (uriToLaunch != null) {
@@ -87,8 +97,7 @@ class PotentialActionButton extends StatelessWidget {
           confirmUri = handler['url'];
         }
         button = TextButton(
-          onPressed: () {
-
+          onPressed: preview ? () {} : () {
             Uri? uriToPost = tryCastOrParse(confirmUri);
             if (uriToPost != null) {
               postFunction(uriToPost, successMessage: 'Sent Confirmation');
@@ -100,7 +109,7 @@ class PotentialActionButton extends StatelessWidget {
       }
       case 'CancelAction' : {
         button = TextButton(
-          onPressed: () {
+          onPressed: preview ? () {} : () {
             Uri? uriToPost = tryCastOrParse(actionTarget);
             if (uriToPost != null) {
               postFunction(uriToPost, successMessage: 'Sent Cancellation');
@@ -112,7 +121,7 @@ class PotentialActionButton extends StatelessWidget {
       }
       case 'EditAction' : {
         button = TextButton(
-          onPressed: () {
+          onPressed: preview ? () {} : () {
             Uri? uriToLaunch = tryCastOrParse(actionTarget);
             if (uriToLaunch != null) {
               launchUrl(uriToLaunch);
@@ -124,8 +133,7 @@ class PotentialActionButton extends StatelessWidget {
       }
       case 'CheckInAction': {
         button = TextButton(
-          onPressed: () {
-
+          onPressed: preview ? () {} : () {
             Uri? uriToPost = tryCastOrParse(actionTarget);
             if (uriToPost != null) {
               postFunction(uriToPost, successMessage: 'Sent Check-In');
@@ -137,7 +145,7 @@ class PotentialActionButton extends StatelessWidget {
       }
       case 'ListenAction': {
         button = TextButton(
-          onPressed: () {
+          onPressed: preview ? () {} : () {
 
             // TODO this assumes an order! replace with string prefix search
             Uri? uriToLaunch = defaultTargetPlatform == TargetPlatform.android
@@ -154,7 +162,7 @@ class PotentialActionButton extends StatelessWidget {
       /// Special Case for Live Location
       case 'UpdateAction': {
         button = IconButton(
-          onPressed: () async {
+          onPressed: preview ? () {} : () async {
             // Misusing postFunction to call update function.
             postFunction(Uri.base);
           },

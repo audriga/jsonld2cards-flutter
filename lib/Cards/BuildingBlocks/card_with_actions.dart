@@ -8,12 +8,15 @@ import 'potential_actions.dart';
 
 class CardWithActions extends StatelessWidget {
   const CardWithActions(
-      {super.key,
-      required this.cardContents,
-      this.potentialAction,
-      this.secondaryPotentialAction,
-      this.potentialActionPostFunction,
-      this.secondaryPotentialActionPostFunction});
+      {
+        super.key,
+        required this.cardContents,
+        this.potentialAction,
+        this.secondaryPotentialAction,
+        this.potentialActionPostFunction,
+        this.secondaryPotentialActionPostFunction,
+        this.preview = false,
+      });
 
   final List<Widget> cardContents;
 
@@ -25,6 +28,7 @@ class CardWithActions extends StatelessWidget {
   /// case for place cards and default card.
   final dynamic secondaryPotentialAction;
   final PostFunction? secondaryPotentialActionPostFunction;
+  final bool preview;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +38,7 @@ class CardWithActions extends StatelessWidget {
         potentialAction: potentialAction,
         postFunction: potentialActionPostFunction ??
             (_, {dynamic dataToPost, String? successMessage}) {},
+        preview: preview,
       ));
     }
     if (secondaryPotentialAction != null) {
@@ -41,6 +46,7 @@ class CardWithActions extends StatelessWidget {
         potentialAction: secondaryPotentialAction,
         postFunction: secondaryPotentialActionPostFunction ??
             (_, {dynamic dataToPost, String? successMessage}) {},
+        preview: preview,
       ));
     }
     return Card(

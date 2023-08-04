@@ -16,11 +16,16 @@ class MusicCard extends StatelessWidget {
   final MusicType musicType;
 
   const MusicCard({
-    super.key, required this.markup, this.musicType = MusicType.album, required this.postFunction,
+    super.key,
+    required this.markup,
+    this.musicType = MusicType.album,
+    required this.postFunction,
+    this.preview = false,
   });
 
   final Map<String, dynamic> markup;
   final PostFunction postFunction;
+  final bool preview;
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +113,7 @@ class MusicCard extends StatelessWidget {
       subtitleText: markup['description'],
       potentialAction: potentialAction,
       potentialActionPostFunction: postFunction,
+      preview: preview,
     );
   }
 

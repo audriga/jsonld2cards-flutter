@@ -101,9 +101,11 @@ class PromoTabCard extends StatelessWidget {
   PromoTabCard({
     super.key,
     required this.markupList,
+    this.preview = false,
   });
 
   final List<Map<String, dynamic>> markupList;
+  final bool preview;
   final ScrollController _vertical = ScrollController();
 
   // todo
@@ -206,10 +208,11 @@ class PromoTabCard extends StatelessWidget {
                         children: [
                           for (int i = 0; i < promoTabData.promotionCards.length * 2; ++i)
                             (i.isOdd) ? const Divider() : PromoItem(
-                                width: itemWidth,
-                                imageHeight: itemImageHeight,
-                                promoCardData:
-                                promoTabData.promotionCards[i ~/ 2]),
+                              width: itemWidth,
+                              imageHeight: itemImageHeight,
+                              promoCardData: promoTabData.promotionCards[i ~/ 2],
+                              preview: preview,
+                            ),
                         ],
                       ),
                     ),
@@ -228,16 +231,18 @@ class PromoItem extends StatelessWidget {
     required this.width,
     required this.imageHeight,
     required this.promoCardData,
+    this.preview = false,
   });
 
   final double width;
   final double? imageHeight;
   final PromotionCardData promoCardData;
+  final bool preview;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => launchUrl(promoCardData.url),
+      onTap: preview ? () {} : () => launchUrl(promoCardData.url),
       child: SizedBox(
         width: width,
         child: Card(
