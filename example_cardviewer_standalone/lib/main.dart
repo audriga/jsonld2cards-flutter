@@ -63,7 +63,8 @@ class MyApp extends StatelessWidget {
             developer.log('stateQueryParams: ${state.uri.queryParameters.toString()} (${state.uri.queryParameters.runtimeType})',
               name: 'card_viewer_standalone.routing',
             );
-              return CardViewer(cardPath: state.uri.queryParameters.toString(), postFunction: postUrl);
+
+            return CardViewer(cardPath: state.uri.queryParameters['path'], postFunction: postUrl);
             },
           routes: [
             GoRoute(
