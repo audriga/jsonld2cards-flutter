@@ -9,58 +9,45 @@ if (isset($_GET['path'])) {
     exit;
 }
 
-$body = '[{
-  "@context": "http://schema.org/",
-  "@type": "Organization",
-
-
-  "logo": "https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png"
-},{
-  "@context": "http://schema.org/",
-  "@type": "EmailMessage",
-
-  "subjectLine": "[Important] Please add subject line in annotation"
-},{
-  "@context": "http://schema.org/",
-  "@type": "DiscountOffer",
-
-  "description": "20% off",
-
-  "discountCode": "PROMO",
-  "availabilityStarts": "2023-06-14T04:51:14-07:00",
-  "availabilityEnds": "2023-06-17T04:51:14-07:00"
-},{
-  "@context": "http://schema.org/",
-  "@type": "PromotionCard",
-  "image": "https://www.google.com/gmail-for-marketers/promo-tab/markup-tool/glasses.jpg",
-  "url": "https://google.com",
-
-  "headline": "Glasses",
-  "price": 149,
-  "priceCurrency": "USD",
-  "discountValue": 30,
-  "position": 1
-},{
-  "@context": "http://schema.org/",
-  "@type": "PromotionCard",
-  "image": "https://www.google.com/gmail-for-marketers/promo-tab/markup-tool/ski-boots.jpg",
-  "url": "https://google.com",
-  "headline": "Ski boots",
-  "price": 249,
-  "priceCurrency": "USD",
-  "discountValue": 50,
-  "position": 2
-},{
-  "@context": "http://schema.org/",
-  "@type": "PromotionCard",
-  "image": "https://www.google.com/gmail-for-marketers/promo-tab/markup-tool/sneakers.jpg",
-  "url": "https://google.com",
-  "headline": "Sneakers",
-  "price": 179,
-  "priceCurrency": "USD",
-  "discountValue": 30,
-  "position": 3
-}]';
+$body = '{
+  "@context": "http://schema.googleapis.com/",
+  "@type": "MusicAlbum",
+  "@id": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtu",
+  "url": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtu",
+  "name": "Semantics",
+  "description": "' .$path. '",
+  "datePublished": "2022-08-19",
+  "potentialAction": {
+    "@type": "ListenAction",
+    "target": [
+      {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtu?autoplay=true",
+        "actionPlatform": [
+          "http://schema.org/DesktopWebPlatform",
+          "http://schema.org/IOSPlatform",
+          "http://schema.googleapis.com/GoogleAudioCast",
+          "http://schema.googleapis.com/GoogleVideoCast"
+        ]
+      },
+      "android-app://com.spotify.music/spotify/album/4F1fUukNCGBD5YjDViOJtu/play"
+    ],
+    "expectsAcceptanceOf": {
+      "@type": "Offer",
+      "category": "free",
+      "eligibleRegion": [
+        {
+          "@type": "Country",
+          "name": "AD"
+        },
+        {
+          "@type": "Country",
+          "name": "ZW"
+        }
+      ]
+    }
+  }
+}';
 
 echo $body;
 exit;
