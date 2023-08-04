@@ -1,12 +1,13 @@
 library card_rendering;
 
-import 'package:jsonld2cards/Cards/invoice_card.dart';
-import 'package:jsonld2cards/Cards/order_card.dart';
-import 'package:jsonld2cards/Cards/promo_tab_card.dart';
+import 'Cards/invoice_card.dart';
+import 'Cards/order_card.dart';
+import 'Cards/promo_tab_card.dart';
 import 'Cards/default_markup_card.dart';
 import 'Cards/email_message_card.dart';
 import 'Cards/flight_reservation_card.dart';
 import 'Cards/music_card.dart';
+import 'Cards/parcel_delivery_card.dart';
 import 'Cards/place_card.dart';
 import 'package:flutter/widgets.dart';
 
@@ -173,6 +174,9 @@ Widget renderCardSingle(
     }
     case 'Invoice': {
       return InvoiceCard(markup: markup, postFunction: postFunction, preview: preview);
+    }
+    case 'ParcelDelivery': {
+      return ParcelDeliveryCard(markup: markup, postFunction: postFunction, preview: preview);
     }
     default: {
       return DefaultMarkupCard(markup: markup, postFunction: postFunction, preview: preview);

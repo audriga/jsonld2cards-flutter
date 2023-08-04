@@ -1,0 +1,62 @@
+{
+  "@context": "http://schema.org",
+  "@type": "ParcelDelivery",
+  "deliveryAddress": {
+    "@type": "PostalAddress",
+    "name": "John Frank",
+    "streetAddress": "24 Willie Mays Plaza",
+    "addressLocality": "San Francisco",
+    "addressRegion": "CA",
+    "addressCountry": "US",
+    "postalCode": "94107"
+  },
+  "originAddress": {
+    "@type": "PostalAddress",
+    "name": "John Frank",
+    "streetAddress": "25 Willie Mays Plaza",
+    "addressLocality": "San Francisco",
+    "addressRegion": "CA",
+    "addressCountry": "US",
+    "postalCode": "94107"
+  },
+  "expectedArrivalFrom": "2024-03-10T12:00:00-08:00",
+  "expectedArrivalUntil": "2024-03-12T12:00:00-08:00",
+  "carrier": {
+    "@type": "Organization",
+    "name": "FedEx",
+    "url": "http://fedex.com/"
+  },
+  "itemShipped": {
+    "@type": "Product",
+    "name": "iPod Mini",
+    "url": "http://apple.com/ipad32gb",
+    "image": "http://apple.com/images/ipad32gb.jpg",
+    "sku": "B00DR0PDNE",
+    "description": "iPod Mini 32Gb White",
+    "brand": {
+      "@type": "Brand",
+      "name": "Apple"
+    },
+    "color": "white"
+  },
+  "trackingNumber": "3453291231",
+  "trackingUrl": "http://fedex.com/track/3453291231",
+  "potentialAction": {
+    "@type": "TrackAction",
+    "url": "http://fedex.com/track/3453291231"
+  },
+  "hasDeliveryMethod": {
+    "@type": "ParcelService",
+    "name": "http://schema.org/ParcelService"
+  },
+  "partOfOrder": {
+    "@type": "Order",
+    "orderNumber": "176057",
+    "merchant": {
+      "@type": "Organization",
+      "name": "Bob Dole",
+      "sameAs": "http://www.freebase.com/m/0fhkx"
+    },
+    "orderStatus": "http://schema.org/OrderInTransit"
+  }
+}

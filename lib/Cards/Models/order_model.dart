@@ -3,6 +3,7 @@ library order_model;
 import 'package:jsonld2cards/Util/conversion.dart';
 
 import 'organization_model.dart';
+import 'product_model.dart';
 
 ///
 /// Used code generator (https://ashamp.github.io/jsonToDartModel/)
@@ -37,49 +38,7 @@ class QuantitativeValue {
   }
 }
 
-class Product {
-/*
-{
-  "@type": "Product",
-  "name": "Google Chromecast",
-  "sku": "B00DR0PDNE",
-  "url": "http://www.amazon.com/Google-Chromecast-Streaming-Media-Player/dp/B00DR0PDNE/",
-  "image": "http://ecx.images-amazon.com/images/I/811nvG%2BLgML._SY550_.jpg"
-}
-*/
 
-  String? name;
-  String? sku;
-  Uri? url;
-  Uri? image;
-
-  Product({
-    this.name,
-    this.sku,
-    this.url,
-    this.image,
-  });
-
-  Product.fromJson(Map<String, dynamic> json) {
-    name = json['name']?.toString();
-    sku = json['sku']?.toString();
-    url = tryCastOrParse(json['url']);
-    var jsonImage = json['image'];
-    if (jsonImage != null) {
-      image = (jsonImage is Uri) ? jsonImage : Uri.tryParse(jsonImage);
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['@type'] = 'Product';
-    data['name'] = name;
-    data['sku'] = sku;
-    data['url'] = url;
-    data['image'] = image;
-    return data;
-  }
-}
 
 class Offer {
 /*

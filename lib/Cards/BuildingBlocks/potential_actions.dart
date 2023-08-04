@@ -87,6 +87,18 @@ class PotentialActionButton extends StatelessWidget {
         );
         return button;
       }
+      case 'TrackAction': {
+        button = TextButton(
+          onPressed: preview ? () {} : () {
+            Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
+            if (uriToLaunch != null) {
+              launchUrl(uriToLaunch);
+            }
+          },
+          child: Text(potentialAction['name'] ?? 'Track'),
+        );
+        return button;
+      }
       case 'ConfirmAction': {
         //todo dynamically support different fillings of ConfirmAction
         Map<String, dynamic>? handler = potentialAction['handler'];
