@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:developer' as developer;
 
@@ -6,6 +7,7 @@ import 'package:jsonld2cards/card_viewer.dart';
 
 import 'Util/globals.dart';
 import 'Util/network.dart';
+import 'path_card_viewer.dart';
 
 void main() {
   final String fullURL = Uri.base.toString();
@@ -64,7 +66,7 @@ class MyApp extends StatelessWidget {
               name: 'card_viewer_standalone.routing',
             );
 
-            return CardViewer(cardPath: state.uri.queryParameters['path'], postFunction: postUrl);
+            return PathCardViewer(cardPath: state.uri.queryParameters['path'], postFunction: postUrl);
             },
           routes: [
             GoRoute(
@@ -74,7 +76,7 @@ class MyApp extends StatelessWidget {
                 developer.log('cardPath: $cardPath',
                   name: 'card_viewer_standalone.routing',
                 );
-                return CardViewer(cardPath: cardPath, postFunction: postUrl);
+                return PathCardViewer(cardPath: cardPath, postFunction: postUrl);
               },
             )
           ]
@@ -136,3 +138,60 @@ class MyApp extends StatelessWidget {
           return CardViewer(cardId: cardId, postFunction: postUrl);
         }
 }
+
+// class PathCardViewer extends StatefulWidget {
+//   const PathCardViewer({super.key});
+//
+//   @override
+//   State<PathCardViewer> createState() => _PathCardViewerState();
+// }
+//
+// class _PathCardViewerState extends State<PathCardViewer> {
+//
+//   @override
+//   Widget build(BuildContext context) {
+//
+//
+//     // AdaptiveLayout has a number of slots that take SlotLayouts and these
+// // SlotLayouts' configs take maps of Breakpoints to SlotLayoutConfigs.
+//
+//     // Define the children to display within the body.
+//     final List<Widget> children = List<Widget>.generate(10, (int index) {
+//       return Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: Container(
+//           color: const Color.fromARGB(255, 255, 201, 197),
+//           height: 400,
+//         ),
+//       );
+//     });
+//
+//
+//
+//
+//     return AdaptiveLayout(
+//       // Body switches between a ListView and a GridView from small to medium
+//       // breakpoints and onwards.
+//       body: SlotLayout(
+//         config: <Breakpoint, SlotLayoutConfig>{
+//           Breakpoints.small: SlotLayout.from(
+//             key: const Key('Body Small'),
+//             builder: (_) => ListView.builder(
+//               itemCount: children.length,
+//               itemBuilder: (BuildContext context, int index) => children[index],
+//             ),
+//           ),
+//           Breakpoints.mediumAndUp: SlotLayout.from(
+//             key: const Key('Body Medium'),
+//             builder: (_) =>
+//                 GridView.count(crossAxisCount: 2, children: children),
+//           )
+//         },
+//       ),
+//
+//     );
+//   }
+//
+//
+// }
+//
