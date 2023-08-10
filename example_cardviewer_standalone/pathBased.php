@@ -1,21 +1,59 @@
 <?php
 cors();
 
-# Check for path parameter, and prevent file transfer
+# Check for path parameter
 if (isset($_GET['path'])) {
-    $path = $_GET['path'];
+    $inputPath = $_GET['path'];
 } else {
+    header('HTTP/1.1 404 Not Found');
+//    $body = 'path not set';
+//    echo $body;
+    exit;
+}
+
+
+
+
+// As per https://stackoverflow.com/questions/1911382/sanitize-file-path-in-php
+// using realpath, to get rid of any .. directives.
+// Note: Will also return false if the file does not exist, so any processing to the path
+// has to be done beforehand. In this case we just attach the .json ending
+$filename = $inputPath . '.json';
+$path = realpath($filename);
+if ($path) {
+    // Making sure can't access anything above the current directory.
+    // As for an input of ../../../../../etc/passwd realpath would return /etc/passwd.
+
+    // maybe even replace this with some sub-folder
+    $sanitizedPath = './' . $path;
+    if (file_exists($path)){
+        $body = file_get_contents($filename);
+        echo $body;
+        exit;
+    }
     header('HTTP/1.1 404 Not Found');
     exit;
 }
 
-$body = '{
+
+$pathSegments = explode("/", $inputPath);
+
+if ($pathSegments[0] != "mock") {
+    header('HTTP/1.1 404 Not Found');
+//    $body = 'no such file and not mock';
+//    echo $body;
+    exit;
+}
+
+switch ($pathSegments[1]) {
+    case "music" : {
+        $body = '{
   "@context": "http://schema.googleapis.com/",
   "@type": "MusicAlbum",
   "@id": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtu",
   "url": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtu",
   "name": "Semantics",
-  "description": "' .$path. '",
+  "description": "This is a mock card",
   "datePublished": "2022-08-19",
   "potentialAction": {
     "@type": "ListenAction",
@@ -48,9 +86,55 @@ $body = '{
     }
   }
 }';
+        echo $body;
+        exit;
+    }
+    case "location" : {
+        $body = '{
+  "@context": "https://schema.org",
+  "@type": "Place",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "40.75",
+    "longitude": "-73.98"
+  },
+  "name": "Empire State Building"
+}';
+        echo $body;
+        exit;
+    }
+    case "invoice" :
+        $body = '{
+  "@context": "http://schema.org",
+  "@type": "Invoice",
+  "accountId": "123-456-789",
+  "minimumPaymentDue": {
+    "@type": "PriceSpecification",
+    "price": "$70.00"
+  },
+  "paymentDue": "2013-11-22T08:00:00+00:00",
+  "paymentStatus": "PaymentAutomaticallyApplied",
+  "provider": {
+    "@type": "Organization",
+    "name": "Mountain View Utilities"
+  },
+  "totalPaymentDue": {
+    "@type": "PriceSpecification",
+    "price": "$70.00"
+  }
+}';
+        echo $body;
+        exit;
+    default : {
+        header('HTTP/1.1 404 Not Found');
+        $body = 'default case';
+        echo $body;
+        exit;
+    }
+}
 
-echo $body;
-exit;
+
+
 
 //https://stackoverflow.com/a/9866124
 function cors() {
