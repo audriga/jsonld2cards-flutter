@@ -41,7 +41,11 @@ class _PathCardViewerState extends State<PathCardViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureCards(futureMarkup: futureMarkup, postFunction: widget.postFunction);
+    return Scaffold(
+      appBar: AppBar(title: Text(title),),
+      body:  FutureCards(futureMarkup: futureMarkup, postFunction: widget.postFunction),
+    );
+
   }
 
   Future<String?> fetchMarkup() async {
@@ -57,24 +61,26 @@ class _PathCardViewerState extends State<PathCardViewer> {
       return null;
     }
 
-    return await http.get(sourceUri).then<String?>((http.Response response) {
+    try {
+      http.Response response = await http.get(sourceUri);
       developer.log(
         'Requested markup at $sourceUri and got response (${response.statusCode}) ${response.body}',
         name: 'jsonld2cards.card_viewer',
       );
-      // todo isn't doing enything
       if (response.statusCode >= 400) {
-        throw Exception('Server responded with status code ${response.statusCode}');
+        return Future.error('Server responded with status code ${response.statusCode}');
       }
       return response.body;
-    }).onError((error, stackTrace) {
+
+    } on Error catch (e, st) {
       developer.log(
-        'Error requesting markup $error',
+        'Error requesting markup $e',
         name: 'jsonld2cards.card_viewer',
-        error: error,
+        error: e,
+        stackTrace: st,
       );
-      return null;
-    });
+      return Future.error(e, st);
+    }
   }
 }
 
@@ -117,9 +123,11 @@ class FutureCards extends StatelessWidget {
               child: Text('Error: ${snapshot.error}'),
             ),
           ];
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: children,
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: children,
+            ),
           );
         } else {
           return const SizedBox.square(

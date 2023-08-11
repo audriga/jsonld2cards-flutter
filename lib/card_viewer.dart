@@ -54,14 +54,15 @@ class _CardViewerState extends State<CardViewer> {
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
+          bool cardIdGiven = (widget.cardId?.isNotEmpty ?? widget.cardPath?.isNotEmpty ?? false);
           return constraints.maxWidth > widget.maxWidth
               ? Center(
                   child: ClipRect(
                     child: SizedBox(
                       width: widget.maxWidth,
-                      child: (widget.cardId ?? widget.cardPath) != null
+                      child: cardIdGiven
                           ? FuturePreviews(futureMarkup: futureMarkup, postFunction: widget.postFunction)
-                      : const Text('No cardId given'),
+                      : displayErrorMessage('No cardId given'),
                     ),
                   ),
                 )
@@ -86,23 +87,29 @@ class _CardViewerState extends State<CardViewer> {
       );
     } else {
       // No markup to fetch given
-      return null;
+      return Future.error('No CardId given!');
     }
 
-    return await http.get(sourceUri).then<String?>((http.Response response) {
+    try {
+      http.Response response = await http.get(sourceUri);
       developer.log(
         'Requested markup at $sourceUri and got response (${response.statusCode}) ${response.body}',
         name: 'jsonld2cards.card_viewer',
       );
+      if (response.statusCode >= 400) {
+        return Future.error('Server responded with status code ${response.statusCode}');
+      }
       return response.body;
-    }).onError((error, stackTrace) {
+    } on Error catch (e, st) {
       developer.log(
-        'Error requesting markup $error',
+        'Error requesting markup $e',
         name: 'jsonld2cards.card_viewer',
-        error: error,
+        error: e,
+        stackTrace: st,
       );
-      return null;
-    });
+      return Future.error(e, st);
+    }
+
   }
 }
 
@@ -142,29 +149,15 @@ class FuturePreviews extends StatelessWidget {
             // } else
               if (decodedMarkup is List<dynamic> || decodedMarkup is Map<String, dynamic>) {
               return renderCard(decodedMarkup, postFunction: postFunction) ??
-                  const Text('Could not load card');
-              // todo this is an error case, so treat it like the other error cases too/ give more info
+                  displayErrorMessage('Could not load card');
             }
-            return const Text('Card has unexpected format');
+            return displayErrorMessage('Card has unexpected format');
           } else {
-            return const Text('Empty Response…');
+            return displayErrorMessage('Empty Response…');
           }
         } else if (snapshot.hasError) {
-          var children = <Widget>[
-            const Icon(
-              Icons.error_outline,
-              color: Colors.red,
-              size: 60,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Text('Error: ${snapshot.error}'),
-            ),
-          ];
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: children,
-          );
+          var errorMessage = snapshot.error.toString();
+          return displayErrorMessage(errorMessage);
         } else {
           return const SizedBox.square(
             dimension: 40,
@@ -174,4 +167,22 @@ class FuturePreviews extends StatelessWidget {
       },
     );
   }
+}
+
+Column displayErrorMessage(String errorMessage) {
+  var children = <Widget>[
+    const Icon(
+      Icons.error_outline,
+      color: Colors.red,
+      size: 60,
+    ),
+    Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Text('Error: $errorMessage'),
+    ),
+  ];
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: children,
+  );
 }
