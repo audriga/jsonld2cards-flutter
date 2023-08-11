@@ -191,6 +191,7 @@ class CardSamples extends StatefulWidget {
 class _CardSamplesState extends State<CardSamples> {
   int _selectedIndex = 0;
   bool preview = false;
+  bool topBar = false;
 
   late Map<String, dynamic> emailMarkupActionGoto;
   late Map<String, dynamic> emailMarkupActionOneClick;
@@ -239,7 +240,7 @@ class _CardSamplesState extends State<CardSamples> {
   List<Widget> itemBuilder(List<dynamic> markups) {
     List<Widget> widgets = [];
     for (var markup in markups){
-      var card = renderCard(markup, postFunction: postUrl, preview: preview);
+      var card = renderCard(markup, postFunction: postUrl, preview: preview, topBar: topBar);
       if (card != null) {
         widgets.add(card);
       }
@@ -280,12 +281,12 @@ class _CardSamplesState extends State<CardSamples> {
               case 0: return ListView(
                 children: [
                   ...itemBuilder(snapshot.requireData),
-                  renderCard(emailMarkupActionGoto, postFunction: postUrl, preview: preview) ?? const Placeholder(),
-                  renderCard(emailMarkupActionOneClick, postFunction: postUrl, preview: preview) ?? const Placeholder(),
-                  renderCard(emailMarkupReservationFlightBasic, postFunction: postUrl, preview: preview) ?? const Placeholder(),
-                  renderCard(emailMarkupReservationFlight, postFunction: postUrl, preview: preview) ?? const Placeholder(),
-                  renderCard(musicAlbumMarkup, postFunction: postUrl, preview: preview) ?? const Placeholder(),
-                  renderCard(placeMarkup, postFunction: postUrl, preview: preview) ?? const Placeholder(),
+                  renderCard(emailMarkupActionGoto, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
+                  renderCard(emailMarkupActionOneClick, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
+                  renderCard(emailMarkupReservationFlightBasic, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
+                  renderCard(emailMarkupReservationFlight, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
+                  renderCard(musicAlbumMarkup, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
+                  renderCard(placeMarkup, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
                 ],
               );
               case 1: return itemBuilder(snapshot.requireData)[1];
@@ -321,12 +322,14 @@ class _CardSamplesState extends State<CardSamples> {
         onTap: _onItemTapped,
       ),
       persistentFooterButtons: [
-        TextButton(onPressed: (){
-          setState(() {
-            preview = !preview;
-          });
-        },
-            child: Text('Preview mode: ${preview ? 'on' : 'off'}')),
+        TextButton(
+            onPressed: (){setState(() {preview = !preview;});},
+            child: Text('Preview mode: ${preview ? 'on' : 'off'}')
+        ),
+        TextButton(
+            onPressed: (){setState(() {topBar = !topBar;});},
+            child: Text('Top bar mode: ${topBar ? 'on' : 'off'}')
+        ),
       ],
     );
   }

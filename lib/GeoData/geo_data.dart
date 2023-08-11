@@ -116,6 +116,8 @@ class GeoData {
 
 
   String toJson() {
+    // todo use a map<String, dynamic> instead and call jsonEncode.
+    // todo use potentialactions property for view and navigate
     var jsonBuffer = StringBuffer();
     jsonBuffer.write(
 '''{
