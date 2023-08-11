@@ -9,9 +9,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class CardSamples extends StatefulWidget {
-  const CardSamples({Key? key}) : super(key: key);
+  const CardSamples({Key? key, required this.handleBrightnessChange}) : super(key: key);
 
   static const String routeName = '/cardSamples';
+
+  final void Function(ThemeMode useLightMode) handleBrightnessChange;
 
   static const String emailMarkupActionGoto =
       '{'
@@ -253,9 +255,22 @@ class _CardSamplesState extends State<CardSamples> {
 
   @override
   Widget build(BuildContext context) {
+    final isBright = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Templated Cards"),
+        actions: [
+          IconButton(
+            onPressed: (){
+              widget.handleBrightnessChange(isBright ? ThemeMode.dark : ThemeMode.light);
+              },
+            icon: Icon(isBright ? Icons.dark_mode : Icons.light_mode),
+          ),
+          IconButton(
+            onPressed: (){widget.handleBrightnessChange(ThemeMode.system);},
+            icon: const Icon(Icons.brightness_auto),
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: assetMarkups,

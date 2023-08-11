@@ -3,12 +3,12 @@
   "@type": "ParcelDelivery",
   "deliveryAddress": {
     "@type": "PostalAddress",
-    "name": "John Frank",
-    "streetAddress": "24 Willie Mays Plaza",
-    "addressLocality": "San Francisco",
+    "name": "John Doe",
+    "streetAddress": "1600 Amphitheatre",
+    "addressLocality": "Mountain View",
     "addressRegion": "CA",
     "addressCountry": "US",
-    "postalCode": "94107"
+    "postalCode": "94043"
   },
   "originAddress": {
     "@type": "PostalAddress",
