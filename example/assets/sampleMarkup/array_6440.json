@@ -1,0 +1,69 @@
+[
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "item": {
+          "@id": "https://www.spiegel.de/",
+          "@type": "WebPage",
+          "name": "Startseite"
+        },
+        "position": 1
+      },
+      {
+        "@type": "ListItem",
+        "item": {
+          "@id": "https://www.spiegel.de/sport/",
+          "@type": "WebPage",
+          "name": "Sport"
+        },
+        "position": 2
+      },
+      {
+        "@type": "ListItem",
+        "item": {
+          "@id": "https://www.spiegel.de/sport/fussball/",
+          "@type": "WebPage",
+          "name": "Fußball-News"
+        },
+        "position": 3
+      },
+      {
+        "@type": "ListItem",
+        "item": {
+          "@id": "https://www.spiegel.de/sport/fussball/fc-bayern-muenchen-oliver-kahn-ueber-thomas-mueller-abschied-wird-nicht-passieren-a-52de0cf7-5976-4b45-be40-1b699315ec44",
+          "image": "https://cdn.prod.www.spiegel.de/images/fa45e06b-425d-4c92-bfd9-6f07912f4a4b_w1200_r1.77_fpx55_fpy42.jpg",
+          "name": "FC Bayern München - Oliver Kahn über Thomas-Müller-Abschied: »Wird nicht passieren«"
+        },
+        "position": 4
+      }
+    ]
+  }, {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "url": "http://multivarki.ru?filters%5Bprice%5D%5BLTE%5D=39600",
+  "numberOfItems": "315",
+  "itemListElement": [
+    {
+      "@context": "http://schema.googleapis.com/",
+      "@type": "MusicAlbum",
+      "@id": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtu",
+      "url": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtu",
+      "name": "Semantics",
+      "description": "Listen to Semantics on Spotify. St. Emerald · Album · 2022 · 7 songs.",
+      "datePublished": "2022-08-19"
+    },
+    {
+      "@context": "http://schema.googleapis.com/",
+      "@type": "MusicAlbum",
+      "@id": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtx",
+      "url": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtx",
+      "name": "Semantics B",
+      "description": "Listen to Semantics B on Spotify. St. Emerald · Album · 2022 · 7 songs.",
+      "datePublished": "2022-08-20"
+    }
+  ]
+}
+]

@@ -2,6 +2,7 @@ library card_rendering;
 
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 
 import 'Cards/invoice_card.dart';
 import 'Cards/order_card.dart';
@@ -12,6 +13,7 @@ import 'Cards/flight_reservation_card.dart';
 import 'Cards/music_card.dart';
 import 'Cards/parcel_delivery_card.dart';
 import 'Cards/place_card.dart';
+import 'Cards/Models/organization_model.dart' as org_model;
 import 'package:flutter/material.dart';
 // Need material instead of widgets, to get Icons.
 // import 'package:flutter/widgets.dart';
@@ -119,15 +121,48 @@ Widget renderCardMulti(
     }
   }
 
+  org_model.Organization? organization;
+  Uri? orgLogo;
+  if (types.contains('Organization')) {
+    organization = org_model.Organization.fromJson(markupList.firstWhere((element) => element['@type'] == 'Organization'));
+    orgLogo = organization.logo;
+    markupList.removeWhere((element) => element['@type'] == 'Organization');
+  }
+
+  // Removing things we don't want to render in the card
+  // WebSite ignore for now
+  markupList.removeWhere((element) => element['@type'] == 'WebSite');
+  // BreadcrumbList for path based backend
+  //todo breadcrumbs in appbar of adaptive view
+  markupList.removeWhere((element) => element['@type'] == 'BreadcrumbList');
+  // WebPage ignore for now
+  markupList.removeWhere((element) => element['@type'] == 'WebPage');
+
+  // Now markupList should contain
+  // Any single item (MusicAlbum, NewsArticle, etc.)
+  // A list of items (multi-content case; email only)
+  // Any itemList (0006422) (todo (that means in the adaptive view, so the adaptive view should also try to parse already if there is
+  // an [itemList] in the markup and show all of the entries.
+  
+
+  // todo render list of items or itemlist accordingly
+
+  
   // Fallback: Render the first usable card that can be found
   for (var markup in markupList) {
     var subCard = tryRenderCardSingle(
       markup,
       postFunction: postFunction,
       preview: preview,
-      topBar: topBar,
+      topBar: topBar && orgLogo == null, // only show one top bar, org logo takes priority
     );
-    if (subCard != null) return subCard;
+    if (subCard != null) {
+      if (topBar && orgLogo != null) {
+        return surroundWithLogoTopBar(UriImage(content: orgLogo, height: 16), organization?.name, subCard);
+      } else {
+        return subCard;
+      }
+    }
   }
 
   throw FormatException(
@@ -277,7 +312,7 @@ Widget renderCardSingle(
   }
   if (topBar) {
   var iconToUse = type?.icon ?? Icons.mail;
-  var nameToUse = type?.tabName ?? 'Shared Semantic';
+  var nameToUse = type?.tabName ?? 'Default';
   return surroundWithTopBar(iconToUse, nameToUse, card);
   } else {
     return card;
@@ -295,6 +330,23 @@ Card surroundWithTopBar(IconData iconToUse, String nameToUse, Widget card) {
               padding: const EdgeInsets.symmetric(horizontal:  4.0),
               child: Icon(iconToUse),),
             Text(nameToUse),],),
+          card,
+        ],
+      ),
+    ),
+  );
+}
+Card surroundWithLogoTopBar(Widget logoToUse, String? nameToUse, Widget card) {
+  return Card(
+    child: Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Column(
+        children: [
+          Row(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:  4.0),
+              child: logoToUse,),
+            Text(nameToUse ?? ''),],),
           card,
         ],
       ),
