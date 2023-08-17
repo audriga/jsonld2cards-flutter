@@ -1,16 +1,14 @@
 # example_cardviewer_standalone
 
-App who's entire purpose is to show the cardviewe
+App who's entire purpose is to show the cardViewer.
 
-## Getting Started
+Used as the fallback renderer for SML emails as specified in https://web.audriga.com/wiki/index.php/SML/Viewer
 
-This project is a starting point for a Flutter application.
+## Deploy
 
-A few resources to get you started if this is your first Flutter project:
+To deploy the app
+* build the app using `flutter build web --base-href /test/sml-web/`
+* The result will be in `build/web` folder
+* Rename that folder to `sml-web` and upload it to the ftp file server, replacing the old version
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To simply run it `flutter run -d chrome`
