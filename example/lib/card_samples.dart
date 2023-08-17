@@ -1,5 +1,6 @@
 library card_samples;
 
+import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/card_rendering.dart';
 import 'package:jsonld2cards/card_viewer.dart';
 import 'package:jsonld2cards/open_card_viewer_dialog.dart';
@@ -227,6 +228,7 @@ class _CardSamplesState extends State<CardSamples> {
       'assets/sampleMarkup/invoice.json',
       'assets/sampleMarkup/order.json',
       'assets/sampleMarkup/parcel_delivery.json',
+      'assets/sampleMarkup/array_6440.json'
     ];
 
     Iterable<Future<String>> futureAssetStrings = assetsToUse.map((assetPath) => DefaultAssetBundle.of(context).loadString(assetPath));
@@ -290,6 +292,11 @@ class _CardSamplesState extends State<CardSamples> {
                 ],
               );
               case 1: return itemBuilder(snapshot.requireData)[1];
+              case 2: return AdaptiveMultipleCards(
+                title: 'Adaptive Demo',
+                markups: snapshot.requireData.last,
+                postFunction: postUrl,
+              );
               default: return const Placeholder();
             }
           }  else if (snapshot.hasError) {
@@ -316,6 +323,10 @@ class _CardSamplesState extends State<CardSamples> {
           BottomNavigationBarItem(
             icon: Icon(Icons.credit_card),
             label: 'Single Card',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_tree),
+            label: 'Adaptive View'
           ),
         ],
         currentIndex: _selectedIndex,

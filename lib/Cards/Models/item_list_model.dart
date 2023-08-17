@@ -2,13 +2,12 @@ library item_list_model;
 
 import 'package:jsonld2cards/Cards/Models/thing_model.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
-
-import 'image_object_model.dart';
+import 'list_item_model.dart';
 
 
 class ItemList extends Thing {
 
-  /// [ListItem]  or Text (String)  or [Thing]
+  /// Array of [ListItem]  or Text (String)  or [Thing]
   List<dynamic>? itemListElement;
   // todo currently ignoring
   // https://schema.org/ItemListOrderType or String
@@ -21,11 +20,27 @@ class ItemList extends Thing {
   ItemList.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     var jsonItemListElement = json['itemListElement'];
     if (jsonItemListElement is List<dynamic>) {
-      itemListElement = jsonItemListElement;
+      itemListElement = jsonItemListElement
+          .map((e) {
+            if (e is String) return e;
+            if (e is Map<String, dynamic>) {
+              var typeOfE = e['@type'];
+              if (typeOfE != null) {
+                if (typeOfE == 'ListItem'){
+                  return ListItem.fromJson(e);
+                }
+                // todo this is a bit ugly, it casts items of the type listItem, but doesn't
+                // parse other Things.
+                // return Thing.fromJson(e);
+              }
+            }
+            return e;
+      }).toList();
+
     } else if (jsonItemListElement != null) {
       itemListElement = [jsonItemListElement];
     }
-    numberOfItems = json['numberOfItems'];
+    numberOfItems = tryCastOrParseNum(json['numberOfItems']);
 
   }
 

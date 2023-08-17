@@ -1,6 +1,5 @@
 library music_card;
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import '../Util/conversion.dart';
 import 'BuildingBlocks/potential_actions.dart';
@@ -54,7 +53,7 @@ class MusicCard extends StatelessWidget {
           String? imageUrl = snapshot.data;
           developer.log(
             'Got image url:$imageUrl',
-            name: 'jsonld2cards.card',
+            name: 'jsonld2cards.music_card',
           );
           return imageUrl != null
               ? UriImage(

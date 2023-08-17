@@ -1,6 +1,5 @@
-import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
-import 'package:jsonld2cards/card_rendering.dart';
+import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -41,9 +40,10 @@ class _PathCardViewerState extends State<PathCardViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title),),
-      body:  FutureCards(futureMarkup: futureMarkup, postFunction: widget.postFunction),
+      return FutureCards(
+        title: title,
+        futureMarkup: futureMarkup,
+        postFunction: widget.postFunction,
     );
 
   }
@@ -85,11 +85,13 @@ class _PathCardViewerState extends State<PathCardViewer> {
 }
 
 class FutureCards extends StatelessWidget {
+
   const FutureCards({
     super.key,
-    required this.futureMarkup, required this.postFunction,
+    this.title, required this.futureMarkup, required this.postFunction,
   });
 
+  final String? title;
   final Future<String?> futureMarkup;
   final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
 
@@ -103,9 +105,9 @@ class FutureCards extends StatelessWidget {
           if (markupString != null && markupString.isNotEmpty) {
             var decodedMarkup = tryDecode(markupString);
               if (decodedMarkup is List<dynamic>) {
-                return AdaptiveMultipleCards(markups: decodedMarkup, postFunction: postFunction);
+                return AdaptiveMultipleCards(title: title, markups: decodedMarkup, postFunction: postFunction);
               } else if (decodedMarkup is Map<String, dynamic>) {
-                return AdaptiveMultipleCards(markups: [decodedMarkup], postFunction: postFunction);
+                return AdaptiveMultipleCards(title: title, markups: [decodedMarkup], postFunction: postFunction);
               }
             return const Text('Card has unexpected format');
           } else {
@@ -140,46 +142,4 @@ class FutureCards extends StatelessWidget {
   }
 }
 
-class AdaptiveMultipleCards extends StatelessWidget {
-  final List<dynamic> markups;
-  final PostFunction postFunction;
 
-  const AdaptiveMultipleCards({
-    super.key,
-    required this.markups,
-    required this.postFunction,
-  });
-
-
-  @override
-  Widget build(BuildContext context) {
-    final List<Widget> children = List<Widget>.generate(markups.length, (int index) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: renderCard(markups[index], postFunction: postFunction) ?? const Text('Could not load card'),
-      );
-    });
-
-    return AdaptiveLayout(
-      // Body switches between a ListView and a GridView from small to medium
-      // breakpoints and onwards.
-      body: SlotLayout(
-        config: <Breakpoint, SlotLayoutConfig>{
-          Breakpoints.small: SlotLayout.from(
-            key: const Key('Body Small'),
-            builder: (_) => ListView.builder(
-              itemCount: children.length,
-              itemBuilder: (BuildContext context, int index) => children[index],
-            ),
-          ),
-          Breakpoints.mediumAndUp: SlotLayout.from(
-            key: const Key('Body Medium'),
-            builder: (_) =>
-                GridView.count(crossAxisCount: 2, children: children),
-          )
-        },
-      ),
-
-    );
-  }
-}

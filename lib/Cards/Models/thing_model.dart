@@ -28,7 +28,7 @@ class Thing {
   });
 
   Thing.fromJson(Map<String, dynamic> json) {
-    id = json['@id'];
+    id = tryCastOrParse(json['@id']);
     alternateName = json['alternateName'];
     description = json['description'];
     var image = json['image'];

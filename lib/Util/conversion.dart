@@ -27,3 +27,16 @@ Uri? tryCastOrParse(dynamic input){
   }
   return null;
 }
+
+num? tryCastOrParseNum(dynamic input){
+  if (input == null) {
+    return null;
+  }
+  if (input is num) {
+    return input;
+  }
+  if (input is String) {
+    return num.tryParse(input);
+  }
+  return null;
+}
