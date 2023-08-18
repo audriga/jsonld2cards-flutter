@@ -1,14 +1,15 @@
 library default_markup_card;
 
+import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
+import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/widgets.dart';
 import 'dart:developer' as developer;
 
-class DefaultMarkupCard extends StatelessWidget {
+class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
   const DefaultMarkupCard({
     super.key,
     required this.markup,
@@ -113,4 +114,11 @@ class DefaultMarkupCard extends StatelessWidget {
     }
     return null;
   }
+
+  @override
+  IconData get tabIcon => Icons.credit_card;
+
+  @override
+  // TODO: implement tabName
+  String get tabName => 'Default';
 }

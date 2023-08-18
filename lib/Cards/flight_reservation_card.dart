@@ -1,12 +1,14 @@
 library flight_reservation_card;
 
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/Cards/Models/schema_types.dart';
+import 'package:jsonld2cards/Cards/markup_card.dart';
 
 import 'BuildingBlocks/card_with_actions.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'BuildingBlocks/three_column_card_content.dart';
 
-class FlightReservationCard extends StatelessWidget {
+class FlightReservationCard extends StatelessWidget implements MarkupCard{
   const FlightReservationCard({
     super.key,
     required this.markup,
@@ -31,6 +33,14 @@ class FlightReservationCard extends StatelessWidget {
       preview: preview,
     );
   }
+
+  SchemaType get cardType => SchemaType.flightReservation;
+
+  @override
+  IconData get tabIcon => cardType.icon!;
+
+  @override
+  String get tabName => cardType.tabName;
 }
 
 class FlightReservationWidget extends StatelessWidget {

@@ -1,11 +1,12 @@
 library tabbed_cards;
 
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/card_rendering.dart';
 
 import 'Cards/BuildingBlocks/potential_actions.dart';
 
-class TabbedMultiCard extends StatefulWidget {
+class TabbedMultiCard extends StatefulWidget implements MarkupCard {
   const TabbedMultiCard({
     super.key,
     required this.markupList,
@@ -24,6 +25,12 @@ class TabbedMultiCard extends StatefulWidget {
 
   @override
   State<TabbedMultiCard> createState() => _TabbedMultiCardState();
+
+  @override
+  IconData get tabIcon => Icons.list;
+
+  @override
+  String get tabName => 'Multi';
 }
 
 class _TabbedMultiCardState extends State<TabbedMultiCard> {
@@ -34,26 +41,29 @@ class _TabbedMultiCardState extends State<TabbedMultiCard> {
     if (widget.markupList.isEmpty) {
       throw FormatException('Cannot render empty list', widget.markupList);
     }
-    if (widget.markupList.length == 1) {
-      return mustRenderCard(widget.markupList.single,
-          postFunction: widget.postFunction,
-          preview: widget.preview,
-          topBar: widget.topBar);
-    }
+    // if (widget.markupList.length == 1) {
+    //   return mustRenderCard(widget.markupList.single,
+    //       postFunction: widget.postFunction,
+    //       preview: widget.preview,
+    //       topBar: widget.topBar);
+    // }
 
     var tabs = <Tab>[];
     var views = <Widget>[];
     for (var markup in widget.markupList) {
-      views.add(mustRenderCard(markup, postFunction: widget.postFunction, preview: widget.preview, topBar: false));
-      if (markup is Map<String, dynamic>) {
-        String typeName = markup['@type'];
-        var type = getCardType(typeName);
-        var iconToUse = type?.icon ?? Icons.mail;
-        var nameToUse = type?.tabName ?? 'Default';
-        tabs.add(Tab(icon: Icon(iconToUse), text:  nameToUse,));
-      } else {
-        tabs.add(const Tab(icon: Icon(Icons.list), text: 'Multi',));
+
+      // todo this uses the fact that mustRenderCard will return a [MarkupCard] if topBar is false.
+      // However this is quite unclean interface usage. Consider factoring out a method that always returns MarkupCard instead
+      MarkupCard card = mustRenderCard(markup, postFunction: widget.postFunction, preview: widget.preview, topBar: false) as MarkupCard;
+      if (card is TabbedMultiCard) {
+        card = NestedMultiCard(
+          markupList: card.markupList.whereType<Map<String,dynamic>>().toList(),
+          postFunction: widget.postFunction,
+        );
       }
+      views.add(card);
+      tabs.add(Tab(child: getTabContents(card),));
+
     }
 
     var tabbedCard = Card(
@@ -75,5 +85,50 @@ class _TabbedMultiCardState extends State<TabbedMultiCard> {
       ),
     );
     return tabbedCard;
+  }
+}
+
+
+class NestedMultiCard extends StatefulWidget implements MarkupCard  {
+  const NestedMultiCard({
+    super.key,
+    required this.markupList,
+    required this.postFunction,
+    this.preview = false,
+  });
+
+  final List<Map<String,dynamic>> markupList;
+  final PostFunction postFunction;
+  final bool preview;
+
+  @override
+  State<NestedMultiCard> createState() => _NestedMultiCardState();
+
+  @override
+  IconData get tabIcon => Icons.list;
+
+  @override
+  String get tabName => 'Multi';
+}
+
+class _NestedMultiCardState extends State<NestedMultiCard> {
+  int _selectedTab = 0;
+  @override
+  Widget build(BuildContext context) {
+    var tabs = <TextButton>[];
+    var views = <Widget>[];
+    for (int i = 0; i < widget.markupList.length; i++) {
+      MarkupCard card = mustRenderCard(widget.markupList[i], postFunction: widget.postFunction, preview: widget.preview, topBar: false) as MarkupCard;
+      views.add(card);
+      tabs.add(TextButton(
+        onPressed: (){setState(() {
+          _selectedTab = i;
+        });},
+        child: Text(card.tabName),));
+    }
+    return Column(children: [
+      views[_selectedTab],
+      Row(children: tabs,),
+    ],);
   }
 }

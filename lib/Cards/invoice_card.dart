@@ -1,12 +1,14 @@
 library invoice_card;
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
+import 'package:jsonld2cards/Cards/Models/schema_types.dart';
+import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'package:flutter/widgets.dart';
 
 import 'Models/invoice_model.dart';
 
-class InvoiceCard extends StatelessWidget {
+class InvoiceCard extends StatelessWidget implements MarkupCard{
   const InvoiceCard({
     super.key,
     required this.markup,
@@ -58,4 +60,12 @@ class InvoiceCard extends StatelessWidget {
       preview: preview,
     );
   }
+
+  SchemaType get cardType => SchemaType.invoice;
+
+  @override
+  IconData get tabIcon => cardType.icon!;
+
+  @override
+  String get tabName => cardType.tabName;
 }

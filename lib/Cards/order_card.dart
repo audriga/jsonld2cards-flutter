@@ -2,12 +2,14 @@ library order_card;
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
+import 'package:jsonld2cards/Cards/Models/schema_types.dart';
+import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'package:flutter/widgets.dart';
 
 import 'Models/order_model.dart';
 
-class OrderCard extends StatelessWidget {
+class OrderCard extends StatelessWidget implements MarkupCard {
   const OrderCard({
     super.key,
     required this.markup,
@@ -72,4 +74,12 @@ class OrderCard extends StatelessWidget {
       preview: preview,
     );
   }
+
+  SchemaType get cardType => SchemaType.order;
+
+  @override
+  IconData get tabIcon => cardType.icon!;
+
+  @override
+  String get tabName => cardType.tabName;
 }

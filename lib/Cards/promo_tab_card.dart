@@ -2,6 +2,7 @@ library promo_tab_card;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
+import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'Models/organization_model.dart';
@@ -92,7 +93,7 @@ class PromotionCardData {
 }
 
 
-class PromoTabCard extends StatelessWidget {
+class PromoTabCard extends StatelessWidget implements MarkupCard {
   PromoTabCard({
     super.key,
     required this.markupList,
@@ -218,6 +219,12 @@ class PromoTabCard extends StatelessWidget {
         }
     );
   }
+
+  @override
+  IconData get tabIcon => Icons.local_offer;
+
+  @override
+  String get tabName => 'Promotion';
 }
 
 class PromoItem extends StatelessWidget {

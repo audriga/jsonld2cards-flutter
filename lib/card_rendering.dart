@@ -3,8 +3,10 @@ library card_rendering;
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
+import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/tabbed_cards.dart';
 
+import 'Cards/Models/schema_types.dart';
 import 'Cards/invoice_card.dart';
 import 'Cards/order_card.dart';
 import 'Cards/promo_tab_card.dart';
@@ -106,7 +108,7 @@ Widget renderCardMulti(
   ) {
     var card = PromoTabCard(markupList: typeFilteredMarkupList, preview: preview);
     if (topBar) {
-      return surroundWithTopBar(Icons.local_offer, 'Promotion', card);
+      return surroundWithTopBar(card);
     } else {
       return card;
     }
@@ -122,7 +124,7 @@ Widget renderCardMulti(
   }
 
   // Removing things we don't want to render in the card
-  removeMarkupClutter(markupList);
+  markupList = removeMarkupClutter(markupList);
 
   // Now markupList should contain
   // Any single item (MusicAlbum, NewsArticle, etc.)
@@ -138,7 +140,7 @@ Widget renderCardMulti(
         markupList,
       );
     }
-    case 1 :
+    case 100 :
       var subCard = renderCardSingle(
         markupList.first,
         postFunction: postFunction,
@@ -178,16 +180,20 @@ Widget renderCardMulti(
   // }
 }
 
-void removeMarkupClutter(List<dynamic> markupList) {
-  
-  // Removing things we don't want to render in the card
-  markupList.removeWhere((element) => element is Map<String,dynamic> &&  element['@type'] == 'Organization');
-  // WebSite ignore for now
-  markupList.removeWhere((element) => element is Map<String,dynamic> &&  element['@type'] == 'WebSite');
-  // BreadcrumbList for path based backend
-  markupList.removeWhere((element) => element is Map<String,dynamic> &&  element['@type'] == 'BreadcrumbList');
-  // WebPage ignore for now
-  markupList.removeWhere((element) => element is Map<String,dynamic> &&  element['@type'] == 'WebPage');
+/// Removing things we don't want to render in the card
+List<dynamic> removeMarkupClutter(List<dynamic> markupList) {
+  List<String> elementsToRemove = [
+    // Used for icon only, not in rendered card
+    'Organization',
+    // WebSite ignore for now
+    'WebSite',
+    // BreadcrumbList for path based backend
+    'BreadcrumbList',
+    // WebPage ignore for now
+    'WebPage'
+  ];
+
+  return markupList.where((element) => element is! Map<String,dynamic> || !elementsToRemove.contains(element['@type'])).toList();
 }
 
 Widget? tryRenderCardSingle(
@@ -209,73 +215,6 @@ Widget? tryRenderCardSingle(
     return null;
   }
 }
-// todo find a good way to use enums instead of strings in switch below
-enum SchemaType {
-  emailMessage,
-  place,
-  musicRecording,
-  musicGroup,
-  musicAlbum,
-  flightReservation,
-  order,
-  invoice,
-  parcelDelivery,
-}
-
-SchemaType? getCardType(String typeName) {
-  return switch (typeName) {
-    'EmailMessage' => SchemaType.emailMessage,
-    'Place' => SchemaType.place,
-    'MusicRecording' => SchemaType.musicRecording,
-    'MusicGroup' => SchemaType.musicGroup,
-    'MusicAlbum' => SchemaType.musicAlbum,
-    'FlightReservation' => SchemaType.flightReservation,
-    'Order' => SchemaType.order,
-    'Invoice' => SchemaType.invoice,
-    'ParcelDelivery' => SchemaType.parcelDelivery,
-    _ => null
-  };
-}
-
-extension SchemaTypeName on SchemaType {
-
-  // String get name {
-  //   switch(this) {
-  //     case SchemaType.emailMessage: return 'EmailMessage';
-  //     case SchemaType.place: return 'Place';
-  //
-  //     default: return "";
-  //   }
-  // }
-
-  String get tabName {
-    return switch(this) {
-      SchemaType.emailMessage => 'Email Message',
-      SchemaType.place => 'Place',
-      SchemaType.musicRecording => 'Song',
-      SchemaType.musicGroup => 'Music',
-      SchemaType.musicAlbum => 'Album',
-      SchemaType.flightReservation => 'Flight Reservation',
-      SchemaType.order => 'Order',
-      SchemaType.invoice => 'Invoice',
-      SchemaType.parcelDelivery => 'Parcel'
-    };
-  }
-
-  IconData? get icon {
-    return switch(this) {
-      SchemaType.emailMessage => Icons.mail,
-      SchemaType.place => Icons.place,
-      SchemaType.musicRecording => Icons.music_note,
-      SchemaType.musicGroup => Icons.queue_music,
-      SchemaType.musicAlbum => Icons.album,
-      SchemaType.flightReservation => Icons.flight,
-      SchemaType.order => Icons.shopping_bag,
-      SchemaType.invoice => Icons.receipt,
-      SchemaType.parcelDelivery => Icons.local_shipping
-    };
-  }
-}
 
 Widget renderCardSingle(
     Map<String, dynamic> markup,
@@ -294,7 +233,7 @@ Widget renderCardSingle(
   }
   String typeName = markup['@type'];
   var type = getCardType(typeName);
-  late Widget card;
+  late MarkupCard card;
   switch (type) {
     case SchemaType.emailMessage: {
       card =  EmailMessage(markup: markup, postFunction: postFunction, preview: preview);
@@ -330,25 +269,19 @@ Widget renderCardSingle(
     }
   }
   if (topBar) {
-  var iconToUse = type?.icon ?? Icons.mail;
-  var nameToUse = type?.tabName ?? 'Default';
-  return surroundWithTopBar(iconToUse, nameToUse, card);
+  return surroundWithTopBar(card);
   } else {
     return card;
   }
 }
 
-Card surroundWithTopBar(IconData iconToUse, String nameToUse, Widget card) {
+Card surroundWithTopBar(MarkupCard card) {
   return Card(
     child: Padding(
       padding: const EdgeInsets.all(4.0),
       child: Column(
         children: [
-          Row(children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal:  4.0),
-              child: Icon(iconToUse),),
-            Text(nameToUse),],),
+          getTabContents(card),
           card,
         ],
       ),

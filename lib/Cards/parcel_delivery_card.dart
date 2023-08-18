@@ -1,13 +1,15 @@
 library parcel_delivery_card;
 
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/Cards/Models/schema_types.dart';
+import 'package:jsonld2cards/Cards/markup_card.dart';
 
 import 'BuildingBlocks/card_with_actions.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'BuildingBlocks/three_column_card_content.dart';
 import 'Models/parcel_delivery_model.dart';
 
-class ParcelDeliveryCard extends StatelessWidget {
+class ParcelDeliveryCard extends StatelessWidget implements MarkupCard{
   const ParcelDeliveryCard({
     super.key,
     required this.markup,
@@ -124,5 +126,14 @@ class ParcelDeliveryCard extends StatelessWidget {
       preview: preview,
     );
   }
+
+
+  SchemaType get cardType => SchemaType.parcelDelivery;
+
+  @override
+  IconData get tabIcon => cardType.icon!;
+
+  @override
+  String get tabName => cardType.tabName;
 }
 

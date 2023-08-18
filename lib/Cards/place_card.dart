@@ -4,6 +4,7 @@ library place_card;
 import 'dart:convert';
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
+import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import '../GeoData/geo_data.dart';
 import 'package:flutter/foundation.dart';
@@ -11,8 +12,9 @@ import 'package:flutter/widgets.dart';
 import 'dart:developer' as developer;
 
 import 'BuildingBlocks/uri_image.dart';
+import 'markup_card.dart';
 
-class Place extends StatefulWidget {
+class Place extends StatefulWidget implements MarkupCard {
   const Place({
     super.key,
     required this.markup,
@@ -26,6 +28,14 @@ class Place extends StatefulWidget {
 
   @override
   State<Place> createState() => _PlaceState();
+
+  SchemaType get cardType => SchemaType.place;
+
+  @override
+  IconData get tabIcon => cardType.icon!;
+
+  @override
+  String get tabName => cardType.tabName;
 }
 
 class _PlaceState extends State<Place> {

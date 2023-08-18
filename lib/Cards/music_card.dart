@@ -1,6 +1,8 @@
 library music_card;
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
+import 'package:jsonld2cards/Cards/Models/schema_types.dart';
+import 'package:jsonld2cards/Cards/markup_card.dart';
 import '../Util/conversion.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'package:html/parser.dart';
@@ -11,7 +13,7 @@ import 'dart:developer' as developer;
 import 'BuildingBlocks/uri_image.dart';
 
 enum MusicType {album, playlist, song}
-class MusicCard extends StatelessWidget {
+class MusicCard extends StatelessWidget implements MarkupCard {
   final MusicType musicType;
 
   const MusicCard({
@@ -134,4 +136,16 @@ class MusicCard extends StatelessWidget {
     }
     return null;
   }
+
+  SchemaType get cardType => switch (musicType) {
+    MusicType.album => SchemaType.musicAlbum,
+    MusicType.playlist => SchemaType.musicGroup,
+    MusicType.song => SchemaType.musicRecording,
+  };
+
+  @override
+  IconData get tabIcon => cardType.icon!;
+
+  @override
+  String get tabName => cardType.tabName;
 }

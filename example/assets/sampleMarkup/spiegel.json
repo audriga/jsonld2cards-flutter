@@ -80,13 +80,5 @@
         "position": 4
       }
     ]
-  },
-  {
-    "@type": "Organization",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://www.spiegel.de/public/spon/images/logos/der-spiegel-h60.png"
-    },
-    "name": "DER SPIEGEL"
   }
 ]

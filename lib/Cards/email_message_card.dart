@@ -1,11 +1,14 @@
 library email_message_card;
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
+import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 
 import 'BuildingBlocks/potential_actions.dart';
 import 'package:flutter/widgets.dart';
 
-class EmailMessage extends StatelessWidget {
+import 'markup_card.dart';
+
+class EmailMessage extends StatelessWidget implements MarkupCard {
   const EmailMessage({
     super.key,
     required this.markup,
@@ -31,4 +34,12 @@ class EmailMessage extends StatelessWidget {
       preview: preview,
     );
   }
+
+  SchemaType get cardType => SchemaType.emailMessage;
+
+  @override
+  IconData get tabIcon => cardType.icon!;
+
+  @override
+  String get tabName => cardType.tabName;
 }
