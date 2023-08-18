@@ -115,6 +115,7 @@ class _NestedMultiCardState extends State<NestedMultiCard> {
   int _selectedTab = 0;
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     var tabs = <TextButton>[];
     var views = <Widget>[];
     for (int i = 0; i < widget.markupList.length; i++) {
@@ -124,7 +125,9 @@ class _NestedMultiCardState extends State<NestedMultiCard> {
         onPressed: (){setState(() {
           _selectedTab = i;
         });},
-        child: Text(card.tabName),));
+        style: (_selectedTab == i)?  TextButton.styleFrom(backgroundColor: theme.highlightColor) : null,
+        child: Text(card.tabName),
+      ));
     }
     return Column(children: [
       views[_selectedTab],

@@ -217,6 +217,8 @@ class _CardSamplesState extends State<CardSamples> {
     'assets/sampleMarkup/parcel_delivery.json',
     'assets/sampleMarkup/array_6440.json',
     'assets/sampleMarkup/array.json',
+    'assets/sampleMarkup/flight_multi_passenger.json',
+    'assets/sampleMarkup/flight_multi_segment.json',
   ];
 
   @override
