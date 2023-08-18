@@ -25,7 +25,7 @@ class AdaptiveMultipleCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var types = markups.map((e) => e['@type']);
+    var types = markups.whereType<Map<String,dynamic>>().map((e) => e['@type']);
     Organization? organization;
     Uri? orgLogo;
     Widget? orgLogoWidget;

@@ -3,6 +3,7 @@ library card_rendering;
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
+import 'package:jsonld2cards/tabbed_cards.dart';
 
 import 'Cards/invoice_card.dart';
 import 'Cards/order_card.dart';
@@ -60,7 +61,7 @@ Widget mustRenderCard(
       bool topBar = false,
     }
     ) {
-  if (markup is List<Map<String, dynamic>>) {
+  if ((markup is List<dynamic>) || (markup is List<Map<String, dynamic>>)) {
     return renderCardMulti(
       markup,
       postFunction: postFunction, preview: preview,
@@ -69,17 +70,6 @@ Widget mustRenderCard(
   }  else if (markup is Map<String, dynamic>) {
     return renderCardSingle(
       markup,
-      postFunction: postFunction,
-      preview: preview,
-      topBar: topBar,
-    );
-  } else if (markup is List<dynamic>) {
-    List<Map<String, dynamic>> recastMarkup = [];
-    markup.map((element) => recastMarkup
-        .add(element as Map<String, dynamic>))
-        .toList();
-    return renderCardMulti(
-      recastMarkup,
       postFunction: postFunction,
       preview: preview,
       topBar: topBar,
@@ -100,20 +90,21 @@ Widget mustRenderCard(
 /// So returning another Widget that is Scrollable in the same direction
 /// here is probably not a great idea.
 Widget renderCardMulti(
-    List<Map<String, dynamic>> markupList,
+    List<dynamic> markupList,
     {
       required PostFunction postFunction,
       bool preview = false,
       bool topBar = false,
     }
     ) {
-  var types = markupList.map((e) => e['@type']);
+  List<Map<String, dynamic>> typeFilteredMarkupList = markupList.whereType<Map<String,dynamic>>().toList();
+  var types = typeFilteredMarkupList.map((e) => e['@type']);
   if (types.contains('Organization')
       && types.contains('EmailMessage')
       && types.contains('DiscountOffer')
       && types.contains('PromotionCard')
   ) {
-    var card = PromoTabCard(markupList: markupList, preview: preview);
+    var card = PromoTabCard(markupList: typeFilteredMarkupList, preview: preview);
     if (topBar) {
       return surroundWithTopBar(Icons.local_offer, 'Promotion', card);
     } else {
@@ -124,51 +115,79 @@ Widget renderCardMulti(
   org_model.Organization? organization;
   Uri? orgLogo;
   if (types.contains('Organization')) {
-    organization = org_model.Organization.fromJson(markupList.firstWhere((element) => element['@type'] == 'Organization'));
+    organization = org_model.Organization.fromJson(
+        markupList.firstWhere((element) => element is Map<String,dynamic> && element['@type'] == 'Organization')
+    );
     orgLogo = organization.logo;
-    markupList.removeWhere((element) => element['@type'] == 'Organization');
   }
 
   // Removing things we don't want to render in the card
-  // WebSite ignore for now
-  markupList.removeWhere((element) => element['@type'] == 'WebSite');
-  // BreadcrumbList for path based backend
-  //todo breadcrumbs in appbar of adaptive view
-  markupList.removeWhere((element) => element['@type'] == 'BreadcrumbList');
-  // WebPage ignore for now
-  markupList.removeWhere((element) => element['@type'] == 'WebPage');
+  removeMarkupClutter(markupList);
 
   // Now markupList should contain
   // Any single item (MusicAlbum, NewsArticle, etc.)
   // A list of items (multi-content case; email only)
   // Any itemList (0006422) (todo (that means in the adaptive view, so the adaptive view should also try to parse already if there is
   // an [itemList] in the markup and show all of the entries.
-  
 
-  // todo render list of items or itemlist accordingly
 
-  
-  // Fallback: Render the first usable card that can be found
-  for (var markup in markupList) {
-    var subCard = tryRenderCardSingle(
-      markup,
-      postFunction: postFunction,
-      preview: preview,
-      topBar: topBar && orgLogo == null, // only show one top bar, org logo takes priority
-    );
-    if (subCard != null) {
+  switch (markupList.length) {
+    case 0: {
+      throw FormatException(
+        'markup does not contain any valid cards',
+        markupList,
+      );
+    }
+    case 1 :
+      var subCard = renderCardSingle(
+        markupList.first,
+        postFunction: postFunction,
+        preview: preview,
+        topBar: topBar && orgLogo == null, // only show one top bar, org logo takes priority
+      );
       if (topBar && orgLogo != null) {
         return surroundWithLogoTopBar(UriImage(content: orgLogo, height: 16), organization?.name, subCard);
       } else {
         return subCard;
       }
+    default: {
+      return TabbedMultiCard(
+        markupList: markupList,
+        preview: preview,
+        postFunction: postFunction,
+      );
     }
   }
 
-  throw FormatException(
-    'markup does not contain any valid cards',
-    markupList,
-  );
+  
+  // Fallback: Render the first usable card that can be found
+  // for (var markup in markupList) {
+  //   var subCard = tryRenderCardSingle(
+  //     markup,
+  //     postFunction: postFunction,
+  //     preview: preview,
+  //     topBar: topBar && orgLogo == null, // only show one top bar, org logo takes priority
+  //   );
+  //   if (subCard != null) {
+  //     if (topBar && orgLogo != null) {
+  //       return surroundWithLogoTopBar(UriImage(content: orgLogo, height: 16), organization?.name, subCard);
+  //     } else {
+  //       return subCard;
+  //     }
+  //   }
+  // }
+}
+
+void removeMarkupClutter(List<dynamic> markupList) {
+  
+  // Removing things we don't want to render in the card
+  markupList.removeWhere((element) => element is Map<String,dynamic> &&  element['@type'] == 'Organization');
+  // WebSite ignore for now
+  markupList.removeWhere((element) => element is Map<String,dynamic> &&  element['@type'] == 'WebSite');
+  // BreadcrumbList for path based backend
+  markupList.removeWhere((element) => element is Map<String,dynamic> &&  element['@type'] == 'BreadcrumbList');
+  // WebPage ignore for now
+  markupList.removeWhere((element) => element is Map<String,dynamic> &&  element['@type'] == 'WebPage');
 }
 
 Widget? tryRenderCardSingle(

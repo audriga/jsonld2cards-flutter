@@ -1,5 +1,6 @@
 library card_samples;
 
+import 'package:flutter/foundation.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/card_rendering.dart';
 import 'package:jsonld2cards/card_viewer.dart';
@@ -192,7 +193,8 @@ class CardSamples extends StatefulWidget {
 class _CardSamplesState extends State<CardSamples> {
   int _selectedIndex = 0;
   bool preview = false;
-  bool topBar = false;
+  bool topBar = true;
+  bool showSource = false;
 
   late Map<String, dynamic> emailMarkupActionGoto;
   late Map<String, dynamic> emailMarkupActionOneClick;
@@ -201,6 +203,21 @@ class _CardSamplesState extends State<CardSamples> {
   late Map<String, dynamic> musicAlbumMarkup;
   late Map<String, dynamic> placeMarkup;
   late Future<List<dynamic>> assetMarkups;
+
+  List<String> assetsToUse = [
+    'assets/sampleMarkup/spotifyEnriched.json',
+    'assets/sampleMarkup/musicSchool.json',
+    'assets/sampleMarkup/promotab.json',
+    'assets/sampleMarkup/spiegel.json',
+    'assets/sampleMarkup/lemonde.json',
+    'assets/sampleMarkup/organization_example1.json',
+    'assets/sampleMarkup/live_location.json',
+    'assets/sampleMarkup/invoice.json',
+    'assets/sampleMarkup/order.json',
+    'assets/sampleMarkup/parcel_delivery.json',
+    'assets/sampleMarkup/array_6440.json',
+    'assets/sampleMarkup/array.json',
+  ];
 
   @override
   void initState() {
@@ -217,19 +234,6 @@ class _CardSamplesState extends State<CardSamples> {
   Future<List<dynamic>> loadMarkupsFromAssets() async {
     List<dynamic> markups = [];
 
-    var assetsToUse = [
-      'assets/sampleMarkup/spotifyEnriched.json',
-      'assets/sampleMarkup/musicSchool.json',
-      'assets/sampleMarkup/promotab.json',
-      'assets/sampleMarkup/spiegel.json',
-      'assets/sampleMarkup/lemonde.json',
-      'assets/sampleMarkup/organization_example1.json',
-      'assets/sampleMarkup/live_location.json',
-      'assets/sampleMarkup/invoice.json',
-      'assets/sampleMarkup/order.json',
-      'assets/sampleMarkup/parcel_delivery.json',
-      'assets/sampleMarkup/array_6440.json'
-    ];
 
     Iterable<Future<String>> futureAssetStrings = assetsToUse.map((assetPath) => DefaultAssetBundle.of(context).loadString(assetPath));
     for (Future<String> futureAssetString in futureAssetStrings) {
@@ -241,12 +245,13 @@ class _CardSamplesState extends State<CardSamples> {
 
   List<Widget> itemBuilder(List<dynamic> markups) {
     List<Widget> widgets = [];
+    var assetNameIter = assetsToUse.iterator;
     for (var markup in markups){
-      var card = renderCard(markup, postFunction: postUrl, preview: preview, topBar: topBar);
-      if (card != null) {
-        widgets.add(card);
-      }
+      if (showSource && assetNameIter.moveNext()) widgets.add(Text(assetNameIter.current));
+      var card = renderCardOrErrorCard(markup, preview: preview, topBar: topBar);
+      widgets.add(card);
     }
+    if (showSource) widgets.add(const Text('End of file based markups'));
     return widgets;
   }
 
@@ -283,18 +288,18 @@ class _CardSamplesState extends State<CardSamples> {
               case 0: return ListView(
                 children: [
                   ...itemBuilder(snapshot.requireData),
-                  renderCard(emailMarkupActionGoto, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
-                  renderCard(emailMarkupActionOneClick, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
-                  renderCard(emailMarkupReservationFlightBasic, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
-                  renderCard(emailMarkupReservationFlight, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
-                  renderCard(musicAlbumMarkup, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
-                  renderCard(placeMarkup, postFunction: postUrl, preview: preview, topBar: topBar) ?? const Placeholder(),
+                  renderCardOrErrorCard(emailMarkupActionGoto, preview: preview, topBar: topBar),
+                  renderCardOrErrorCard(emailMarkupActionOneClick, preview: preview, topBar: topBar),
+                  renderCardOrErrorCard(emailMarkupReservationFlightBasic, preview: preview, topBar: topBar),
+                  renderCardOrErrorCard(emailMarkupReservationFlight, preview: preview, topBar: topBar),
+                  renderCardOrErrorCard(musicAlbumMarkup, preview: preview, topBar: topBar),
+                  renderCardOrErrorCard(placeMarkup, preview: preview, topBar: topBar),
                 ],
               );
               case 1: return itemBuilder(snapshot.requireData)[1];
               case 2: return AdaptiveMultipleCards(
                 title: 'Adaptive Demo',
-                markups: snapshot.requireData.last,
+                markups: snapshot.requireData[assetsToUse.indexOf('assets/sampleMarkup/array_6440.json')],
                 postFunction: postUrl,
               );
               default: return const Placeholder();
@@ -334,6 +339,10 @@ class _CardSamplesState extends State<CardSamples> {
       ),
       persistentFooterButtons: [
         TextButton(
+            onPressed: (){setState(() {showSource = !showSource;});},
+            child: Text('Show source: ${showSource ? 'on' : 'off'}')
+        ),
+        TextButton(
             onPressed: (){setState(() {preview = !preview;});},
             child: Text('Preview mode: ${preview ? 'on' : 'off'}')
         ),
@@ -345,6 +354,32 @@ class _CardSamplesState extends State<CardSamples> {
     );
   }
 
+}
+
+Widget renderCardOrErrorCard(
+  dynamic markup, {
+  bool preview = false,
+  bool topBar = false,
+}) {
+  try {
+    var card = mustRenderCard(markup,
+        postFunction: postUrl, preview: preview, topBar: topBar);
+    return card;
+  } catch (e, st) {
+    return Card(
+      surfaceTintColor: Colors.redAccent,
+      child: ListTile(
+        leading: const Icon(Icons.error),
+        title: const Text('Error rendering card'),
+        subtitle: Text(e.toString()),
+        onTap: () {
+          if (kDebugMode) {
+            print(st);
+          }
+        },
+      ),
+    );
+  }
 }
 
 class FutureBuilderError extends StatelessWidget {

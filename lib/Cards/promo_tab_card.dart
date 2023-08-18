@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'Models/organization_model.dart';
+
 
 class PromoTabData {
   Organization organization;
@@ -28,13 +30,6 @@ class PromoTabData {
       ..sort((a, b) => (a['position'] as int).compareTo(b['position'] as int),);
     promotionCards.addAll(promoMarkupList.map(PromotionCardData.fromJson));
   }
-}
-
-class Organization {
-  Uri logo;
-
-  Organization.fromJson(Map<String, dynamic> json)
-      : logo = (json['logo'] is Uri) ? json['logo'] : Uri.parse(json['logo']);
 }
 
 class EmailMessageData {
