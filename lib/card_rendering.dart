@@ -3,6 +3,7 @@ library card_rendering;
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
+import 'package:jsonld2cards/Cards/item_list_card.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/tabbed_cards.dart';
 
@@ -140,7 +141,7 @@ Widget renderCardMulti(
         markupList,
       );
     }
-    case 100 :
+    case 1 :
       var subCard = renderCardSingle(
         markupList.first,
         postFunction: postFunction,
@@ -263,6 +264,9 @@ Widget renderCardSingle(
     }
     case SchemaType.parcelDelivery: {
       card =  ParcelDeliveryCard(markup: markup, postFunction: postFunction, preview: preview);
+    }
+    case SchemaType.itemList: {
+      card =  ItemListCard(markup: markup, postFunction: postFunction, preview: preview);
     }
     default: {
       card =  DefaultMarkupCard(markup: markup, postFunction: postFunction, preview: preview);
