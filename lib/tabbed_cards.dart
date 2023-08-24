@@ -49,6 +49,7 @@ class _TabbedMultiCardState extends State<TabbedMultiCard> {
     // }
 
     var tabs = <Tab>[];
+    var smallTabs = <Tab>[];
     var views = <Widget>[];
     for (var markup in widget.markupList) {
 
@@ -63,6 +64,7 @@ class _TabbedMultiCardState extends State<TabbedMultiCard> {
       }
       views.add(card);
       tabs.add(Tab(child: getTabContents(card),));
+      smallTabs.add(Tab(icon: Icon(card.tabIcon),));
 
     }
 
@@ -71,13 +73,19 @@ class _TabbedMultiCardState extends State<TabbedMultiCard> {
         length: widget.markupList.length,
         child: Column(
           children: [
-            TabBar.secondary(
-              onTap: (index) {
-                setState(() {
-                  _selectedTab = index;
-                });
-              },
-                tabs: tabs,),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                int maxSizePerTab = 150;
+                bool useSmall = constraints.maxWidth / widget.markupList.length < maxSizePerTab;
+                return TabBar.secondary(
+                  onTap: (index) {
+                    setState(() {
+                      _selectedTab = index;
+                    });
+                  },
+                  tabs: useSmall? smallTabs : tabs,);
+              }
+            ),
             views[_selectedTab],
             // TabBarView(children: views),
           ],

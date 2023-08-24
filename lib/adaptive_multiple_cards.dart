@@ -111,6 +111,7 @@ class AdaptiveMultipleCards extends StatelessWidget {
         });
       }
     } else {
+      // todo either without the things we don't want (like Organization0, or discard cards where renderCard failed/ decilined
       children = List<Widget>.generate(markups.length, (int index) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
