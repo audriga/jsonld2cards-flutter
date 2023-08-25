@@ -130,8 +130,7 @@ Widget renderCardMulti(
   // Now markupList should contain
   // Any single item (MusicAlbum, NewsArticle, etc.)
   // A list of items (multi-content case; email only)
-  // Any itemList (0006422) (todo (that means in the adaptive view, so the adaptive view should also try to parse already if there is
-  // an [itemList] in the markup and show all of the entries.
+  // Any itemList (0006422)
 
 
   switch (markupList.length) {
@@ -161,24 +160,6 @@ Widget renderCardMulti(
       );
     }
   }
-
-  
-  // Fallback: Render the first usable card that can be found
-  // for (var markup in markupList) {
-  //   var subCard = tryRenderCardSingle(
-  //     markup,
-  //     postFunction: postFunction,
-  //     preview: preview,
-  //     topBar: topBar && orgLogo == null, // only show one top bar, org logo takes priority
-  //   );
-  //   if (subCard != null) {
-  //     if (topBar && orgLogo != null) {
-  //       return surroundWithLogoTopBar(UriImage(content: orgLogo, height: 16), organization?.name, subCard);
-  //     } else {
-  //       return subCard;
-  //     }
-  //   }
-  // }
 }
 
 /// Removing things we don't want to render in the card

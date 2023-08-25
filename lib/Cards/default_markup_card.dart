@@ -119,6 +119,5 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
   IconData get tabIcon => Icons.credit_card;
 
   @override
-  // TODO: implement tabName
   String get tabName => 'Default';
 }

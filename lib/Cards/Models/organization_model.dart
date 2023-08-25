@@ -5,7 +5,6 @@ import 'package:jsonld2cards/Util/conversion.dart';
 
 import 'image_object_model.dart';
 
-// todo there's some overlap with Organization from promo_tab_card
 class Organization extends Thing {
 /*
 {

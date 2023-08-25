@@ -96,27 +96,18 @@ class AdaptiveMultipleCards extends StatelessWidget {
       var itemListElement  = itemList.itemListElement;
       if (itemListElement != null) {
         children = List<Widget>.generate(itemListElement.length, (int index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: renderCard(itemListElement[index], postFunction: postFunction) ?? const Text('Could not load card'),
-          );
+          return renderCard(itemListElement[index], postFunction: postFunction) ?? const Text('Could not load card');
         });
       } else {
-        // todo make more robust, what if there is an item list and remaining array elements?
+        // what if there is an item list and remaining array elements?
         children = List<Widget>.generate(markups.length, (int index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: renderCard(markups[index], postFunction: postFunction) ?? const Text('Could not load card'),
-          );
+          return renderCard(markups[index], postFunction: postFunction) ?? const Text('Could not load card');
         });
       }
     } else {
-      // todo either without the things we don't want (like Organization0, or discard cards where renderCard failed/ decilined
-      children = List<Widget>.generate(markups.length, (int index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: renderCard(markups[index], postFunction: postFunction) ?? const Text('Could not load card'),
-        );
+      var filteredMarkups = removeMarkupClutter(markups);
+      children = List<Widget>.generate(filteredMarkups.length, (int index) {
+        return renderCard(filteredMarkups[index], postFunction: postFunction) ?? const Text('Could not load card');
       });
     }
 
@@ -140,7 +131,11 @@ class AdaptiveMultipleCards extends StatelessWidget {
               Breakpoints.mediumAndUp: SlotLayout.from(
                 key: const Key('Body Medium'),
                 builder: (_) =>
-                    GridView.count(crossAxisCount: 2, children: children),
+                    LayoutBuilder(
+                        builder: (context, constraints) {
+                          return GridView.count(crossAxisCount: 2,childAspectRatio: constraints.maxWidth / constraints.maxHeight, children: children);
+                      }
+                    ),
               )
             },
           ),

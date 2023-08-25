@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'potential_actions.dart';
 
-// todo replace all possible material imports with  import 'package:flutter/widgets.dart';
 
 class CardWithActions extends StatelessWidget {
   const CardWithActions(

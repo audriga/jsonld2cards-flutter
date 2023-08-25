@@ -191,10 +191,11 @@ class CardSamples extends StatefulWidget {
 }
 
 class _CardSamplesState extends State<CardSamples> {
-  int _selectedIndex = 0;
+  int _selectedScreenIndex = 0;
   bool preview = false;
   bool topBar = true;
   bool showSource = false;
+  late int _selectedAssetIndex;
 
   late Map<String, dynamic> emailMarkupActionGoto;
   late Map<String, dynamic> emailMarkupActionOneClick;
@@ -221,6 +222,12 @@ class _CardSamplesState extends State<CardSamples> {
     'assets/sampleMarkup/flight_multi_segment.json',
   ];
 
+  List<DropdownMenuItem<int>> get assetDropdownItems {
+    return List<DropdownMenuItem<int>>.generate(assetsToUse.length, (index) {
+      return DropdownMenuItem<int>(value: index, child: Text(assetsToUse[index]));
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -231,6 +238,7 @@ class _CardSamplesState extends State<CardSamples> {
     musicAlbumMarkup = jsonDecode(CardSamples.musicAlbumMarkup);
     placeMarkup = jsonDecode(CardSamples.placeMarkup);
     assetMarkups = loadMarkupsFromAssets();
+    _selectedAssetIndex = assetsToUse.indexOf('assets/sampleMarkup/array_6440.json');
   }
 
   Future<List<dynamic>> loadMarkupsFromAssets() async {
@@ -249,17 +257,18 @@ class _CardSamplesState extends State<CardSamples> {
     List<Widget> widgets = [];
     var assetNameIter = assetsToUse.iterator;
     for (var markup in markups){
-      if (showSource && assetNameIter.moveNext()) widgets.add(Text(assetNameIter.current));
+      // Add text widgets on the first screen showing the source of file based markups
+      if (showSource && _selectedScreenIndex == 0 && assetNameIter.moveNext()) widgets.add(Text(assetNameIter.current));
       var card = renderCardOrErrorCard(markup, preview: preview, topBar: topBar);
       widgets.add(card);
     }
-    if (showSource) widgets.add(const Text('End of file based markups'));
+    if (showSource && _selectedScreenIndex == 0) widgets.add(const Text('End of file based markups'));
     return widgets;
   }
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedScreenIndex = index;
     });
   }
 
@@ -286,7 +295,7 @@ class _CardSamplesState extends State<CardSamples> {
         future: assetMarkups,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            switch(_selectedIndex) {
+            switch(_selectedScreenIndex) {
               case 0: return ListView(
                 children: [
                   ...itemBuilder(snapshot.requireData),
@@ -298,10 +307,10 @@ class _CardSamplesState extends State<CardSamples> {
                   renderCardOrErrorCard(placeMarkup, preview: preview, topBar: topBar),
                 ],
               );
-              case 1: return itemBuilder(snapshot.requireData)[1];
+              case 1: return itemBuilder(snapshot.requireData)[_selectedAssetIndex];
               case 2: return AdaptiveMultipleCards(
                 title: 'Adaptive Demo',
-                markups: snapshot.requireData[assetsToUse.indexOf('assets/sampleMarkup/array_6440.json')],
+                markups: snapshot.requireData[_selectedAssetIndex],
                 postFunction: postUrl,
               );
               default: return const Placeholder();
@@ -336,11 +345,11 @@ class _CardSamplesState extends State<CardSamples> {
             label: 'Adaptive View'
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: _selectedScreenIndex,
         onTap: _onItemTapped,
       ),
       persistentFooterButtons: [
-        TextButton(
+        if (_selectedScreenIndex == 0) TextButton(
             onPressed: (){setState(() {showSource = !showSource;});},
             child: Text('Show source: ${showSource ? 'on' : 'off'}')
         ),
@@ -348,10 +357,15 @@ class _CardSamplesState extends State<CardSamples> {
             onPressed: (){setState(() {preview = !preview;});},
             child: Text('Preview mode: ${preview ? 'on' : 'off'}')
         ),
-        TextButton(
+        if (_selectedScreenIndex < 2) TextButton(
             onPressed: (){setState(() {topBar = !topBar;});},
             child: Text('Top bar mode: ${topBar ? 'on' : 'off'}')
         ),
+        if (_selectedScreenIndex > 0) DropdownButton(
+          value: _selectedAssetIndex,
+          items: assetDropdownItems,
+          onChanged: (newIndex) => setState(() {_selectedAssetIndex = newIndex!;}),
+        )
       ],
     );
   }

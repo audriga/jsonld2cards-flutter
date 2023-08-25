@@ -192,7 +192,6 @@ String orderStatusToVerbString(OrderStatus status) {
   return '';
 }
 
-// todo from and to string methods for this enum
 
 class Order {
 /*

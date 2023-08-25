@@ -55,6 +55,7 @@ class _TabbedMultiCardState extends State<TabbedMultiCard> {
 
       // todo this uses the fact that mustRenderCard will return a [MarkupCard] if topBar is false.
       // However this is quite unclean interface usage. Consider factoring out a method that always returns MarkupCard instead
+      // Or better yet, make it so that the top bar is part of the card.
       MarkupCard card = mustRenderCard(markup, postFunction: widget.postFunction, preview: widget.preview, topBar: false) as MarkupCard;
       if (card is TabbedMultiCard) {
         card = NestedMultiCard(
@@ -72,6 +73,7 @@ class _TabbedMultiCardState extends State<TabbedMultiCard> {
       child: DefaultTabController(
         length: widget.markupList.length,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             LayoutBuilder(
               builder: (context, constraints) {
