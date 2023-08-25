@@ -191,6 +191,7 @@ class _CardSamplesState extends State<CardSamples> {
   late Future<List<dynamic>> assetMarkups;
 
   List<String> assetsToUse = [
+    'assets/sampleMarkup/spiegel_homepage.json',
     'assets/sampleMarkup/spotifyEnriched.json',
     'assets/sampleMarkup/musicSchool.json',
     'assets/sampleMarkup/promotab.json',

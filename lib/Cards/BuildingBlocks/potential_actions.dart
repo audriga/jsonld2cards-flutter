@@ -71,7 +71,7 @@ class PotentialActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget button = const Placeholder();
+    Widget button = const SizedBox();
     String actionType = potentialAction['@type'];
     var actionTarget = potentialAction['target'];
     switch (actionType) {
@@ -180,6 +180,18 @@ class PotentialActionButton extends StatelessWidget {
           icon: const Icon(Icons.refresh),
         );
         return button;
+      }
+      case 'SearchAction': {
+        button = IconButton(
+          onPressed: preview ? () {} : () {
+            Uri? uriToLaunch = tryCastOrParse(actionTarget);
+            // todo should query for search... But this might be difficult to implement
+            if (uriToLaunch != null) {
+              launchUrl(uriToLaunch);
+            }
+          },
+          icon: const Icon(Icons.search),
+        );
       }
     }
     return button;
