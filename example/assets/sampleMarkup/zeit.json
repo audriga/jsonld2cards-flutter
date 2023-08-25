@@ -1,0 +1,146 @@
+[
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsMediaOrganization",
+    "@id": "https://www.zeit.de/index#publisher",
+    "name": "ZEIT ONLINE",
+    "url": "https://www.zeit.de/index",
+    "description": "",
+    "foundingDate": "",
+    "publishingPrinciples": "https://blog.zeit.de/fragen/2018/09/22/leitlinien-der-redaktionen-von-zeit-und-zeit-online/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://static.zeit.de/p/zeit.web/images/structured-data-publisher-logo-zon.png",
+      "width": 565,
+      "height": 60
+    },
+    "sameAs": [
+      "https://www.facebook.com/zeitonline/",
+      "https://www.instagram.com/zeit/",
+      "https://twitter.com/zeitonline",
+      "https://flipboard.com/@ZEITONLINE"
+    ],
+    "subOrganization": [
+      {
+        "@type": "Organization",
+        "@id": "https://studiengaenge.zeit.de/",
+        "name": "Hey Studium"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://jobs.zeit.de/",
+        "name": "ZEIT ONLINE Stellenmarkt"
+      }
+    ]
+  }
+,
+  {
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "isPartOf": {
+      "@type": "WebSite",
+      "@id": "https://www.zeit.de/index"
+    },
+    "primaryImageOfPage": {
+      "@type": "ImageObject",
+      "url": "https://img.zeit.de/sport/2023-08/basketball-wm-auftakt-2/wide__1300x731",
+      "width": 1300,
+      "height": 731,
+      "copyrightHolder": {"@type": "Organization", "name": "\u00a9\u00a0Yuichi Yamazaki/\u200bAFP/\u200bGetty Images"}
+    },
+    "breadcrumb": {
+      "@id": "#breadcrumb"
+    },
+    "publisher": {
+      "@id": "https://www.zeit.de/index#publisher"
+    }
+  }
+,
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": "#breadcrumb",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https://www.zeit.de/index",
+          "name": "ZEIT ONLINE"
+        }
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@id": "https://www.zeit.de/sport/index",
+          "name": "Sport"
+        }
+      },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https://www.zeit.de/news/index",
+          "name": "Schlagzeilen"
+        }
+      }
+    ]
+  }
+,
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "@id": "#article",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://www.zeit.de/sport/2023-08/basketball-wm-auftakt"
+    },
+    "author": [{
+      "@type": "Person",
+      "url": "https://www.zeit.de/autoren/V/Eric_Voigt/index",
+      "name": "Eric Voigt"
+    },{
+      "@type": "Person",
+      "url": "https://www.zeit.de/autoren/dpa",
+      "name": "dpa  "
+    }],
+    "datePublished": "2023-08-25T16:23:37+02:00",
+    "dateModified": "2023-08-25T16:23:37+02:00",
+    "headline": "Basketball-WM: Deutschland mit deutlichem Auftaktsieg gegen Japan",
+    "description": "Deutschland siegt im ersten Spiel der Basketball-WM klar gegen Japan, mit 25 Punkten ist NBA-Profi Moritz Wagner bester Werfer. Sein Bruder knickte im letzten Viertel um.",
+    "image": [
+      {
+        "@type": "ImageObject",
+        "url": "https://img.zeit.de/sport/2023-08/basketball-wm-auftakt-2/wide__1280x720",
+        "width": 1280,
+        "height": 720,
+        "copyrightHolder": {"@type": "Organization", "name": "\u00a9\u00a0Yuichi Yamazaki/\u200bAFP/\u200bGetty Images"}
+      },
+      {
+        "@type": "ImageObject",
+        "url": "https://img.zeit.de/sport/2023-08/basketball-wm-auftakt-2/standard__1120x840",
+        "width": 1120,
+        "height": 840,
+        "copyrightHolder": {"@type": "Organization", "name": "\u00a9\u00a0Yuichi Yamazaki/\u200bAFP/\u200bGetty Images"}
+      },
+      {
+        "@type": "ImageObject",
+        "url": "https://img.zeit.de/sport/2023-08/basketball-wm-auftakt-2/square__960x960",
+        "width": 960,
+        "height": 960,
+        "copyrightHolder": {"@type": "Organization", "name": "\u00a9\u00a0Yuichi Yamazaki/\u200bAFP/\u200bGetty Images"}
+      }
+    ],
+    "keywords": "Basketball-Nationalmannschaft, Basketball, Japan, NBA, Moritz Wagner, Basketball-Weltmeisterschaft, Deutschland, Okinawa, Auftaktspiel",
+    "isAccessibleForFree": "True",
+    "hasPart": {
+      "@type": "WebPageElement",
+      "isAccessibleForFree": "True",
+      "cssSelector": "main .article-page"
+    },
+    "publisher": {
+      "@id": "https://www.zeit.de/index#publisher"
+    }
+  ,
+    "articleBody": "Die deutschen Basketballer sind mit einem deutlichen Sieg in die Weltmeisterschaft gestartet. Das Team um Kapitän Dennis Schröder gewann in Okinawa gegen den Co-Gastgeber Japan mit 81:63 (53:31) und machte damit einen ersten Schritt Richtung Zwischenrunde. Das Duell zwischen dem EM-Dritten und den körperlich komplett unterlegenen Japanern war schon zur Halbzeit entschieden. Bester Werfer der Deutschen war Moritz Wagner mit 25 Punkten. Grund zur Sorge bereitete jedoch sein Bruder Franz Wagner. Der NBA-Profi von den Orlando Magic knickte im vierten Viertel mit dem linken Fuß um und wurde in der Schlussphase nicht mehr eingesetzt. Wie schwer die Verletzung des neben Schröder wichtigsten Spielers im deutschen Team ist, blieb erst einmal unklar. EM-Dritter gegen Olympia-Dritten Im zweiten Spiel der Vorrunde trifft die Mannschaft von Trainer Gordon Herbert auf Mitfavorit Australien (Sonntag, 10.30 Uhr). Der Olympia-Dritte setzte sich im ersten Spiel der Gruppe E mit 98:72 (45:40) gegen Finnland durch. Zum Abschluss der Gruppenphase trifft Deutschland dann auf die Finnen (Dienstag, 9.30 Uhr). Nur die beiden besten Teams der Gruppe erreichen die Zwischenrunde, die ebenfalls im japanischen Okinawa stattfindet."
+  }
+]

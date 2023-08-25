@@ -24,7 +24,7 @@ class UriImage extends StatelessWidget {
     this.repeat = ImageRepeat.noRepeat,
     this.matchTextDirection = false,
     this.filterQuality = FilterQuality.low,
-    // todo fallbackwidget
+    this.errorWidget,
   });
 
   final dynamic content;
@@ -38,6 +38,8 @@ class UriImage extends StatelessWidget {
   final Color? color;
   final BlendMode? colorBlendMode;
   final FilterQuality filterQuality;
+  /// Widget displayed while the target failed loading.
+  final LoadingErrorWidgetBuilder? errorWidget;
 
 
   @override
@@ -85,14 +87,24 @@ class UriImage extends StatelessWidget {
           repeat: repeat,
           matchTextDirection: matchTextDirection,
           filterQuality: filterQuality,
-          errorWidget: attemptToProxy ? proxiedImage : null,
+          errorWidget: attemptToProxy ? proxiedImage : errorWidget,
         );
       } else {
-        throw FormatException('Unexpected scheme: ${jsonImageUri.scheme}', content);
+        var unexpectedSchemeError = FormatException('Unexpected scheme: ${jsonImageUri.scheme}', content);
+        if (errorWidget != null) {
+          return errorWidget!(context, content, unexpectedSchemeError);
+        } else {
+          throw unexpectedSchemeError;
+        }
       }
     } else {
       //Unknown scheme
-      throw FormatException('Content is not a uri', content);
+      var notAnUriError = FormatException('Content is not a uri', content);
+      if (errorWidget != null) {
+        return errorWidget!(context, content, notAnUriError);
+      } else {
+        throw notAnUriError;
+      }
     }
   }
 

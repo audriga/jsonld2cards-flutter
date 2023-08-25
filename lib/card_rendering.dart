@@ -122,6 +122,10 @@ Widget renderCardMulti(
         markupList.firstWhere((element) => element is Map<String,dynamic> && element['@type'] == 'Organization')
     );
     orgLogo = organization.logo;
+  } else if (types.contains('NewsMediaOrganization')) {
+    organization = org_model.Organization.fromJson(
+        markupList.firstWhere((element) => element is Map<String,dynamic> && element['@type'] == 'NewsMediaOrganization')
+    );
   }
 
   // Removing things we don't want to render in the card
@@ -167,6 +171,8 @@ List<dynamic> removeMarkupClutter(List<dynamic> markupList) {
   List<String> elementsToRemove = [
     // Used for icon only, not in rendered card
     'Organization',
+    // Sub-type of Organization
+    'NewsMediaOrganization',
     // WebSite ignore for now
     'WebSite',
     // BreadcrumbList for path based backend

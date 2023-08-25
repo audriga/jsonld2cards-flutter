@@ -33,6 +33,9 @@ class AdaptiveMultipleCards extends StatelessWidget {
       organization = Organization.fromJson(markups.firstWhere((element) => element['@type'] == 'Organization'));
       orgLogo = organization.logo;
       // markups.removeWhere((element) => element['@type'] == 'Organization');
+    } else if (types.contains('NewsMediaOrganization')) {
+      organization = Organization.fromJson(markups.firstWhere((element) => element['@type'] == 'NewsMediaOrganization'));
+      orgLogo = organization.logo;
     }
     if (orgLogo != null) {
       orgLogoWidget = Padding(

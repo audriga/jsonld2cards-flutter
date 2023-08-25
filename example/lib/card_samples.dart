@@ -171,21 +171,6 @@ class CardSamples extends StatefulWidget {
   "name": "Empire State Building"
 }''';
 
-
-  /*
-  			{{ # departureDate }}
-			<div>
-				{{ departureDate }}
-			</div>
-			{{ / departureDate }}
-
-						{{ # arrivalDate }}
-			<div>
-				{{ arrivalDate }}
-			</div>
-			{{ / arrivalDate }}
-   */
-
   @override
   State<CardSamples> createState() => _CardSamplesState();
 }
@@ -220,6 +205,7 @@ class _CardSamplesState extends State<CardSamples> {
     'assets/sampleMarkup/array.json',
     'assets/sampleMarkup/flight_multi_passenger.json',
     'assets/sampleMarkup/flight_multi_segment.json',
+    'assets/sampleMarkup/zeit.json',
   ];
 
   List<DropdownMenuItem<int>> get assetDropdownItems {

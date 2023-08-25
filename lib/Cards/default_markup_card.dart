@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
+import 'package:jsonld2cards/Util/conversion.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +17,7 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
     required this.postFunction,
     this.preview = false,
   });
+
 
   final Map<String, dynamic> markup;
   final PostFunction postFunction;
@@ -48,12 +50,22 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
       try {
         if (image is List<dynamic>) {
           // For array of URLs, unconventional, but used by zeit
-          leadingImage = UriImage(
-            content: image.first,
-            height: 32.0,
-            width:  32.0,
-            fit: BoxFit.scaleDown,
-          );
+          Uri? imageUri;
+          if (image.first is Map<String, dynamic>) {
+            imageUri = tryCastOrParse(image.first['contentUrl'] ?? image.first['url']);
+          } else {
+            imageUri = tryCastOrParse(image.first);
+          }
+          if (imageUri != null) {
+            leadingImage = UriImage(
+              content: imageUri,
+              height: 32.0,
+              width:  32.0,
+              fit: BoxFit.scaleDown,
+              errorWidget: imageErrorWidget,
+            );
+          }
+
         } else if (image is Map<String, dynamic>) {
           // image is an ImageObject (https://schema.org/ImageObject)
           var contentUrl = image['contentUrl'] ?? image['url'];
@@ -62,15 +74,20 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
             height: 32.0,
             width:  32.0,
             fit: BoxFit.scaleDown,
+            errorWidget: imageErrorWidget,
           );
         } else {
           // Probably URL, so flutter type of String or URI
-          leadingImage = UriImage(
-            content: image,
-            height: 32.0,
-            width:  32.0,
-            fit: BoxFit.scaleDown,
-          );
+          var imageAsUri = tryCastOrParse(image);
+          if (imageAsUri != null ) {
+            leadingImage = UriImage(
+              content: image,
+              height: 32.0,
+              width:  32.0,
+              fit: BoxFit.scaleDown,
+              errorWidget: imageErrorWidget,
+            );
+          }
         }
       } on FormatException catch (_) {
         // Tried giving something that isn't a uri or can't be parsed to a uri to UriImage.
@@ -107,12 +124,21 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
       if (imageUrls.length > 1) {
         developer.log(
           'Got more image urls than expected:\n$imageUrls',
-          name: 'jsonld2cards.card',
+          name: 'jsonld2cards.default_card',
         );
       }
       if (imageUrls.isNotEmpty) return imageUrls.first.attributes['content'];
     }
     return null;
+  }
+
+  Widget imageErrorWidget(context, url, error) {
+    developer.log(
+      'Error rendering leading Image',
+      name: 'jsonld2cards.default_card',
+      error: error,
+    );
+    return const SizedBox(width: 0,);
   }
 
   @override
