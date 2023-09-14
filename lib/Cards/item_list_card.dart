@@ -30,12 +30,16 @@ class ItemListCard extends StatelessWidget implements MarkupCard {
         var item = element.item;
         if (item != null) {
           internalMarkup.add(item.toJson());
+        } else if (element.url != null) {
+
         }
       } else if (element is Map<String, dynamic>) {
         internalMarkup.add(element);
       }
     }
 
+    if (internalMarkup.isEmpty) throw FormatException('Could not get any valid internal cards!', internalMarkup);
+    // todo zeit homepage won't work
     return NestedMultiCard(markupList: internalMarkup,
       postFunction: postFunction,
       preview: preview,);

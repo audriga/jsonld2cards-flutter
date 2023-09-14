@@ -1,0 +1,499 @@
+[
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsMediaOrganization",
+    "@id": "https://www.zeit.de/index#publisher",
+    "name": "ZEIT ONLINE",
+    "url": "https://www.zeit.de/index",
+    "description": "",
+    "foundingDate": "",
+    "publishingPrinciples": "https://blog.zeit.de/fragen/2018/09/22/leitlinien-der-redaktionen-von-zeit-und-zeit-online/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://static.zeit.de/p/zeit.web/images/structured-data-publisher-logo-zon.png",
+      "width": 565,
+      "height": 60
+    },
+    "sameAs": [
+      "https://www.facebook.com/zeitonline/",
+      "https://www.instagram.com/zeit/",
+      "https://twitter.com/zeitonline",
+      "https://flipboard.com/@ZEITONLINE"
+    ],
+    "subOrganization": [
+      {
+        "@type": "Organization",
+        "@id": "https://studiengaenge.zeit.de/",
+        "name": "Hey Studium"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://jobs.zeit.de/",
+        "name": "ZEIT ONLINE Stellenmarkt"
+      }
+    ]
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "publisher": {
+      "@id": "https://www.zeit.de/index#publisher"
+    }
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://www.zeit.de/gesellschaft/2023-08/bergkarabach-armenien-aserbaidschan-hunger-tod"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://www.zeit.de/politik/ausland/ukraine-krieg-russland-newsblog-live"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "url": "https://www.zeit.de/politik/2023-08/jewgeni-prigoschin-tod-flugzeugabsturz-jet"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "url": "https://www.zeit.de/wissen/umwelt/2023-08/soziale-ungleichheit-hitze-stadtklima-beton-klima-anpassung"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "https://www.zeit.de/wirtschaft/2023-08/immobilien-hausbau-zinsen-insolvenzen-baubranche"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "https://www.zeit.de/wissen/umwelt/2023-06/temperatur-meere-ozeane-nordatlantik-el-nino"
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "url": "https://www.zeit.de/arbeit/2023-08/vermittlung-arbeitslosen-jobcenter-fiedler-junge-menschen-arbeitsmarkt"
+      },
+      {
+        "@type": "ListItem",
+        "position": 8,
+        "url": "https://www.zeit.de/zeit-magazin/2023/36/kraftsport-frauen-fitness-training"
+      },
+      {
+        "@type": "ListItem",
+        "position": 9,
+        "url": "https://www.zeit.de/zeit-magazin/leben/2023-08/ukrainische-gefluechtete-krieg-fernbeziehung-starnberger-see"
+      },
+      {
+        "@type": "ListItem",
+        "position": 10,
+        "url": "https://www.zeit.de/kultur/2023-08/streit-ampel-koalition-christian-lindner-lisa-paus"
+      },
+      {
+        "@type": "ListItem",
+        "position": 11,
+        "url": "https://www.zeit.de/zeit-magazin/familie/2023-08/single-eltern-kinder-dating"
+      },
+      {
+        "@type": "ListItem",
+        "position": 12,
+        "url": "https://www.zeit.de/kultur/film/2023-08/star-wars-ahsoka-disney-plus-da-schau-an"
+      },
+      {
+        "@type": "ListItem",
+        "position": 13,
+        "url": "https://www.zeit.de/sport/2023-08/spanien-sportbehoerde-suspendierung-luis-rubiales-beantragt"
+      },
+      {
+        "@type": "ListItem",
+        "position": 14,
+        "url": "https://www.zeit.de/sport/2023-08/fussball-bundesliga-vorschau-bayern-bier"
+      },
+      {
+        "@type": "ListItem",
+        "position": 15,
+        "url": "https://www.zeit.de/politik/deutschland/2023-08/kindergrundsicherung-ampel-olaf-scholz"
+      },
+      {
+        "@type": "ListItem",
+        "position": 16,
+        "url": "https://www.zeit.de/politik/deutschland/2023-08/betreuungsrecht-marco-buschmann-unterhalt"
+      },
+      {
+        "@type": "ListItem",
+        "position": 17,
+        "url": "https://www.zeit.de/kultur/2023-08/london-british-museum-direktor-tritt-zurueck"
+      },
+      {
+        "@type": "ListItem",
+        "position": 18,
+        "url": "https://www.zeit.de/zeit-magazin/familie/2023-08/jostein-gaarder-schriftsteller-klimawandel-enkelkinder-verantwortung"
+      },
+      {
+        "@type": "ListItem",
+        "position": 19,
+        "url": "https://www.zeit.de/gesundheit/zeit-doctor/2023-08/sex-wechseljahren-frauen-libido-hormone-psyche"
+      },
+      {
+        "@type": "ListItem",
+        "position": 20,
+        "url": "https://www.zeit.de/zett/liebe-sex/2022-10/dating-green-flags-beziehungen-interview"
+      },
+      {
+        "@type": "ListItem",
+        "position": 21,
+        "url": "https://www.zeit.de/campus/2021-12/eltern-kind-beziehung-pyschologie-erwachsene"
+      },
+      {
+        "@type": "ListItem",
+        "position": 22,
+        "url": "https://www.zeit.de/2023/36/jeder-schreibt-fuer-sich-allein-dominik-graf-schriftsteller-nationalsozialismus"
+      },
+      {
+        "@type": "ListItem",
+        "position": 23,
+        "url": "https://www.zeit.de/sport/2023-08/basketball-wm-auftakt"
+      },
+      {
+        "@type": "ListItem",
+        "position": 24,
+        "url": "https://www.zeit.de/2023/36/queere-kinder-anfeindungen-agressionen"
+      },
+      {
+        "@type": "ListItem",
+        "position": 25,
+        "url": "https://www.zeit.de/politik/2023-08/kindergrundsicherung-anette-stein-kinderarmut-was-jetzt-livesendung"
+      },
+      {
+        "@type": "ListItem",
+        "position": 26,
+        "url": "https://www.zeit.de/zeit-magazin/wochenmarkt/2023-08/buchteln-brombeeren-rohrnudeln-vanille-rezept"
+      },
+      {
+        "@type": "ListItem",
+        "position": 27,
+        "url": "https://www.zeit.de/politik/ausland/2023-08/russland-jewgeni-prigoschin-wladimir-putin-reaktionen"
+      },
+      {
+        "@type": "ListItem",
+        "position": 28,
+        "url": "https://www.zeit.de/politik/ausland/2023-08/donald-trump-anklage-gefaengnis-atlanta"
+      },
+      {
+        "@type": "ListItem",
+        "position": 29,
+        "url": "https://www.zeit.de/wirtschaft/2023-08/kinderarmut-kindergrundsicherung-christian-lindner-migration-soziale-ungleichheit"
+      },
+      {
+        "@type": "ListItem",
+        "position": 30,
+        "url": "https://www.zeit.de/politik/ausland/2023-08/nord-stream-sabotage-ukraine-turkstream"
+      },
+      {
+        "@type": "ListItem",
+        "position": 31,
+        "url": "https://www.zeit.de/mobilitaet/2023-08/zugverkehr-deutsche-bahn-puenktlichkeit"
+      },
+      {
+        "@type": "ListItem",
+        "position": 32,
+        "url": "https://www.zeit.de/geld/2023-08/leasing-finanzierung-raten-finanzen-fuer-faule"
+      },
+      {
+        "@type": "ListItem",
+        "position": 33,
+        "url": "https://www.zeit.de/geld/2023-08/teilzeit-rechner-gehalt-netto-arbeitszeit-interaktiv"
+      },
+      {
+        "@type": "ListItem",
+        "position": 34,
+        "url": "https://www.zeit.de/geld/2023-08/sportwetten-fussball-gluecksspiel-anbieter-spielsucht"
+      },
+      {
+        "@type": "ListItem",
+        "position": 35,
+        "url": "https://www.zeit.de/geld/2023-07/geld-beziehung-partnerschaft-regeln-michael-mary"
+      },
+      {
+        "@type": "ListItem",
+        "position": 36,
+        "url": "https://www.zeit.de/zeit-magazin/wochenmarkt/2023-08/tomatentarte-senf-rezept-wochenmarkt"
+      },
+      {
+        "@type": "ListItem",
+        "position": 37,
+        "url": "https://www.zeit.de/zeit-magazin/wochenmarkt/2023-08/pastasalat-pistazien-pesto-burrata-erbsen-rezept-resteessen-wochenmarkt"
+      },
+      {
+        "@type": "ListItem",
+        "position": 38,
+        "url": "https://www.zeit.de/zeit-magazin/wochenmarkt/2023-08/karotten-quark-kurkuma-rezept-wochenmarkt"
+      },
+      {
+        "@type": "ListItem",
+        "position": 39,
+        "url": "https://www.zeit.de/zeit-magazin/wochenmarkt/2023-08/chinesische-tomaten-ei-nudelsuppe-rezept-wochenmarkt"
+      },
+      {
+        "@type": "ListItem",
+        "position": 40,
+        "url": "https://www.zeit.de/zeit-magazin/wochenmarkt/2023-08/chatschapuri-pizza-georgien-rezept-wochenmarkt"
+      },
+      {
+        "@type": "ListItem",
+        "position": 41,
+        "url": "https://www.zeit.de/politik/2023-08/luis-rubiales-ruecktritt-kuss-skandal-nachrichtenpodcast"
+      },
+      {
+        "@type": "ListItem",
+        "position": 42,
+        "url": "https://www.zeit.de/politik/ausland/2023-08/russland-soeldner-dekret-wladimir-putin-treueeid"
+      },
+      {
+        "@type": "ListItem",
+        "position": 43,
+        "url": "https://www.zeit.de/2023/24/axel-springer-ben-witter-portrait"
+      },
+      {
+        "@type": "ListItem",
+        "position": 44,
+        "url": "https://www.zeit.de/zeit-magazin/2023/24/zeitmagazin-cover-best-of-stars"
+      },
+      {
+        "@type": "ListItem",
+        "position": 45,
+        "url": "https://www.zeit.de/gesellschaft/2023-08/buch-makkabaeer-juden-bibelpodcast"
+      },
+      {
+        "@type": "ListItem",
+        "position": 46,
+        "url": "https://www.zeit.de/gesellschaft/zeitgeschehen/2023-08/hawaii-maui-klage-stromversorger-feuerkatastrophe"
+      },
+      {
+        "@type": "ListItem",
+        "position": 47,
+        "url": "https://www.zeit.de/wirtschaft/2023-08/nrw-windkraft-mindestabstand"
+      },
+      {
+        "@type": "ListItem",
+        "position": 48,
+        "url": "https://www.zeit.de/wirtschaft/unternehmen/2023-08/deutsche-unternehmer-geschaeftsklima-ifo"
+      },
+      {
+        "@type": "ListItem",
+        "position": 49,
+        "url": "https://www.zeit.de/zett/liebe-sex/2023-08/trennung-anfang-30-famielienplanung-aufruf"
+      },
+      {
+        "@type": "ListItem",
+        "position": 50,
+        "url": "https://www.zeit.de/zett/2023-08/selbstbestimmungsgesetz-trans-frauen-sauna-debatte"
+      },
+      {
+        "@type": "ListItem",
+        "position": 51,
+        "url": "https://www.zeit.de/zett/2023-08/psilocybin-depressionen-heilung-therapie-psychedelika"
+      },
+      {
+        "@type": "ListItem",
+        "position": 52,
+        "url": "https://www.zeit.de/2023/36/hollywood-streik-schauspieler-bezahlung-ki"
+      },
+      {
+        "@type": "ListItem",
+        "position": 53,
+        "url": "https://www.zeit.de/2023/36/politische-talkshows-vielfalt-ard-zdf-kritik"
+      },
+      {
+        "@type": "ListItem",
+        "position": 54,
+        "url": "https://www.zeit.de/kultur/film/2023-08/the-inspection-us-army-homosexualitaet-film"
+      },
+      {
+        "@type": "ListItem",
+        "position": 55,
+        "url": "https://www.zeit.de/zeit-geschichte/2023/04/truemmerfrauen-mythos-nachkriegszeit-berlin-sbz"
+      },
+      {
+        "@type": "ListItem",
+        "position": 56,
+        "url": "https://www.zeit.de/wissen/umwelt/2023-08/erderwaermung-ozenane-temperatur-hitze-klimakrise"
+      },
+      {
+        "@type": "ListItem",
+        "position": 57,
+        "url": "https://www.zeit.de/wissen/2023-08/indisches-mondfahrzeug-analysiert-bodenbeschaffenheit"
+      },
+      {
+        "@type": "ListItem",
+        "position": 58,
+        "url": "https://www.zeit.de/gesundheit/2023-08/rsv-virus-impfstoff-babys-eu-zulassung"
+      },
+      {
+        "@type": "ListItem",
+        "position": 59,
+        "url": "https://www.zeit.de/gesundheit/2023-08/gehirn-computer-schnittstellen-ki-sprache-schlaganfall"
+      },
+      {
+        "@type": "ListItem",
+        "position": 60,
+        "url": "https://www.zeit.de/2023/36/fast-food-gesundheit-darm-immunsystem-forschung"
+      },
+      {
+        "@type": "ListItem",
+        "position": 61,
+        "url": "https://www.zeit.de/digital/2023-08/tiktok-eu-personalisierung-algorithmus-dsa"
+      },
+      {
+        "@type": "ListItem",
+        "position": 62,
+        "url": "https://www.zeit.de/digital/2023-08/gamescom-2023-koeln-gaming-branche"
+      },
+      {
+        "@type": "ListItem",
+        "position": 63,
+        "url": "https://www.zeit.de/digital/internet/2023-08/kanada-justin-trudeau-facebook-gesetzesentwurf"
+      },
+      {
+        "@type": "ListItem",
+        "position": 64,
+        "url": "https://www.zeit.de/sport/2023-08/bundesarbeitsgericht-chat-kuendigung-urteil"
+      },
+      {
+        "@type": "ListItem",
+        "position": 65,
+        "url": "https://www.zeit.de/arbeit/2023-08/fleischkonsum-gastronomie-huhn-schlachten-wander-alblas"
+      },
+      {
+        "@type": "ListItem",
+        "position": 66,
+        "url": "https://www.zeit.de/2023/36/befoerderung-chefin-einsamkeit-kommunikation"
+      },
+      {
+        "@type": "ListItem",
+        "position": 67,
+        "url": "https://www.zeit.de/zeit-magazin/2023/36/reise-russland-beziehung-liebeskolumne"
+      },
+      {
+        "@type": "ListItem",
+        "position": 68,
+        "url": "https://www.zeit.de/zeit-magazin/2023/36/martin-suter-ratschlaege-leben"
+      },
+      {
+        "@type": "ListItem",
+        "position": 69,
+        "url": "https://www.zeit.de/zeit-magazin/wochenmarkt/2023-08/wein-sommer-hitze-weinkolumne"
+      },
+      {
+        "@type": "ListItem",
+        "position": 70,
+        "url": "https://www.zeit.de/campus/2023-08/social-media-urlaub-fotos-instagram-tipps"
+      },
+      {
+        "@type": "ListItem",
+        "position": 71,
+        "url": "https://www.zeit.de/campus/2020-05/konsum-haushalt-kleidung-besitz-verzicht"
+      },
+      {
+        "@type": "ListItem",
+        "position": 72,
+        "url": "https://www.zeit.de/campus/2023-08/geld-verschwendet-18-geburtstag-vermoegen-erbe-umfrage"
+      },
+      {
+        "@type": "ListItem",
+        "position": 73,
+        "url": "https://www.zeit.de/2023-08/samy-deluxe-hiphop-wochenende-tipps-podcast"
+      },
+      {
+        "@type": "ListItem",
+        "position": 74,
+        "url": "https://www.zeit.de/2023/36/sturm-reichstag-berlin-beteiligte-motive"
+      },
+      {
+        "@type": "ListItem",
+        "position": 75,
+        "url": "https://www.zeit.de/mobilitaet/2023-08/iaa-letzte-generation-fridays-for-future-greenpeace-kein-infostand"
+      },
+      {
+        "@type": "ListItem",
+        "position": 76,
+        "url": "https://www.zeit.de/mobilitaet/2023-08/autokauf-tesla-vw-golf-europa-trends"
+      },
+      {
+        "@type": "ListItem",
+        "position": 77,
+        "url": "https://www.zeit.de/mobilitaet/2023-08/verkehr-autobahngesellschaft-michael-guentner-volker-wissing"
+      },
+      {
+        "@type": "ListItem",
+        "position": 78,
+        "url": "https://www.zeit.de/hamburg/2023-08/josef-ellers-harry-potter-darsteller-theater"
+      },
+      {
+        "@type": "ListItem",
+        "position": 79,
+        "url": "https://www.zeit.de/hamburg/2023-08/renate-herre-carlsen-verlag-harry-potter-erfolg"
+      },
+      {
+        "@type": "ListItem",
+        "position": 80,
+        "url": "https://www.zeit.de/sport/2023-08/spanien-luis-rubiales-reaktionen-fussballer-borja-iglesias"
+      },
+      {
+        "@type": "ListItem",
+        "position": 81,
+        "url": "https://www.zeit.de/sport/2023-08/luis-rubiales-ruecktritt-abgelehnt-spanien-fussballverband"
+      },
+      {
+        "@type": "ListItem",
+        "position": 82,
+        "url": "https://www.zeit.de/sport/2023-08/kuss-wm-fifa"
+      },
+      {
+        "@type": "ListItem",
+        "position": 83,
+        "url": "https://www.zeit.de/news/2023-08/25/handball-star-karabatic-hoert-auf-wird-meine-letzte-saison"
+      },
+      {
+        "@type": "ListItem",
+        "position": 84,
+        "url": "https://www.zeit.de/news/2023-08/25/wechsel-offiziell-fc-bayern-holt-torhueter-peretz"
+      },
+      {
+        "@type": "ListItem",
+        "position": 85,
+        "url": "https://www.zeit.de/news/2023-08/25/zugehoerigkeit-zu-sorben-gebiet-fuer-zwei-orte-aufgehoben"
+      },
+      {
+        "@type": "ListItem",
+        "position": 86,
+        "url": "https://www.zeit.de/news/2023-08/25/kajak-vierer-holt-wm-gold-strecke-runtergerockt"
+      },
+      {
+        "@type": "ListItem",
+        "position": 87,
+        "url": "https://www.zeit.de/news/2023-08/25/knie-op-bei-wolfsburgs-u21-nationalspieler-fischer"
+      },
+      {
+        "@type": "ListItem",
+        "position": 88,
+        "url": "https://www.zeit.de/news/2023-08/25/gold-fuer-kajak-vierer-bei-heim-wm-in-duisburg"
+      },
+      {
+        "@type": "ListItem",
+        "position": 89,
+        "url": "https://www.zeit.de/news/2023-08/25/naechste-vertragsverlaengerung-auch-meffert-bleibt-beim-hsv"
+      },
+      {
+        "@type": "ListItem",
+        "position": 90,
+        "url": "https://www.zeit.de/news/2023-08/25/starkregen-und-sturmboeen-in-berlin-und-brandenburg-moeglich"
+      }
+    ]
+  }
+]

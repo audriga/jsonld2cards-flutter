@@ -6,6 +6,7 @@ import 'package:jsonld2cards/card_viewer.dart';
 
 import 'Util/globals.dart';
 import 'Util/network.dart';
+import 'external_card_viewer.dart';
 import 'path_card_viewer.dart';
 
 void main() {
@@ -57,6 +58,10 @@ class MyApp extends StatelessWidget {
         GoRoute(
           path: CardViewer.routeName,
           builder: cardViewerBuilder
+        ),
+        GoRoute(
+          path: ExternalCardViewer.routeName,
+          builder: externalViewerBuilder
         ),
         GoRoute(
           path: '/card_getter',
@@ -159,5 +164,14 @@ class MyApp extends StatelessWidget {
           )
       ),
     );
+  }
+
+
+  Widget externalViewerBuilder(BuildContext context, GoRouterState state) {
+    developer.log('stateQueryParams: ${state.uri.queryParameters.toString()} (${state.uri.queryParameters.runtimeType})',
+      name: 'card_viewer_standalone.routing',
+    );
+
+    return ExternalCardViewer(source: state.uri.queryParameters['source'], postFunction: postUrl);
   }
 }
