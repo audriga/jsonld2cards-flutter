@@ -28,7 +28,7 @@ curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 4);
 curl_setopt($ch, CURLOPT_BUFFERSIZE, 12800);
 curl_setopt($ch, CURLOPT_NOPROGRESS, false);
-curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36');
+curl_setopt($ch, CURLOPT_USERAGENT, 'curl/7.81.0');
 curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, function($DownloadSize, $Downloaded, $UploadSize, $Uploaded) { return ($Downloaded > 1024 * 4096) ? 1 : 0; } ); # max 4096kb
 
 $version = curl_version();
