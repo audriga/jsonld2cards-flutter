@@ -171,7 +171,12 @@ class MyApp extends StatelessWidget {
     developer.log('stateQueryParams: ${state.uri.queryParameters.toString()} (${state.uri.queryParameters.runtimeType})',
       name: 'card_viewer_standalone.routing',
     );
+    var singleArg = state.uri.queryParameters['single'];
+    bool single = false;
+    if (singleArg != null) {
+      single = bool.tryParse(singleArg) ?? false;
+    }
 
-    return ExternalCardViewer(source: state.uri.queryParameters['source'], postFunction: postUrl);
+    return ExternalCardViewer(source: state.uri.queryParameters['source'], single: single, postFunction: postUrl);
   }
 }

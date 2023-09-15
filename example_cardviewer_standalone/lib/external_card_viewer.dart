@@ -2,9 +2,11 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:html2jsonld_dart/html2jsonld_dart.dart' as ht2j;
+import 'package:jsonld2cards/card_rendering.dart';
 import 'dart:developer' as developer;
+
+import 'package:jsonld2cards/card_viewer.dart';
 
 
 
@@ -12,6 +14,7 @@ class ExternalCardViewer extends StatefulWidget {
   const ExternalCardViewer({
     super.key,
     this.source,
+    this.single = false,
     this.audrigaAuthority = 'www.audriga.eu',
     this.phpPathBase = '/test/data/',
     required this.postFunction,
@@ -20,6 +23,9 @@ class ExternalCardViewer extends StatefulWidget {
   final String audrigaAuthority;
   final String phpPathBase;
   final String? source;
+  /// If set, json should be rendered as a single card.
+  /// If false, will render it using  [AdaptiveMultipleCards] feed-view
+  final bool single;
   final PostFunction postFunction;
 
   static const String routeName = '/external';
@@ -44,6 +50,7 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
       return FutureCards(
         title: title,
         futureMarkup: futureMarkup,
+        single: widget.single,
         postFunction: widget.postFunction,
     );
 
@@ -65,7 +72,7 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
     try {
       // todo maybe use other library function that gives back more
       String? extractedSchema = await ht2j.SchemaOrg().extractJsonLdFromUrl(sourceUri.toString());
-      http.Response response = await http.get(sourceUri);
+      // http.Response response = await http.get(sourceUri);
       developer.log(
         'Requested markup at $sourceUri and got schema ($extractedSchema)',
         name: 'jsonld2cards.external_viewer',
@@ -91,12 +98,13 @@ class FutureCards extends StatelessWidget {
 
   const FutureCards({
     super.key,
-    this.title, required this.futureMarkup, required this.postFunction,
+    this.title, required this.futureMarkup, this.single = false, required this.postFunction,
   });
 
   final String? title;
   final Future<String?> futureMarkup;
-  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
+  final bool single;
+  final PostFunction postFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -107,11 +115,14 @@ class FutureCards extends StatelessWidget {
           String? markupString = snapshot.data;
           if (markupString != null && markupString.isNotEmpty) {
             var decodedMarkup = tryDecode(markupString);
-              if (decodedMarkup is List<dynamic>) {
-                return AdaptiveMultipleCards(title: title, markups: decodedMarkup, postFunction: postFunction);
-              } else if (decodedMarkup is Map<String, dynamic>) {
-                return AdaptiveMultipleCards(title: title, markups: [decodedMarkup], postFunction: postFunction);
-              }
+            if (single) {
+              return singleCardDisplay(decodedMarkup);
+            }
+            if (decodedMarkup is List<dynamic>) {
+              return AdaptiveMultipleCards(title: title, markups: decodedMarkup, postFunction: postFunction);
+            } else if (decodedMarkup is Map<String, dynamic>) {
+              return AdaptiveMultipleCards(title: title, markups: [decodedMarkup], postFunction: postFunction);
+            }
             return const Text('Card has unexpected format');
           } else {
             return const Text('Empty Response…');
@@ -140,6 +151,24 @@ class FutureCards extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
+      },
+    );
+  }
+
+  LayoutBuilder singleCardDisplay(decodedMarkup) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return constraints.maxWidth > 400
+            ? Center(
+          child: ClipRect(
+            child: SizedBox(
+              width: 400,
+              child: renderCard(decodedMarkup, postFunction: postFunction) ??
+                displayErrorMessage('Could not load card')
+            ),
+          ),
+        )
+            : renderCard(decodedMarkup, postFunction: postFunction) ?? displayErrorMessage('Could not load card');
       },
     );
   }
