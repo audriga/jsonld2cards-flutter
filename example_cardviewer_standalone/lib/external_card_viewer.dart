@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:example_cardviewer_standalone/single_card_display.dart';
+import 'package:http/http.dart' as http;
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
@@ -74,7 +75,6 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
       // todo maybe use other library function that gives back more
       String? extractedSchema =
           await ht2j.SchemaOrg().extractJsonLdFromUrl(sourceUri.toString());
-      // http.Response response = await http.get(sourceUri);
       developer.log(
         'Requested markup at $sourceUri and got schema ($extractedSchema)',
         name: 'jsonld2cards.external_viewer',

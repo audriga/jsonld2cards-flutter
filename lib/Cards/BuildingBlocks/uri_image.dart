@@ -68,15 +68,23 @@ class UriImage extends StatelessWidget {
           matchTextDirection: matchTextDirection,
           filterQuality: filterQuality,
         );
-      } else if (['http', 'https'].contains(jsonImageUri.scheme)) {
+      } else if (['http', 'https', ''].contains(jsonImageUri.scheme)) {
+
         imageUrl = jsonImageUri;
 
         bool attemptToProxy = false;
         if (kIsWeb && Uri.base.origin != imageUrl.origin) {
           attemptToProxy = true;
         }
+
+        String imageUrlString;
+        if (jsonImageUri.scheme == '') {
+          imageUrlString = 'https://${imageUrl.toString()}';
+        } else {
+          imageUrlString = imageUrl.toString();
+        }
         return CachedNetworkImage(
-          imageUrl: imageUrl.toString(),
+          imageUrl: imageUrlString,
           placeholder: placeholder,
           width: width,
           height: height,
