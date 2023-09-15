@@ -1,3 +1,4 @@
+import 'package:example_cardviewer_standalone/single_card_display.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
@@ -11,6 +12,7 @@ class PathCardViewer extends StatefulWidget {
   const PathCardViewer({
     super.key,
     this.cardPath,
+    this.single = false,
     this.liveLocationAuthority = 'www.audriga.eu',
     this.liveLocationPathBase = '/test/data/',
     required this.postFunction,
@@ -19,6 +21,9 @@ class PathCardViewer extends StatefulWidget {
   final String liveLocationAuthority;
   final String liveLocationPathBase;
   final String? cardPath;
+  /// If set, json should be rendered as a single card.
+  /// If false, will render it using  [AdaptiveMultipleCards] feed-view
+  final bool single;
   final PostFunction postFunction;
 
   static const String routeName = '/card_getter';
@@ -43,6 +48,7 @@ class _PathCardViewerState extends State<PathCardViewer> {
       return FutureCards(
         title: title,
         futureMarkup: futureMarkup,
+        single: widget.single,
         postFunction: widget.postFunction,
     );
 
@@ -88,11 +94,12 @@ class FutureCards extends StatelessWidget {
 
   const FutureCards({
     super.key,
-    this.title, required this.futureMarkup, required this.postFunction,
+    this.title, required this.futureMarkup, this.single = false, required this.postFunction,
   });
 
   final String? title;
   final Future<String?> futureMarkup;
+  final bool single;
   final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
 
   @override
@@ -104,11 +111,14 @@ class FutureCards extends StatelessWidget {
           String? markupString = snapshot.data;
           if (markupString != null && markupString.isNotEmpty) {
             var decodedMarkup = tryDecode(markupString);
-              if (decodedMarkup is List<dynamic>) {
-                return AdaptiveMultipleCards(title: title, markups: decodedMarkup, postFunction: postFunction);
-              } else if (decodedMarkup is Map<String, dynamic>) {
-                return AdaptiveMultipleCards(title: title, markups: [decodedMarkup], postFunction: postFunction);
-              }
+            if (single) {
+              return SingleCardDisplay(decodedMarkup: decodedMarkup, postFunction: postFunction,);
+            }
+            if (decodedMarkup is List<dynamic>) {
+              return AdaptiveMultipleCards(title: title, markups: decodedMarkup, postFunction: postFunction);
+            } else if (decodedMarkup is Map<String, dynamic>) {
+              return AdaptiveMultipleCards(title: title, markups: [decodedMarkup], postFunction: postFunction);
+            }
             return const Text('Card has unexpected format');
           } else {
             return const Text('Empty Response…');

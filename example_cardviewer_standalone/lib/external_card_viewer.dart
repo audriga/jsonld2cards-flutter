@@ -1,12 +1,10 @@
+import 'package:example_cardviewer_standalone/single_card_display.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:flutter/material.dart';
 import 'package:html2jsonld_dart/html2jsonld_dart.dart' as ht2j;
-import 'package:jsonld2cards/card_rendering.dart';
 import 'dart:developer' as developer;
-
-import 'package:jsonld2cards/card_viewer.dart';
 
 
 
@@ -116,7 +114,7 @@ class FutureCards extends StatelessWidget {
           if (markupString != null && markupString.isNotEmpty) {
             var decodedMarkup = tryDecode(markupString);
             if (single) {
-              return singleCardDisplay(decodedMarkup);
+              return SingleCardDisplay(decodedMarkup: decodedMarkup, postFunction: postFunction,);
             }
             if (decodedMarkup is List<dynamic>) {
               return AdaptiveMultipleCards(title: title, markups: decodedMarkup, postFunction: postFunction);
@@ -155,23 +153,7 @@ class FutureCards extends StatelessWidget {
     );
   }
 
-  LayoutBuilder singleCardDisplay(decodedMarkup) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        return constraints.maxWidth > 400
-            ? Center(
-          child: ClipRect(
-            child: SizedBox(
-              width: 400,
-              child: renderCard(decodedMarkup, postFunction: postFunction) ??
-                displayErrorMessage('Could not load card')
-            ),
-          ),
-        )
-            : renderCard(decodedMarkup, postFunction: postFunction) ?? displayErrorMessage('Could not load card');
-      },
-    );
-  }
 }
+
 
 
