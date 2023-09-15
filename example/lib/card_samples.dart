@@ -17,147 +17,6 @@ class CardSamples extends StatefulWidget {
 
   final void Function(ThemeMode useLightMode) handleBrightnessChange;
 
-  static const String emailMarkupActionGoto =
-      '{'
-      '  "@context": "http://schema.org",'
-      '  "@type": "EmailMessage",'
-      '  "description": "Watch the Avengers movie online",'
-      '  "potentialAction": {'
-      '    "@type": "ViewAction",'
-      '    "url": "https://watch-movies.com/?id=abc123",'
-      '    "name": "Watch"'
-      '  }'
-      '}';
-
-
-  static const String emailMarkupActionOneClick =
-      '{'
-      '  "@context": "http://schema.org",'
-      '  "@type": "EmailMessage",'
-      '  "potentialAction": {'
-      '    "@type": "ConfirmAction",'
-      '    "name": "Approve Expense",'
-      '    "handler": {'
-      '      "@type": "HttpActionHandler",'
-      '      "url": "https://myexpenses.com/approve?expenseId=abc123"'
-      '    }'
-      '  },'
-      '  "description": "Approval request for John\'s \$10.13 expense for office supplies"'
-      '}';
-
-
-  static const String emailMarkupReservationFlightBasic =
-      '{'
-      '  "@context": "http://schema.org",'
-      '  "@type": "FlightReservation",'
-      '  "reservationNumber": "RXJ34P",'
-      '  "reservationStatus": "http://schema.org/Confirmed",'
-      '  "underName": {'
-      '    "@type": "Person",'
-      '    "name": "Eva Green"'
-      '  },'
-      '  "reservationFor": {'
-      '    "@type": "Flight",'
-      '    "flightNumber": "110",'
-      '    "airline": {'
-      '      "@type": "Airline",'
-      '      "name": "United",'
-      '      "iataCode": "UA"'
-      '    },'
-      '    "departureAirport": {'
-      '      "@type": "Airport",'
-      '      "name": "San Francisco Airport",'
-      '      "iataCode": "SFO"'
-      '    },'
-      '    "departureTime": "2024-03-04T20:15:00-08:00",'
-      '    "arrivalAirport": {'
-      '      "@type": "Airport",'
-      '      "name": "John F. Kennedy International Airport",'
-      '      "iataCode": "JFK"'
-      '    },'
-      '    "arrivalTime": "2024-03-05T06:30:00-05:00"'
-      '  }'
-      '}';
-
-
-  static const String emailMarkupReservationFlight =
-      '{'
-      '  "@context": "http://schema.org",'
-      '  "@type": "FlightReservation",'
-      '  "reservationNumber": "RXJ34P",'
-      '  "reservationStatus": "http://schema.org/Confirmed",'
-      '  "underName": {'
-      '    "@type": "Person",'
-      '    "name": "Eva Green"'
-      '  },'
-      '  "reservationFor": {'
-      '    "@type": "Flight",'
-      '    "flightNumber": "110",'
-      '    "airline": {'
-      '      "@type": "Airline",'
-      '      "name": "United",'
-      '      "iataCode": "UA"'
-      '    },'
-      '    "departureAirport": {'
-      '      "@type": "Airport",'
-      '      "name": "San Francisco Airport",'
-      '      "iataCode": "SFO"'
-      '    },'
-      '    "departureTime": "2024-03-04T20:15:00-08:00",'
-      '    "arrivalAirport": {'
-      '      "@type": "Airport",'
-      '      "name": "John F. Kennedy International Airport",'
-      '      "iataCode": "JFK"'
-      '    },'
-      '    "arrivalTime": "2024-03-05T06:30:00-05:00"'
-      '  },'
-      '  "checkinUrl": "http://united.com/onlinecheckin.html",'
-      '  "potentialAction": {'
-      '    "@type": "CheckInAction",'
-      '    "target": "http://united.com/onlinecheckin.html"'
-      '  }'
-      '}';
-
-  static const String musicAlbumMarkup =
-  '''{
-  "@context": "http://schema.googleapis.com/",
-  "@type": "MusicAlbum",
-  "@id": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtu",
-  "url": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtu",
-  "name": "Semantics",
-  "description": "Listen to Semantics on Spotify. St. Emerald · Album · 2022 · 7 songs.",
-  "datePublished": "2022-08-19",
-  "potentialAction": {
-    "@type": "ListenAction",
-    "target": [
-      {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://open.spotify.com/album/4F1fUukNCGBD5YjDViOJtu?autoplay=true",
-        "actionPlatform": [
-          "http://schema.org/DesktopWebPlatform",
-          "http://schema.org/IOSPlatform",
-          "http://schema.googleapis.com/GoogleAudioCast",
-          "http://schema.googleapis.com/GoogleVideoCast"
-        ]
-      },
-      "android-app://com.spotify.music/spotify/album/4F1fUukNCGBD5YjDViOJtu/play"
-    ],
-    "expectsAcceptanceOf": {
-      "@type": "Offer",
-      "category": "free",
-      "eligibleRegion": [
-        {
-          "@type": "Country",
-          "name": "AD"
-        },
-        {
-          "@type": "Country",
-          "name": "ZW"
-        }
-      ]
-    }
-  }
-}''';
 
   static const placeMarkup =
   '''{
@@ -182,11 +41,11 @@ class _CardSamplesState extends State<CardSamples> {
   bool showSource = false;
   late int _selectedAssetIndex;
 
-  late Map<String, dynamic> emailMarkupActionGoto;
-  late Map<String, dynamic> emailMarkupActionOneClick;
-  late Map<String, dynamic> emailMarkupReservationFlightBasic;
-  late Map<String, dynamic> emailMarkupReservationFlight;
-  late Map<String, dynamic> musicAlbumMarkup;
+  // late Map<String, dynamic> emailMarkupActionGoto;
+  // late Map<String, dynamic> emailMarkupActionOneClick;
+  // late Map<String, dynamic> emailMarkupReservationFlightBasic;
+  // late Map<String, dynamic> emailMarkupReservationFlight;
+  // late Map<String, dynamic> musicAlbumMarkup;
   late Map<String, dynamic> placeMarkup;
   late Future<List<dynamic>> assetMarkups;
 
@@ -208,6 +67,11 @@ class _CardSamplesState extends State<CardSamples> {
     'assets/sampleMarkup/flight_multi_passenger.json',
     'assets/sampleMarkup/flight_multi_segment.json',
     'assets/sampleMarkup/zeit.json',
+    'assets/sampleMarkup/emailMarkupActionGoto.json',
+    'assets/sampleMarkup/emailMarkupActionOneClick.json',
+    'assets/sampleMarkup/emailMarkupReservationFlightBasic.json',
+    'assets/sampleMarkup/emailMarkupReservationFlight.json',
+    'assets/sampleMarkup/musicAlbum.json',
   ];
 
   List<DropdownMenuItem<int>> get assetDropdownItems {
@@ -219,11 +83,11 @@ class _CardSamplesState extends State<CardSamples> {
   @override
   void initState() {
     super.initState();
-    emailMarkupActionGoto = jsonDecode(CardSamples.emailMarkupActionGoto);
-    emailMarkupActionOneClick = jsonDecode(CardSamples.emailMarkupActionOneClick);
-    emailMarkupReservationFlightBasic = jsonDecode(CardSamples.emailMarkupReservationFlightBasic);
-    emailMarkupReservationFlight = jsonDecode(CardSamples.emailMarkupReservationFlight);
-    musicAlbumMarkup = jsonDecode(CardSamples.musicAlbumMarkup);
+    // emailMarkupActionGoto = jsonDecode(CardSamples.emailMarkupActionGoto);
+    // emailMarkupActionOneClick = jsonDecode(CardSamples.emailMarkupActionOneClick);
+    // emailMarkupReservationFlightBasic = jsonDecode(CardSamples.emailMarkupReservationFlightBasic);
+    // emailMarkupReservationFlight = jsonDecode(CardSamples.emailMarkupReservationFlight);
+    // musicAlbumMarkup = jsonDecode(CardSamples.musicAlbumMarkup);
     placeMarkup = jsonDecode(CardSamples.placeMarkup);
     assetMarkups = loadMarkupsFromAssets();
     _selectedAssetIndex = assetsToUse.indexOf('assets/sampleMarkup/array_6440.json');
@@ -287,11 +151,11 @@ class _CardSamplesState extends State<CardSamples> {
               case 0: return ListView(
                 children: [
                   ...itemBuilder(snapshot.requireData),
-                  renderCardOrErrorCard(emailMarkupActionGoto, preview: preview, topBar: topBar),
-                  renderCardOrErrorCard(emailMarkupActionOneClick, preview: preview, topBar: topBar),
-                  renderCardOrErrorCard(emailMarkupReservationFlightBasic, preview: preview, topBar: topBar),
-                  renderCardOrErrorCard(emailMarkupReservationFlight, preview: preview, topBar: topBar),
-                  renderCardOrErrorCard(musicAlbumMarkup, preview: preview, topBar: topBar),
+                  // renderCardOrErrorCard(emailMarkupActionGoto, preview: preview, topBar: topBar),
+                  // renderCardOrErrorCard(emailMarkupActionOneClick, preview: preview, topBar: topBar),
+                  // renderCardOrErrorCard(emailMarkupReservationFlightBasic, preview: preview, topBar: topBar),
+                  // renderCardOrErrorCard(emailMarkupReservationFlight, preview: preview, topBar: topBar),
+                  // renderCardOrErrorCard(musicAlbumMarkup, preview: preview, topBar: topBar),
                   renderCardOrErrorCard(placeMarkup, preview: preview, topBar: topBar),
                 ],
               );
