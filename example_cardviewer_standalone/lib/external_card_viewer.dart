@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:example_cardviewer_standalone/single_card_display.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
@@ -5,8 +7,6 @@ import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:flutter/material.dart';
 import 'package:html2jsonld_dart/html2jsonld_dart.dart' as ht2j;
 import 'dart:developer' as developer;
-
-
 
 class ExternalCardViewer extends StatefulWidget {
   const ExternalCardViewer({
@@ -16,15 +16,18 @@ class ExternalCardViewer extends StatefulWidget {
     this.audrigaAuthority = 'www.audriga.eu',
     this.phpPathBase = '/test/data/',
     required this.postFunction,
+    this.visualDebug = false,
   });
 
   final String audrigaAuthority;
   final String phpPathBase;
   final String? source;
+
   /// If set, json should be rendered as a single card.
   /// If false, will render it using  [AdaptiveMultipleCards] feed-view
   final bool single;
   final PostFunction postFunction;
+  final bool visualDebug;
 
   static const String routeName = '/external';
 
@@ -45,13 +48,13 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
 
   @override
   Widget build(BuildContext context) {
-      return FutureCards(
-        title: title,
-        futureMarkup: futureMarkup,
-        single: widget.single,
-        postFunction: widget.postFunction,
+    return FutureCards(
+      title: title,
+      futureMarkup: futureMarkup,
+      single: widget.single,
+      postFunction: widget.postFunction,
+      visualDebug: widget.visualDebug,
     );
-
   }
 
   Future<String?> fetchMarkup() async {
@@ -69,7 +72,8 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
 
     try {
       // todo maybe use other library function that gives back more
-      String? extractedSchema = await ht2j.SchemaOrg().extractJsonLdFromUrl(sourceUri.toString());
+      String? extractedSchema =
+          await ht2j.SchemaOrg().extractJsonLdFromUrl(sourceUri.toString());
       // http.Response response = await http.get(sourceUri);
       developer.log(
         'Requested markup at $sourceUri and got schema ($extractedSchema)',
@@ -79,7 +83,6 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
         return Future.error('Schema empty');
       }
       return extractedSchema;
-
     } on Error catch (e, st) {
       developer.log(
         'Error requesting markup $e',
@@ -93,19 +96,24 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
 }
 
 class FutureCards extends StatelessWidget {
-
   const FutureCards({
     super.key,
-    this.title, required this.futureMarkup, this.single = false, required this.postFunction,
+    this.title,
+    required this.futureMarkup,
+    this.single = false,
+    required this.postFunction,
+    this.visualDebug = false,
   });
 
   final String? title;
   final Future<String?> futureMarkup;
   final bool single;
   final PostFunction postFunction;
+  final bool visualDebug;
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder(
       future: futureMarkup,
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
@@ -113,15 +121,33 @@ class FutureCards extends StatelessWidget {
           String? markupString = snapshot.data;
           if (markupString != null && markupString.isNotEmpty) {
             var decodedMarkup = tryDecode(markupString);
-            if (single) {
-              return SingleCardDisplay(decodedMarkup: decodedMarkup, postFunction: postFunction,);
+            var mainWidget = singleCardOrFeed(decodedMarkup);
+            JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+            String encodedJson = encoder.convert(decodedMarkup);
+            if (visualDebug) {
+              return LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                  return Row(
+                    children: [
+                      SizedBox(
+                          width: constraints.maxWidth /2 - 20,
+                          child: mainWidget
+                      ),
+                      const Divider(),
+                      SizedBox(
+                        width: constraints.maxWidth /2 - 20,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SelectableText(encodedJson, style: Theme.of(context).primaryTextTheme.bodySmall, ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              );
+            } else {
+              return mainWidget;
             }
-            if (decodedMarkup is List<dynamic>) {
-              return AdaptiveMultipleCards(title: title, markups: decodedMarkup, postFunction: postFunction);
-            } else if (decodedMarkup is Map<String, dynamic>) {
-              return AdaptiveMultipleCards(title: title, markups: [decodedMarkup], postFunction: postFunction);
-            }
-            return const Text('Card has unexpected format');
           } else {
             return const Text('Empty Response…');
           }
@@ -153,7 +179,20 @@ class FutureCards extends StatelessWidget {
     );
   }
 
+  Widget singleCardOrFeed(decodedMarkup) {
+    if (single) {
+      return SingleCardDisplay(
+        decodedMarkup: decodedMarkup,
+        postFunction: postFunction,
+      );
+    }
+    if (decodedMarkup is List<dynamic>) {
+      return AdaptiveMultipleCards(
+          title: title, markups: decodedMarkup, postFunction: postFunction);
+    } else if (decodedMarkup is Map<String, dynamic>) {
+      return AdaptiveMultipleCards(
+          title: title, markups: [decodedMarkup], postFunction: postFunction);
+    }
+    return const Text('Card has unexpected format');
+  }
 }
-
-
-

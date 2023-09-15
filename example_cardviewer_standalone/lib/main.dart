@@ -173,13 +173,24 @@ class MyApp extends StatelessWidget {
       name: 'card_viewer_standalone.routing',
     );
     bool single = parseSingleArg(state);
+    bool visualDebug = parseVisualDebugArg(state);
 
-    return ExternalCardViewer(source: state.uri.queryParameters['source'], single: single, postFunction: postUrl);
+    return ExternalCardViewer(source: state.uri.queryParameters['source'], single: single, postFunction: postUrl, visualDebug: visualDebug);
   }
 
   /// Gets the value of the boolean query parameter 'single'
   bool parseSingleArg(GoRouterState state) {
     var singleArg = state.uri.queryParameters['single'];
+    bool single = false;
+    if (singleArg != null) {
+      single = bool.tryParse(singleArg) ?? false;
+    }
+    return single;
+  }
+
+  /// Gets the value of the boolean query parameter 'visual_debug'
+  bool parseVisualDebugArg(GoRouterState state) {
+    var singleArg = state.uri.queryParameters['visual_debug'];
     bool single = false;
     if (singleArg != null) {
       single = bool.tryParse(singleArg) ?? false;
