@@ -66,7 +66,7 @@ class AdaptiveMultipleCards extends StatelessWidget {
             if (crumbItem != null) {
               buttonText = crumbItem.name ?? crumbItem.id?.pathSegments.last ?? '';
             } else {
-              buttonText = crumb.position?.toString() ?? '';
+              buttonText = crumb.name ?? crumb.position?.toString() ?? '';
 
             }
           } else if (crumb is Thing) {

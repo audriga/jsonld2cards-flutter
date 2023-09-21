@@ -49,7 +49,7 @@ class UriImage extends StatelessWidget {
     Uri? imageUrl;
     if (content is Uri) {
       jsonImageUri = content;
-    } else if (content is String) {
+    } else if (content is String && (content as String).isNotEmpty) {
       jsonImageUri = Uri.tryParse(content);
     }
     if (jsonImageUri != null) {

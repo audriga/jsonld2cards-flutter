@@ -18,7 +18,28 @@ class ListItem extends Thing {
   ListItem.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     var jsonItem = json['item'];
     if (jsonItem != null) {
-      item = Thing.fromJson(jsonItem);
+      /*
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https://www.zeit.de/index",
+          "name": "ZEIT ONLINE"
+        }
+
+        vs
+
+        {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Aufbewahrung &amp; Organisation",
+        "item": "https://www.ikea.com/de/de/cat/aufbewahrungsmoebel-organisation-st001/"
+      }
+       */
+      if (jsonItem is Map<String, dynamic>) {
+        item = Thing.fromJson(jsonItem);
+      }
+
     }
     var jsonPosition = json['position'];
     if (jsonPosition is num) {
