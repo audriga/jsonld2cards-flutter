@@ -6,7 +6,7 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:jsonld2cards/Cards/item_list_card.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/tabbed_cards.dart';
-
+import 'dart:developer' as developer;
 import 'Cards/Models/schema_types.dart';
 import 'Cards/invoice_card.dart';
 import 'Cards/order_card.dart';
@@ -214,10 +214,10 @@ Widget renderCardSingle(
     }
     ) {
   String context = markup['@context'];
-  if (!['http://schema.org', 'http://schema.org/', 'https://schema.org', 'http://schema.googleapis.com/'].contains(context)) {
-    throw FormatException(
-      'Markup does not contain context tag, or context tag does not contain one of the known schema contexts like http://schema.org',
-      markup,
+  if (!['http://schema.org', 'http://schema.org/', 'https://schema.org', 'https://schema.org/', 'http://schema.googleapis.com/'].contains(context)) {
+    developer.log(
+      'Warning Markup does not contain context tag, or context tag does not contain one of the known schema contexts like http://schema.org\n$markup',
+      name: 'jsonld2cards.card_rendering',
     );
   }
   String typeName = markup['@type'];

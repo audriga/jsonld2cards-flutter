@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:example_cardviewer_standalone/single_card_display.dart';
+import 'package:http/http.dart' as http;
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
@@ -54,6 +55,11 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
       single: widget.single,
       postFunction: widget.postFunction,
       visualDebug: widget.visualDebug,
+      sourceUri: Uri.https(
+        widget.audrigaAuthority,
+        '${widget.phpPathBase}proxyHtml.php',
+        {'url': widget.source},
+      ),
     );
   }
 
@@ -74,7 +80,6 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
       // todo maybe use other library function that gives back more
       String? extractedSchema =
           await ht2j.SchemaOrg().extractJsonLdFromUrl(sourceUri.toString());
-      // http.Response response = await http.get(sourceUri);
       developer.log(
         'Requested markup at $sourceUri and got schema ($extractedSchema)',
         name: 'jsonld2cards.external_viewer',
@@ -103,6 +108,7 @@ class FutureCards extends StatelessWidget {
     this.single = false,
     required this.postFunction,
     this.visualDebug = false,
+    this.sourceUri
   });
 
   final String? title;
@@ -110,6 +116,8 @@ class FutureCards extends StatelessWidget {
   final bool single;
   final PostFunction postFunction;
   final bool visualDebug;
+  /// Just for debugging purposes
+  final Uri? sourceUri;
 
   @override
   Widget build(BuildContext context) {
@@ -125,25 +133,27 @@ class FutureCards extends StatelessWidget {
             JsonEncoder encoder = const JsonEncoder.withIndent('  ');
             String encodedJson = encoder.convert(decodedMarkup);
             if (visualDebug) {
-              return LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                  return Row(
-                    children: [
-                      SizedBox(
-                          width: constraints.maxWidth /2 - 20,
-                          child: mainWidget
-                      ),
-                      const Divider(),
-                      SizedBox(
-                        width: constraints.maxWidth /2 - 20,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: SelectableText(encodedJson, style: Theme.of(context).primaryTextTheme.bodySmall, ),
+              return Scaffold(
+                body: LayoutBuilder(
+                    builder: (BuildContext context, BoxConstraints constraints) {
+                    return Row(
+                      children: [
+                        SizedBox(
+                            width: constraints.maxWidth /2 - 20,
+                            child: mainWidget
                         ),
-                      ),
-                    ],
-                  );
-                }
+                        const Divider(),
+                        SizedBox(
+                          width: constraints.maxWidth /2 - 20,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: SelectableText(encodedJson ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                ),
               );
             } else {
               return mainWidget;
@@ -163,10 +173,15 @@ class FutureCards extends StatelessWidget {
               child: Text('Error: ${snapshot.error}'),
             ),
           ];
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: children,
+          if (visualDebug && sourceUri != null) {
+            children.add(DebugRequest(sourceUri: sourceUri!));
+          }
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: children,
+              ),
             ),
           );
         } else {
@@ -181,9 +196,11 @@ class FutureCards extends StatelessWidget {
 
   Widget singleCardOrFeed(decodedMarkup) {
     if (single) {
-      return SingleCardDisplay(
-        decodedMarkup: decodedMarkup,
-        postFunction: postFunction,
+      return Scaffold(
+        body: SingleCardDisplay(
+          decodedMarkup: decodedMarkup,
+          postFunction: postFunction,
+        ),
       );
     }
     if (decodedMarkup is List<dynamic>) {
@@ -194,5 +211,52 @@ class FutureCards extends StatelessWidget {
           title: title, markups: [decodedMarkup], postFunction: postFunction);
     }
     return const Text('Card has unexpected format');
+  }
+}
+
+class DebugRequest extends StatefulWidget {
+  const DebugRequest({super.key, required this.sourceUri});
+
+  final Uri sourceUri;
+
+  @override
+  State<DebugRequest> createState() => _DebugRequestState();
+}
+
+class _DebugRequestState extends State<DebugRequest> {
+  String? result = 'No request yet';
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            TextButton(onPressed: () async {
+              http.Response response = await http.get(widget.sourceUri);
+              developer.log(
+                'Requested markup at $widget.sourceUri and got response (${response.statusCode}) ${response.body}',
+                name: 'jsonld2cards.card_viewer',
+              );
+              setState(() {
+                result = 'response.statusCode: ${response.statusCode}\n'
+                    'response.body:\n${response.body}';
+              });
+            }, child: const Text('http.get')),
+            TextButton(onPressed: () async {
+              String? response = await ht2j.SchemaOrg().extractSchemaOrgAggregateFromURL(widget.sourceUri.toString());
+
+              setState(() {
+                result = response;
+              });
+            }, child: const Text('SchemaOrg().extractSchemaOrgAggregateFromURL')),
+          ],
+        ),
+        const Divider(),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SelectableText(result ?? 'null'),
+        )
+      ],
+    );
   }
 }

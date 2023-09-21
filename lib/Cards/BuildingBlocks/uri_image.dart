@@ -49,7 +49,7 @@ class UriImage extends StatelessWidget {
     Uri? imageUrl;
     if (content is Uri) {
       jsonImageUri = content;
-    } else if (content is String) {
+    } else if (content is String && (content as String).isNotEmpty) {
       jsonImageUri = Uri.tryParse(content);
     }
     if (jsonImageUri != null) {
@@ -68,15 +68,21 @@ class UriImage extends StatelessWidget {
           matchTextDirection: matchTextDirection,
           filterQuality: filterQuality,
         );
-      } else if (['http', 'https'].contains(jsonImageUri.scheme)) {
+      } else if (['http', 'https', ''].contains(jsonImageUri.scheme)) {
+        if (jsonImageUri.scheme == '') {
+          jsonImageUri = Uri.parse('https://${jsonImageUri.toString()}');
+        }
+
         imageUrl = jsonImageUri;
 
         bool attemptToProxy = false;
         if (kIsWeb && Uri.base.origin != imageUrl.origin) {
           attemptToProxy = true;
         }
+
+        String imageUrlString  = imageUrl.toString();
         return CachedNetworkImage(
-          imageUrl: imageUrl.toString(),
+          imageUrl: imageUrlString,
           placeholder: placeholder,
           width: width,
           height: height,
