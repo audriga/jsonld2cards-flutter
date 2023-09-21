@@ -12,6 +12,7 @@ enum SchemaType {
   order,
   invoice,
   parcelDelivery,
+  blogPosting,
   itemList,
 }
 
@@ -26,6 +27,7 @@ SchemaType? getCardType(String typeName) {
     'Order' => SchemaType.order,
     'Invoice' => SchemaType.invoice,
     'ParcelDelivery' => SchemaType.parcelDelivery,
+    'BlogPosting' => SchemaType.blogPosting,
     'ItemList' => SchemaType.itemList,
     _ => null,
   };
@@ -53,6 +55,7 @@ extension SchemaTypeName on SchemaType {
       SchemaType.order => 'Order',
       SchemaType.invoice => 'Invoice',
       SchemaType.parcelDelivery => 'Parcel',
+      SchemaType.blogPosting => 'Post',
       SchemaType.itemList => 'List',
     };
   }
@@ -68,6 +71,7 @@ extension SchemaTypeName on SchemaType {
       SchemaType.order => Icons.shopping_bag,
       SchemaType.invoice => Icons.receipt,
       SchemaType.parcelDelivery => Icons.local_shipping,
+      SchemaType.blogPosting => Icons.receipt, // Todo
       SchemaType.itemList => Icons.list,
     };
   }

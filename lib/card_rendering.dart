@@ -16,6 +16,7 @@ import 'Cards/email_message_card.dart';
 import 'Cards/flight_reservation_card.dart';
 import 'Cards/music_card.dart';
 import 'Cards/parcel_delivery_card.dart';
+import 'Cards/blog_posting_card.dart';
 import 'Cards/place_card.dart';
 import 'Cards/Models/organization_model.dart' as org_model;
 import 'package:flutter/material.dart';
@@ -251,6 +252,9 @@ Widget renderCardSingle(
     }
     case SchemaType.parcelDelivery: {
       card =  ParcelDeliveryCard(markup: markup, postFunction: postFunction, preview: preview);
+    }
+    case SchemaType.blogPosting: {
+      card =  BlogPostingCard(markup: markup, postFunction: postFunction, preview: preview);
     }
     case SchemaType.itemList: {
       card =  ItemListCard(markup: markup, postFunction: postFunction, preview: preview);
