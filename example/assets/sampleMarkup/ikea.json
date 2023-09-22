@@ -1,0 +1,423 @@
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Produkte",
+        "item": "https://www.ikea.com/de/de/cat/produkte-products/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Aufbewahrung &amp; Organisation",
+        "item": "https://www.ikea.com/de/de/cat/aufbewahrungsmoebel-organisation-st001/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Kleinaufbewahrung &amp; Organisation",
+        "item": "https://www.ikea.com/de/de/cat/kleinaufbewahrung-organisation-st007/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Schreibtisch-Organizer &amp; Schreibtischzubehör",
+        "item": "https://www.ikea.com/de/de/cat/schreibtisch-organizer-10573/"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.5",
+      "reviewCount": "26"
+    },
+    "brand": {
+      "@type": "Brand",
+      "name": "IKEA"
+    },
+    "description": "TJENA Schreibutensilienfach - weiß 18x17 cm. Hält den Schreibtisch frei von Kleinkram wie Stiften, Linealen, Telefon usw. Da das Schreibutensilienfach aus Kästen in verschiedenen Größen und Ausführungen besteht, kannst du sie nach Bedarf anordnen - einzeln oder kombiniert.",
+    "image": [
+      "https://www.ikea.com/de/de/images/products/tjena-schreibutensilienfach-weiss__0711577_pe728339_s5.jpg",
+      "https://www.ikea.com/de/de/images/products/tjena-schreibutensilienfach-weiss__0811182_pe771591_s5.jpg",
+      "https://www.ikea.com/de/de/images/products/tjena-schreibutensilienfach-weiss__0815463_pe772937_s5.jpg",
+      "https://www.ikea.com/de/de/images/products/tjena-schreibutensilienfach-weiss__0779331_pe759462_s5.jpg",
+      "https://www.ikea.com/de/de/images/products/tjena-schreibutensilienfach-weiss__0815464_pe772938_s5.jpg",
+      "https://www.ikea.com/de/de/images/products/tjena-schreibutensilienfach-weiss__0910644_pe667301_s5.jpg",
+      "https://www.ikea.com/de/de/images/products/tjena-schreibutensilienfach-weiss__0910640_pe667300_s5.jpg",
+      "https://www.ikea.com/de/de/images/products/tjena-schreibutensilienfach-weiss__0910637_pe667298_s5.jpg",
+      "https://www.ikea.com/de/de/images/products/tjena-schreibutensilienfach-weiss__1095122_pe863762_s5.jpg"
+    ],
+    "mpn": "603.954.52",
+    "name": "TJENA Schreibutensilienfach - weiß 18x17 cm",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition",
+      "price": "4.99",
+      "priceCurrency": "EUR",
+      "seller": {
+        "@type": "Organization",
+        "name": "IKEA"
+      },
+      "url": "https://www.ikea.com/de/de/p/tjena-schreibutensilienfach-weiss-60395452/"
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Tetiana"
+        },
+        "name": "Kompakter, aber geräumiger Organizer!",
+        "reviewBody": "Kompakter, aber geräumiger Organizer!",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Dominika"
+        },
+        "name": "In Ordnung",
+        "reviewBody": "Ich finde das der große Karton etwas zu hoch ist.\nAnsonsten in Ordnung",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 3
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Stefanie"
+        },
+        "name": "Gut",
+        "reviewBody": "Gut",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 3
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Thomas"
+        },
+        "name": "👍🏻",
+        "reviewBody": "👍🏻",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 4
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Jürgen"
+        },
+        "name": "Tjena",
+        "reviewBody": "Kann ich auch weiter empfehlen ! Passt einfach auf jedem Schülerschreibtisch.",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Katharina"
+        },
+        "name": "Praktisch und stabil. Farbe bisschen",
+        "reviewBody": "Praktisch und stabil. Farbe bisschen langweilig.",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Michaela"
+        },
+        "name": "Ok für den Preis",
+        "reviewBody": "Einfach, leicht, schönes Design, Qualität ausreichend",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 3
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Tanja"
+        },
+        "name": "Praktisch um Ordnung auf dem",
+        "reviewBody": "Praktisch um Ordnung auf dem Schreibtisch zu halten.",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 3
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Daniela"
+        },
+        "name": "stabil und kreativitätsfördernd",
+        "reviewBody": "die unterschiedlichen Größen der Kartons sind sehr praktisch, genau wie die Tatsache, daß man sie entnehmen kann. Sie sind erstaunlich stabil und ich finde es toll, daß die Kids sie nach ihrem Geschmack gestalten können",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Diana"
+        },
+        "name": "Super...",
+        "reviewBody": "Kann man auch super für DIY Projekte verwenden.",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Kassem"
+        },
+        "name": "Die Qualität lässt zu wünschen",
+        "reviewBody": "Die Qualität lässt zu wünschen übrig.",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Tina"
+        },
+        "name": "Passt toll",
+        "reviewBody": "Passt toll",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Manuela"
+        },
+        "name": "Für Kids etwas unpraktisch du",
+        "reviewBody": "Für Kids etwas unpraktisch du nur aus Pappe",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 4
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Sabrina"
+        },
+        "name": "Für Papier und Stifte genial",
+        "reviewBody": "Für Papier und Stifte genial",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Dagmar"
+        },
+        "name": "Lädt zum kreativen Gestalten ein!",
+        "reviewBody": "Lädt zum kreativen Gestalten ein!",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Sandra"
+        },
+        "name": "Sehr schöner Utensilo mit viel",
+        "reviewBody": "Sehr schöner Utensilo mit viel Platz",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Liza"
+        },
+        "name": "Toll",
+        "reviewBody": "Lässt einen Schreibtisch gleich viel ordentlicher wirken",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Martina"
+        },
+        "name": "Hab es Für mein Enkel",
+        "reviewBody": "Hab es Für mein Enkel gekauft, ist halt Pappe für ein kind nicht zu empfehlen",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 3
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Jacqueline"
+        },
+        "name": "Sehr groß",
+        "reviewBody": "Sehr groß",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Sandra"
+        },
+        "name": "Einfach und praktisch. Vielleicht müssen",
+        "reviewBody": "Einfach und praktisch. Vielleicht müssen wir es bald mal bemalen, da das weiss schnell dreckig wird",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": 5
+        }
+      }
+    ],
+    "sku": "603.954.52",
+    "url": "https://www.ikea.com/de/de/p/tjena-schreibutensilienfach-weiss-60395452/"
+  },
+  {
+    "@context": "http://schema.org/",
+    "@type": "3DModel",
+    "encoding": [
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/iqp3/glb_draco/60395452_PS01_S01_NV01_IQP3_2.0_0dc962838c704ed993e56219c1a569f8.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/iqp2/glb_draco/60395452_PS01_S01_NV01_IQP2_2.0_0c0e9c72d60044f4b00c43a7804b48b9.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/iqp1/glb_draco/60395452_PS01_S01_NV01_IQP1_2.0_fe81e79f99d24853aa42f685a55ecab8.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/rqp3/glb_draco/60395452_PS01_S01_NV01_RQP3_3.0_7bd06c35343c413bb37796ef73ee91b7.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/rqp2/glb_draco/60395452_PS01_S01_NV01_RQP2_3.0_92c3d0de2f524be7a60a69b4cf9de97d.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/rqp1/glb_draco/60395452_PS01_S01_NV01_RQP1_3.0_4f403eb2d3344113a9d2eb2b88fba410.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/geomagical/60395452/PS01_S01_NV01/simple/glb_draco/G-60395452-769601d1ca988108bf834c8445c59511704666a9_bcbdc764e42d4c73a062399378258b73.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/iqp3/glb/60395452_PS01_S01_NV01_IQP3_2.0_c2a4df3009554313a2b75588f3d5ada5.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/iqp2/glb/60395452_PS01_S01_NV01_IQP2_2.0_ceb92085de364434b1438f826d5a817b.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/iqp1/glb/60395452_PS01_S01_NV01_IQP1_2.0_2b3a743697064429b9afdf6eda2d2b7b.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/rqp3/glb/60395452_PS01_S01_NV01_RQP3_3.0_3c3210cd9e0144409658bd14c68a73dc.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/rqp2/glb/60395452_PS01_S01_NV01_RQP2_3.0_db70c9808b9a4b88982da33c8450c188.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/rqp1/glb/60395452_PS01_S01_NV01_RQP1_3.0_666c2b282d2b4bacabaf88943424465d.glb?cn=pip",
+        "encodingFormat": "model/gltf-binary"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/iqp3/gltf/60395452_PS01_S01_NV01_IQP3_2.0_229ed8d9e2044fcfa9ff5811459d6977.gltf?cn=pip",
+        "encodingFormat": "model/gltf"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/iqp2/gltf/60395452_PS01_S01_NV01_IQP2_2.0_156c0d4200b240a1b59b0cfac5e169ff.gltf?cn=pip",
+        "encodingFormat": "model/gltf"
+      },
+      {
+        "@type": "MediaObject",
+        "contentUrl": "https://web-api.ikea.com/dimma/assets/1.2/60395452/PS01_S01_NV01/iqp1/gltf/60395452_PS01_S01_NV01_IQP1_2.0_5c24311b3eb4443fb0d16fb2eecf68c5.gltf?cn=pip",
+        "encodingFormat": "model/gltf"
+      }
+    ],
+    "image": "",
+    "name": "TJENA"
+  }
+]
