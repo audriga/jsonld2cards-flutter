@@ -2,6 +2,7 @@ library potential_actions;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../Util/conversion.dart';
@@ -15,11 +16,13 @@ class PotentialActionRow extends StatelessWidget {
     required this.potentialAction,
     required this.postFunction,
     this.preview = false,
+    // this.smlAppContext,
   });
 
   final dynamic potentialAction;
   final PostFunction postFunction;
   final bool preview;
+  // final SMLAppContext? smlAppContext;
 
   @override
   Widget build(BuildContext context) {
@@ -107,26 +110,40 @@ class PotentialActionButton extends StatelessWidget {
           // todo switch depending on handler type?
           confirmUri = handler['url'];
         }
+        var actionName = potentialAction['name'] ?? 'Confirm';
         button = TextButton(
           onPressed: preview ? () {} : () {
             Uri? uriToPost = tryCastOrParse(confirmUri);
             if (uriToPost != null) {
-              postFunction(uriToPost, successMessage: 'Sent Confirmation');
+              if (uriToPost.scheme == 'mailto' && globalSMLAppContext?.confirmCallback != null) {
+                potentialAction['@context'] = 'https://schema.org';
+                potentialAction['actionStatus'] = 'CompletedActionStatus';
+                globalSMLAppContext!.confirmCallback!(subject: 'Action $actionName', dataToSend: potentialAction, recipient: uriToPost.path);
+              } else {
+                postFunction(uriToPost, successMessage: 'Sent Confirmation');
+              }
             }
           },
-          child: Text(potentialAction['name'] ?? 'Confirm'),
+          child: Text(actionName),
         );
         return button;
       }
       case 'CancelAction' : {
+        var actionName = potentialAction['name'] ?? 'Cancel';
         button = TextButton(
           onPressed: preview ? () {} : () {
             Uri? uriToPost = tryCastOrParse(actionTarget);
             if (uriToPost != null) {
-              postFunction(uriToPost, successMessage: 'Sent Cancellation');
+              if (uriToPost.scheme == 'mailto' && globalSMLAppContext?.confirmCallback != null) {
+                potentialAction['@context'] = 'https://schema.org';
+                potentialAction['actionStatus'] = 'CompletedActionStatus';
+                globalSMLAppContext!.confirmCallback!(subject: 'Action $actionName', dataToSend: potentialAction, recipient: uriToPost.path);
+              } else {
+                postFunction(uriToPost, successMessage: 'Sent Cancellation');
+              }
             }
           },
-          child: Text(potentialAction['name'] ?? 'Cancel'),
+          child: Text(actionName),
         );
         return button;
       }

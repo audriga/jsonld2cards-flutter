@@ -3,6 +3,7 @@ library card_rendering;
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
+import 'package:jsonld2cards/Cards/action_card.dart';
 import 'package:jsonld2cards/Cards/item_list_card.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/tabbed_cards.dart';
@@ -258,6 +259,12 @@ Widget renderCardSingle(
     }
     case SchemaType.itemList: {
       card =  ItemListCard(markup: markup, postFunction: postFunction, preview: preview);
+    }
+    case SchemaType.confirmAction: {
+      card =  ActionCard(markup: markup, postFunction: postFunction, preview: preview);
+    }
+    case SchemaType.cancelAction: {
+      card =  ActionCard(markup: markup, postFunction: postFunction, preview: preview);
     }
     default: {
       card =  DefaultMarkupCard(markup: markup, postFunction: postFunction, preview: preview);

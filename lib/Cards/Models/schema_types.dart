@@ -14,6 +14,9 @@ enum SchemaType {
   parcelDelivery,
   blogPosting,
   itemList,
+  confirmAction,
+  cancelAction,
+  action,
 }
 
 SchemaType? getCardType(String typeName) {
@@ -29,6 +32,9 @@ SchemaType? getCardType(String typeName) {
     'ParcelDelivery' => SchemaType.parcelDelivery,
     'BlogPosting' => SchemaType.blogPosting,
     'ItemList' => SchemaType.itemList,
+    'ConfirmAction' => SchemaType.confirmAction,
+    'CancelAction' => SchemaType.cancelAction,
+    'Action' => SchemaType.action,
     _ => null,
   };
 }
@@ -57,6 +63,9 @@ extension SchemaTypeName on SchemaType {
       SchemaType.parcelDelivery => 'Parcel',
       SchemaType.blogPosting => 'Post',
       SchemaType.itemList => 'List',
+      SchemaType.confirmAction => 'Confirmation',
+      SchemaType.cancelAction => 'Cancellation',
+      SchemaType.action => 'Action',
     };
   }
 
@@ -73,6 +82,9 @@ extension SchemaTypeName on SchemaType {
       SchemaType.parcelDelivery => Icons.local_shipping,
       SchemaType.blogPosting => Icons.receipt, // Todo
       SchemaType.itemList => Icons.list,
+      SchemaType.confirmAction => Icons.check_circle,
+      SchemaType.cancelAction => Icons.cancel,
+      SchemaType.action => Icons.directions_run,
     };
   }
 }

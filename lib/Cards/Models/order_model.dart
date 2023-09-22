@@ -192,7 +192,7 @@ String orderStatusToVerbString(OrderStatus status) {
   return '';
 }
 
-
+// todo this does not extend Thing. Why?
 class Order {
 /*
 {

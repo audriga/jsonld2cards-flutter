@@ -24,7 +24,7 @@ class EmailMessage extends StatelessWidget implements MarkupCard {
   @override
   Widget build(BuildContext context) {
     String description = markup['description'];
-    Map<String, dynamic>  potentialAction = markup['potentialAction'];
+    var potentialAction = markup['potentialAction'];
 
 
     return SimpleCard(

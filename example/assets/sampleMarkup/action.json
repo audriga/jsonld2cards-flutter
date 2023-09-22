@@ -1,0 +1,7 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ConfirmAction",
+  "name": "Approve Expense",
+  "target": "mailto:frieder@audriga.com",
+  "actionStatus": "CompletedActionStatus"
+}
