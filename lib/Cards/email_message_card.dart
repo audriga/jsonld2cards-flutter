@@ -23,12 +23,14 @@ class EmailMessage extends StatelessWidget implements MarkupCard {
 
   @override
   Widget build(BuildContext context) {
-    String description = markup['description'];
+    String? name = markup['name'];
+    String? description = markup['description'];
     var potentialAction = markup['potentialAction'];
 
 
     return SimpleCard(
-      titleText: description,
+      titleText: name ?? description,
+      subtitleText: (name != null) ? description : null,
       potentialAction: potentialAction,
       potentialActionPostFunction: postFunction,
       preview: preview,
