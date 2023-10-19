@@ -94,7 +94,7 @@ class GeoData {
     String url =
         'https://nominatim.openstreetmap.org/reverse?format=json&lat=${latLong.latitude}&lon=${latLong.longitude}&zoom=18&addressdetails=1&extratags=1&namedetails=1&accept-language=$languageCode';
     // todo language as variable
-    var response = await http.post(Uri.parse(url));
+    var response = await http.get(Uri.parse(url));
     var decodedResponse = jsonDecode(response.body);
     developer.log(
       'Reverse Geocoded Position, got\n$decodedResponse',
