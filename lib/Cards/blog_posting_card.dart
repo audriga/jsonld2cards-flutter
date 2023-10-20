@@ -3,12 +3,12 @@ library blog_posting_card;
 import 'package:flutter/material.dart'; //?
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
+import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
 class BlogPostingCard extends StatelessWidget implements MarkupCard {
@@ -149,9 +149,11 @@ class BlogPostingCard extends StatelessWidget implements MarkupCard {
     return const SizedBox(width: 0,);
   }
 
-  @override
-  IconData get tabIcon => Icons.credit_card;
+  SchemaType get cardType => SchemaType.blogPosting;
 
   @override
-  String get tabName => 'Default';
+  IconData get tabIcon => cardType.icon!;
+
+  @override
+  String get tabName => cardType.tabName;
 }
