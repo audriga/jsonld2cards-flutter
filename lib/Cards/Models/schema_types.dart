@@ -50,6 +50,25 @@ extension SchemaTypeName on SchemaType {
   //   }
   // }
 
+  /// Reverse of [getCardType]
+  String get typeName => switch(this) {
+      SchemaType.emailMessage => 'EmailMessage',
+      SchemaType.place => 'Place',
+      SchemaType.musicRecording => 'MusicRecording',
+      SchemaType.musicGroup => 'MusicGroup',
+      SchemaType.musicAlbum => 'MusicAlbum',
+      SchemaType.flightReservation => 'FlightReservation',
+      SchemaType.order => 'Order',
+      SchemaType.invoice => 'Invoice',
+      SchemaType.parcelDelivery => 'ParcelDelivery',
+      SchemaType.blogPosting => 'BlogPosting',
+      SchemaType.itemList => 'ItemList',
+      SchemaType.confirmAction => 'ConfirmAction',
+      SchemaType.cancelAction => 'CancelAction',
+      SchemaType.action => 'Action',
+    };
+
+  /// Friendly names for the type to be displayed on tabs
   String get tabName {
     return switch(this) {
       SchemaType.emailMessage => 'Email Message',
