@@ -4,6 +4,7 @@ library parcel_delivery;
 // Note: This is a "quick and dirty" model, to make creation of the card easier.
 // Not to be taken as the model to be.
 import 'package:jsonld2cards/Cards/Models/order_model.dart';
+import 'package:jsonld2cards/Cards/Models/thing_model.dart';
 
 import 'organization_model.dart';
 import 'product_model.dart';
@@ -87,7 +88,7 @@ class PostalAddress {
   }
 }
 
-class ParcelDelivery {
+class ParcelDelivery extends Thing {
 /*
 {
   "@context": "http://schema.org",
@@ -161,7 +162,7 @@ class ParcelDelivery {
   Product? itemShipped;
   String? trackingNumber;
   String? trackingUrl;
-  dynamic potentialAction;
+  // dynamic potentialAction;
   ParcelService? hasDeliveryMethod;
   Order? partOfOrder;
 
@@ -174,12 +175,12 @@ class ParcelDelivery {
     this.itemShipped,
     this.trackingNumber,
     this.trackingUrl,
-    this.potentialAction,
+    super.potentialAction,
     this.hasDeliveryMethod,
     this.partOfOrder,
   });
 
-  ParcelDelivery.fromJson(Map<String, dynamic> json) {
+  ParcelDelivery.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     deliveryAddress =
         (json['deliveryAddress'] != null && (json['deliveryAddress'] is Map))
             ? PostalAddress.fromJson(json['deliveryAddress'])
@@ -208,8 +209,10 @@ class ParcelDelivery {
         : null;
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
+    final data = super.toJson();
+    data['@type'] = 'ParcelDelivery';
     if (deliveryAddress != null) {
       data['deliveryAddress'] = deliveryAddress!.toJson();
     }

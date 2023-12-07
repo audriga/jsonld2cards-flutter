@@ -1,5 +1,7 @@
 library invoice_model;
 
+import 'package:jsonld2cards/Cards/Models/thing_model.dart';
+
 import 'organization_model.dart';
 
 
@@ -29,7 +31,7 @@ class PriceSpecification {
   }
 }
 
-class Invoice {
+class Invoice extends Thing {
 /*
 {
   "@context": "http://schema.org",
@@ -58,7 +60,7 @@ class Invoice {
   String? paymentStatus;
   Organization? provider;
   PriceSpecification? totalPaymentDue;
-  dynamic potentialAction;
+  // dynamic potentialAction;
 
 
   Invoice({
@@ -68,10 +70,10 @@ class Invoice {
     this.paymentStatus,
     this.provider,
     this.totalPaymentDue,
-    this.potentialAction,
+    super.potentialAction,
   });
 
-  Invoice.fromJson(Map<String, dynamic> json) {
+  Invoice.fromJson(Map<String, dynamic> json) : super.fromJson(json){
     accountId = json['accountId']?.toString();
     minimumPaymentDue = (json['minimumPaymentDue'] != null &&
         (json['minimumPaymentDue'] is Map))
@@ -91,8 +93,9 @@ class Invoice {
     potentialAction = json['potentialAction'];
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
+    final data = super.toJson();
     data['@context'] = 'http://schema.org';
     data['@type'] = 'Invoice';
     data['accountId'] = accountId;

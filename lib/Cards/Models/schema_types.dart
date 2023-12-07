@@ -1,6 +1,15 @@
 library schema_types;
 
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/Cards/Models/music_model.dart';
+import 'package:jsonld2cards/Cards/Models/order_model.dart';
+import 'package:jsonld2cards/Cards/Models/parcel_delivery_model.dart';
+import 'package:jsonld2cards/Cards/Models/action_model.dart' as schema_action;
+import 'package:jsonld2cards/Cards/Models/place_model.dart';
+import 'package:jsonld2cards/Cards/Models/thing_model.dart';
+
+import 'invoice_model.dart';
+import 'item_list_model.dart';
 
 enum SchemaType {
   emailMessage,
@@ -106,4 +115,22 @@ extension SchemaTypeName on SchemaType {
       SchemaType.action => Icons.directions_run,
     };
   }
+
+   int duplicateHash(Map<String, dynamic> json) => switch(this) {
+    // SchemaType.emailMessage => 'EmailMessage',
+    SchemaType.place => Place.fromJson(json).duplicateHash,
+    SchemaType.musicRecording => MusicRecording.fromJson(json).duplicateHash,
+    SchemaType.musicGroup => MusicGroup.fromJson(json).duplicateHash,
+    SchemaType.musicAlbum => MusicAlbum.fromJson(json).duplicateHash,
+    // SchemaType.flightReservation => 'FlightReservation',
+    SchemaType.order => Order.fromJson(json).duplicateHash,
+    SchemaType.invoice => Invoice.fromJson(json).duplicateHash,
+    SchemaType.parcelDelivery => ParcelDelivery.fromJson(json).duplicateHash,
+    // SchemaType.blogPosting => 'BlogPosting',
+    SchemaType.itemList => ItemList.fromJson(json).duplicateHash,
+    SchemaType.confirmAction => schema_action.Action.fromJson(json).duplicateHash,
+    SchemaType.cancelAction => schema_action.Action.fromJson(json).duplicateHash,
+    SchemaType.action => schema_action.Action.fromJson(json).duplicateHash,
+     _ => Thing.fromJson(json).duplicateHash,
+  };
 }

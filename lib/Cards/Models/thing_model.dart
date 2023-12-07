@@ -5,6 +5,12 @@ import 'package:jsonld2cards/Util/conversion.dart';
 import 'image_object_model.dart';
 
 class Thing {
+  /// The type of the Schema.org Thing. If we modelled all things this would be
+  /// superfluous as the runtime type could stand in for this property. But as it
+  /// stands, when a json for a type we don't know yet is cast into [Thing] we want
+  /// to save the original type.
+  /// Alternatively we could make Thing abstract to avoid this.
+  String type;
   Uri? id;
   String? alternateName;
   // todo can also be a https://schema.org/TextObject instead
@@ -16,8 +22,11 @@ class Thing {
   dynamic potentialAction;
   Uri? url;
 
+  int get duplicateHash => type.hashCode ^ id.hashCode ^ name.hashCode ^ description.hashCode ^ url.hashCode;
+
   Thing({
     this.id,
+    this.type = 'Thing',
     this.alternateName,
     this.description,
     this.imageUri,
@@ -27,7 +36,7 @@ class Thing {
     this.url
   });
 
-  Thing.fromJson(Map<String, dynamic> json) {
+  Thing.fromJson(Map<String, dynamic> json) : type = json['@type'] ?? 'Thing' {
     id = tryCastOrParse(json['@id']);
     alternateName = json['alternateName'];
     description = json['description'];
@@ -44,7 +53,7 @@ class Thing {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['@type'] = 'Thing';
+    data['@type'] = type;
     data['@id'] = id?.toString();
     data['alternateName'] = alternateName;
     data['description'] = description;

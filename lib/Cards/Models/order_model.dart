@@ -1,5 +1,6 @@
 library order_model;
 
+import 'package:jsonld2cards/Cards/Models/thing_model.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
 
 import 'organization_model.dart';
@@ -193,7 +194,7 @@ String orderStatusToVerbString(OrderStatus status) {
 }
 
 // todo this does not extend Thing. Why?
-class Order {
+class Order extends Thing {
 /*
 {
   "@context": "http://schema.org",
@@ -253,8 +254,8 @@ class Order {
   String? price;
   PriceSpecification? priceSpecification;
   Offer? acceptedOffer;
-  Uri? url;
-  dynamic potentialAction;
+  // Uri? url;
+  // dynamic potentialAction;
 
   Order({
     this.merchant,
@@ -264,11 +265,11 @@ class Order {
     this.price,
     this.priceSpecification,
     this.acceptedOffer,
-    this.url,
-    this.potentialAction,
+    super.url,
+    super.potentialAction,
   });
 
-  Order.fromJson(Map<String, dynamic> json) {
+  Order.fromJson(Map<String, dynamic> json) : super.fromJson(json){
     // Verifying of context is skipped, as it is already done by renderCard function
     assert(json['@type'] == 'Order', 'Type of Order should always be Order');
     merchant = (json['merchant'] != null && (json['merchant'] is Map))
@@ -290,8 +291,9 @@ class Order {
     potentialAction = json['potentialAction'];
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
+    final data = super.toJson();
     data['@context'] = 'http://schema.org';
     data['@type'] = 'Order';
     if (merchant != null) {
