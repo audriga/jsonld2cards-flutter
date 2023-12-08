@@ -1,7 +1,5 @@
 library image_object_model;
 
-import 'package:jsonld2cards/Util/conversion.dart';
-
 import 'thing_model.dart';
 
 class ImageObject extends Thing{

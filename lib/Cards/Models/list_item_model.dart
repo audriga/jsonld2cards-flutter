@@ -1,9 +1,6 @@
 library list_item_model;
 
 import 'package:jsonld2cards/Cards/Models/thing_model.dart';
-import 'package:jsonld2cards/Util/conversion.dart';
-
-import 'image_object_model.dart';
 
 class ListItem extends Thing {
 
