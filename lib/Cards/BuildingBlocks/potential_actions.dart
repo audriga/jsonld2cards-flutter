@@ -59,7 +59,7 @@ class PotentialActionRow extends StatelessWidget {
     throw FormatException('Potential action is no map or list of maps', potentialAction);
   }
 }
-// todo enum for actiontypes
+// todo enum for action types
 class PotentialActionButton extends StatelessWidget {
   const PotentialActionButton({
     super.key,
@@ -80,7 +80,7 @@ class PotentialActionButton extends StatelessWidget {
     switch (actionType) {
       case 'ViewAction': {
         button = TextButton(
-          onPressed: preview ? () {} : () {
+          onPressed: preview ? null : () {
             Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
             if (uriToLaunch != null) {
               launchUrl(uriToLaunch);
@@ -92,7 +92,7 @@ class PotentialActionButton extends StatelessWidget {
       }
       case 'TrackAction': {
         button = TextButton(
-          onPressed: preview ? () {} : () {
+          onPressed: preview ? null : () {
             Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
             if (uriToLaunch != null) {
               launchUrl(uriToLaunch);
@@ -112,7 +112,7 @@ class PotentialActionButton extends StatelessWidget {
         }
         var actionName = potentialAction['name'] ?? 'Confirm';
         button = TextButton(
-          onPressed: preview ? () {} : () {
+          onPressed: preview ? null : () {
             Uri? uriToPost = tryCastOrParse(confirmUri);
             if (uriToPost != null) {
               if (uriToPost.scheme == 'mailto' && globalSMLAppContext?.confirmCallback != null) {
@@ -131,7 +131,7 @@ class PotentialActionButton extends StatelessWidget {
       case 'CancelAction' : {
         var actionName = potentialAction['name'] ?? 'Cancel';
         button = TextButton(
-          onPressed: preview ? () {} : () {
+          onPressed: preview ? null : () {
             Uri? uriToPost = tryCastOrParse(actionTarget);
             if (uriToPost != null) {
               if (uriToPost.scheme == 'mailto' && globalSMLAppContext?.confirmCallback != null) {
@@ -149,7 +149,7 @@ class PotentialActionButton extends StatelessWidget {
       }
       case 'EditAction' : {
         button = TextButton(
-          onPressed: preview ? () {} : () {
+          onPressed: preview ? null : () {
             Uri? uriToLaunch = tryCastOrParse(actionTarget);
             if (uriToLaunch != null) {
               launchUrl(uriToLaunch);
@@ -161,7 +161,7 @@ class PotentialActionButton extends StatelessWidget {
       }
       case 'CheckInAction': {
         button = TextButton(
-          onPressed: preview ? () {} : () {
+          onPressed: preview ? null : () {
             Uri? uriToPost = tryCastOrParse(actionTarget);
             if (uriToPost != null) {
               postFunction(uriToPost, successMessage: 'Sent Check-In');
@@ -173,7 +173,7 @@ class PotentialActionButton extends StatelessWidget {
       }
       case 'ListenAction': {
         button = TextButton(
-          onPressed: preview ? () {} : () {
+          onPressed: preview ? null : () {
 
             // TODO this assumes an order! replace with string prefix search
             Uri? uriToLaunch = defaultTargetPlatform == TargetPlatform.android
@@ -190,7 +190,7 @@ class PotentialActionButton extends StatelessWidget {
       /// Special Case for Live Location
       case 'UpdateAction': {
         button = IconButton(
-          onPressed: preview ? () {} : () async {
+          onPressed: preview ? null : () async {
             // Misusing postFunction to call update function.
             postFunction(Uri.base);
           },
@@ -200,7 +200,7 @@ class PotentialActionButton extends StatelessWidget {
       }
       case 'SearchAction': {
         button = IconButton(
-          onPressed: preview ? () {} : () {
+          onPressed: preview ? null : () {
             Uri? uriToLaunch = tryCastOrParse(actionTarget);
             // todo should query for search... But this might be difficult to implement
             if (uriToLaunch != null) {
