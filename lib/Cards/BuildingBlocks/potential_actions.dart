@@ -2,6 +2,7 @@ library potential_actions;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -74,7 +75,7 @@ class PotentialActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget button = const SizedBox();
+    Widget button = const Text('Unsupported Action');
     String actionType = potentialAction['@type'];
     var actionTarget = potentialAction['target'];
     switch (actionType) {
@@ -209,6 +210,19 @@ class PotentialActionButton extends StatelessWidget {
           },
           icon: const Icon(Icons.search),
         );
+        return button;
+      }
+      case 'CopyToClipboardAction' : {
+        String nameOfCode = potentialAction['name'] ?? 'Copy';
+        String codeToCopy = potentialAction['description'];
+        button = TextButton.icon(
+          onPressed: preview ? null : () async {
+            await Clipboard.setData(ClipboardData(text: codeToCopy));
+          },
+          label: Text('$nameOfCode: $codeToCopy'),
+          icon: const Icon(Icons.copy),
+        );
+        return button;
       }
     }
     return button;
