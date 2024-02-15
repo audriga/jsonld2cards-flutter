@@ -39,7 +39,7 @@ dependencies:
     # the parent directory to use the current plugin's version.
     path: ../
 
-  http: 0.13.6
+  http: ^1.1.0
   go_router: ^10.0.0
   flutter_adaptive_scaffold: ^0.1.6
   html2jsonld_dart:
