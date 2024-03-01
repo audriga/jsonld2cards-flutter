@@ -5,6 +5,7 @@ typedef SendEmailCallback = Function({dynamic dataToSend, String? subject, Strin
 SMLAppContext? globalSMLAppContext;
 
 class SMLAppContext {
+  // todo document this better
   SendEmailCallback? confirmCallback;
 
   SMLAppContext({

@@ -6,6 +6,7 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:jsonld2cards/Cards/action_card.dart';
 import 'package:jsonld2cards/Cards/item_list_card.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
+import 'package:jsonld2cards/Util/map_tools.dart';
 import 'package:jsonld2cards/tabbed_cards.dart';
 import 'dart:developer' as developer;
 import 'Cards/Models/schema_types.dart';
@@ -221,6 +222,10 @@ Widget renderCardSingle(
       name: 'jsonld2cards.card_rendering',
     );
   }
+
+  /// Look through markup for phone numbers and emails and add corresponding potential actions
+  enrichMarkupWithEmailAndPhoneActions(markup);
+
   String typeName = markup['@type'];
   var type = getCardType(typeName);
   late MarkupCard card;
@@ -274,6 +279,35 @@ Widget renderCardSingle(
   return surroundWithTopBar(card);
   } else {
     return card;
+  }
+}
+
+void enrichMarkupWithEmailAndPhoneActions(Map<String, dynamic> markup) {
+  var phones = findAllRecursive(markup, 'telephone', excluded: ['potentialAction']).whereType<String>();
+  var emails = findAllRecursive(markup, 'email', excluded: ['potentialAction']).whereType<String>();
+  if (phones.isNotEmpty || emails.isNotEmpty) {
+    var potentialTelActions = phones.map<Map<String, dynamic>>((e) => {
+      '@type': 'CommunicateAction',
+      'name': 'Call $e',
+      'url': 'tel:$e',
+    });
+    var potentialMailtoActions = emails.map<Map<String, dynamic>>((e) {
+      var mail = e.replaceFirst('mailto:', '');
+      return {
+      '@type': 'CommunicateAction',
+      'name': 'Email $mail',
+      'url': 'mailto:$mail',
+    };
+    });
+    List generatedPotentialActions = [...potentialTelActions, ...potentialMailtoActions];
+    var originalActions = markup['potentialAction'];
+    if (originalActions == null) {
+      markup['potentialAction'] = generatedPotentialActions;
+    } else if (originalActions is List) {
+      markup['potentialAction'] = originalActions..addAll(generatedPotentialActions);
+    } else {
+      markup['potentialAction'] = [originalActions, ...generatedPotentialActions];
+    }
   }
 }
 

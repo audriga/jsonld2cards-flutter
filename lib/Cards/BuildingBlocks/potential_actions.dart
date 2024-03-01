@@ -79,6 +79,7 @@ class PotentialActionButton extends StatelessWidget {
     String actionType = potentialAction['@type'];
     var actionTarget = potentialAction['target'];
     switch (actionType) {
+      case 'CommunicateAction':
       case 'ViewAction': {
         button = TextButton(
           onPressed: preview ? null : () {
