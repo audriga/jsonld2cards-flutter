@@ -95,16 +95,23 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
     }
 
     bool showDefaultViewAction = (url != null);
+    if (showDefaultViewAction) {
+      var visitAction = {"@type": "ViewAction", "url": url, "name": "Visit"};
+      if (potentialAction == null) {
+       potentialAction = visitAction;
+      } else if (potentialAction is List) {
+        potentialAction = [...potentialAction, visitAction];
+      } else {
+        potentialAction = [potentialAction, visitAction];
+      }
+    }
+
     return SimpleCard(
       leadingImage: leadingImage,
       titleText: titleText,
       subtitleText: subtitleText,
       potentialAction: potentialAction,
       potentialActionPostFunction: postFunction,
-      secondaryPotentialAction: showDefaultViewAction
-          ? {"@type": "ViewAction", "url": url, "name": "Visit"}
-          : null,
-      secondaryPotentialActionPostFunction: postFunction,
       preview: preview,
     );
   }
