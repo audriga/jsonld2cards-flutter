@@ -1,9 +1,13 @@
 <?php
 cors();
 
+$html = file_get_contents('flutter_index.html');
 # Check for path parameter
 if (isset($_GET['cardId'])) {
     $cardId = $_GET['cardId'];
+} else {
+    # Just return the regular html file if there is no argument
+    echo $html;
 }
 
 $jsonld = '{
@@ -46,7 +50,6 @@ if (count($pathSegments) > 1) {
 }
 
 
-$html = file_get_contents('flutter_index.html');
 $dom = new DOMDocument;
 $dom->loadHTML($html);
 $new_elm = $dom->createElement('script', $jsonld);
