@@ -224,7 +224,7 @@ Widget renderCardSingle(
   }
 
   /// Look through markup for phone numbers and emails and add corresponding potential actions
-  enrichMarkupWithEmailAndPhoneActions(markup);
+  markup = enrichMarkupWithEmailAndPhoneActions(markup);
 
   String typeName = markup['@type'];
   var type = getCardType(typeName);
@@ -282,7 +282,7 @@ Widget renderCardSingle(
   }
 }
 
-void enrichMarkupWithEmailAndPhoneActions(Map<String, dynamic> markup) {
+Map<String, dynamic> enrichMarkupWithEmailAndPhoneActions(Map<String, dynamic> markup) {
   var phones = findAllRecursive(markup, 'telephone', excluded: ['potentialAction']).whereType<String>();
   var emails = findAllRecursive(markup, 'email', excluded: ['potentialAction']).whereType<String>();
   if (phones.isNotEmpty || emails.isNotEmpty) {
@@ -299,16 +299,10 @@ void enrichMarkupWithEmailAndPhoneActions(Map<String, dynamic> markup) {
       'url': 'mailto:$mail',
     };
     });
-    List generatedPotentialActions = [...potentialTelActions, ...potentialMailtoActions];
-    var originalActions = markup['potentialAction'];
-    if (originalActions == null) {
-      markup['potentialAction'] = generatedPotentialActions;
-    } else if (originalActions is List) {
-      markup['potentialAction'] = originalActions..addAll(generatedPotentialActions);
-    } else {
-      markup['potentialAction'] = [originalActions, ...generatedPotentialActions];
-    }
+    List<Map<String,dynamic>> generatedPotentialActions = [...potentialTelActions, ...potentialMailtoActions];
+    return appendPotentialActions(markup, generatedPotentialActions);
   }
+  return markup;
 }
 
 Card surroundWithTopBar(MarkupCard card) {

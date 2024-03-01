@@ -34,3 +34,19 @@ List<dynamic> findAllRecursive(Map<String, dynamic> map, String searchKey, {List
   }
   return collectedResults;
 }
+
+// todo should probably be in a separate library for enriching markup
+Map<String, dynamic> appendPotentialActions(Map<String, dynamic> markup, List<Map<String, dynamic>> generatedPotentialActions) {
+  var originalActions = markup['potentialAction'];
+  // Create a (shallow) copy before appending stuff to it to prevent appending more and more
+  // potential actions on repeated renders
+  Map<String, dynamic> markupCopy = {}..addAll(markup);
+  if (originalActions == null) {
+    markupCopy['potentialAction'] = generatedPotentialActions;
+  } else if (originalActions is List) {
+    markupCopy['potentialAction'] = [...originalActions, ...generatedPotentialActions];
+  } else {
+    markupCopy['potentialAction'] = [originalActions, ...generatedPotentialActions];
+  }
+  return markupCopy;
+}
