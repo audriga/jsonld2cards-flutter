@@ -9,6 +9,7 @@ import 'package:jsonld2cards/Cards/Models/list_item_model.dart';
 import 'package:jsonld2cards/Cards/Models/organization_model.dart';
 import 'package:jsonld2cards/Cards/Models/thing_model.dart';
 import 'package:jsonld2cards/card_rendering.dart';
+import 'package:jsonld2cards/Util/modify_markup.dart';
 
 class AdaptiveMultipleCards extends StatelessWidget {
   final String? title;
