@@ -14,6 +14,10 @@ library map_tools;
 // }
 
 const emptyList = <String>[];
+/// Finds all occurrences of [searchKey] in [map].
+/// Performs a depth-first recursive search to do so.
+/// Returns the corresponding values.
+/// [excluded] contains keys for which the search does not enter the value/ disregards the value completely.
 List<dynamic> findAllRecursive(Map<String, dynamic> map, String searchKey, {List<String> excluded = emptyList}) {
   var collectedResults = [];
   for (var key in map.keys) {
@@ -33,20 +37,4 @@ List<dynamic> findAllRecursive(Map<String, dynamic> map, String searchKey, {List
     }
   }
   return collectedResults;
-}
-
-// todo should probably be in a separate library for enriching markup
-Map<String, dynamic> appendPotentialActions(Map<String, dynamic> markup, List<Map<String, dynamic>> generatedPotentialActions) {
-  var originalActions = markup['potentialAction'];
-  // Create a (shallow) copy before appending stuff to it to prevent appending more and more
-  // potential actions on repeated renders
-  Map<String, dynamic> markupCopy = {}..addAll(markup);
-  if (originalActions == null) {
-    markupCopy['potentialAction'] = generatedPotentialActions;
-  } else if (originalActions is List) {
-    markupCopy['potentialAction'] = [...originalActions, ...generatedPotentialActions];
-  } else {
-    markupCopy['potentialAction'] = [originalActions, ...generatedPotentialActions];
-  }
-  return markupCopy;
 }

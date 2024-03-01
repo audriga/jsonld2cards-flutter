@@ -1,14 +1,14 @@
 library card_rendering;
 
 
-import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
-import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
-import 'package:jsonld2cards/Cards/action_card.dart';
-import 'package:jsonld2cards/Cards/item_list_card.dart';
-import 'package:jsonld2cards/Cards/markup_card.dart';
-import 'package:jsonld2cards/Util/map_tools.dart';
-import 'package:jsonld2cards/tabbed_cards.dart';
 import 'dart:developer' as developer;
+import 'package:flutter/material.dart';
+import 'Cards/BuildingBlocks/potential_actions.dart';
+import 'Cards/BuildingBlocks/uri_image.dart';
+import 'Cards/action_card.dart';
+import 'Cards/item_list_card.dart';
+import 'Cards/markup_card.dart';
+import 'tabbed_cards.dart';
 import 'Cards/Models/schema_types.dart';
 import 'Cards/invoice_card.dart';
 import 'Cards/order_card.dart';
@@ -21,7 +21,7 @@ import 'Cards/parcel_delivery_card.dart';
 import 'Cards/blog_posting_card.dart';
 import 'Cards/place_card.dart';
 import 'Cards/Models/organization_model.dart' as org_model;
-import 'package:flutter/material.dart';
+import 'Util/modify_markup.dart';
 // Need material instead of widgets, to get Icons.
 // import 'package:flutter/widgets.dart';
 
@@ -169,24 +169,6 @@ Widget renderCardMulti(
   }
 }
 
-/// Removing things we don't want to render in the card
-List<dynamic> removeMarkupClutter(List<dynamic> markupList) {
-  List<String> elementsToRemove = [
-    // Used for icon only, not in rendered card
-    'Organization',
-    // Sub-type of Organization
-    'NewsMediaOrganization',
-    // WebSite ignore for now
-    'WebSite',
-    // BreadcrumbList for path based backend
-    'BreadcrumbList',
-    // WebPage ignore for now
-    'WebPage'
-  ];
-
-  return markupList.where((element) => element is! Map<String,dynamic> || !elementsToRemove.contains(element['@type'])).toList();
-}
-
 Widget? tryRenderCardSingle(
     Map<String, dynamic> markup,
     {
@@ -282,28 +264,7 @@ Widget renderCardSingle(
   }
 }
 
-Map<String, dynamic> enrichMarkupWithEmailAndPhoneActions(Map<String, dynamic> markup) {
-  var phones = findAllRecursive(markup, 'telephone', excluded: ['potentialAction']).whereType<String>();
-  var emails = findAllRecursive(markup, 'email', excluded: ['potentialAction']).whereType<String>();
-  if (phones.isNotEmpty || emails.isNotEmpty) {
-    var potentialTelActions = phones.map<Map<String, dynamic>>((e) => {
-      '@type': 'CommunicateAction',
-      'name': 'Call $e',
-      'url': 'tel:$e',
-    });
-    var potentialMailtoActions = emails.map<Map<String, dynamic>>((e) {
-      var mail = e.replaceFirst('mailto:', '');
-      return {
-      '@type': 'CommunicateAction',
-      'name': 'Email $mail',
-      'url': 'mailto:$mail',
-    };
-    });
-    List<Map<String,dynamic>> generatedPotentialActions = [...potentialTelActions, ...potentialMailtoActions];
-    return appendPotentialActions(markup, generatedPotentialActions);
-  }
-  return markup;
-}
+
 
 Card surroundWithTopBar(MarkupCard card) {
   return Card(
