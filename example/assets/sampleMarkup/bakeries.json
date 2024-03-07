@@ -1,0 +1,1485 @@
+[{
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "76137",
+    "streetAddress": "RitterstraÃe 19",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Richard Nussbaumer",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0039119",
+    "longitude": "8.3982756"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Hatz am Markt",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0097383",
+    "longitude": "8.403858"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Lehmann",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "48.9974313",
+    "longitude": "8.4053107"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Badische Backstub'",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0079208",
+    "longitude": "8.3950796"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76137",
+    "streetAddress": "Anna-Lauter-StraÃe 13",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Reinmuth",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0011797",
+    "longitude": "8.4157154"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "76133",
+    "streetAddress": "KaiserstraÃe 150",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Wiener FeinbÃ¤cker Heberer",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0101673",
+    "longitude": "8.3943716"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76137",
+    "streetAddress": "KarlstraÃe 63",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Neff",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0020632",
+    "longitude": "8.3945385"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": "RÃ¼ppurrer StraÃe 40",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Hatz",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0014398",
+    "longitude": "8.4103244"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Der Backlade",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0099135",
+    "longitude": "8.4236478"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76131",
+    "streetAddress": "KaiserstraÃe 15",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Uni's BÃ¤ck",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0089672",
+    "longitude": "8.414907"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Badische Backstub",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0072742",
+    "longitude": "8.4034823"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Visel",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0085186",
+    "longitude": "8.4175376"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76227",
+    "streetAddress": "RaiherwiesenstraÃe 38",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Armbruster",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "48.9973157",
+    "longitude": "8.4582253"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76131",
+    "streetAddress": "RudolfstraÃe 11",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Visel",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0099398",
+    "longitude": "8.4222678"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76133",
+    "streetAddress": "GartenstraÃe 8",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Meier",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0043066",
+    "longitude": "8.3970871"
+  },
+  
+  "url": "",
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76131",
+    "streetAddress": "Ludwig-Wilhelm-StraÃe 20",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Badische Backstub",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.009441",
+    "longitude": "8.4234055"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76137",
+    "streetAddress": "BaumeisterstraÃe 20",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Confiserie Gordani Lasch",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0038857",
+    "longitude": "8.4065643"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76137",
+    "streetAddress": "WerderstraÃe 50",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Neff",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0014054",
+    "longitude": "8.4075661"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76131",
+    "streetAddress": "VeilchenstraÃe 15",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Visel",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0094349",
+    "longitude": "8.4280016"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76131",
+    "streetAddress": "Mannheimer StraÃe 51",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Hatz",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0171269",
+    "longitude": "8.4438979"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76131",
+    "streetAddress": "TullastraÃe 63",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Visel",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0087321",
+    "longitude": "8.4320899"
+  },
+  
+  "url": "",
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Backwerk",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.009384",
+    "longitude": "8.4055063"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "K&U BÃ¤ckerei",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0056926",
+    "longitude": "8.4112057"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "76133",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Richard Nussbaumer",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0050722",
+    "longitude": "8.3943688"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "76133",
+    "streetAddress": "KaiserstraÃe 217",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Grimminger",
+  "foundingDate": "2018-10-18",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0097361",
+    "longitude": "8.3944934"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "76137",
+    "streetAddress": "Luise-Riegger-StraÃe 13",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Neff",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0017815",
+    "longitude": "8.4159662"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76133",
+    "streetAddress": "Fritz-Erler-StraÃe 1-3",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Armbruster",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0089538",
+    "longitude": "8.4104256"
+  },
+  
+  "url": "",
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76133",
+    "streetAddress": "KaiserstraÃe 147-159",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Badische Backstub'",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0095639",
+    "longitude": "8.4012618"
+  },
+  
+  "url": "",
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76133",
+    "streetAddress": "KaiserstraÃe 147-159",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Badische Backstub",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0093973",
+    "longitude": "8.4016234"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76137",
+    "streetAddress": "Wolfartsweierer StraÃe 46",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Hatz",
+  "foundingDate": "2016-08-30",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "48.9992243",
+    "longitude": "8.4281575"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "76133",
+    "streetAddress": "RitterstraÃe 7",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "BÃ¤ckerei Schmidt",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0090473",
+    "longitude": "8.4008476"
+  },
+  
+  "url": "",
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": "WilhelmstraÃe 75",
+    "addressLocality": ""
+  },
+  "name": "Lehmann",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "48.9987524",
+    "longitude": "8.4059396"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Ditsch",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0099288",
+    "longitude": "8.39435"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76131",
+    "streetAddress": "ForststraÃe 21",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Richard Nussbaumer",
+  "foundingDate": "2017-07-20",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0142535",
+    "longitude": "8.4412837"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": "KaiserstraÃe 181-183",
+    "addressLocality": ""
+  },
+  "name": "Wiener FeinbÃ¤cker",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0097163",
+    "longitude": "8.3989815"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76133",
+    "streetAddress": "KaiserstraÃe 165",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Kamps",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0096252",
+    "longitude": "8.4006478"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "76133",
+    "streetAddress": "MarkgrafenstraÃe 33",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "KATZ der bÃ¤cker",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.007196",
+    "longitude": "8.4061524"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "76131",
+    "streetAddress": "TullastraÃe ",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Peter's gute Backstube",
+  "foundingDate": "2021-02-04",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0064758",
+    "longitude": "8.4320222"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Katz der bÃ¤cker",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "49.0101729",
+    "longitude": "8.3947104"
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76227",
+    "streetAddress": "OttostraÃe 9",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Snackeria",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76137",
+    "streetAddress": "Bahnhofplatz 1a",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Erster Wiener",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76137",
+    "streetAddress": "Bahnhofplatz 1",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Le Crobag",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76137",
+    "streetAddress": "Bahnhofplatz 1",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Le Crobag",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Backwerk",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76133",
+    "streetAddress": "KaiserstraÃe 18",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Badische Backstub'",
+  "foundingDate": "2017-05-11",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  "url": "",
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76137",
+    "streetAddress": "RÃ¼ppurrer StraÃe 60",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "EUROback",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76131",
+    "streetAddress": "Ludwig-Erhard-Allee 20",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Laib & Leben im Parkoffice",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76131",
+    "streetAddress": "Haid-und-Neu-StraÃe 2",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Neff",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76131",
+    "streetAddress": "KÃ¤ppelestraÃe 2",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Armbruster",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76133",
+    "streetAddress": "KaiserstraÃe 22",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Backwerk",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "76131",
+    "streetAddress": "StriederstraÃe 21",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Reinmuth",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  "url": "",
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    
+    "postalCode": "",
+    "streetAddress": " ",
+    "addressLocality": ""
+  },
+  "name": "Simit BÃ¤cker",
+  "foundingDate": "2018-01-13",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  "url": "",
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+, {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "address": {
+    "@type": "PostalAddress",
+    
+    "addressCountry": "DE",
+    "postalCode": "76131",
+    "streetAddress": "Theodor-Rehbock-StraÃe 11",
+    "addressLocality": "Karlsruhe"
+  },
+  "name": "Armbruster",
+  "foundingDate": "",
+  "openingHours": "",
+  "priceRange": "$$",
+  "servesCuisine": [
+    "Middle Eastern",
+    "Mediterranean"
+  ],
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "",
+    "longitude": ""
+  },
+  
+  
+  "sameAs": "https://www.openstreetmap.org/node/6888126391"
+}
+]

@@ -4,6 +4,7 @@ library card_rendering;
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'Cards/BuildingBlocks/potential_actions.dart';
+import 'Cards/BuildingBlocks/template_card.dart';
 import 'Cards/BuildingBlocks/uri_image.dart';
 import 'Cards/action_card.dart';
 import 'Cards/item_list_card.dart';
@@ -254,7 +255,13 @@ Widget renderCardSingle(
       card =  ActionCard(markup: markup, postFunction: postFunction, preview: preview);
     }
     default: {
-      card =  DefaultMarkupCard(markup: markup, postFunction: postFunction, preview: preview);
+      if (type?.isSimpleTemplatedType ?? false) {
+        card =  SimpleTemplateCard(markup: markup, postFunction: postFunction, preview: preview);
+      } else if (type?.isThreeColumnTemplatedType ?? false)  {
+        card =  ThreeColumnTemplateCard(markup: markup, postFunction: postFunction, preview: preview);
+      } else {
+        card =  DefaultMarkupCard(markup: markup, postFunction: postFunction, preview: preview);
+      }
     }
   }
   if (topBar) {

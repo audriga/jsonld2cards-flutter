@@ -26,6 +26,7 @@ enum SchemaType {
   confirmAction,
   cancelAction,
   action,
+  bakery,
 }
 
 SchemaType? getCardType(String typeName) {
@@ -44,6 +45,7 @@ SchemaType? getCardType(String typeName) {
     'ConfirmAction' => SchemaType.confirmAction,
     'CancelAction' => SchemaType.cancelAction,
     'Action' => SchemaType.action,
+    'Bakery' => SchemaType.bakery,
     _ => null,
   };
 }
@@ -75,6 +77,7 @@ extension SchemaTypeName on SchemaType {
       SchemaType.confirmAction => 'ConfirmAction',
       SchemaType.cancelAction => 'CancelAction',
       SchemaType.action => 'Action',
+      SchemaType.bakery => 'Bakery',
     };
 
   /// Friendly names for the type to be displayed on tabs
@@ -94,6 +97,7 @@ extension SchemaTypeName on SchemaType {
       SchemaType.confirmAction => 'Confirmation',
       SchemaType.cancelAction => 'Cancellation',
       SchemaType.action => 'Action',
+      SchemaType.bakery => 'Bakery',
     };
   }
 
@@ -113,8 +117,18 @@ extension SchemaTypeName on SchemaType {
       SchemaType.confirmAction => Icons.check_circle,
       SchemaType.cancelAction => Icons.cancel,
       SchemaType.action => Icons.directions_run,
+      SchemaType.bakery => Icons.bakery_dining,
     };
   }
+
+  /// Returns true if and only if there exists a card template for this type.
+  bool get isSimpleTemplatedType => [
+    SchemaType.bakery,
+  ].contains(this);
+
+  /// Returns true if and only if there exists a card template for this type.
+  bool get isThreeColumnTemplatedType => [
+  ].contains(this);
 
    int duplicateHash(Map<String, dynamic> json) => switch(this) {
     // SchemaType.emailMessage => 'EmailMessage',

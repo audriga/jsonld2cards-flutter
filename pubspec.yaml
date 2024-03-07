@@ -25,6 +25,7 @@ dependencies:
   url_launcher: ^6.1.7
   latlong2: ^0.9.0
   flutter_adaptive_scaffold: ^0.1.6
+  mustache_template: ^2.0.0
 
 dev_dependencies:
   flutter_test:
