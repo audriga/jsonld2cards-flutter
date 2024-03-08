@@ -22,13 +22,13 @@ class Place extends StatefulWidget implements MarkupCard {
     required this.markup,
     required this.postFunction,
     this.preview = false,
-    this.autoDownload = false,
+    // this.autoDownload = false,
   });
 
   final Map<String, dynamic> markup;
   final PostFunction postFunction;
   final bool preview;
-  final bool autoDownload;
+  // final bool autoDownload;
 
   @override
   State<Place> createState() => _PlaceState();
@@ -59,7 +59,9 @@ class _PlaceState extends State<Place> {
       imageBytes,
       fit: BoxFit.scaleDown,
     );
-    if (widget.autoDownload) downloadImage();
+    // Autodownoad works most of the time but sometimes completely breaks rendering for card in strange ways.
+    // Since we currently don't need it, I have disabled it.
+    // if (widget.autoDownload) downloadImage();
     super.initState();
   }
 

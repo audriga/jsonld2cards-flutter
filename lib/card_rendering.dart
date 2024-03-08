@@ -227,7 +227,7 @@ Widget renderCardSingle(
     }
     // case SchemaType.bakery:
     case SchemaType.place: {
-      card =  Place(markup: markup, postFunction: postFunction, preview: preview, autoDownload: true,);
+      card =  Place(markup: markup, postFunction: postFunction, preview: preview);
     }
     case SchemaType.musicRecording: {
       // Song
