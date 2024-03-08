@@ -273,7 +273,7 @@ class GeoData {
         liveUri = Uri.tryParse(liveUriVar);
       } else {
         developer.log(
-          'LiveUri is not a uri or String (${liveUriVar.runtimeType})\liveUriVar: $liveUriVar',
+          'LiveUri is not a uri or String (${liveUriVar.runtimeType}) liveUriVar: $liveUriVar',
           name: 'jsonld2cards.geo_data',
         );
       }
