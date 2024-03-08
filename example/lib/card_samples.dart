@@ -164,7 +164,7 @@ class _CardSamplesState extends State<CardSamples> {
                   // renderCardOrErrorCard(emailMarkupReservationFlightBasic, preview: preview, topBar: topBar),
                   // renderCardOrErrorCard(emailMarkupReservationFlight, preview: preview, topBar: topBar),
                   // renderCardOrErrorCard(musicAlbumMarkup, preview: preview, topBar: topBar),
-                  renderCardOrErrorCard(placeMarkup, preview: preview, topBar: topBar),
+                  // renderCardOrErrorCard(placeMarkup, preview: preview, topBar: topBar),
                 ],
               );
               case 1: return itemBuilder(snapshot.requireData)[_selectedAssetIndex];

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
-import 'package:jsonld2cards/Util/conversion.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
@@ -26,10 +25,8 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
   @override
   Widget build(BuildContext context) {
     // Properties the Card might have
-    var url = markup['url'];
     String? name = markup['headline'] ?? markup['name'];
     String? description = markup['description'];
-    var image = markup['image'] ?? markup['logo'];
     var potentialAction = markup['potentialAction'];
 
     // Setting title and subtitle, depending on available information
@@ -45,66 +42,10 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
     }
 
     // Look for images in markup
-    Widget? leadingImage;
-    if (image != null) {
-      try {
-        if (image is List<dynamic>) {
-          // For array of URLs, unconventional, but used by zeit
-          Uri? imageUri;
-          if (image.first is Map<String, dynamic>) {
-            imageUri = tryCastOrParse(image.first['contentUrl'] ?? image.first['url']);
-          } else {
-            imageUri = tryCastOrParse(image.first);
-          }
-          if (imageUri != null) {
-            leadingImage = UriImage(
-              content: imageUri,
-              height: 32.0,
-              width:  32.0,
-              fit: BoxFit.scaleDown,
-              errorWidget: imageErrorWidget,
-            );
-          }
-
-        } else if (image is Map<String, dynamic>) {
-          // image is an ImageObject (https://schema.org/ImageObject)
-          var contentUrl = image['contentUrl'] ?? image['url'];
-          leadingImage = UriImage(
-            content: contentUrl,
-            height: 32.0,
-            width:  32.0,
-            fit: BoxFit.scaleDown,
-            errorWidget: imageErrorWidget,
-          );
-        } else {
-          // Probably URL, so flutter type of String or URI
-          var imageAsUri = tryCastOrParse(image);
-          if (imageAsUri != null ) {
-            leadingImage = UriImage(
-              content: image,
-              height: 32.0,
-              width:  32.0,
-              fit: BoxFit.scaleDown,
-              errorWidget: imageErrorWidget,
-            );
-          }
-        }
-      } on FormatException catch (_) {
-        // Tried giving something that isn't a uri or can't be parsed to a uri to UriImage.
-      }
-    }
-
-    bool showDefaultViewAction = (url != null);
-    if (showDefaultViewAction) {
-      var visitAction = {"@type": "ViewAction", "url": url, "name": "Visit"};
-      if (potentialAction == null) {
-       potentialAction = visitAction;
-      } else if (potentialAction is List) {
-        potentialAction = [...potentialAction, visitAction];
-      } else {
-        potentialAction = [potentialAction, visitAction];
-      }
-    }
+    Widget? leadingImage = findLeadingImage(markup,
+      imageErrorWidget: logAndShowNoImage,
+      size: 32.0, // todo: Maybe find a way to dynamically determine the size?
+    );
 
     return SimpleCard(
       leadingImage: leadingImage,
@@ -117,8 +58,8 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
   }
 
 
-  // todo use html2jsonld  version of this instead of own function
-  // todo make downloading of missing images optional!
+
+  @Deprecated('use html2jsonld version of this instead of own function')
   Future<String?> getImageSource(Uri? uri) async {
     if (uri == null) return null;
     http.Response response = await http.get(uri);
@@ -137,15 +78,6 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
       if (imageUrls.isNotEmpty) return imageUrls.first.attributes['content'];
     }
     return null;
-  }
-
-  Widget imageErrorWidget(context, url, error) {
-    developer.log(
-      'Error rendering leading Image',
-      name: 'jsonld2cards.default_card',
-      error: error,
-    );
-    return const SizedBox(width: 0,);
   }
 
   @override

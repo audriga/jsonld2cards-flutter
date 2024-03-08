@@ -208,9 +208,18 @@ Widget renderCardSingle(
 
   /// Look through markup for phone numbers and emails and add corresponding potential actions
   markup = enrichMarkupWithEmailAndPhoneActions(markup);
+  /// Add default ViewAction "Visit" to cards that have a url.
+  markup = addDefaultViewActionToMarkup(markup);
+
 
   String typeName = markup['@type'];
   var type = getCardType(typeName);
+  if (type != SchemaType.place) {
+    // Append "Navigate to" and "View" Actions to cards that contain GeoCoordinates.
+    // Don't do this for place cards, as they already add these actions themselves.
+    // (Especially for liveLocation cards we cant to avoid buttons pointing to stale locations).
+    markup = enrichMarkupWithNavigationActions(markup);
+  }
   late MarkupCard card;
   switch (type) {
     case SchemaType.emailMessage: {

@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
+import 'package:jsonld2cards/Util/modify_markup.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import '../GeoData/geo_data.dart';
 import 'package:flutter/foundation.dart';
@@ -112,16 +113,8 @@ class _PlaceState extends State<Place> {
 
 
     List<Map<String, dynamic>> geoActions =  [
-      {
-        '@type': 'ViewAction',
-        'url': 'google.navigation:q=$latitude,$longitude',
-        'name': 'Navigate to',
-      },
-      {
-        '@type': 'ViewAction',
-        'url': 'geo:$latitude,$longitude', //todo android special handling
-        'name': 'View',
-      },
+      navigationPotentialAction(latitude, longitude),
+      viewGeoPotentialAction(latitude, longitude),
     ];
 
     if (geoData.isLive ?? false) {

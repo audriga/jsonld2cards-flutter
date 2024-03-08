@@ -2,22 +2,12 @@ library template_card;
 
 import 'package:flutter/widgets.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
+import 'package:jsonld2cards/Templates/title_subtitle_templates.dart';
 import 'package:mustache_template/mustache.dart';
-
-
-
-String titleSourceTemplate(SchemaType type) => switch(type) {
-  SchemaType.bakery => '''{{name}}''',
-  _ => throw UnimplementedError('This type doesn\'t have a template')
-};
-String subTitleSourceTemplate(SchemaType type) => switch(type) {
-  SchemaType.bakery => '''{{#address.streetAddress}}{{.}}{{/address.streetAddress}}
-hat brötchen''',
-    _ => throw UnimplementedError('This type doesn\'t have a template')
-};
 
 /// Created a simple Title+Subtitle card via templating strings.
 class SimpleTemplateCard extends StatelessWidget implements MarkupCard {
@@ -51,8 +41,7 @@ class SimpleTemplateCard extends StatelessWidget implements MarkupCard {
     // Setting title and subtitle, depending on available information
     String titleText = titleTemplate.renderString(markup);
     String subtitleText = subTitleTemplate.renderString(markup);
-    // Todo: How do we decide on how to fetch the icon? Borrow DefaultCardBehaviour?
-    Widget? leadingImage = Icon(tabIcon);
+    Widget? leadingImage = findLeadingImage(markup) ?? Icon(tabIcon, size: 32.0,);
 
 
 
@@ -108,8 +97,7 @@ class ThreeColumnTemplateCard extends StatelessWidget implements MarkupCard {
     // Setting title and subtitle, depending on available information
     String titleText = titleTemplate.renderString(markup);
     String subtitleText = subTitleTemplate.renderString(markup);
-    // Todo: How do we decide on how to fetch the icon? Borrow DefaultCardBehaviour?
-    Widget? leadingImage = Icon(tabIcon);
+    Widget? leadingImage = findLeadingImage(markup) ?? Icon(tabIcon, size: 32.0,);
 
 
 

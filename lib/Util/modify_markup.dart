@@ -1,5 +1,7 @@
 library modify_markup;
 
+import 'package:jsonld2cards/Util/conversion.dart';
+
 import 'map_tools.dart';
 
 
@@ -21,8 +23,13 @@ List<dynamic> removeMarkupClutter(List<dynamic> markupList) {
   return markupList.where((element) => element is! Map<String,dynamic> || !elementsToRemove.contains(element['@type'])).toList();
 }
 
-/// Creates a new markup (via shallow copy) that has the given [generatedPotentialActions] appended to the potential action row.
+/// Creates a new markup that has the given [generatedPotentialActions] appended to the potential action row.
+/// Note this performs a shallow copy where the returned map has a new reference, but any value beside the one for
+/// potentialActions will be the same reference as the input [markup].
+/// See https://www.woolha.com/tutorials/dart-copy-clone-list-shallow-deep-examples for more information on shallow cloning in dart.
 Map<String, dynamic> appendPotentialActions(Map<String, dynamic> markup, List<Map<String, dynamic>> generatedPotentialActions) {
+  // Do noting if the list of potential actions is empty
+  if (generatedPotentialActions.isEmpty) return markup;
   var originalActions = markup['potentialAction'];
   // Create a (shallow) copy before appending stuff to it to prevent appending more and more
   // potential actions on repeated renders
@@ -38,9 +45,7 @@ Map<String, dynamic> appendPotentialActions(Map<String, dynamic> markup, List<Ma
 }
 
 /// Finds telephone and email attributes in [markup] and returns a markup with corresponding actions added to it.
-/// Note this performs a shallow copy where the returned map has a new reference, but any value beside the one for
-/// potentialActions will be the same reference as the input [markup].
-/// See also https://www.woolha.com/tutorials/dart-copy-clone-list-shallow-deep-examples
+/// This uses [appendPotentialActions]. See its note on shallow copy.
 Map<String, dynamic> enrichMarkupWithEmailAndPhoneActions(Map<String, dynamic> markup) {
   var phones = findAllRecursive(markup, 'telephone', excluded: ['potentialAction']).whereType<String>();
   var emails = findAllRecursive(markup, 'email', excluded: ['potentialAction']).whereType<String>();
@@ -62,4 +67,52 @@ Map<String, dynamic> enrichMarkupWithEmailAndPhoneActions(Map<String, dynamic> m
     return appendPotentialActions(markup, generatedPotentialActions);
   }
   return markup;
+}
+
+/// Finds geo in [markup] and returns a markup with corresponding actions added to it.
+/// This uses [appendPotentialActions]. See its note on shallow copy.
+Map<String, dynamic> enrichMarkupWithNavigationActions(
+    Map<String, dynamic> markup) {
+  var locations = findAllRecursive(markup, 'geo', excluded: ['potentialAction'])
+      .whereType<Map<String, dynamic>>()
+      .where((element) => element['@type'] == 'GeoCoordinates')
+      .toList();
+  if (locations.isNotEmpty) {
+    var potentialNavActions = List<Map<String, dynamic>?>.generate(
+      locations.length * 2,
+      (index) {
+        final i = index ~/ 2;
+        num? latitude = tryCastOrParseNum(locations[i]['latitude']);
+        num? longitude = tryCastOrParseNum(locations[i]['longitude']);
+        if (latitude == null || longitude == null) return null;
+        return index.isEven
+            ? navigationPotentialAction(latitude, longitude)
+            : viewGeoPotentialAction(latitude, longitude);
+      },
+    ).whereType<Map<String, dynamic>>().toList();
+    return appendPotentialActions(markup, potentialNavActions);
+  }
+  return markup;
+}
+
+Map<String, dynamic> viewGeoPotentialAction(num latitude, num longitude) => {
+      '@type': 'ViewAction',
+      'url': 'geo:$latitude,$longitude', //todo android special handling
+      'name': 'View',
+    };
+
+Map<String, dynamic> navigationPotentialAction(num latitude, num longitude) => {
+      '@type': 'ViewAction',
+      'url': 'google.navigation:q=$latitude,$longitude',
+      'name': 'Navigate to',
+    };
+
+/// When [markup] has a url, returns a markup with a ViewAction "Visit" added to it.
+/// This uses [appendPotentialActions]. See its note on shallow copy.
+Map<String, dynamic> addDefaultViewActionToMarkup(Map<String, dynamic> markup) {
+  // todo potentially only add this when there is no potentialAction already
+  var url = markup['url'];
+  if (url == null) return markup;
+  var visitAction = {"@type": "ViewAction", "url": url, "name": "Visit"};
+  return appendPotentialActions(markup, [visitAction]);
 }

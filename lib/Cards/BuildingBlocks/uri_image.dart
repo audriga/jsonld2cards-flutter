@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jsonld2cards/Util/conversion.dart';
+import 'dart:developer' as developer;
 
 /// Renders an image based on the given Uri.
 /// When URI is a http/ https URL pointing to a web resource, returns the corresponding network image
@@ -130,3 +132,73 @@ class UriImage extends StatelessWidget {
     );
   }
 }
+
+/// Finds image or logo in given [markup] and returns the corresponding [UriImage]
+/// Returns null if no image or logo is found.
+/// [LoadingErrorWidgetBuilder] is a function which controls what is done and
+/// which widget is displayed, if the image failed loading.
+/// [size] is the height and width of the bounding box in which the image will
+/// be scaled down to fit in
+UriImage? findLeadingImage(Map<String, dynamic> markup,
+    {LoadingErrorWidgetBuilder? imageErrorWidget, double size = 32.0}) {
+  var image = markup['image'] ?? markup['logo'];
+  UriImage? leadingImage;
+  if (image != null) {
+    try {
+      if (image is List<dynamic>) {
+        // For array of URLs, unconventional, but used by zeit
+        Uri? imageUri;
+        if (image.first is Map<String, dynamic>) {
+          imageUri =
+              tryCastOrParse(image.first['contentUrl'] ?? image.first['url']);
+        } else {
+          imageUri = tryCastOrParse(image.first);
+        }
+        if (imageUri != null) {
+          leadingImage = UriImage(
+            content: imageUri,
+            height: size,
+            width: size,
+            fit: BoxFit.scaleDown,
+            errorWidget: imageErrorWidget,
+          );
+        }
+      } else if (image is Map<String, dynamic>) {
+        // image is an ImageObject (https://schema.org/ImageObject)
+        var contentUrl = image['contentUrl'] ?? image['url'];
+        leadingImage = UriImage(
+          content: contentUrl,
+          height: size,
+          width: size,
+          fit: BoxFit.scaleDown,
+          errorWidget: imageErrorWidget,
+        );
+      } else {
+        // Probably URL, so flutter type of String or URI
+        var imageAsUri = tryCastOrParse(image);
+        if (imageAsUri != null) {
+          leadingImage = UriImage(
+            content: image,
+            height: size,
+            width: size,
+            fit: BoxFit.scaleDown,
+            errorWidget: imageErrorWidget,
+          );
+        }
+      }
+    } on FormatException catch (_) {
+      // Tried giving something that isn't a uri or can't be parsed to a uri to UriImage.
+    }
+  }
+  return leadingImage;
+}
+
+LoadingErrorWidgetBuilder logAndShowNoImage =
+    (context, url, error) {
+      developer.log(
+        'Error rendering leading Image',
+        name: 'jsonld2cards.uri_image',
+        error: error,
+      );
+      return const SizedBox(width: 0,);
+};
