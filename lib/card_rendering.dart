@@ -216,8 +216,9 @@ Widget renderCardSingle(
     case SchemaType.emailMessage: {
       card =  EmailMessage(markup: markup, postFunction: postFunction, preview: preview);
     }
+    // case SchemaType.bakery:
     case SchemaType.place: {
-      card =  Place(markup: markup, postFunction: postFunction, preview: preview);
+      card =  Place(markup: markup, postFunction: postFunction, preview: preview, autoDownload: true,);
     }
     case SchemaType.musicRecording: {
       // Song

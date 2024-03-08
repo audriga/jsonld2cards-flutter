@@ -225,11 +225,15 @@ class GeoData {
 
   GeoData.fromJson(Map<String, dynamic> json)
       : latLong = LatLng(double.parse(json['geo']['latitude']), double.parse(json['geo']['longitude'])),
-        addressString = json['address'],
         name = json['name'],
         isLive = json['live'] {
     var image = json['image'];
     if (image != null) {
+      if (json['address'] case String address) {
+        addressString = address;
+      } else if (json['address'] case Map<String, dynamic> address) {
+        addressData = address;
+      }
       // todo refactor out to method get image, reuse for spotify
       var contentUrl = image['contentUrl'] ?? image['url'];
       if (contentUrl!= null) {
