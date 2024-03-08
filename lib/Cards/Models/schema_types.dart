@@ -29,8 +29,7 @@ enum SchemaType {
   bakery,
 }
 
-SchemaType? getCardType(String typeName) {
-  return switch (typeName) {
+SchemaType? getCardType(String typeName) => switch (typeName) {
     'EmailMessage' => SchemaType.emailMessage,
     'Place' => SchemaType.place,
     'MusicRecording' => SchemaType.musicRecording,
@@ -48,7 +47,6 @@ SchemaType? getCardType(String typeName) {
     'Bakery' => SchemaType.bakery,
     _ => null,
   };
-}
 
 extension SchemaTypeName on SchemaType {
 
@@ -81,8 +79,7 @@ extension SchemaTypeName on SchemaType {
     };
 
   /// Friendly names for the type to be displayed on tabs
-  String get tabName {
-    return switch(this) {
+  String get tabName => switch(this) {
       SchemaType.emailMessage => 'Email Message',
       SchemaType.place => 'Place',
       SchemaType.musicRecording => 'Song',
@@ -99,10 +96,8 @@ extension SchemaTypeName on SchemaType {
       SchemaType.action => 'Action',
       SchemaType.bakery => 'Bakery',
     };
-  }
 
-  IconData? get icon {
-    return switch(this) {
+  IconData? get icon => switch(this) {
       SchemaType.emailMessage => Icons.mail,
       SchemaType.place => Icons.place,
       SchemaType.musicRecording => Icons.music_note,
@@ -119,16 +114,13 @@ extension SchemaTypeName on SchemaType {
       SchemaType.action => Icons.directions_run,
       SchemaType.bakery => Icons.bakery_dining,
     };
-  }
+
 
   /// Returns true if and only if there exists a card template for this type.
-  bool get isSimpleTemplatedType => [
-    SchemaType.bakery,
-  ].contains(this);
+  bool get isSimpleTemplatedType => simpleTemplateTypes.contains(this);
 
   /// Returns true if and only if there exists a card template for this type.
-  bool get isThreeColumnTemplatedType => [
-  ].contains(this);
+  bool get isThreeColumnTemplatedType => threeColumnTemplateTypes.contains(this);
 
    int duplicateHash(Map<String, dynamic> json) => switch(this) {
     // SchemaType.emailMessage => 'EmailMessage',
@@ -148,3 +140,9 @@ extension SchemaTypeName on SchemaType {
      _ => Thing.fromJson(json).duplicateHash,
   };
 }
+const simpleTemplateTypes = [
+  SchemaType.bakery,
+];
+const threeColumnTemplateTypes = [
+  SchemaType.bakery,
+];
