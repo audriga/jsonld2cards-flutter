@@ -27,29 +27,32 @@ enum SchemaType {
   cancelAction,
   action,
   bakery,
+  cafeOrCoffeeShop,
+  iceCreamShop,
 }
 
 SchemaType? getCardType(String typeName) => switch (typeName) {
-    'EmailMessage' => SchemaType.emailMessage,
-    'Place' => SchemaType.place,
-    'MusicRecording' => SchemaType.musicRecording,
-    'MusicGroup' => SchemaType.musicGroup,
-    'MusicAlbum' => SchemaType.musicAlbum,
-    'FlightReservation' => SchemaType.flightReservation,
-    'Order' => SchemaType.order,
-    'Invoice' => SchemaType.invoice,
-    'ParcelDelivery' => SchemaType.parcelDelivery,
-    'BlogPosting' => SchemaType.blogPosting,
-    'ItemList' => SchemaType.itemList,
-    'ConfirmAction' => SchemaType.confirmAction,
-    'CancelAction' => SchemaType.cancelAction,
-    'Action' => SchemaType.action,
-    'Bakery' => SchemaType.bakery,
-    _ => null,
-  };
+      'EmailMessage' => SchemaType.emailMessage,
+      'Place' => SchemaType.place,
+      'MusicRecording' => SchemaType.musicRecording,
+      'MusicGroup' => SchemaType.musicGroup,
+      'MusicAlbum' => SchemaType.musicAlbum,
+      'FlightReservation' => SchemaType.flightReservation,
+      'Order' => SchemaType.order,
+      'Invoice' => SchemaType.invoice,
+      'ParcelDelivery' => SchemaType.parcelDelivery,
+      'BlogPosting' => SchemaType.blogPosting,
+      'ItemList' => SchemaType.itemList,
+      'ConfirmAction' => SchemaType.confirmAction,
+      'CancelAction' => SchemaType.cancelAction,
+      'Action' => SchemaType.action,
+      'Bakery' => SchemaType.bakery,
+      'CafeOrCoffeeShop' => SchemaType.cafeOrCoffeeShop,
+      'IceCreamShop' => SchemaType.iceCreamShop,
+      _ => null,
+    };
 
 extension SchemaTypeName on SchemaType {
-
   // String get name {
   //   switch(this) {
   //     case SchemaType.emailMessage: return 'EmailMessage';
@@ -60,61 +63,66 @@ extension SchemaTypeName on SchemaType {
   // }
 
   /// Reverse of [getCardType]
-  String get typeName => switch(this) {
-      SchemaType.emailMessage => 'EmailMessage',
-      SchemaType.place => 'Place',
-      SchemaType.musicRecording => 'MusicRecording',
-      SchemaType.musicGroup => 'MusicGroup',
-      SchemaType.musicAlbum => 'MusicAlbum',
-      SchemaType.flightReservation => 'FlightReservation',
-      SchemaType.order => 'Order',
-      SchemaType.invoice => 'Invoice',
-      SchemaType.parcelDelivery => 'ParcelDelivery',
-      SchemaType.blogPosting => 'BlogPosting',
-      SchemaType.itemList => 'ItemList',
-      SchemaType.confirmAction => 'ConfirmAction',
-      SchemaType.cancelAction => 'CancelAction',
-      SchemaType.action => 'Action',
-      SchemaType.bakery => 'Bakery',
-    };
+  String get typeName => switch (this) {
+        SchemaType.emailMessage => 'EmailMessage',
+        SchemaType.place => 'Place',
+        SchemaType.musicRecording => 'MusicRecording',
+        SchemaType.musicGroup => 'MusicGroup',
+        SchemaType.musicAlbum => 'MusicAlbum',
+        SchemaType.flightReservation => 'FlightReservation',
+        SchemaType.order => 'Order',
+        SchemaType.invoice => 'Invoice',
+        SchemaType.parcelDelivery => 'ParcelDelivery',
+        SchemaType.blogPosting => 'BlogPosting',
+        SchemaType.itemList => 'ItemList',
+        SchemaType.confirmAction => 'ConfirmAction',
+        SchemaType.cancelAction => 'CancelAction',
+        SchemaType.action => 'Action',
+        SchemaType.bakery => 'Bakery',
+        SchemaType.cafeOrCoffeeShop => 'CafeOrCoffeeShop',
+        SchemaType.iceCreamShop => 'IceCreamShop',
+      };
 
   /// Friendly names for the type to be displayed on tabs
-  String get tabName => switch(this) {
-      SchemaType.emailMessage => 'Email Message',
-      SchemaType.place => 'Place',
-      SchemaType.musicRecording => 'Song',
-      SchemaType.musicGroup => 'Music',
-      SchemaType.musicAlbum => 'Album',
-      SchemaType.flightReservation => 'Flight Reservation',
-      SchemaType.order => 'Order',
-      SchemaType.invoice => 'Invoice',
-      SchemaType.parcelDelivery => 'Parcel',
-      SchemaType.blogPosting => 'Post',
-      SchemaType.itemList => 'List',
-      SchemaType.confirmAction => 'Confirmation',
-      SchemaType.cancelAction => 'Cancellation',
-      SchemaType.action => 'Action',
-      SchemaType.bakery => 'Bakery',
-    };
+  String get tabName => switch (this) {
+        SchemaType.emailMessage => 'Email Message',
+        SchemaType.place => 'Place',
+        SchemaType.musicRecording => 'Song',
+        SchemaType.musicGroup => 'Music',
+        SchemaType.musicAlbum => 'Album',
+        SchemaType.flightReservation => 'Flight Reservation',
+        SchemaType.order => 'Order',
+        SchemaType.invoice => 'Invoice',
+        SchemaType.parcelDelivery => 'Parcel',
+        SchemaType.blogPosting => 'Post',
+        SchemaType.itemList => 'List',
+        SchemaType.confirmAction => 'Confirmation',
+        SchemaType.cancelAction => 'Cancellation',
+        SchemaType.action => 'Action',
+        SchemaType.bakery => 'Bakery',
+        SchemaType.cafeOrCoffeeShop => 'Café',
+        SchemaType.iceCreamShop => 'Ice Cream',
+      };
 
-  IconData? get icon => switch(this) {
-      SchemaType.emailMessage => Icons.mail,
-      SchemaType.place => Icons.place,
-      SchemaType.musicRecording => Icons.music_note,
-      SchemaType.musicGroup => Icons.queue_music,
-      SchemaType.musicAlbum => Icons.album,
-      SchemaType.flightReservation => Icons.flight,
-      SchemaType.order => Icons.shopping_bag,
-      SchemaType.invoice => Icons.receipt,
-      SchemaType.parcelDelivery => Icons.local_shipping,
-      SchemaType.blogPosting => Icons.receipt, // Todo
-      SchemaType.itemList => Icons.list,
-      SchemaType.confirmAction => Icons.check_circle,
-      SchemaType.cancelAction => Icons.cancel,
-      SchemaType.action => Icons.directions_run,
-      SchemaType.bakery => Icons.bakery_dining,
-    };
-
+  IconData? get icon => switch (this) {
+        SchemaType.emailMessage => Icons.mail,
+        SchemaType.place => Icons.place,
+        SchemaType.musicRecording => Icons.music_note,
+        SchemaType.musicGroup => Icons.queue_music,
+        SchemaType.musicAlbum => Icons.album,
+        SchemaType.flightReservation => Icons.flight,
+        SchemaType.order => Icons.shopping_bag,
+        SchemaType.invoice => Icons.receipt,
+        SchemaType.parcelDelivery => Icons.local_shipping,
+        SchemaType.blogPosting => Icons.receipt, // Todo
+        SchemaType.itemList => Icons.list,
+        SchemaType.confirmAction => Icons.check_circle,
+        SchemaType.cancelAction => Icons.cancel,
+        SchemaType.action => Icons.directions_run,
+        SchemaType.bakery => Icons.bakery_dining,
+        SchemaType.cafeOrCoffeeShop => Icons.local_cafe,
+        SchemaType.iceCreamShop => Icons.icecream,
+      };
 
   /// Returns true if and only if there exists a card template for this type.
   bool get isSimpleTemplatedType => simpleTemplateTypes.contains(this);
@@ -122,27 +130,28 @@ extension SchemaTypeName on SchemaType {
   /// Returns true if and only if there exists a card template for this type.
   bool get isThreeColumnTemplatedType => threeColumnTemplateTypes.contains(this);
 
-   int duplicateHash(Map<String, dynamic> json) => switch(this) {
-    // SchemaType.emailMessage => 'EmailMessage',
-    SchemaType.place => Place.fromJson(json).duplicateHash,
-    SchemaType.musicRecording => MusicRecording.fromJson(json).duplicateHash,
-    SchemaType.musicGroup => MusicGroup.fromJson(json).duplicateHash,
-    SchemaType.musicAlbum => MusicAlbum.fromJson(json).duplicateHash,
-    // SchemaType.flightReservation => 'FlightReservation',
-    SchemaType.order => Order.fromJson(json).duplicateHash,
-    SchemaType.invoice => Invoice.fromJson(json).duplicateHash,
-    SchemaType.parcelDelivery => ParcelDelivery.fromJson(json).duplicateHash,
-    // SchemaType.blogPosting => 'BlogPosting',
-    SchemaType.itemList => ItemList.fromJson(json).duplicateHash,
-    SchemaType.confirmAction => schema_action.Action.fromJson(json).duplicateHash,
-    SchemaType.cancelAction => schema_action.Action.fromJson(json).duplicateHash,
-    SchemaType.action => schema_action.Action.fromJson(json).duplicateHash,
-     _ => Thing.fromJson(json).duplicateHash,
-  };
+  int duplicateHash(Map<String, dynamic> json) => switch (this) {
+        // SchemaType.emailMessage => 'EmailMessage',
+        SchemaType.place => Place.fromJson(json).duplicateHash,
+        SchemaType.musicRecording => MusicRecording.fromJson(json).duplicateHash,
+        SchemaType.musicGroup => MusicGroup.fromJson(json).duplicateHash,
+        SchemaType.musicAlbum => MusicAlbum.fromJson(json).duplicateHash,
+        // SchemaType.flightReservation => 'FlightReservation',
+        SchemaType.order => Order.fromJson(json).duplicateHash,
+        SchemaType.invoice => Invoice.fromJson(json).duplicateHash,
+        SchemaType.parcelDelivery => ParcelDelivery.fromJson(json).duplicateHash,
+        // SchemaType.blogPosting => 'BlogPosting',
+        SchemaType.itemList => ItemList.fromJson(json).duplicateHash,
+        SchemaType.confirmAction => schema_action.Action.fromJson(json).duplicateHash,
+        SchemaType.cancelAction => schema_action.Action.fromJson(json).duplicateHash,
+        SchemaType.action => schema_action.Action.fromJson(json).duplicateHash,
+        _ => Thing.fromJson(json).duplicateHash,
+      };
 }
+
 const simpleTemplateTypes = [
   SchemaType.bakery,
+  SchemaType.cafeOrCoffeeShop,
+  SchemaType.iceCreamShop
 ];
-const threeColumnTemplateTypes = [
-  SchemaType.bakery,
-];
+const threeColumnTemplateTypes = [];
