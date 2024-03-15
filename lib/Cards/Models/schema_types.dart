@@ -101,7 +101,7 @@ extension SchemaTypeName on SchemaType {
         SchemaType.action => 'Action',
         SchemaType.bakery => 'Bakery',
         SchemaType.cafeOrCoffeeShop => 'Café',
-        SchemaType.iceCreamShop => 'Ice Cream',
+        SchemaType.iceCreamShop => 'Ice Cream Place',
       };
 
   IconData? get icon => switch (this) {
