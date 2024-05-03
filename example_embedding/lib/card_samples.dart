@@ -13,7 +13,7 @@ import 'package:html2jsonld_dart/html2jsonld_dart.dart' as ht2j;
 import 'dart:html' as html;
 
 class CardSamples extends StatefulWidget {
-  const CardSamples({Key? key}) : super(key: key);
+  const CardSamples({super.key});
 
 
 
@@ -34,8 +34,8 @@ class _CardSamplesState extends State<CardSamples> {
   Future<List<dynamic>> loadMarkupsFromAssets() async {
     List<dynamic> markups = [];
     // todo for now manually fixed compilation error in jsonLdFromHtml...  need to request upstream update
-    ht2j.SchemaOrg schemaOrg = ht2j.SchemaOrg();
-    Future<Object?> a = schemaOrg.jsonLdFromHtml(html.document.head?.innerHtml?? '');
+    ht2j.SchemaOrgExtractor schemaOrg = ht2j.SchemaOrgExtractor();
+    Future<Object?> a = schemaOrg.extractJsonLdFromHtml(html.document.head?.innerHtml?? '');
     markups.insert(0, jsonDecode((await a).toString()));
     return markups;
   }

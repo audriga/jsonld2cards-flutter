@@ -11,7 +11,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class CardSamples extends StatefulWidget {
-  const CardSamples({Key? key, required this.handleBrightnessChange}) : super(key: key);
+  const CardSamples({super.key, required this.handleBrightnessChange});
 
   static const String routeName = '/cardSamples';
 

@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 class OpenCardViewerDialog extends StatelessWidget {
   OpenCardViewerDialog({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final TextEditingController uidTextController =  TextEditingController();
 

@@ -12,9 +12,9 @@ class Place extends Thing {
 
   Place({required this.geoData});
 
-  Place.fromJson(Map<String, dynamic> json)
+  Place.fromJson(super.json)
       : geoData = GeoData.fromJson(json),
-        super.fromJson(json);
+        super.fromJson();
 
   @override
   Map<String, dynamic> toJson() => jsonDecode(geoData.toJson());

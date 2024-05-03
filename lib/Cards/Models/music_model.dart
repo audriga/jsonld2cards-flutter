@@ -13,7 +13,7 @@ class MusicAlbum extends Thing {
   /// Expects [name], [description], and [url] to be given (but all provided by superclass).
   MusicAlbum({super.name, super.description, super.url});
 
-  MusicAlbum.fromJson(Map<String, dynamic> json) : super.fromJson(json);
+  MusicAlbum.fromJson(super.json) : super.fromJson();
 
   @override
   Map<String, dynamic> toJson() {
@@ -31,7 +31,7 @@ class MusicGroup extends Thing {
   /// Expects [name], [description], and [url] to be given (but all provided by superclass).
   MusicGroup({super.name, super.description, super.url});
 
-  MusicGroup.fromJson(Map<String, dynamic> json) : super.fromJson(json);
+  MusicGroup.fromJson(super.json) : super.fromJson();
 
   @override
   Map<String, dynamic> toJson() {
@@ -49,7 +49,7 @@ class MusicRecording extends Thing {
   /// Expects [name], [description], and [url] to be given (but all provided by superclass).
   MusicRecording({super.name, super.description, super.url});
 
-  MusicRecording.fromJson(Map<String, dynamic> json) : super.fromJson(json);
+  MusicRecording.fromJson(super.json) : super.fromJson();
 
   @override
   Map<String, dynamic> toJson() {
