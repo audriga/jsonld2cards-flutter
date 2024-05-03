@@ -106,10 +106,8 @@ Widget renderCardMulti(
     ) {
   List<Map<String, dynamic>> typeFilteredMarkupList = markupList.whereType<Map<String,dynamic>>().toList();
   var types = typeFilteredMarkupList.map((e) => e['@type']);
-  if (types.contains('Organization')
-      && types.contains('EmailMessage')
-      && types.contains('DiscountOffer')
-      && types.contains('PromotionCard')
+  if (types.contains('DiscountOffer')
+      || types.contains('PromotionCard')
   ) {
     var card = PromoTabCard(markupList: typeFilteredMarkupList, preview: preview);
     if (topBar) {

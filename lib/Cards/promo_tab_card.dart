@@ -9,29 +9,50 @@ import 'Models/organization_model.dart';
 
 
 class PromoTabData {
-  Organization organization;
-  EmailMessageData emailMessage;
-  DiscountOffer discountOffer;
+  Organization? organization;
+  EmailMessageData? emailMessage;
+  DiscountOffer? discountOffer;
   List<PromotionCardData> promotionCards;
 
   PromoTabData.fromJsonList(List<Map<String, dynamic>> markupList)
-      : organization = Organization.fromJson(
-      markupList.firstWhere((element) => element['@type'] == 'Organization')),
-        emailMessage = EmailMessageData.fromJson(
-            markupList.firstWhere((element) =>
-            element['@type'] ==
-                'EmailMessage')),
-        discountOffer = DiscountOffer.fromJson(
-            markupList.firstWhere((element) =>
-            element['@type'] ==
-                'DiscountOffer')),
-        promotionCards = [] {
+      : organization = tryOrganization(markupList),
+        emailMessage = tryEmailMessageData(markupList),
+        discountOffer = tryDiscountOffer(markupList),
+        promotionCards = tryPromotionCards(markupList);
+
+  static Organization? tryOrganization(List<Map<String, dynamic>> markupList) {
+    var organizationMarkup = markupList.firstWhere((element) => element['@type'] == 'Organization', orElse: () => {});
+    if (organizationMarkup.isEmpty) return null;
+    return Organization.fromJson(organizationMarkup);
+  }
+
+  static EmailMessageData? tryEmailMessageData(List<Map<String, dynamic>> markupList) {
+    var emailMessageMarkup = markupList.firstWhere(
+        (element) => element['@type'] == 'EmailMessage',
+        orElse: () => {});
+    if (emailMessageMarkup.isEmpty) return null;
+    return EmailMessageData.fromJson(emailMessageMarkup);
+  }
+
+  static DiscountOffer? tryDiscountOffer(List<Map<String, dynamic>> markupList) {
+    var discountOfferMarkup = markupList.firstWhere(
+        (element) => element['@type'] == 'DiscountOffer',
+        orElse: () => {});
+    if (discountOfferMarkup.isEmpty) return null;
+    return DiscountOffer.fromJson(
+        discountOfferMarkup);
+  }
+
+  static List<PromotionCardData> tryPromotionCards(List<Map<String, dynamic>> markupList) {
     var promoMarkupList = markupList.where((element) =>
     element['@type'] == 'PromotionCard').toList()
       ..sort((a, b) => (a['position'] as int).compareTo(b['position'] as int),);
-    promotionCards.addAll(promoMarkupList.map(PromotionCardData.fromJson));
+    return promoMarkupList.map(PromotionCardData.fromJson).toList();
   }
+  
 }
+
+
 
 class EmailMessageData {
   String subjectLine;
@@ -124,15 +145,8 @@ class PromoTabCard extends StatelessWidget implements MarkupCard {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     var promoTabData = PromoTabData.fromJsonList(markupList);
-    String expiryString = 'Expired';
-    var now = DateTime.now();
-    if (promoTabData.discountOffer.availabilityStarts.isAfter(now)) {
-      var difference = promoTabData.discountOffer.availabilityStarts.difference(now);
-      expiryString = 'Starts in ${difference.inHours} hours';
-    } else if (promoTabData.discountOffer.availabilityEnds.isAfter(now)) {
-      var difference = promoTabData.discountOffer.availabilityEnds.difference(now);
-      expiryString = 'Expires in ${difference.inHours} hours';
-    }
+    var discountOffer = promoTabData.discountOffer;
+
 
     const promoCardPerScreen = 3;
     const viewportFractionPerItem = 1.0 / promoCardPerScreen;
@@ -141,14 +155,17 @@ class PromoTabCard extends StatelessWidget implements MarkupCard {
         builder: (context, constraints) {
           final itemWidth = constraints.maxWidth * viewportFractionPerItem;
           final itemImageHeight = constraints.maxHeight != double.infinity ? constraints.maxHeight -200 : null;
+          var emailMessage = promoTabData.emailMessage;
+          var organization = promoTabData.organization;
+          var promotionCards = promoTabData.promotionCards;
           return Card(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     children: [
-                      UriImage(
-                          content: promoTabData.organization.logo,
+                      if (organization != null) UriImage(
+                          content: organization.logo,
                           height: 32.0,
                           width:  32.0,
                           fit: BoxFit.scaleDown
@@ -157,16 +174,12 @@ class PromoTabCard extends StatelessWidget implements MarkupCard {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            expiryString,
-                            style: theme.textTheme.labelLarge,
-                          ),
-                          Text(
-                            promoTabData.emailMessage.subjectLine,
+                          if (emailMessage != null) Text(
+                            emailMessage.subjectLine,
                             style: theme.textTheme.titleMedium,
                             softWrap: true,
                           ),
-                          Row(
+                          if (discountOffer != null) Row(
                             children: [
                               Container(
                                 decoration: const BoxDecoration(
@@ -175,7 +188,7 @@ class PromoTabCard extends StatelessWidget implements MarkupCard {
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 2),
                                   child: Text(
-                                    promoTabData.discountOffer.description,
+                                    discountOffer.description,
                                   ),
                                 ),
                               ),
@@ -186,27 +199,34 @@ class PromoTabCard extends StatelessWidget implements MarkupCard {
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 2),
-                                  child: Text(promoTabData.discountOffer.discountCode),
+                                  child: Text(discountOffer.discountCode),
                                 ),
                               ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  getExpiryText(discountOffer),
+                                  style: theme.textTheme.labelLarge,
+                                ),
+                              )
                             ],
                           ),
                         ],
                       )
                     ],
                   ),
-                  Scrollbar(
+                  if (promotionCards.isNotEmpty) Scrollbar(
                     controller: _vertical,
                     child: SingleChildScrollView(
                       controller: _vertical,
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          for (int i = 0; i < promoTabData.promotionCards.length * 2; ++i)
+                          for (int i = 0; i < promotionCards.length * 2; ++i)
                             (i.isOdd) ? const Divider() : PromoItem(
                               width: itemWidth,
                               imageHeight: itemImageHeight,
-                              promoCardData: promoTabData.promotionCards[i ~/ 2],
+                              promoCardData: promotionCards[i ~/ 2],
                               preview: preview,
                             ),
                         ],
@@ -218,6 +238,19 @@ class PromoTabCard extends StatelessWidget implements MarkupCard {
           );
         }
     );
+  }
+
+  String getExpiryText(DiscountOffer discountOffer) {
+    String expiryString = 'Expired';
+    var now = DateTime.now();
+    if (discountOffer.availabilityStarts.isAfter(now)) {
+      var difference = discountOffer.availabilityStarts.difference(now);
+      expiryString = 'Starts in ${difference.inHours} hours';
+    } else if (discountOffer.availabilityEnds.isAfter(now)) {
+      var difference = discountOffer.availabilityEnds.difference(now);
+      expiryString = 'Expires in ${difference.inHours} hours';
+    }
+    return expiryString;
   }
 
   @override

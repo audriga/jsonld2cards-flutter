@@ -52,6 +52,11 @@ class _CardSamplesState extends State<CardSamples> {
   List<String> assetsToUse = [
     // 'assets/sampleMarkup/zeit_homepage.json', //todo look into fix for this
     'assets/sampleMarkup/bakeries.json',
+    'assets/sampleMarkup/promotab.json',
+    'assets/sampleMarkup/promotab_variations/promotab_email_discount_promo.json',
+    'assets/sampleMarkup/promotab_variations/promotab_discount_promo.json',
+    'assets/sampleMarkup/promotab_variations/promotab_only_discount.json',
+    'assets/sampleMarkup/promotab_variations/promotab_only_promo.json',
     'assets/sampleMarkup/person.json',
     'assets/sampleMarkup/clipboard_6714.json',
     'assets/sampleMarkup/action.json',
@@ -62,7 +67,6 @@ class _CardSamplesState extends State<CardSamples> {
     'assets/sampleMarkup/spiegel_homepage.json',
     'assets/sampleMarkup/spotifyEnriched.json',
     'assets/sampleMarkup/musicSchool.json',
-    'assets/sampleMarkup/promotab.json',
     'assets/sampleMarkup/spiegel.json',
     'assets/sampleMarkup/lemonde.json',
     'assets/sampleMarkup/organization_example1.json',

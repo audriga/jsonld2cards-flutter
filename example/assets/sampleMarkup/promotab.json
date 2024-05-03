@@ -16,8 +16,8 @@
   "description": "20% off",
 
   "discountCode": "PROMO",
-  "availabilityStarts": "2023-06-14T04:51:14-07:00",
-  "availabilityEnds": "2023-06-17T04:51:14-07:00"
+  "availabilityStarts": "2024-04-14T04:51:14-07:00",
+  "availabilityEnds": "2024-06-17T04:51:14-07:00"
 },{
   "@context": "http://schema.org/",
   "@type": "PromotionCard",

@@ -1,0 +1,46 @@
+[{
+  "@context": "http://schema.org/",
+  "@type": "EmailMessage",
+
+  "subjectLine": "[Important] Please add subject line in annotation"
+},{
+  "@context": "http://schema.org/",
+  "@type": "DiscountOffer",
+
+  "description": "20% off",
+
+  "discountCode": "PROMO",
+  "availabilityStarts": "2024-04-14T04:51:14-07:00",
+  "availabilityEnds": "2024-06-17T04:51:14-07:00"
+},{
+  "@context": "http://schema.org/",
+  "@type": "PromotionCard",
+  "image": "https://www.google.com/gmail-for-marketers/promo-tab/markup-tool/glasses.jpg",
+  "url": "https://google.com",
+
+  "headline": "Glasses",
+  "price": 149,
+  "priceCurrency": "USD",
+  "discountValue": 30,
+  "position": 1
+},{
+  "@context": "http://schema.org/",
+  "@type": "PromotionCard",
+  "image": "https://www.google.com/gmail-for-marketers/promo-tab/markup-tool/ski-boots.jpg",
+  "url": "https://google.com",
+  "headline": "Ski boots",
+  "price": 249,
+  "priceCurrency": "USD",
+  "discountValue": 50,
+  "position": 2
+},{
+  "@context": "http://schema.org/",
+  "@type": "PromotionCard",
+  "image": "https://www.google.com/gmail-for-marketers/promo-tab/markup-tool/sneakers.jpg",
+  "url": "https://google.com",
+  "headline": "Sneakers",
+  "price": 179,
+  "priceCurrency": "USD",
+  "discountValue": 30,
+  "position": 3
+}]
