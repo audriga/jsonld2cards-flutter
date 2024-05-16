@@ -262,6 +262,9 @@ Widget renderCardSingle(
     case SchemaType.cancelAction: {
       card =  ActionCard(markup: markup, postFunction: postFunction, preview: preview);
     }
+    case SchemaType.promotionCard: {
+      card = PromoTabCard(markupList: [markup], preview: preview);
+    }
     default: {
       if (type?.isSimpleTemplatedType ?? false) {
         card =  SimpleTemplateCard(markup: markup, postFunction: postFunction, preview: preview);

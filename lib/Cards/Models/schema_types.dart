@@ -7,6 +7,7 @@ import 'package:jsonld2cards/Cards/Models/parcel_delivery_model.dart';
 import 'package:jsonld2cards/Cards/Models/action_model.dart' as schema_action;
 import 'package:jsonld2cards/Cards/Models/place_model.dart';
 import 'package:jsonld2cards/Cards/Models/thing_model.dart';
+import 'package:jsonld2cards/Cards/promo_tab_card.dart';
 
 import 'invoice_model.dart';
 import 'item_list_model.dart';
@@ -29,6 +30,7 @@ enum SchemaType {
   bakery,
   cafeOrCoffeeShop,
   iceCreamShop,
+  promotionCard
 }
 
 SchemaType? getCardType(String typeName) => switch (typeName) {
@@ -49,6 +51,7 @@ SchemaType? getCardType(String typeName) => switch (typeName) {
       'Bakery' => SchemaType.bakery,
       'CafeOrCoffeeShop' => SchemaType.cafeOrCoffeeShop,
       'IceCreamShop' => SchemaType.iceCreamShop,
+      'PromotionCard' => SchemaType.promotionCard,
       _ => null,
     };
 
@@ -81,6 +84,7 @@ extension SchemaTypeName on SchemaType {
         SchemaType.bakery => 'Bakery',
         SchemaType.cafeOrCoffeeShop => 'CafeOrCoffeeShop',
         SchemaType.iceCreamShop => 'IceCreamShop',
+        SchemaType.promotionCard => 'PromotionCard',
       };
 
   /// Friendly names for the type to be displayed on tabs
@@ -102,6 +106,7 @@ extension SchemaTypeName on SchemaType {
         SchemaType.bakery => 'Bakery',
         SchemaType.cafeOrCoffeeShop => 'Café',
         SchemaType.iceCreamShop => 'Ice Cream Place',
+        SchemaType.promotionCard => 'Promotion',
       };
 
   IconData? get icon => switch (this) {
@@ -122,6 +127,7 @@ extension SchemaTypeName on SchemaType {
         SchemaType.bakery => Icons.bakery_dining,
         SchemaType.cafeOrCoffeeShop => Icons.local_cafe,
         SchemaType.iceCreamShop => Icons.icecream,
+        SchemaType.promotionCard => Icons.shop,
       };
 
   /// Returns true if and only if there exists a card template for this type.
@@ -145,6 +151,7 @@ extension SchemaTypeName on SchemaType {
         SchemaType.confirmAction => schema_action.Action.fromJson(json).duplicateHash,
         SchemaType.cancelAction => schema_action.Action.fromJson(json).duplicateHash,
         SchemaType.action => schema_action.Action.fromJson(json).duplicateHash,
+        // SchemaType.promotionCard => PromotionCardData.fromJson(json).duplicateHash,
         _ => Thing.fromJson(json).duplicateHash,
       };
 }

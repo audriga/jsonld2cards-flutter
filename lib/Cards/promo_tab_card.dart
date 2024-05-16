@@ -46,7 +46,7 @@ class PromoTabData {
   static List<PromotionCardData> tryPromotionCards(List<Map<String, dynamic>> markupList) {
     var promoMarkupList = markupList.where((element) =>
     element['@type'] == 'PromotionCard').toList()
-      ..sort((a, b) => (a['position'] as int).compareTo(b['position'] as int),);
+      ..sort((a, b) => (a['position'] as int? ?? 0).compareTo(b['position'] as int? ?? 0),);
     return promoMarkupList.map(PromotionCardData.fromJson).toList();
   }
   
@@ -79,34 +79,38 @@ class DiscountOffer {
 
 class PromotionCardData {
   Uri image;
-  Uri url;
-  String headline;
-  num price;
-  String priceCurrency;
-  num discountValue;
+  Uri? url;
+  String? headline;
+  num? price;
+  String? priceCurrency;
+  num? discountValue;
   
-  String get priceInCurrency {
-    return formatCurrency(price, priceCurrency);
+  String? get priceInCurrency {
+    if (price == null) return null;
+    if (priceCurrency == null) return price!.toString();
+    return formatCurrency(price!, priceCurrency!);
   }
 
-  String get discountedPriceInCurrency {
-    var discountedPrice = price - discountValue;
+  String? get discountedPriceInCurrency {
+    if (price == null || discountValue == null) return null;
+    // It could be the case that price != null but discountValue != null. In that case unclear what to return, so ret null.
+    // For the other way around we could just return the un-discounted price, but that gets rendered elsewhere anyways.
+    var discountedPrice = price! - discountValue!;
     // var discountedPrice = price * (100 - discountValue) / 100.0;
-    return formatCurrency(discountedPrice, priceCurrency);
+    if (priceCurrency == null) return discountedPrice.toString();
+    return formatCurrency(discountedPrice, priceCurrency!);
   }
 
-  static String formatCurrency(num price, String priceCurrency) {
-    switch (priceCurrency) {
-      case 'USD': return '\$$price';
-      case 'EUR': return '$price€';
-      default: return '$price $priceCurrency';
-    }
-  }
+  static String formatCurrency(num price, String priceCurrency) => switch (priceCurrency) {
+      'USD' => '\$$price',
+      'EUR' => '$price€',
+      _ => '$price $priceCurrency'
+    };
 
   PromotionCardData.fromJson(Map<String, dynamic> json)
       : image = (json['image'] is Uri) ? json['image'] : Uri.parse(
       json['image']),
-        url = (json['url'] is Uri) ? json['url'] : Uri.parse(json['url']),
+        url = (json['url'] == null)? null : (json['url'] is Uri) ? json['url'] : Uri.parse(json['url']),
         headline = json['headline'],
         price = json['price'],
         priceCurrency = json['priceCurrency'],
@@ -276,8 +280,13 @@ class PromoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? priceInCurrency = promoCardData.priceInCurrency;
+    String? discountedPriceInCurrency = promoCardData.discountedPriceInCurrency;
+    bool hasPrice = priceInCurrency != null || discountedPriceInCurrency != null;
+    var headline = promoCardData.headline;
+    var hasHeadline = headline != null;
     return GestureDetector(
-      onTap: preview ? () {} : () => launchUrl(promoCardData.url),
+      onTap: (preview || promoCardData.url == null) ? null : () => launchUrl(promoCardData.url!),
       child: SizedBox(
         width: width,
         child: Card(
@@ -305,23 +314,23 @@ class PromoItem extends StatelessWidget {
                 placeholder: (context, url) => const CircularProgressIndicator(),
                 fit: BoxFit.scaleDown,
               ),
-              ListTile(
-                title: Text(promoCardData.headline, softWrap: true),
-                subtitle: Text.rich(TextSpan(
+              if (hasHeadline || hasPrice)ListTile(
+                title: hasHeadline ? Text(headline, softWrap: true) : null,
+                subtitle: hasPrice ? Text.rich(TextSpan(
                   children: [
-                    TextSpan(
-                      text: promoCardData.priceInCurrency,
+                    if (priceInCurrency != null) TextSpan(
+                      text: priceInCurrency,
                       style: const TextStyle(
                         color: Colors.grey,
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),
-                    TextSpan(
-                      text: ' ${promoCardData.discountedPriceInCurrency}',
+                    if (discountedPriceInCurrency != null) TextSpan(
+                      text: ' $discountedPriceInCurrency',
                     ),
                   ],
                 )
-                ),
+                ) : null,
               ),
             ],
           ),

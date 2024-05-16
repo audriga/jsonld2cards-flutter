@@ -1,0 +1,25 @@
+[
+  {
+    "@context": "http://schema.org/",
+    "@type": "PromotionCard",
+    "image": "https://www.united-internet-media.de/fileadmin/uim/media/pictures/PGA-NL-Bild-1.jpg"
+  },
+  {
+    "@context": "http://schema.org/",
+    "@type": "PromotionCard",
+    "image": "https://www.united-internet-media.de/fileadmin/uim/media/pictures/PGA-NL-Bild-2.jpg"
+  },
+  {
+    "@context": "http://schema.org/",
+    "@type": "PromotionCard",
+    "image": "https://www.united-internet-media.de/fileadmin/uim/media/pictures/PGA-NL-Bild-3.jpg"
+  },
+  {
+    "@context": "http://schema.org/",
+    "@type": "DiscountOffer",
+    "description": "IhreCodebeschreibung",
+    "discountCode": "IhrCode",
+    "availabilityStarts": "2024-02-01T00:00:00+02:00",
+    "availabilityEnds": "2024-02-29T23:59:59+02:00"
+  }
+]
