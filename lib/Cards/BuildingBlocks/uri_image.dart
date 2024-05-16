@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
 import 'dart:developer' as developer;
 
@@ -26,7 +26,7 @@ class UriImage extends StatelessWidget {
     this.repeat = ImageRepeat.noRepeat,
     this.matchTextDirection = false,
     this.filterQuality = FilterQuality.low,
-    this.errorWidget,
+    this.errorWidget = brokenImageErrorWidget,
   });
 
   final dynamic content;
@@ -202,3 +202,11 @@ LoadingErrorWidgetBuilder logAndShowNoImage =
       );
       return const SizedBox(width: 0,);
 };
+
+Widget brokenImageErrorWidget(context, url, error) =>
+    IconButton(
+      onPressed: () {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Url: $url\nError: ${error.toString()}')));
+      },
+      icon: const Icon(Icons.broken_image),
+    );
