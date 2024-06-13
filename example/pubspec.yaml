@@ -60,6 +60,7 @@ flutter:
   assets:
     - assets/sampleMarkup/
     - assets/sampleMarkup/promotab_variations/
+    - assets/sampleMarkup/discountoffer_variations/
   fonts:
     - family: Rajdhani
       fonts:

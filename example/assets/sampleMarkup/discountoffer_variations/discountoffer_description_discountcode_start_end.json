@@ -1,0 +1,8 @@
+[{
+  "@context": "http://schema.org/",
+  "@type": "DiscountOffer",
+  "description": "20% off",
+  "discountCode": "PROMO",
+  "availabilityStarts": "2024-04-14T04:51:14-07:00",
+  "availabilityEnds": "2024-06-17T04:51:14-07:00"
+}]

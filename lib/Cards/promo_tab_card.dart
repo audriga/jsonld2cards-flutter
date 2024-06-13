@@ -62,10 +62,10 @@ class EmailMessageData {
 }
 
 class DiscountOffer {
-  String description;
-  String discountCode;
-  DateTime availabilityStarts;
-  DateTime availabilityEnds;
+  String? description;
+  String? discountCode;
+  DateTime? availabilityStarts;
+  DateTime? availabilityEnds;
 
   // DateTimeRange get availabilityRange =>
   //     DateTimeRange(start: availabilityStarts, end: availabilityEnds);
@@ -73,8 +73,8 @@ class DiscountOffer {
   DiscountOffer.fromJson(Map<String, dynamic> json)
       : description = json['description'],
         discountCode = json['discountCode'],
-        availabilityStarts = DateTime.parse(json['availabilityStarts']),
-        availabilityEnds = DateTime.parse(json['availabilityEnds']);
+        availabilityStarts = DateTime.tryParse(json['availabilityStarts'] ?? ''),
+        availabilityEnds = DateTime.tryParse(json['availabilityEnds'] ?? '');
 }
 
 class PromotionCardData {
@@ -183,38 +183,7 @@ class PromoTabCard extends StatelessWidget implements MarkupCard {
                             style: theme.textTheme.titleMedium,
                             softWrap: true,
                           ),
-                          if (discountOffer != null) Row(
-                            children: [
-                              Container(
-                                decoration: const BoxDecoration(
-                                  color: Colors.lightGreen,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 2),
-                                  child: Text(
-                                    discountOffer.description,
-                                  ),
-                                ),
-                              ),
-                              const Text(' Code '),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: theme.highlightColor,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 2),
-                                  child: Text(discountOffer.discountCode),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text(
-                                  getExpiryText(discountOffer),
-                                  style: theme.textTheme.labelLarge,
-                                ),
-                              )
-                            ],
-                          ),
+                          if (discountOffer != null) DiscountOfferRow(discountOffer: discountOffer,),
                         ],
                       )
                     ],
@@ -244,24 +213,92 @@ class PromoTabCard extends StatelessWidget implements MarkupCard {
     );
   }
 
-  String getExpiryText(DiscountOffer discountOffer) {
-    String expiryString = 'Expired';
-    var now = DateTime.now();
-    if (discountOffer.availabilityStarts.isAfter(now)) {
-      var difference = discountOffer.availabilityStarts.difference(now);
-      expiryString = 'Starts in ${difference.inHours} hours';
-    } else if (discountOffer.availabilityEnds.isAfter(now)) {
-      var difference = discountOffer.availabilityEnds.difference(now);
-      expiryString = 'Expires in ${difference.inHours} hours';
-    }
-    return expiryString;
-  }
-
   @override
   IconData get tabIcon => Icons.local_offer;
 
   @override
   String get tabName => 'Promotion';
+}
+
+class DiscountOfferRow extends StatelessWidget {
+  const DiscountOfferRow({
+    super.key,
+    required this.discountOffer,
+  });
+
+  final DiscountOffer discountOffer;
+
+  @override
+  Widget build(BuildContext context) {
+    DateTime? availabilityStarts = discountOffer.availabilityStarts;
+    DateTime? availabilityEnds = discountOffer.availabilityEnds;
+    var expiryText = getExpiryText(availabilityStarts, availabilityEnds);
+
+    ThemeData theme = Theme.of(context);
+    return Row(
+      children: [
+        if (discountOffer.description != null) Container(
+          decoration: const BoxDecoration(
+            color: Colors.lightGreen,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2),
+            child: Text(
+              discountOffer.description!,
+            ),
+          ),
+        ),
+        if (discountOffer.discountCode != null) const Text(' Code '),
+        if (discountOffer.discountCode != null) Container(
+          decoration: BoxDecoration(
+            color: theme.highlightColor,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2),
+            child: Text(discountOffer.discountCode!),
+          ),
+        ),
+        if (expiryText != null) Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            expiryText,
+            style: theme.textTheme.labelLarge,
+          ),
+        )
+      ],
+    );
+  }
+}
+
+String? getExpiryText(DateTime? availabilityStarts, DateTime? availabilityEnds) {
+  var now = DateTime.now();
+  if (availabilityStarts == null && availabilityEnds == null) {
+    return null;
+  } else if (availabilityStarts == null && availabilityEnds != null) {
+    if (availabilityEnds.isAfter(now)) {
+      var difference = availabilityEnds.difference(now);
+      return 'Expires in ${difference.inHours} hours';
+    } else {
+      return 'Expired';
+    }
+  } else if (availabilityStarts != null && availabilityEnds == null) {
+    if (availabilityStarts.isAfter(now)) {
+      var difference = availabilityStarts.difference(now);
+      return 'Starts in ${difference.inHours} hours';
+    } else {
+      var difference = now.difference(availabilityStarts);
+      return 'Started ${difference.inHours} hours ago';
+    }
+  } else {
+    if (availabilityStarts!.isAfter(now)) {
+      var difference = availabilityStarts.difference(now);
+      return 'Starts in ${difference.inHours} hours';
+    } else if (availabilityEnds!.isAfter(now)) {
+      var difference = availabilityEnds.difference(now);
+     return 'Expires in ${difference.inHours} hours';
+    }
+    return 'Expired';
+  }
 }
 
 class PromoItem extends StatelessWidget {
