@@ -3,6 +3,7 @@ library card_rendering;
 
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/Cards/event_card.dart';
 import 'Cards/BuildingBlocks/potential_actions.dart';
 import 'Cards/BuildingBlocks/template_card.dart';
 import 'Cards/BuildingBlocks/uri_image.dart';
@@ -261,6 +262,9 @@ Widget renderCardSingle(
     }
     case SchemaType.cancelAction: {
       card =  ActionCard(markup: markup, postFunction: postFunction, preview: preview);
+    }
+    case SchemaType.event: {
+      card =  EventCard(markup: markup, postFunction: postFunction, preview: preview);
     }
     case SchemaType.promotionCard: {
       card = PromoTabCard(markupList: [markup], preview: preview);

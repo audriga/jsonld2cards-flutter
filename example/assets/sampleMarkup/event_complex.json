@@ -1,0 +1,39 @@
+{
+  "@context": "https://schema.org",
+  "@id": "5C3fkJLND21ngIwpGt@enough.de",
+  "@type": "Event",
+  "name": "Foo Fighters",
+  "location": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Denver",
+      "addressRegion": "CO",
+      "postalCode": "80209",
+      "streetAddress": "7 S. Broadway",
+      "addressCountry": "USA"
+    },
+    "name": "The Hi-Dive"
+  },
+  "description": "Ticket for fighters game",
+  "offers": "ticketmaster.com/foofighters/may20-2011",
+  "startDate": "2011-05-20",
+  "url": "foo-fighters-may20-fedexforum",
+  "organizer": {
+    "@type": "Organization",
+    "name": "Story Time Virtual Events",
+    "url": "https://torytimereadings.com.com"
+  },
+  "attendee": [
+    {
+      "@type": "Person",
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    {
+      "@type": "Person",
+      "name": "Jane Smith",
+      "email": "jane@example.com"
+    }
+  ]
+}
