@@ -44,7 +44,7 @@ class Event extends Thing {
   // Organization or Person
   dynamic attendee;
 
-  Map<String, dynamic>? originalJson;
+  // Map<String, dynamic>? originalJson;
 
   Event(this.location, this.startDate, this.endDate, this.organizer,
       this.attendee);
@@ -64,12 +64,12 @@ class Event extends Thing {
     attendee = (untypedAttendee != null && (untypedAttendee is Map<String, dynamic>) && untypedOrganizer['@type'] == 'Organization')
         ? Organization.fromJson(untypedAttendee)
         : untypedAttendee;
-    originalJson = json;
+    // originalJson = json;
   }
 
   @override
   Map<String, dynamic> toJson() {
-    if (originalJson != null) return originalJson!;
+    // if (originalJson != null) return originalJson!;
     final data = super.toJson();
     data['@type'] = 'Event';
     data['@context'] = 'http://schema.org';

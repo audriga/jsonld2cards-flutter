@@ -219,6 +219,10 @@ Widget renderCardSingle(
     // (Especially for liveLocation cards we cant to avoid buttons pointing to stale locations).
     markup = enrichMarkupWithNavigationActions(markup);
   }
+  if (type == SchemaType.event) {
+    /// On event markups, add potentialAction to share the event
+    markup = enrichMarkupWithShareEventAction(markup);
+  }
   late MarkupCard card;
   switch (type) {
     case SchemaType.emailMessage: {

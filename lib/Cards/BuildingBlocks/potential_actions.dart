@@ -225,6 +225,19 @@ class PotentialActionButton extends StatelessWidget {
         );
         return button;
       }
+      case 'ShareAction': {
+        var actionName = potentialAction['name'] ?? 'Cancel';
+        button = TextButton(
+          onPressed: (preview || globalSMLAppContext?.confirmCallback == null) ? null : () {
+            var object = potentialAction['object'];
+            if (object is Map<String, dynamic>  && globalSMLAppContext?.eventCallback != null) {
+              globalSMLAppContext!.eventCallback!(dataToSend: object);
+            }
+          },
+          child: Text(actionName),
+        );
+       return button;
+      }
     }
     return button;
   }

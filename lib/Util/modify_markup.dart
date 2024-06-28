@@ -116,3 +116,31 @@ Map<String, dynamic> addDefaultViewActionToMarkup(Map<String, dynamic> markup) {
   var visitAction = {"@type": "ViewAction", "url": url, "name": "Visit"};
   return appendPotentialActions(markup, [visitAction]);
 }
+
+
+/// Returns markup with action to share it added to it.
+/// This is meant for events that get converted to iCalender files.
+/// This uses [appendPotentialActions]. See its note on shallow copy.
+Map<String, dynamic> enrichMarkupWithShareEventAction(Map<String, dynamic> markup) {
+  if (markup['@type'] != 'Event') return markup;
+    List<Map<String,dynamic>> generatedPotentialActions = [
+      {
+        '@type': 'ShareAction',
+        'name': 'Share as iCal',
+        'object': markup,
+        // could also add SML app as target here, similar to this snippet
+        // the target could then contain information as to how to process the object
+        // 'target': {
+        //   '@type': 'EntryPoint',
+        //   'urlTemplate': 'urbanspoon://r/6/92204',
+        //   'actionApplication': {
+        //     '@type': 'SoftwareApplication',
+        //     '@id': '5b23b738-bb64-4829-9296-5bcb59bb0d2d',
+        //     'name': 'Windows Phone App',
+        //     'operatingSystem': 'Windows Phone 8'
+        //   }
+        // }
+      }
+    ];
+    return appendPotentialActions(markup, generatedPotentialActions);
+}
