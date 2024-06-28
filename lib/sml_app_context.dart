@@ -2,7 +2,7 @@ library sml_app_context;
 
 typedef SendEmailCallback = Function({dynamic dataToSend, String? subject, String? recipient});
 // todo define this for event/ ical potential actions
-typedef EventCallback = Function({Map<String, dynamic> dataToSend});
+typedef EventCallback = Function({Map<String, dynamic> eventData});
 
 SMLAppContext? globalSMLAppContext;
 

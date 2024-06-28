@@ -231,7 +231,7 @@ class PotentialActionButton extends StatelessWidget {
           onPressed: (preview || globalSMLAppContext?.confirmCallback == null) ? null : () {
             var object = potentialAction['object'];
             if (object is Map<String, dynamic>  && globalSMLAppContext?.eventCallback != null) {
-              globalSMLAppContext!.eventCallback!(dataToSend: object);
+              globalSMLAppContext!.eventCallback!(eventData: object);
             }
           },
           child: Text(actionName),
