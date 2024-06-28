@@ -126,7 +126,7 @@ Map<String, dynamic> enrichMarkupWithShareEventAction(Map<String, dynamic> marku
     List<Map<String,dynamic>> generatedPotentialActions = [
       {
         '@type': 'ShareAction',
-        'name': 'Share as iCal',
+        'name': 'Export Event',
         'object': markup,
         // could also add SML app as target here, similar to this snippet
         // the target could then contain information as to how to process the object
