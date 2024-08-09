@@ -60,40 +60,134 @@ class GeoData {
   /// to determine zoom level
   static int detailKeyToZoomLevel(String detailKey) {
     switch (detailKey) {
-      case 'continent': return 2;
-      case 'country': case 'country_code': return 3;
-      case 'region': case 'state': case 'state_district': case 'county': case 'ISO3166-2-lvl': case 'ISO3166-2-lvl4': return 8;
-      case 'municipality': case 'city': case 'town': case 'village': return 10;
-      case 'city_district': case 'district': case 'borough': case 'suburb': case 'subdivision': return 12;
-      case 'hamlet': case 'croft':  case 'isolated_dwelling': return 13;
-      case 'neighbourhood': case 'allotments': case 'quarter': return 14;
-      case 'city_block': case 'residential': case 'farm': case 'farmyard': case 'industrial': case 'commercial': case 'retail': return 15;
-      case 'road': return 16;
-      case 'house_number': case 'house_name': return 18;
-      case 'emergency': case 'historic': case 'military': case 'natural': case 'landuse': case 'place': case 'railway': case 'man_made': case 'aerialway': case 'boundary': case 'amenity': case 'aeroway': case 'club': case 'craft': case 'leisure': case 'office': case 'mountain_pass': case 'shop': case 'tourism': case 'bridge': case 'tunnel': case 'waterway': return 18;
-      case 'postcode': return 12;
-
+      case 'continent':
+        return 2;
+      case 'country':
+      case 'country_code':
+        return 3;
+      case 'region':
+      case 'state':
+      case 'state_district':
+      case 'county':
+      case 'ISO3166-2-lvl':
+      case 'ISO3166-2-lvl4':
+        return 8;
+      case 'municipality':
+      case 'city':
+      case 'town':
+      case 'village':
+        return 10;
+      case 'city_district':
+      case 'district':
+      case 'borough':
+      case 'suburb':
+      case 'subdivision':
+        return 12;
+      case 'hamlet':
+      case 'croft':
+      case 'isolated_dwelling':
+        return 13;
+      case 'neighbourhood':
+      case 'allotments':
+      case 'quarter':
+        return 14;
+      case 'city_block':
+      case 'residential':
+      case 'farm':
+      case 'farmyard':
+      case 'industrial':
+      case 'commercial':
+      case 'retail':
+        return 15;
+      case 'road':
+        return 16;
+      case 'house_number':
+      case 'house_name':
+        return 18;
+      case 'emergency':
+      case 'historic':
+      case 'military':
+      case 'natural':
+      case 'landuse':
+      case 'place':
+      case 'railway':
+      case 'man_made':
+      case 'aerialway':
+      case 'boundary':
+      case 'amenity':
+      case 'aeroway':
+      case 'club':
+      case 'craft':
+      case 'leisure':
+      case 'office':
+      case 'mountain_pass':
+      case 'shop':
+      case 'tourism':
+      case 'bridge':
+      case 'tunnel':
+      case 'waterway':
+        return 18;
+      case 'postcode':
+        return 12;
     }
     return 18;
   }
 
   static bool showAsRefineOption(String detailKey) {
     var allowedOptions = <String>[
-      'country', 'region', 'state', 'county', 'city', 'town', 'village',
-      'city_district', 'district', 'borough', 'suburb',
-      'city_block', 'residential', 'farm', 'farmyard', 'industrial', 'commercial', 'retail',
+      'country',
+      'region',
+      'state',
+      'county',
+      'city',
+      'town',
+      'village',
+      'city_district',
+      'district',
+      'borough',
+      'suburb',
+      'city_block',
+      'residential',
+      'farm',
+      'farmyard',
+      'industrial',
+      'commercial',
+      'retail',
       'road',
-      'house_number', 'house_name',
-      'emergency', 'historic', 'military', 'natural', 'landuse', 'place', 'railway', 'man_made', 'aerialway', 'boundary', 'amenity', 'aeroway', 'club', 'craft', 'leisure', 'office', 'mountain_pass', 'shop', 'tourism', 'bridge', 'tunnel', 'waterway',
+      'house_number',
+      'house_name',
+      'emergency',
+      'historic',
+      'military',
+      'natural',
+      'landuse',
+      'place',
+      'railway',
+      'man_made',
+      'aerialway',
+      'boundary',
+      'amenity',
+      'aeroway',
+      'club',
+      'craft',
+      'leisure',
+      'office',
+      'mountain_pass',
+      'shop',
+      'tourism',
+      'bridge',
+      'tunnel',
+      'waterway',
     ];
     return allowedOptions.contains(detailKey);
   }
 
   Future<void> downloadImage({int zoom = 18}) async {
-    TileNumber tileNr = TileNumber.fromLatLong(latLong.latitude, latLong.longitude, zoom);
-    imageUrl = Uri.parse('https://tile.openstreetmap.org/$zoom/${tileNr.x}/${tileNr.y}.png');
-    await http.get(imageUrl!)
-        .then((tileResponse) {
+    TileNumber tileNr =
+        TileNumber.fromLatLong(latLong.latitude, latLong.longitude, zoom);
+    imageUrl = Uri.parse(
+        'https://tile.openstreetmap.org/$zoom/${tileNr.x}/${tileNr.y}.png');
+    await http.get(imageUrl!).then((tileResponse) {
       imageB64 = Uri.dataFromBytes(
         tileResponse.bodyBytes,
         mimeType: 'image/png',
@@ -104,7 +198,7 @@ class GeoData {
         'Done downloading image',
         name: 'jsonld2cards.geo_data',
       );
-    }).onError((error, stackTrace)  {
+    }).onError((error, stackTrace) {
       developer.log(
         'Error downloading image',
         name: 'jsonld2cards.geo_data',
@@ -127,7 +221,6 @@ class GeoData {
     developer.log(
       'Reverse Geocoded Position, got\n$decodedResponse',
       name: 'jsonld2cards.geo_data',
-
     );
     if (decodedResponse is Map<String, dynamic>) {
       addressString = decodedResponse['display_name'];
@@ -141,7 +234,6 @@ class GeoData {
       );
     }
   }
-
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{
@@ -170,7 +262,7 @@ class GeoData {
       } else if (imageUrl != null) {
         image["url"] = "$imageUrl";
       }
-      if (imgAlt !=  null) {
+      if (imgAlt != null) {
         image['name'] = imgAlt;
       }
       if (imgCopyright != null) {
@@ -193,12 +285,13 @@ class GeoData {
     }
     return data;
   }
-  
+
   Future<bool> updateLive({bool updateImage = true, updateName = false}) async {
     if (isLive == null || !isLive! || liveUri == null) {
       return Future.error('Not a live location');
     }
-    bool updateSuccess = await http.get(liveUri!).then((http.Response response) {
+    bool updateSuccess =
+        await http.get(liveUri!).then((http.Response response) {
       developer.log(
         'Updated location and got response (${response.statusCode}) ${response.body}',
         name: 'jsonld2cards.geo_data',
@@ -207,7 +300,8 @@ class GeoData {
         String jsonString = response.body;
         Map<String, dynamic> responseJson = jsonDecode(jsonString);
         var geo = responseJson['geo'];
-        latLong = LatLng(double.parse(geo['latitude']), double.parse(geo['longitude']));
+        latLong = LatLng(
+            double.parse(geo['latitude']), double.parse(geo['longitude']));
       } on Error catch (e) {
         developer.log(
           'Error updating/ parsing location',
@@ -236,11 +330,11 @@ class GeoData {
     } else {
       return false;
     }
-}
-
+  }
 
   GeoData.fromJson(Map<String, dynamic> json)
-      : latLong = LatLng(double.parse(json['geo']['latitude']), double.parse(json['geo']['longitude'])),
+      : latLong = LatLng(double.parse(json['geo']['latitude']),
+            double.parse(json['geo']['longitude'])),
         name = json['name'],
         isLive = json['live'] {
     if (json['address'] case String address) {
@@ -289,15 +383,18 @@ class GeoData {
         liveUri = Uri.tryParse(liveUriVar);
       } else {
         developer.log(
-          'LiveUri is not a uri or String (${liveUriVar
-              .runtimeType}) liveUriVar: $liveUriVar',
+          'LiveUri is not a uri or String (${liveUriVar.runtimeType}) liveUriVar: $liveUriVar',
           name: 'jsonld2cards.geo_data',
         );
       }
     }
     var potentialActionsVar = json['potentialActions'];
     if (potentialActionsVar is List) {
-      potentialActions = potentialActionsVar.map((e) => Action.fromJson(e),).toList();
+      potentialActions = potentialActionsVar
+          .map(
+            (e) => Action.fromJson(e),
+          )
+          .toList();
     } else if (potentialActionsVar is Map<String, dynamic>) {
       potentialActions = [Action.fromJson(potentialActionsVar)];
     }
