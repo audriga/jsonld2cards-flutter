@@ -81,7 +81,7 @@ class Action extends Thing {
 
   @override
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
+    final data = super.toJson();
     data['@context'] = 'http://schema.org';
     data['@type'] = _type;
 
@@ -89,6 +89,6 @@ class Action extends Thing {
       data['actionStatus'] = actionStatusToString(actionStatus!);
     }
     data['target'] = target;
-    return data;
+    return data..removeWhere((key, value) => value == null,);
   }
 }

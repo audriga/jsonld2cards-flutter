@@ -2,6 +2,9 @@ library geo_data;
 
 import 'dart:convert';
 
+import 'package:jsonld2cards/Cards/Models/action_model.dart';
+import 'package:jsonld2cards/Util/conversion.dart';
+
 import 'tile_util.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
@@ -14,9 +17,12 @@ class GeoData {
   Uri? imageB64;
   bool? isLive;
   Uri? liveUri;
+  String? imgAlt;
+  String? imgCopyright;
   Map<String, dynamic>? addressData;
   String? addressString;
   Map<String, dynamic>? extraTags;
+  List<Action>? potentialActions;
 
   GeoData({
     required this.latLong,
@@ -25,9 +31,29 @@ class GeoData {
     this.imageB64,
     this.isLive,
     this.liveUri,
+    this.imgAlt,
+    this.imgCopyright,
     this.addressData,
     this.addressString,
-  });
+    this.potentialActions,
+  }) {
+    if (potentialActions == null || potentialActions!.isEmpty) {
+      potentialActions = [
+        Action.fromJson({
+          '@type': 'ViewAction',
+          'name': 'View',
+          'url':
+              'https://www.openstreetmap.org/?mlat=${latLong.latitude}&mlon=${latLong.longitude}',
+        }),
+        Action.fromJson({
+          '@type': 'ViewAction',
+          'name': 'Navigate to',
+          'url':
+              'https://www.google.com/maps/dir/?api=1&destination=${latLong.latitude},${latLong.longitude}',
+        }),
+      ];
+    }
+  }
 
   /// Uses https://nominatim.org/release-docs/develop/api/Output/#addressdetails
   /// and https://nominatim.org/release-docs/develop/api/Reverse/#result-limitation
@@ -72,6 +98,8 @@ class GeoData {
         tileResponse.bodyBytes,
         mimeType: 'image/png',
       ); //base64Encode(tileResponse.bodyBytes);
+      imgAlt = 'Map tile';
+      imgCopyright = '\u{a9} ${DateTime.timestamp().year} OpenStreetMap';
       developer.log(
         'Done downloading image',
         name: 'jsonld2cards.geo_data',
@@ -116,7 +144,6 @@ class GeoData {
 
 
   Map<String, dynamic> toJson() {
-    // todo use potentialactions property for view and navigate
     final data = <String, dynamic>{
       "@context": "https://schema.org",
       "@type": "Place",
@@ -136,16 +163,33 @@ class GeoData {
     } else {
       data["name"] = "My Current Location is";
     }
-    if (imageB64 != null) {
-      data["image"] =  <String, dynamic>{"contentUrl" : "$imageB64" };
-    } else if (imageUrl != null) {
-      data["image"] = <String, dynamic>{"url" :  "$imageUrl"};
+    if (imageB64 != null || imageUrl != null) {
+      Map<String, dynamic> image = {};
+      if (imageB64 != null) {
+        image["contentUrl"] = "$imageB64";
+      } else if (imageUrl != null) {
+        image["url"] = "$imageUrl";
+      }
+      if (imgAlt !=  null) {
+        image['name'] = imgAlt;
+      }
+      if (imgCopyright != null) {
+        image['copyrightNotice'] = imgCopyright;
+      }
+      data['image'] = image;
     }
     if (isLive != null && isLive!) {
       data["live"] = true;
     }
     if (liveUri != null && isLive!) {
       data["liveUri"] = "$liveUri";
+    }
+    if (potentialActions != null) {
+      data['potentialActions'] = potentialActions!
+          .map<Map<String, dynamic>>(
+            (e) => e.toJson()..remove('@context'),
+          )
+          .toList();
     }
     return data;
   }
@@ -199,22 +243,16 @@ class GeoData {
       : latLong = LatLng(double.parse(json['geo']['latitude']), double.parse(json['geo']['longitude'])),
         name = json['name'],
         isLive = json['live'] {
-    var image = json['image'];
-    if (image != null) {
-      if (json['address'] case String address) {
-        addressString = address;
-      } else if (json['address'] case Map<String, dynamic> address) {
-        addressData = address;
-      }
+    if (json['address'] case String address) {
+      addressString = address;
+    } else if (json['address'] case Map<String, dynamic> address) {
+      addressData = address;
+    }
+    if (json['image'] case Map<String, dynamic> image) {
       // todo refactor out to method get image, reuse for spotify
       var contentUrl = image['contentUrl'] ?? image['url'];
-      if (contentUrl!= null) {
-        Uri? jsonImageUri;
-        if (contentUrl is Uri) {
-          jsonImageUri = contentUrl;
-        } else if (contentUrl is String) {
-          jsonImageUri = Uri.tryParse(contentUrl);
-        }
+      if (contentUrl != null) {
+        Uri? jsonImageUri = tryCastOrParse(contentUrl);
         if (jsonImageUri != null) {
           var imageUriData = jsonImageUri.data;
           if (imageUriData != null && imageUriData.isBase64) {
@@ -235,6 +273,12 @@ class GeoData {
           );
         }
       }
+      if (image['name'] case String imageName) {
+        imgAlt = imageName;
+      }
+      if (image['copyrightNotice'] case String imageCopyrightNotice) {
+        imgCopyright = imageCopyrightNotice;
+      }
     }
 
     var liveUriVar = json['liveUri'];
@@ -245,10 +289,17 @@ class GeoData {
         liveUri = Uri.tryParse(liveUriVar);
       } else {
         developer.log(
-          'LiveUri is not a uri or String (${liveUriVar.runtimeType}) liveUriVar: $liveUriVar',
+          'LiveUri is not a uri or String (${liveUriVar
+              .runtimeType}) liveUriVar: $liveUriVar',
           name: 'jsonld2cards.geo_data',
         );
       }
+    }
+    var potentialActionsVar = json['potentialActions'];
+    if (potentialActionsVar is List) {
+      potentialActions = potentialActionsVar.map((e) => Action.fromJson(e),).toList();
+    } else if (potentialActionsVar is Map<String, dynamic>) {
+      potentialActions = [Action.fromJson(potentialActionsVar)];
     }
   }
 }

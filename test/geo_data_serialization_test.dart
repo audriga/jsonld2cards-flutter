@@ -56,4 +56,16 @@ void main() {
     expect(geoData.latLong, equals(const LatLng(49.123456789, 8.987654321)));
     expect(geoData.imageB64!.data, isNotNull);
   });
+
+  test('Test geoData from location to json', () async {
+    var geoData = GeoData(
+      latLong: const LatLng(49.00444652615525, 8.42715400814573),
+      addressString: 'University of Music Karlsruhe, Schlachthausstraße, Oststadt Südlicher Teil, Oststadt, Karlsruhe, Baden-Württemberg, 76131, Germany',
+    );
+    await geoData.downloadImage();
+    var json = geoData.toJson();
+    var geoDataFromJson = GeoData.fromJson(json);
+    var jsonFromGeoDataFromJson = geoDataFromJson.toJson();
+    print(jsonFromGeoDataFromJson);
+  },);
 }

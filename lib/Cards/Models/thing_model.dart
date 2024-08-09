@@ -67,6 +67,6 @@ class Thing {
       data['potentialAction'] = potentialAction!.toJson();
     }
     data['url'] = url?.toString();
-    return data;
+    return data..removeWhere((key, value) => value == null,);
   }
 }
