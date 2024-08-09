@@ -17,7 +17,7 @@ class Place extends Thing {
         super.fromJson();
 
   @override
-  Map<String, dynamic> toJson() => jsonDecode(geoData.toJson());
+  Map<String, dynamic> toJson() => geoData.toJson();
 
   @override
   int get duplicateHash =>

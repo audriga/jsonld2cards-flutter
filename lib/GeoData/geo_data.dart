@@ -115,67 +115,39 @@ class GeoData {
   }
 
 
-  String toJson() {
-    // todo use a map<String, dynamic> instead and call jsonEncode.
+  Map<String, dynamic> toJson() {
     // todo use potentialactions property for view and navigate
-    var jsonBuffer = StringBuffer();
-    jsonBuffer.write(
-'''{
-  "@context": "https://schema.org",
-  "@type": "Place",
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": "${latLong.latitude}",
-    "longitude": "${latLong.longitude}"
-  }''',
-    );
+    final data = <String, dynamic>{
+      "@context": "https://schema.org",
+      "@type": "Place",
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "${latLong.latitude}",
+        "longitude": "${latLong.longitude}"
+      },
+    };
     if (addressString != null) {
-      jsonBuffer.write(
-        ''',
-  "address": "$addressString"''',
-      );
+      data["address"] = addressString;
     }
     if (name != null) {
-      jsonBuffer.write(
-        ''',
-  "name": "$name"''',
-      );
+      data["name"] = name;
     } else if (addressString != null) {
-      jsonBuffer.write(
-        ''',
-  "name": "$addressString"''',
-      );
+      data["name"] = addressString;
     } else {
-      jsonBuffer.write(
-        ''',
-  "name": "My Current Location is"''',
-      );
+      data["name"] = "My Current Location is";
     }
     if (imageB64 != null) {
-      jsonBuffer.write(
-          ''',
-  "image" : {"contentUrl" : "$imageB64" }''',
-      );
+      data["image"] =  <String, dynamic>{"contentUrl" : "$imageB64" };
     } else if (imageUrl != null) {
-      jsonBuffer.write(
-        ''',
-  "image" : {"url" :  "$imageUrl"}''',
-      );
+      data["image"] = <String, dynamic>{"url" :  "$imageUrl"};
     }
     if (isLive != null && isLive!) {
-      jsonBuffer.write(
-        ''',
-  "live" : true''',
-      );
+      data["live"] = true;
     }
     if (liveUri != null && isLive!) {
-      jsonBuffer.write(
-        ''',
-  "liveUri" : "$liveUri"''',
-      );
+      data["liveUri"] = "$liveUri";
     }
-    jsonBuffer.write('''}''');
-    return jsonBuffer.toString();
+    return data;
   }
   
   Future<bool> updateLive({bool updateImage = true, updateName = false}) async {
