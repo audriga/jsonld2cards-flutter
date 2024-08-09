@@ -277,7 +277,7 @@ class GeoData {
       data["liveUri"] = "$liveUri";
     }
     if (potentialActions != null) {
-      data['potentialActions'] = potentialActions!
+      data['potentialAction'] = potentialActions!
           .map<Map<String, dynamic>>(
             (e) => e.toJson()..remove('@context'),
           )
@@ -388,7 +388,7 @@ class GeoData {
         );
       }
     }
-    var potentialActionsVar = json['potentialActions'];
+    var potentialActionsVar = json['potentialAction'];
     if (potentialActionsVar is List) {
       potentialActions = potentialActionsVar
           .map(
