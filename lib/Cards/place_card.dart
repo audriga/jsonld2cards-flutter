@@ -114,10 +114,14 @@ class _PlaceState extends State<Place> {
     var longitude = geoData.latLong.longitude;
 
 
-    List<Map<String, dynamic>> geoActions = potentialAction ?? [
+    List<Map<String, dynamic>> geoActions = [
       navigationPotentialAction(latitude, longitude),
       viewGeoPotentialAction(latitude, longitude),
     ];
+
+    if (potentialAction is List) {
+      geoActions = potentialAction.whereType<Map<String, dynamic>>().toList();
+    }
 
     if (geoData.isLive ?? false) {
       geoActions.insert(
