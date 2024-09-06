@@ -114,7 +114,7 @@ class _PlaceState extends State<Place> {
     var longitude = geoData.latLong.longitude;
 
 
-    List<Map<String, dynamic>> geoActions =  [
+    List<Map<String, dynamic>> geoActions = potentialAction ?? [
       navigationPotentialAction(latitude, longitude),
       viewGeoPotentialAction(latitude, longitude),
     ];
@@ -139,8 +139,6 @@ class _PlaceState extends State<Place> {
 
         });
       },
-      secondaryPotentialAction: potentialAction,
-      secondaryPotentialActionPostFunction: widget.postFunction,
       preview: widget.preview,
     );
   }
