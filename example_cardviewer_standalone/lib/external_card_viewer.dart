@@ -6,7 +6,7 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/potential_actions.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:flutter/material.dart';
-import 'package:html2jsonld_dart/html2jsonld_dart.dart' as ht2j;
+import 'package:html2jsonld_dart/html2jsonld_full.dart' as ht2j;
 import 'dart:developer' as developer;
 
 class ExternalCardViewer extends StatefulWidget {
