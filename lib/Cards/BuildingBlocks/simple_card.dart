@@ -87,7 +87,7 @@ class SimpleCardContent extends StatelessWidget {
     var cardContents = ListTile(
       leading: leadingImage,
       title: titleText != null ? Text(titleText!) : null,
-      subtitle: subtitleText != null ? Text(subtitleText!) : null,
+      subtitle: subtitleText != null ? Text(subtitleText!, maxLines: 5, overflow: TextOverflow.fade,) : null,
     );
     return cardContents;
   }
