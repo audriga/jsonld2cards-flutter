@@ -3,6 +3,7 @@ library promo_tab_card;
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
+import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'Models/organization_model.dart';
@@ -78,7 +79,7 @@ class DiscountOffer {
 }
 
 class PromotionCardData {
-  Uri image;
+  Uri? image;
   Uri? url;
   String? headline;
   num? price;
@@ -108,8 +109,7 @@ class PromotionCardData {
     };
 
   PromotionCardData.fromJson(Map<String, dynamic> json)
-      : image = (json['image'] is Uri) ? json['image'] : Uri.parse(
-      json['image']),
+      : image = tryCastOrParse(json['image']),
         url = (json['url'] == null)? null : (json['url'] is Uri) ? json['url'] : Uri.parse(json['url']),
         headline = json['headline'],
         price = json['price'],

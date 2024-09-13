@@ -44,72 +44,14 @@ class MusicCard extends StatelessWidget implements MarkupCard {
         break;
     }
     Widget defaultAlbumCover =  Icon(defaultIcon);
-    Uri? imageContentUrl = tryCastOrParse( markup['image']?['contentUrl']);
-    Widget albumCover = (imageContentUrl != null)
-        ? UriImage(placeholder: (context, url) => const CircularProgressIndicator(), content: imageContentUrl, fit: BoxFit.contain,)
-        : FutureBuilder<String?>(
-      future: getImageSource(uri),
-      builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-        // List<Widget> children;
-        if (snapshot.hasData) {
-          String? imageUrl = snapshot.data;
-          developer.log(
-            'Got image url:$imageUrl',
-            name: 'jsonld2cards.music_card',
-          );
-          return imageUrl != null
-              ? UriImage(
-            placeholder: (context, url) => const CircularProgressIndicator(),
-            content: snapshot.data!,
-            fit: BoxFit.contain,
-          )
-              : defaultAlbumCover; //const Icon(Icons.album);
-        } else if (snapshot.hasError) {
-          developer.log(
-            'Error loading image source',
-            name: 'jsonld2cards.music_card',
-            error: snapshot.error,
-          );
-          return Icon(
-            defaultIcon,
-            color: Colors.red,
-          );
-          // todo actually check how these error states look
-          // or replace with generic album icon and just log error
-          // children = <Widget>[
-          //   const Icon(
-          //     Icons.error_outline,
-          //     color: Colors.red,
-          //     size: 10,
-          //   ),
-          //   Padding(
-          //     padding: const EdgeInsets.only(top: 16),
-          //     child: Text('Error: ${snapshot.error}'),
-          //   ),
-          // ];
-        } else {
-          // children = const <Widget>[SizedBox.square(dimension: 10, child: CircularProgressIndicator(),)];
-          developer.log(
-            'Loading image source',
-            name: 'jsonld2cards.card',
-          );
-          return const CircularProgressIndicator();
-        }
-        // return Center(
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: children,
-        //   ),
-        // );
-      },
-    );
-
+    UriImage? albumCover = findLeadingImage(markup);
+    Widget leadingImage = albumCover ?? defaultAlbumCover;
 
 
     var potentialAction = markup['potentialAction'];
 
     return SimpleCard(
-      leadingImage: albumCover,
+      leadingImage: leadingImage,
       titleText: markup['name'],
       subtitleText: markup['description'],
       potentialAction: potentialAction,

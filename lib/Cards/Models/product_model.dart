@@ -74,7 +74,7 @@ class Product {
     url = tryCastOrParse(json['url']);
     var jsonImage = json['image'];
     if (jsonImage != null) {
-      image = (jsonImage is Uri) ? jsonImage : Uri.tryParse(jsonImage);
+      image = tryCastOrParse(jsonImage);
     }
     description = json['description']?.toString();
     brand = (json['brand'] != null && (json['brand'] is Map)) ? Brand.fromJson(json['brand']) : null;
