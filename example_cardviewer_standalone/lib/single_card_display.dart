@@ -20,16 +20,23 @@ class SingleCardDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        var renderedMarkupCard = renderCard(decodedMarkup, postFunction: postFunction);
+        Widget elementToShow;
+        try {
+          var renderedMarkupCard = mustRenderCard(decodedMarkup, postFunction: postFunction);
+          elementToShow = renderedMarkupCard;
+        } catch (e) {
+          elementToShow = displayErrorMessage('Could not load card:\n ${e.toString()}');
+        }
+
         return constraints.maxWidth > maxWidth
             ? Center(
                 child: ClipRect(
                   child: SizedBox(
                       width: maxWidth,
-                      child: renderedMarkupCard ?? displayErrorMessage('Could not load card')),
+                      child: elementToShow),
                 ),
               )
-            : renderedMarkupCard ?? displayErrorMessage('Could not load card');
+            : elementToShow;
       },
     );
   }
