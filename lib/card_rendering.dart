@@ -76,12 +76,20 @@ Widget mustRenderCard(
       topBar: topBar,
     );
   }  else if (markup is Map<String, dynamic>) {
-    return renderCardSingle(
-      markup,
-      postFunction: postFunction,
-      preview: preview,
-      topBar: topBar,
-    );
+    if (markup['@graph'] case List<dynamic> graph) {
+      return renderCardMulti(
+        graph,
+        postFunction: postFunction, preview: preview,
+        topBar: topBar,
+      );
+    } else {
+      return renderCardSingle(
+        markup,
+        postFunction: postFunction,
+        preview: preview,
+        topBar: topBar,
+      );
+    }
   }
   throw FormatException(
     'markup should either be Map<String, dynamic> or a list of those',
@@ -197,8 +205,8 @@ Widget renderCardSingle(
       bool topBar = false,
     }
     ) {
-  String context = markup['@context'];
-  if (!['http://schema.org', 'http://schema.org/', 'https://schema.org', 'https://schema.org/', 'http://schema.googleapis.com/'].contains(context)) {
+  String? context = markup['@context'];
+  if (!['http://schema.org', 'http://schema.org/', 'https://schema.org', 'https://schema.org/', 'http://schema.googleapis.com/'].contains(context ?? '')) {
     developer.log(
       'Warning Markup does not contain context tag, or context tag does not contain one of the known schema contexts like http://schema.org\n$markup',
       name: 'jsonld2cards.card_rendering',
