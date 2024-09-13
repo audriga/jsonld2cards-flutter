@@ -165,7 +165,7 @@ UriImage? findLeadingImage(Map<String, dynamic> markup,
         }
       } else if (image is Map<String, dynamic>) {
         // image is an ImageObject (https://schema.org/ImageObject)
-        var contentUrl = image['contentUrl'] ?? image['url'];
+        var contentUrl = image['contentUrl'] ?? image['url'] ?? image['embedUrl'];
         leadingImage = UriImage(
           content: contentUrl,
           height: size,
