@@ -79,7 +79,7 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
     try {
       // todo maybe use other library function that gives back more
       String? extractedSchema =
-          await ht2j.enrichedMarkupFromUrl(sourceUri.toString());
+          await ht2j.enrichedMarkupFromUrl(sourceUri.toString(), downloadImage: true);
       developer.log(
         'Requested markup at $sourceUri and got schema ($extractedSchema)',
         name: 'jsonld2cards.external_viewer',
@@ -243,7 +243,7 @@ class _DebugRequestState extends State<DebugRequest> {
               });
             }, child: const Text('http.get')),
             TextButton(onPressed: () async {
-              String? response = await ht2j.enrichedMarkupFromUrl(widget.sourceUri.toString());
+              String? response = await ht2j.enrichedMarkupFromUrl(widget.sourceUri.toString(), downloadImage: true);
 
               setState(() {
                 result = response;
