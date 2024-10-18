@@ -79,7 +79,7 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
     try {
       // todo maybe use other library function that gives back more
       String? extractedSchema =
-          await ht2j.SchemaOrgExtractor().extractJsonLdFromUrl(sourceUri.toString());
+          await ht2j.enrichedMarkupFromUrl(sourceUri.toString());
       developer.log(
         'Requested markup at $sourceUri and got schema ($extractedSchema)',
         name: 'jsonld2cards.external_viewer',
