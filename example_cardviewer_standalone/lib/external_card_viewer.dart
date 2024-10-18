@@ -243,12 +243,12 @@ class _DebugRequestState extends State<DebugRequest> {
               });
             }, child: const Text('http.get')),
             TextButton(onPressed: () async {
-              String? response = await ht2j.SchemaOrgExtractor().extractSchemaOrgAggregateFromURL(widget.sourceUri.toString());
+              String? response = await ht2j.enrichedMarkupFromUrl(widget.sourceUri.toString());
 
               setState(() {
                 result = response;
               });
-            }, child: const Text('SchemaOrg().extractSchemaOrgAggregateFromURL')),
+            }, child: const Text('enrichedMarkupFromUrl')),
           ],
         ),
         const Divider(),
