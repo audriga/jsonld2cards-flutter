@@ -13,6 +13,8 @@
   },
   "broker": {
     "@type": "Organization",
-    "name": "Willy's Warehouse"
-  }
+    "name": "Willy's Warehouse",
+    "logo": "https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png"
+  },
+  "url": "cid:invoice_pdf@yourdomain.com"
 }

@@ -6,6 +6,7 @@ import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'BuildingBlocks/card_with_actions.dart';
 import 'BuildingBlocks/potential_actions.dart';
 
+import 'BuildingBlocks/uri_image.dart';
 import 'Models/invoice_model.dart';
 
 class InvoiceCard extends StatelessWidget implements MarkupCard{
@@ -136,6 +137,14 @@ class InvoiceCard extends StatelessWidget implements MarkupCard{
         }
       }
     }
+
+    if ((invoice.broker ?? invoice.provider)?.logo case Uri logo){
+      leadingImage = UriImage(
+            content: logo,
+            height: 32.0,
+            width:  32.0,
+            fit: BoxFit.scaleDown,
+          );    }
 
     // titleText = titleTextBuffer.toString();
     // subtitleText = subTitleTextBuffer.toString().trim();
