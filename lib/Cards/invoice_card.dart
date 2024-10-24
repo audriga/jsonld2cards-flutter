@@ -28,28 +28,48 @@ class InvoiceCard extends StatelessWidget implements MarkupCard{
     String? titleText;
     String? subtitleText;
     Widget? leadingImage;
-    var titleTextBuffer = StringBuffer('Invoice');
+    var titleTextBuffer = StringBuffer('');
+    if (invoice.broker?.name != null) {
+      titleTextBuffer.write('${invoice.broker?.name} ');
+    }
     if (invoice.provider?.name != null) {
-      titleTextBuffer.write(' from ${invoice.provider?.name}');
+      titleTextBuffer.write('${invoice.provider?.name} ');
+    }
+    titleTextBuffer.write('Invoice');
+    if (invoice.confirmationNumber != null) {
+      titleTextBuffer.write(' ${invoice.confirmationNumber}');
     }
     if (invoice.paymentStatus != null) {
       titleTextBuffer.write(': ${invoice.paymentStatus}');
     }
 
     var subTitleTextBuffer = StringBuffer();
+    if (invoice.confirmationNumber != null) {
+      subTitleTextBuffer.write('\nConfirmation number: ${invoice.confirmationNumber}');
+    }
+    if (invoice.totalPaymentDue != null) {
+      subTitleTextBuffer.write('\nInvoice Amount: ');
+      subTitleTextBuffer.write(invoice.totalPaymentDue.toString());
+    }
+    if (invoice.accountId != null) {
+      subTitleTextBuffer.write('\nContract Number: ${invoice.accountId}');
+    }
+    if (invoice.referencesOrder?.orderNumber case String orderNr) {
+      subTitleTextBuffer.write('\nOrder Number: $orderNr');
+    }
     var due = invoice.paymentDue;
     if (due != null) {
-      subTitleTextBuffer.write('Due on ${due.day}.${due.month}.${due.year}');
+      subTitleTextBuffer.write('\nDue on ${due.day}.${due.month}.${due.year}');
     }
     if (invoice.minimumPaymentDue?.price != null) {
       subTitleTextBuffer.write('\nMinimum payment due: ${invoice.minimumPaymentDue?.price}');
     }
-    if (invoice.totalPaymentDue?.price != null) {
-      subTitleTextBuffer.write('\nTotal payment due: ${invoice.totalPaymentDue?.price}');
-    }
+    // if (invoice.totalPaymentDue != null) {
+    //   subTitleTextBuffer.write('\nTotal payment due: ${invoice.totalPaymentDue.toString()}');
+    // }
 
     titleText = titleTextBuffer.toString();
-    subtitleText = subTitleTextBuffer.toString();
+    subtitleText = subTitleTextBuffer.toString().trim();
 
     return SimpleCard(
       leadingImage: leadingImage,

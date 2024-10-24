@@ -2,10 +2,47 @@ library invoice_model;
 
 import 'package:jsonld2cards/Cards/Models/thing_model.dart';
 
+import 'order_model.dart';
 import 'organization_model.dart';
 
 
-class PriceSpecification {
+class MonetaryAmount extends Thing {
+
+  String? currency;
+  String? value;
+  // todo missing properties
+
+  MonetaryAmount({
+    this.currency,
+    this.value,
+  });
+
+  MonetaryAmount.fromJson(Map<String, dynamic> json): super.fromJson(json) {
+    currency = json['currency']?.toString();
+    value = json['value']?.toString();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final data = super.toJson();
+    data['@type'] = 'MonetaryAmount';
+    data['value'] = value;
+    data['currency'] = currency;
+    return data;
+  }
+
+  @override
+  String toString() {
+    return switch (currency) {
+      'EUR' => '$value€',
+      'USD' => '\$$value',
+      String() => '$value $currency',
+      null => value ?? '',
+    };
+  }
+}
+
+class PriceSpecification extends Thing {
 /*
 {
   "@type": "PriceSpecification",
@@ -19,15 +56,21 @@ class PriceSpecification {
     this.price,
   });
 
-  PriceSpecification.fromJson(Map<String, dynamic> json) {
+  PriceSpecification.fromJson(Map<String, dynamic> json): super.fromJson(json) {
     price = json['price']?.toString();
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
+    final data = super.toJson();
     data['@type'] = 'PriceSpecification';
     data['price'] = price;
     return data;
+  }
+
+  @override
+  String toString() {
+    return price ?? '';
   }
 }
 
@@ -59,7 +102,10 @@ class Invoice extends Thing {
   DateTime? paymentDue;
   String? paymentStatus;
   Organization? provider;
-  PriceSpecification? totalPaymentDue;
+  Organization? broker;
+  Thing? totalPaymentDue; // MonetaryAmount or PriceSpecification
+  String? confirmationNumber;
+  Order? referencesOrder;
   // dynamic potentialAction;
 
 
@@ -70,6 +116,7 @@ class Invoice extends Thing {
     this.paymentStatus,
     this.provider,
     this.totalPaymentDue,
+    this.confirmationNumber,
     super.potentialAction,
   });
 
@@ -79,17 +126,34 @@ class Invoice extends Thing {
         (json['minimumPaymentDue'] is Map))
         ? PriceSpecification.fromJson(json['minimumPaymentDue'])
         : null;
-    paymentDue = DateTime.tryParse(json['paymentDue']);
+    paymentDue = DateTime.tryParse(json['paymentDue'] ?? '');
     paymentStatus = json['paymentStatus']?.toString();
     // todo replace organization.fromJson with something that can also handle a list?
 
+    broker = (json['broker'] != null && (json['broker'] is Map))
+        ? Organization.fromJson(json['broker'])
+        : null;
     provider = (json['provider'] != null && (json['provider'] is Map))
         ? Organization.fromJson(json['provider'])
         : null;
-    totalPaymentDue =
-    (json['totalPaymentDue'] != null && (json['totalPaymentDue'] is Map))
-        ? PriceSpecification.fromJson(json['totalPaymentDue'])
-        : null;
+    if (json['totalPaymentDue'] case Map<String, dynamic> totalPaymentEncoded) {
+      var totalPaymentType = totalPaymentEncoded['@type'];
+      if (totalPaymentType is String) {
+        totalPaymentDue = switch (totalPaymentType) {
+          'PriceSpecification' => PriceSpecification.fromJson(totalPaymentEncoded),
+          'MonetaryAmount' => MonetaryAmount.fromJson(totalPaymentEncoded),
+          String() => Thing.fromJson(totalPaymentEncoded),
+        };
+      }
+    }
+    // totalPaymentDue =
+    // (json['totalPaymentDue'] != null && (json['totalPaymentDue'] is Map))
+    //     ? PriceSpecification.fromJson(json['totalPaymentDue'])
+    //     : null;
+    confirmationNumber = (json['confirmationNumber'] is String) ? json['confirmationNumber'] : null;
+    if (json['referencesOrder'] case Map<String, dynamic> referencesorderMap) {
+      referencesOrder = Order.fromJson(referencesorderMap);
+    }
     potentialAction = json['potentialAction'];
   }
 
@@ -104,6 +168,9 @@ class Invoice extends Thing {
     }
     data['paymentDue'] = paymentDue?.toIso8601String();
     data['paymentStatus'] = paymentStatus;
+    if (broker != null) {
+      data['broker'] = provider!.toJson();
+    }
     if (provider != null) {
       data['provider'] = provider!.toJson();
     }
@@ -112,6 +179,12 @@ class Invoice extends Thing {
     }
     if (potentialAction != null) {
       data['potentialAction'] = potentialAction!.toJson();
+    }
+    if (confirmationNumber != null) {
+      data['confirmationNumber'] = confirmationNumber;
+    }
+    if (referencesOrder != null) {
+      data['referencesOrder'] = referencesOrder!.toJson();
     }
     return data;
   }
