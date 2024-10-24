@@ -113,6 +113,11 @@ Map<String, dynamic> addDefaultViewActionToMarkup(Map<String, dynamic> markup) {
   // todo potentially only add this when there is no potentialAction already
   var url = markup['url'];
   if (url == null) return markup;
+  // Don't add an action for cid urls. We do that in invoice class.
+  Uri? uri = tryCastOrParse(url);
+  if (uri != null && uri.scheme == 'cid') {
+    return markup;
+  }
   var visitAction = {"@type": "ViewAction", "url": url, "name": "Visit"};
   return appendPotentialActions(markup, [visitAction]);
 }

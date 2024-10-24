@@ -1,15 +1,16 @@
 {
   "@context": "https://schema.org",
   "@type": "Invoice",
-  "confirmationNumber": "123456",
+  "confirmationNumber": "CN9873456",
   "totalPaymentDue": {
     "@type": "MonetaryAmount",
     "currency": "EUR",
-    "value": "12.6"
+    "value": "12,6"
   },
   "broker": {
     "@type": "Organization",
-    "name": "[Seller name]"
+    "name": "Willy's Warehouse"
   },
-  "accountId" : "CR987654"
+  "accountId" : "CR987654",
+  "url": "CID:123456789"
 }

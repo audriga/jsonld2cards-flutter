@@ -1,7 +1,7 @@
 {
   "@context": "https://schema.org",
   "@type": "Invoice",
-  "confirmationNumber": "123456",
+  "confirmationNumber": "CN9873456",
   "referencesOrder": {
     "@type": "Order",
     "orderNumber": "SO12345678"
@@ -9,10 +9,10 @@
   "totalPaymentDue": {
     "@type": "MonetaryAmount",
     "currency": "EUR",
-    "value": "12.6"
+    "value": "12,6"
   },
   "broker": {
     "@type": "Organization",
-    "name": "[Seller name]"
+    "name": "Willy's Warehouse"
   }
 }
