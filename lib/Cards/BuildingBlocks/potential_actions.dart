@@ -87,7 +87,7 @@ class PotentialActionButton extends StatelessWidget {
             if (uriToLaunch != null) {
               if (uriToLaunch.scheme == 'cid' && globalSMLAppContext?.shareAttachmentCallback != null) {
                 if (potentialAction['muid'] case int uid) {
-                  globalSMLAppContext!.shareAttachmentCallback!(uid, uriToLaunch.path);
+                  globalSMLAppContext!.shareAttachmentCallback!(uid, uriToLaunch);
                 }
               } else {
                 launchUrl(uriToLaunch);

@@ -4,7 +4,7 @@ typedef SendEmailCallback = Function({dynamic dataToSend, String? subject, Strin
 // todo define this for event/ ical potential actions
 typedef EventCallback = Function({Map<String, dynamic> eventData});
 
-typedef ShareAttachmentCallback = Function(int uid, String cid, {Map<String, dynamic> callbackData});
+typedef ShareAttachmentCallback = Function(int uid, Uri cidOrFetchId, {Map<String, dynamic> callbackData});
 
 SMLAppContext? globalSMLAppContext;
 
