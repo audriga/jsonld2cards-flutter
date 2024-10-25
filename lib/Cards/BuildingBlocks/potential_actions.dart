@@ -85,7 +85,13 @@ class PotentialActionButton extends StatelessWidget {
           onPressed: preview ? null : () {
             Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
             if (uriToLaunch != null) {
-              launchUrl(uriToLaunch);
+              if (uriToLaunch.scheme == 'cid' && globalSMLAppContext?.shareAttachmentCallback != null) {
+                if (potentialAction['muid'] case int uid) {
+                  globalSMLAppContext!.shareAttachmentCallback!(uid, uriToLaunch.authority);
+                }
+              } else {
+                launchUrl(uriToLaunch);
+              }
             }
           },
           child: Text(potentialAction['name'] ?? 'View'),

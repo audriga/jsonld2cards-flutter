@@ -121,7 +121,7 @@ class InvoiceCard extends StatelessWidget implements MarkupCard{
     // }
     var potentialAction = invoice.potentialAction;
     // todo: placeholder for actual CID property
-    if (invoice.url case Uri uri) {
+    /*if (invoice.url case Uri uri) {
       if (uri.scheme == 'cid') {
         var cidAction = {
           '@type': 'ViewAction',
@@ -136,7 +136,7 @@ class InvoiceCard extends StatelessWidget implements MarkupCard{
           potentialAction = [cidAction, potentialAction];
         }
       }
-    }
+    }*/
 
     if ((invoice.broker ?? invoice.provider)?.logo case Uri logo){
       leadingImage = UriImage(
