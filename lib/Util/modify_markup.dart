@@ -115,7 +115,7 @@ Map<String, dynamic> addDefaultViewActionToMarkup(Map<String, dynamic> markup) {
   if (url == null) return markup;
   // Don't add an action for cid urls. We do that in invoice class.
   Uri? uri = tryCastOrParse(url);
-  if (uri != null && ['cid','fetchId'].contains(uri.scheme)) {
+  if (uri != null && ['cid','fetchid'].contains(uri.scheme)) {
     var cidAction = {
       '@type': 'ViewAction',
       'url': uri,
