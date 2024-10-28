@@ -129,6 +129,46 @@ Map<String, dynamic> addDefaultViewActionToMarkup(Map<String, dynamic> markup) {
 }
 
 
+/// When [markup] has uris for stories, video or audio, add corresponding actions to it.
+/// This uses [appendPotentialActions]. See its note on shallow copy.
+Map<String, dynamic> addSpecialViewActionToMarkup(Map<String, dynamic> markup) {
+  // todo potentially only add this when there is no potentialAction already
+  List<Map<String, dynamic>> addedActions = [];
+  var webStory = markup['webStoryUri'];
+  if (webStory != null) {
+    var storyAction = {
+      '@type': 'ReadStoryAction', //ReadAction is real, ReadStoryAction is invented by us
+      'url': webStory,
+      // 'variant': 'WebStory', // this is not real markup
+      'name': 'View Story',
+    };
+    addedActions.add(storyAction);
+  }
+  var video = markup['videoUri'];
+  if (video != null) {
+    var videoAction = {
+      '@type': 'WatchAction',
+      'url': video,
+      // 'variant': 'Video', // this is not real markup
+      'name': 'Watch',
+    };
+    addedActions.add(videoAction);
+  }
+  var audio = markup['audioUri'];
+  if (audio != null) {
+    var audioAction = {
+      '@type': 'ListenAction',
+      'url': audio,
+      // 'variant': 'Audio', // this is not real markup
+      'name': 'Listen',
+    };
+    addedActions.add(audioAction);
+  }
+
+  return appendPotentialActions(markup, addedActions);
+}
+
+
 /// Returns markup with action to share it added to it.
 /// This is meant for events that get converted to iCalender files.
 /// This uses [appendPotentialActions]. See its note on shallow copy.

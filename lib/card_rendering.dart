@@ -217,6 +217,7 @@ Widget renderCardSingle(
   markup = enrichMarkupWithEmailAndPhoneActions(markup);
   /// Add default ViewAction "Visit" to cards that have a url.
   markup = addDefaultViewActionToMarkup(markup);
+  markup = addSpecialViewActionToMarkup(markup);
 
 
   String typeName = markup['@type'];
