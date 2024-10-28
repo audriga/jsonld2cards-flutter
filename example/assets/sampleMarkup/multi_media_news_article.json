@@ -1,0 +1,43 @@
+{
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "articleSection": "Gesundheit",
+  "author": {
+    "@type": "Person",
+    "name": "Katherine Rydlink"
+  },
+  "dateCreated": "2023-06-13T15:09:17+02:00",
+  "dateModified": "2023-06-13T15:09:17+02:00",
+  "datePublished": "2023-06-13T15:09:17+02:00",
+  "headline": "Schutz vor Hautalterung: So finden Sie die richtige Sonnencreme",
+  "image": [
+    "https://cdn.prod.www.spiegel.de/images/ad073ff7-3697-4f3e-9f03-88b42ded2870_w1200_r1.778_fpx45_fpy70.jpg",
+    "https://cdn.prod.www.spiegel.de/images/ad073ff7-3697-4f3e-9f03-88b42ded2870_w1200_r1.33_fpx45_fpy70.jpg",
+    "https://cdn.prod.www.spiegel.de/images/ad073ff7-3697-4f3e-9f03-88b42ded2870_w1200_r1_fpx45_fpy70.jpg"
+  ],
+  "isAccessibleForFree": false,
+  "keywords": [
+    "Leben",
+    "Sonnencreme",
+    "Haut"
+  ],
+  "mainEntityOfPage": "https://www.spiegel.de/gesundheit/sonnenschutz-was-sie-bei-der-auswahl-der-richtigen-sonnencreme-beachten-sollten-a-5794ce99-2597-4526-9cc7-8b1614a7a709",
+  "name": "a-5794ce99-2597-4526-9cc7-8b1614a7a709",
+  "publisher": {
+    "@type": "Organization",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://cdn.prod.www.spiegel.de/public/spon/images/logos/der-spiegel-h60.png"
+    },
+    "name": "DER SPIEGEL"
+  },
+  "thumbnailUrl": [
+    "https://cdn.prod.www.spiegel.de/images/ad073ff7-3697-4f3e-9f03-88b42ded2870_w288_r1.778_fpx45_fpy70.jpg",
+    "https://cdn.prod.www.spiegel.de/images/ad073ff7-3697-4f3e-9f03-88b42ded2870_w288_r1.33_fpx45_fpy70.jpg",
+    "https://cdn.prod.www.spiegel.de/images/ad073ff7-3697-4f3e-9f03-88b42ded2870_w288_r1_fpx45_fpy70.jpg"
+  ],
+  "url": "https://www.spiegel.de/gesundheit/sonnenschutz-was-sie-bei-der-auswahl-der-richtigen-sonnencreme-beachten-sollten-a-5794ce99-2597-4526-9cc7-8b1614a7a709",
+  "webStoryUri": "https://cdn.prod.www.spiegel.de/stories/66361/index.amp.html",
+  "videoUri": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Northern_shovelers_spinning_in_Prospect_Park.webm",
+  "audioUri": "https://traffic.omny.fm/d/clips/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/afe511d8-e689-459c-9825-ab98009193cb/beee97c8-1664-473a-9bc2-b21300c2a89b/audio.mp3?d=1729770961"
+}
