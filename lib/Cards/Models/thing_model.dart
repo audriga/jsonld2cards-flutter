@@ -53,6 +53,7 @@ class Thing {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
+    data['@context'] = 'https://schema.org';
     data['@type'] = type;
     data['@id'] = id?.toString();
     data['alternateName'] = alternateName;

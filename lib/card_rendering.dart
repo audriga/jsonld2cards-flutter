@@ -4,6 +4,7 @@ library card_rendering;
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/event_card.dart';
+import 'package:jsonld2cards/Cards/simple_poll_card.dart';
 import 'Cards/BuildingBlocks/potential_actions.dart';
 import 'Cards/BuildingBlocks/template_card.dart';
 import 'Cards/BuildingBlocks/uri_image.dart';
@@ -281,6 +282,9 @@ Widget renderCardSingle(
     }
     case SchemaType.promotionCard: {
       card = PromoTabCard(markupList: [markup], preview: preview);
+    }
+    case SchemaType.simplePoll: {
+      card = SimplePollCard(markup: markup, postFunction: postFunction);
     }
     default: {
       if (type?.isSimpleTemplatedType ?? false) {

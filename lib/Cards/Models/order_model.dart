@@ -100,6 +100,8 @@ class Offer {
   }
 }
 
+
+// todo this is defined twice, combine both
 class PriceSpecification {
 /*
 {

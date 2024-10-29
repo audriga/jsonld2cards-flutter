@@ -6,6 +6,7 @@ import 'package:jsonld2cards/Cards/Models/order_model.dart';
 import 'package:jsonld2cards/Cards/Models/parcel_delivery_model.dart';
 import 'package:jsonld2cards/Cards/Models/action_model.dart' as schema_action;
 import 'package:jsonld2cards/Cards/Models/place_model.dart';
+import 'package:jsonld2cards/Cards/Models/simple_poll_model.dart';
 import 'package:jsonld2cards/Cards/Models/thing_model.dart';
 // import 'package:jsonld2cards/Cards/promo_tab_card.dart';
 
@@ -31,7 +32,8 @@ enum SchemaType {
   cafeOrCoffeeShop,
   iceCreamShop,
   promotionCard,
-  event
+  event,
+  simplePoll,
 }
 
 SchemaType? getCardType(String typeName) => switch (typeName) {
@@ -54,6 +56,7 @@ SchemaType? getCardType(String typeName) => switch (typeName) {
       'IceCreamShop' => SchemaType.iceCreamShop,
       'PromotionCard' => SchemaType.promotionCard,
       'Event' => SchemaType.event,
+      'SimplePoll' => SchemaType.simplePoll,
       _ => null,
     };
 
@@ -88,6 +91,7 @@ extension SchemaTypeName on SchemaType {
         SchemaType.iceCreamShop => 'IceCreamShop',
         SchemaType.promotionCard => 'PromotionCard',
         SchemaType.event => 'Event',
+        SchemaType.simplePoll => 'SimplePoll',
       };
 
   /// Friendly names for the type to be displayed on tabs
@@ -111,6 +115,7 @@ extension SchemaTypeName on SchemaType {
         SchemaType.iceCreamShop => 'Ice Cream Place',
         SchemaType.promotionCard => 'Promotion',
         SchemaType.event => 'Event',
+        SchemaType.simplePoll => 'Poll',
       };
 
   IconData? get icon => switch (this) {
@@ -133,6 +138,7 @@ extension SchemaTypeName on SchemaType {
         SchemaType.iceCreamShop => Icons.icecream,
         SchemaType.promotionCard => Icons.shop,
         SchemaType.event => Icons.event,
+        SchemaType.simplePoll => Icons.poll,
       };
 
   /// Returns true if and only if there exists a card template for this type.
@@ -156,6 +162,7 @@ extension SchemaTypeName on SchemaType {
         SchemaType.confirmAction => schema_action.Action.fromJson(json).duplicateHash,
         SchemaType.cancelAction => schema_action.Action.fromJson(json).duplicateHash,
         SchemaType.action => schema_action.Action.fromJson(json).duplicateHash,
+        SchemaType.simplePoll => SimplePoll.fromJson(json).duplicateHash,
         // SchemaType.promotionCard => PromotionCardData.fromJson(json).duplicateHash,
         _ => Thing.fromJson(json).duplicateHash,
       };

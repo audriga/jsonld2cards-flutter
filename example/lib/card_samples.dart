@@ -51,6 +51,8 @@ class _CardSamplesState extends State<CardSamples> {
 
   List<String> assetsToUse = [
     // 'assets/sampleMarkup/zeit_homepage.json', //todo look into fix for this
+    'assets/sampleMarkup/simplePollUnfilled.json',
+    'assets/sampleMarkup/simplePollUpdate2Answers.json',
     'assets/sampleMarkup/multi_media_news_article.json',
     'assets/sampleMarkup/invoice_contract.json',
     'assets/sampleMarkup/invoice_order.json',

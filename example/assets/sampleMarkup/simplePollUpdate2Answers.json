@@ -1,0 +1,55 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SimplePoll",
+  "name": "What is your favourite fruit?",
+  "selectMultiple": true,
+  "canResubmit": false,
+  "closed": false,
+  "organizer": {
+    "@type": "Person",
+    "name": "John",
+    "image": "(base64avatar)"
+  },
+  "options": [
+    {
+      "@context": "https://schema.org",
+      "@type": "SimplePollOption",
+      "name": "Banana"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SimplePollOption",
+      "name": "Apple"
+    }
+  ],
+  "potentialAction": {
+    "@type": "ChooseAction",
+    "target": [
+      "http://example.com/player?id=123",
+      "mailto:blubb"
+    ]
+  },
+  "choices": [
+    {
+      "@context": "https://schema.org",
+      "@type": "ChooseAction",
+      "agent": {
+        "@type": "Person",
+        "name": "Daniel"
+      },
+      "actionOption": "Apple"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ChooseAction",
+      "agent": {
+        "@type": "Person",
+        "name": "Philipp"
+      },
+      "actionOption": "Apple"
+    }
+  ],
+  "dateCreated": "2024-07-05T15:30-07:00",
+  "expires": "2025-07-05T15:30-07:00",
+  "liveUri": "http://example.com/player?id=123"
+}

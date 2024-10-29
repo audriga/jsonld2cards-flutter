@@ -42,6 +42,7 @@ class MonetaryAmount extends Thing {
   }
 }
 
+// todo this is defined twice, combine both versions
 class PriceSpecification extends Thing {
 /*
 {
