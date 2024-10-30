@@ -55,9 +55,12 @@ class PotentialActionRow extends StatelessWidget {
         );
       }
       actionButtons.add(const SizedBox(width: 8));
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: actionButtons,
+      return Align(
+        alignment: Alignment.topRight,
+        child: Wrap(
+          alignment: WrapAlignment.end,
+          children: actionButtons,
+        ),
       );
     }
     throw FormatException('Potential action is no map or list of maps', potentialAction);
