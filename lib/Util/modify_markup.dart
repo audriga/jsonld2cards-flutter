@@ -120,7 +120,7 @@ Map<String, dynamic> addDefaultViewActionToMarkup(Map<String, dynamic> markup) {
       '@type': 'ViewAction',
       'url': uri,
       'muid': markup['muid'], //todo this is a temporary placeholder until I know where in the markup the mail uid will actually be saved
-      'name': 'Share Attachment',
+      'name': 'Share XRechnung',
       };
     return appendPotentialActions(markup, [cidAction]);
   }
