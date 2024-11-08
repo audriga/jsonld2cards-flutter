@@ -66,7 +66,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
     titleTextSpans.add(const TextSpan(text: 'Invoice'));
     var confirmationNumber = invoice.identifier ?? invoice.confirmationNumber;
     if (confirmationNumber != null) {
-      var invoiceNr = ' ${confirmationNumber}';
+      var invoiceNr = ' $confirmationNumber';
       titleTextBuffer.write(invoiceNr);
       titleTextSpans.add(TextSpan(
           text: invoiceNr,
