@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:html2jsonld_dart/html2jsonld_full.dart' as ht2j;
 import 'dart:developer' as developer;
 
+import 'package:xrechnung_dart/xrechnung_dart.dart';
+
 class ExternalCardViewer extends StatefulWidget {
   const ExternalCardViewer({
     super.key,
@@ -76,8 +78,18 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
       return null;
     }
 
+
     try {
-      // todo maybe use other library function that gives back more
+      var originalUri = Uri.tryParse(widget.source ?? '');
+      if (originalUri?.pathSegments.last.endsWith('.xml') ?? false) {
+        developer.log(
+          'Trying to download and parse xml $sourceUri',
+          name: 'jsonld2cards.external_viewer',
+        );
+        var response = await http.get(originalUri!);
+        var invoiceSchema = parseAndConvertXInvoice(response.body);
+        return jsonEncode(invoiceSchema);
+      }
       String? extractedSchema =
           await ht2j.enrichedMarkupFromUrl(sourceUri.toString(), downloadImage: true);
       developer.log(
