@@ -3,7 +3,7 @@ library music_card;
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
-import '../Util/conversion.dart';
+// import '../Util/conversion.dart';
 import 'BuildingBlocks/potential_actions.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
@@ -30,7 +30,7 @@ class MusicCard extends StatelessWidget implements MarkupCard {
 
   @override
   Widget build(BuildContext context) {
-    Uri? uri = Uri.tryParse(markup['url']);
+    // Uri? uri = Uri.tryParse(markup['url']);
     IconData defaultIcon;
     switch (musicType) {
       case MusicType.album:

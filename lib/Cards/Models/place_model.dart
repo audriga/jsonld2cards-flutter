@@ -1,6 +1,5 @@
 library place_model;
 
-import 'dart:convert';
 
 import 'package:jsonld2cards/Cards/Models/thing_model.dart';
 import 'package:jsonld2cards/GeoData/geo_data.dart';
