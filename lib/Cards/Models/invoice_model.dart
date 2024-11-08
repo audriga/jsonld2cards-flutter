@@ -104,10 +104,16 @@ class Invoice extends Thing {
   String? paymentStatus;
   Organization? provider;
   Organization? broker;
+  // Organization? seller;
+  Organization? customer;
   Thing? totalPaymentDue; // MonetaryAmount or PriceSpecification
   String? confirmationNumber;
-  Order? referencesOrder;
-  // dynamic potentialAction;
+  List<Order>? referencesOrder;
+  Order? purchase;
+  String? paymentMethod;
+  String? paymentMethodId;
+  DateTime? dateIssued;
+  DateTime? paymentDueDate;
 
 
   Invoice({
@@ -116,8 +122,16 @@ class Invoice extends Thing {
     this.paymentDue,
     this.paymentStatus,
     this.provider,
+    // this.seller,
+    this.customer,
     this.totalPaymentDue,
     this.confirmationNumber,
+    this.referencesOrder,
+    this.purchase,
+    this.paymentMethod,
+    this.paymentMethodId,
+    this.dateIssued,
+    this.paymentDueDate,
     super.potentialAction,
   });
 
@@ -133,6 +147,12 @@ class Invoice extends Thing {
 
     broker = (json['broker'] != null && (json['broker'] is Map))
         ? Organization.fromJson(json['broker'])
+        : null;
+    // seller = (json['seller'] != null && (json['seller'] is Map))
+    //     ? Organization.fromJson(json['seller'])
+    //     : null;
+    customer = (json['customer'] != null && (json['customer'] is Map))
+        ? Organization.fromJson(json['customer'])
         : null;
     provider = (json['provider'] != null && (json['provider'] is Map))
         ? Organization.fromJson(json['provider'])
@@ -152,8 +172,23 @@ class Invoice extends Thing {
     //     ? PriceSpecification.fromJson(json['totalPaymentDue'])
     //     : null;
     confirmationNumber = (json['confirmationNumber'] is String) ? json['confirmationNumber'] : null;
-    if (json['referencesOrder'] case Map<String, dynamic> referencesorderMap) {
-      referencesOrder = Order.fromJson(referencesorderMap);
+    if (json['purchase'] case Map<String, dynamic> purchaseMap) {
+      purchase = Order.fromJson(purchaseMap);
+    }
+    if (json['referencesOrder'] case List referencesOrderJson) {
+      referencesOrder = referencesOrderJson.whereType<Map<String,dynamic>>().map(Order.fromJson).toList();
+    }
+    if (json['paymentMethod'] case String paymentMethodJ) {
+      paymentMethod = paymentMethodJ;
+    }
+    if (json['paymentMethodId'] case String paymentMethodIdJ) {
+      paymentMethodId = paymentMethodIdJ;
+    }
+    if (json['dateIssued'] case String dateIssuedJ) {
+      dateIssued = DateTime.tryParse(dateIssuedJ);
+    }
+    if (json['paymentDueDate'] case String paymentDueDateJ) {
+      paymentDueDate = DateTime.tryParse(paymentDueDateJ);
     }
     potentialAction = json['potentialAction'];
   }
@@ -169,6 +204,12 @@ class Invoice extends Thing {
     }
     data['paymentDue'] = paymentDue?.toIso8601String();
     data['paymentStatus'] = paymentStatus;
+    // if (seller != null) {
+    //   data['seller'] = seller!.toJson();
+    // }
+    if (customer != null) {
+      data['customer'] = customer!.toJson();
+    }
     if (broker != null) {
       data['broker'] = provider!.toJson();
     }
@@ -184,8 +225,11 @@ class Invoice extends Thing {
     if (confirmationNumber != null) {
       data['confirmationNumber'] = confirmationNumber;
     }
+    if (purchase != null) {
+      data['purchase'] = purchase!.toJson();
+    }
     if (referencesOrder != null) {
-      data['referencesOrder'] = referencesOrder!.toJson();
+      data['referencesOrder'] = referencesOrder!.map((e) => e.toJson).toList();
     }
     return data;
   }

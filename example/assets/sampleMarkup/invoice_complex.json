@@ -1,0 +1,301 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Invoice",
+  "identifier": "12115118",
+  "description": "Alle leveringen zijn franco. Alle prijzen zijn incl. BTW. Betalingstermijn: 14 dagen netto. Prijswijzigingen voorbehouden. Op al onze aanbiedingen, leveringen en overeenkomsten zijn van toepassing in de algemene verkoop en leveringsvoorwaarden. Gedeponeerd bij de K.v.K. te Amsterdam 25-04-'85.",
+  "dateIssued": "20150109",
+  "paymentMethod": "30",
+  "paymentMethodId": "NL57 RABO 0107307510",
+  "totalPaymentDue": {
+    "@type": "MonetaryAmount",
+    "currency": "EUR",
+    "value": "250.33"
+  },
+  "provider": {
+    "@type": "Organization",
+    "address": {
+      "@type": "PostalAddress",
+      "postalCode": "1950 AB",
+      "streetAddress": "Postbus 7l",
+      "addressLocality": "Velsen-Noord",
+      "addressCountry": "NL"
+    },
+    "name": "De Koksmaat",
+    "identifier": "57151520"
+  },
+  "customer": {
+    "@type": "Organization",
+    "address": {
+      "@type": "PostalAddress",
+      "postalCode": "1960 AJ",
+      "streetAddress": "POSTBUS 367",
+      "addressLocality": "HEEMSKERK",
+      "addressCountry": "NL"
+    },
+    "name": "ODIN 59",
+    "identifier": "10202"
+  },
+  "referencesOrder": [
+    {
+      "@type": "Order",
+      "identifier": "1",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "PATAT FRITES 10MM 10KG",
+        "identifier": "166022"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "9.95"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "2",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "KAAS 50PL. JONG BEL. 1KG",
+        "identifier": "661813"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "9.85"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "3",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "POT KETCHUP 3 LT",
+        "identifier": "438146"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "8.29"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "4",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "FRITESSAUS 3 LRR",
+        "identifier": "438103"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "7.23"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "5",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "KOFFIE BLIK 3,5KG SNELF ",
+        "identifier": "666955"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "35"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "6",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "KOFFIE 3.5 KG BLIK STAND ",
+        "identifier": "664871"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "35"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "7",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "SUIKERKLONT",
+        "identifier": "350257"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "10.65"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "8",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "1 KG UL BLOKJES ",
+        "identifier": "350258"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "1.55"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "9",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "BLOCKNOTE A5 ",
+        "identifier": "999998"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "4.79"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "10",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "CHIPS NAT KLEIN ZAKJES",
+        "identifier": "740810"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "8.29"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "11",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "CHIPS PAP KLEINE ZAKJES",
+        "identifier": "740829"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "8.29"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "12",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "TR KL PAKJES APPELSAP ",
+        "identifier": "740828"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "9.95"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "13",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "PK CHOCOLADEMELK ",
+        "identifier": "740827"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "1.65"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "14",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "KRAT BIER ",
+        "identifier": "999996"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "10.8"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "15",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "STATIEGELD ",
+        "identifier": "999995"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "3.9"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "16",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "BLEEK 3 X 750 ML ",
+        "identifier": "102172"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "3.8"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "17",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "WC PAPIER ",
+        "identifier": "999994"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "4.67"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "18",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "BALPENNEN 50 ST BLAUW ",
+        "identifier": "999993"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "18.63"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "19",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "EM FRITUURVET ",
+        "identifier": "999992"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "17.02"
+      }
+    },
+    {
+      "@type": "Order",
+      "identifier": "20",
+      "orderedItem": {
+        "@type": "Product",
+        "name": "FRITUUR VET 10 KG RETOUR ",
+        "identifier": "175137"
+      },
+      "acceptedOffer": {
+        "@type": "Offer",
+        "price": "18.33"
+      }
+    }
+  ],
+  "paymentDueDate": "20150109"
+}

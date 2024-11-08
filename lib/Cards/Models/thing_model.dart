@@ -21,6 +21,7 @@ class Thing {
   String? name;
   dynamic potentialAction;
   Uri? url;
+  String? identifier;
 
   int get duplicateHash => type.hashCode ^ id.hashCode ^ name.hashCode ^ description.hashCode ^ url.hashCode;
 
@@ -33,7 +34,8 @@ class Thing {
     this.imageImgObj,
     this.name,
     this.potentialAction,
-    this.url
+    this.url,
+    this.identifier,
   });
 
   Thing.fromJson(Map<String, dynamic> json) : type = json['@type'] ?? 'Thing' {
@@ -49,6 +51,9 @@ class Thing {
     name = json['name'];
     potentialAction = json['potentialAction'];
     url = tryCastOrParse(json['url']);
+    if (json['identifier']case String jsonIdentifier) {
+      identifier = jsonIdentifier;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -58,6 +63,7 @@ class Thing {
     data['@id'] = id?.toString();
     data['alternateName'] = alternateName;
     data['description'] = description;
+    data['identifier'] = identifier;
     if (imageImgObj != null) {
       data['image'] = imageImgObj!.toJson();
     } else {

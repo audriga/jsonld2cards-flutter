@@ -252,6 +252,7 @@ class Order extends Thing {
   /// OrderReturned
 
   OrderStatus? orderStatus;
+  Product? orderedItem;
   String? priceCurrency;
   String? price;
   PriceSpecification? priceSpecification;
@@ -262,6 +263,7 @@ class Order extends Thing {
   Order({
     this.merchant,
     this.orderNumber,
+    this.orderedItem,
     this.orderStatus,
     this.priceCurrency,
     this.price,
@@ -274,6 +276,9 @@ class Order extends Thing {
   Order.fromJson(Map<String, dynamic> json) : super.fromJson(json){
     // Verifying of context is skipped, as it is already done by renderCard function
     assert(json['@type'] == 'Order', 'Type of Order should always be Order');
+    orderedItem = (json['orderedItem'] != null && (json['orderedItem'] is Map))
+        ? Product.fromJson(json['orderedItem'])
+        : null;
     merchant = (json['merchant'] != null && (json['merchant'] is Map))
         ? Organization.fromJson(json['merchant'])
         : null;
@@ -300,6 +305,9 @@ class Order extends Thing {
     data['@type'] = 'Order';
     if (merchant != null) {
       data['merchant'] = merchant!.toJson();
+    }
+    if (orderedItem != null) {
+      data['orderedItem'] = orderedItem!.toJson();
     }
     data['orderNumber'] = orderNumber;
     if (orderStatus != null) {
