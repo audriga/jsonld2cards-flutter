@@ -252,9 +252,9 @@ class _InvoiceCardState extends State<InvoiceCard> {
             invoice: invoice,
           ),
         ));
-        setState(() {
-          expanded = !expanded;
-        });
+        // setState(() {
+        //   expanded = !expanded;
+        // });
       },
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -279,7 +279,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
               ]),
               if (expanded && invoice.description != null)
                 Text(
-                  invoice.description!,
+                  invoice.descriptionString!,
                   softWrap: true,
                 ),
               Text.rich(
@@ -436,7 +436,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
         invoiceDateSpan
       ]));
     }
-    Widget? paymentStatusRendered;
+    Widget? paymentStatusRendered;//todo?
     if (widget.invoice.paymentStatus != null) {
       var paymentStatus = ': ${widget.invoice.paymentStatus}';
       paymentStatusRendered = Text.rich(TextSpan(

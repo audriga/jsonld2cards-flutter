@@ -14,7 +14,7 @@ class Thing {
   Uri? id;
   String? alternateName;
   // todo can also be a https://schema.org/TextObject instead
-  String? description;
+  dynamic description; // List or String
   ///  image is either [ImageObject]  or URL
   Uri? imageUri;
   ImageObject? imageImgObj;
@@ -24,6 +24,7 @@ class Thing {
   String? identifier;
 
   int get duplicateHash => type.hashCode ^ id.hashCode ^ name.hashCode ^ description.hashCode ^ url.hashCode;
+  String? get descriptionString => (description is List) ? (description as List).whereType<String>().join('\n') : description.toString();
 
   Thing({
     this.id,
