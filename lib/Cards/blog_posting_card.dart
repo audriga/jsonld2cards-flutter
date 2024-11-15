@@ -5,21 +5,13 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
-import 'BuildingBlocks/potential_actions.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'dart:developer' as developer;
 
 class BlogPostingCard extends StatelessWidget implements MarkupCard {
-  const BlogPostingCard({
-    super.key,
-    required this.markup,
-    required this.postFunction,
-    this.preview = false,
-  });
+  const BlogPostingCard(this.cardData, {super.key});
 
-
-  final Map<String, dynamic> markup;
-  final PostFunction postFunction;
-  final bool preview;
+  final CardData cardData;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +23,9 @@ class BlogPostingCard extends StatelessWidget implements MarkupCard {
       name: 'jsonld2cards.default_card',
     );
     String? name = 'ayCaramba';
-    //String? name = markup['headline'] ?? markup['name'];
-    String? description = markup['description'];
-    var potentialAction = markup['potentialAction'];
+    //String? name = cardData.markup['headline'] ?? cardData.markup['name'];
+    String? description = cardData.markup['description'];
+    var potentialAction = cardData.markup['potentialAction'];
 
     // Setting title and subtitle, depending on available information
     String? titleText;
@@ -53,8 +45,8 @@ class BlogPostingCard extends StatelessWidget implements MarkupCard {
       subtitleText = description;
     }
 
-    // Look for images in markup
-    Widget? leadingImage = findLeadingImage(markup,
+    // Look for images in cardData.markup
+    Widget? leadingImage = findLeadingImage(cardData.markup,
       imageErrorWidget: logAndShowNoImage,
       size: 32.0, // todo: Maybe find a way to dynamically determine the size?
     );
@@ -64,8 +56,7 @@ class BlogPostingCard extends StatelessWidget implements MarkupCard {
       titleText: titleText,
       subtitleText: subtitleText,
       potentialAction: potentialAction,
-      potentialActionPostFunction: postFunction,
-      preview: preview,
+      cardData: cardData,
     );
   }
 

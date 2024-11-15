@@ -3,27 +3,20 @@ library simple_poll_card;
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'BuildingBlocks/card_with_actions.dart';
-import 'BuildingBlocks/potential_actions.dart';
 
 // import 'BuildingBlocks/uri_image.dart';
 import 'Models/simple_poll_model.dart';
 
 class SimplePollCard extends StatelessWidget implements MarkupCard {
-  const SimplePollCard({
-    super.key,
-    required this.markup,
-    required this.postFunction,
-    this.preview = false,
-  });
+  const SimplePollCard(this.cardData, {super.key});
 
-  final Map<String, dynamic> markup;
-  final PostFunction postFunction;
-  final bool preview;
+  final CardData cardData;
 
   @override
   Widget build(BuildContext context) {
-    var simplePoll = SimplePoll.fromJson(markup);
+    var simplePoll = SimplePoll.fromJson(cardData.markup);
 
     // Widget? leadingImage;
 
@@ -93,8 +86,7 @@ class SimplePollCard extends StatelessWidget implements MarkupCard {
     return CardWithActions(
       cardContents: [cardContent],
       potentialAction: potentialAction,
-      potentialActionPostFunction: postFunction,
-      preview: preview,
+      cardData: cardData,
     );
   }
 

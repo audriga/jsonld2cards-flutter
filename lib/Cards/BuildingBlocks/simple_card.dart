@@ -1,6 +1,7 @@
 library simple_card.dart;
 
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'card_with_actions.dart';
 import 'potential_actions.dart';
 
@@ -15,16 +16,15 @@ class SimpleCard extends StatelessWidget {
     this.titleText,
     this.subtitleText,
     this.potentialAction,
-    this.secondaryPotentialAction,
-    this.potentialActionPostFunction,
-    this.secondaryPotentialActionPostFunction,
-    this.preview = false,
+    // this.secondaryPotentialAction,
+    // this.secondaryPotentialActionPostFunction,
+    required this.cardData,
   });
 
   final Widget? leadingImage;
   final String? titleText;
   final String? subtitleText;
-  final bool preview;
+  final CardData cardData;
   // todo isMultiline to set ListTiles isThreeLine? for f.e. spotify descriptions
 
   // final PotentialActionRow? potentialActionRow;
@@ -34,14 +34,14 @@ class SimpleCard extends StatelessWidget {
   /// a single [PotentialActionButton], or a
   /// [List<Map<String, dynamic>>] to represent multiple buttons.
   final dynamic potentialAction;
-  /// If null a dummy function will be used instead
-  final PostFunction? potentialActionPostFunction;
+  // /// If null a dummy function will be used instead
+  // final PostFunction? potentialActionPostFunction;
 
-  /// Markup representing potential buttons to be shown in a secondary
-  /// [PotentialActionRow] if present.
-  /// This is currently used for place cards and default card.
-  final dynamic secondaryPotentialAction;
-  final PostFunction? secondaryPotentialActionPostFunction;
+  // /// Markup representing potential buttons to be shown in a secondary
+  // /// [PotentialActionRow] if present.
+  // /// This is currently used for place cards and default card.
+  // final dynamic secondaryPotentialAction;
+  // final PostFunction? secondaryPotentialActionPostFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +54,9 @@ class SimpleCard extends StatelessWidget {
     return CardWithActions(
       cardContents: [cardContent],
       potentialAction: potentialAction,
-      potentialActionPostFunction: potentialActionPostFunction,
-      secondaryPotentialAction: secondaryPotentialAction,
-      secondaryPotentialActionPostFunction:
-          secondaryPotentialActionPostFunction,
-      preview: preview,
+      // secondaryPotentialAction: secondaryPotentialAction,
+      // secondaryPotentialActionPostFunction:  secondaryPotentialActionPostFunction,
+      cardData: cardData,
     );
   }
 }

@@ -4,26 +4,20 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
-import 'BuildingBlocks/potential_actions.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'package:flutter/widgets.dart';
 
 import 'Models/order_model.dart';
 
 class OrderCard extends StatelessWidget implements MarkupCard {
-  const OrderCard({
-    super.key,
-    required this.markup,
-    required this.postFunction,
-    this.preview = false,
-  });
+  const OrderCard(this.cardData, {super.key});
 
-  final Map<String, dynamic> markup;
-  final PostFunction postFunction;
-  final bool preview;
+  final CardData cardData;
+
 
   @override
   Widget build(BuildContext context) {
-    var order = Order.fromJson(markup);
+    var order = Order.fromJson(cardData.markup);
 
     // Setting title and subtitle, depending on available information
     String? titleText;
@@ -70,8 +64,7 @@ class OrderCard extends StatelessWidget implements MarkupCard {
       titleText: titleText,
       subtitleText: subtitleText,
       potentialAction: order.potentialAction,
-      potentialActionPostFunction: postFunction,
-      preview: preview,
+      cardData: cardData,
     );
   }
 

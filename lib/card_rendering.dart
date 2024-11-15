@@ -1,10 +1,10 @@
 library card_rendering;
 
-
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/event_card.dart';
 import 'package:jsonld2cards/Cards/simple_poll_card.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'Cards/BuildingBlocks/potential_actions.dart';
 import 'Cards/BuildingBlocks/template_card.dart';
 import 'Cards/BuildingBlocks/uri_image.dart';
@@ -25,6 +25,7 @@ import 'Cards/blog_posting_card.dart';
 import 'Cards/place_card.dart';
 import 'Cards/Models/organization_model.dart' as org_model;
 import 'Util/modify_markup.dart';
+
 // Need material instead of widgets, to get Icons.
 // import 'package:flutter/widgets.dart';
 
@@ -43,6 +44,7 @@ import 'Util/modify_markup.dart';
 /// for example like so: widget = renderCard(...) ?? alternativeWidget
 ///
 /// See [mustRenderCard] for a function that behaves like this, but always returns a widget.
+// @Deprecated('Use tryRenderCardFromCardData instead')
 Widget? renderCard(
   dynamic markup, {
   required PostFunction postFunction,
@@ -62,39 +64,43 @@ Widget? renderCard(
 }
 
 /// Same as [renderCard], but always returns a card, or throws an exception on error.
+// @Deprecated('Use mustRenderCardFromCardData instead')
 Widget mustRenderCard(
-    dynamic markup,
-    {
-      required PostFunction postFunction,
-      bool preview = false,
-      bool topBar = false,
-    }
-    ) {
-  if ((markup is List<dynamic>) || (markup is List<Map<String, dynamic>>)) {
-    return renderCardMulti(
+  dynamic markup, {
+  required PostFunction postFunction,
+  bool preview = false,
+  bool topBar = false,
+}) =>
+    mustRenderCardFromCardData(CardData(
       markup,
-      postFunction: postFunction, preview: preview,
+      postFunction: postFunction,
+      preview: preview,
       topBar: topBar,
-    );
-  }  else if (markup is Map<String, dynamic>) {
-    if (markup['@graph'] case List<dynamic> graph) {
-      return renderCardMulti(
-        graph,
-        postFunction: postFunction, preview: preview,
-        topBar: topBar,
-      );
+    ));
+
+Widget? tryRenderCardFromCardData(CardData cardData) {
+  // todo think about error behavior
+  try {
+    return mustRenderCardFromCardData(cardData);
+  } catch (e) {
+    return null;
+  }
+}
+
+Widget mustRenderCardFromCardData(CardData cardData) {
+  if (cardData.markupIsList) {
+    return renderCardMulti(cardData);
+  } else if (cardData.markupIsMap) {
+    if (cardData.markup['@graph'] case List<dynamic> graph) {
+      cardData.markup = graph;
+      return renderCardMulti(cardData);
     } else {
-      return renderCardSingle(
-        markup,
-        postFunction: postFunction,
-        preview: preview,
-        topBar: topBar,
-      );
+      return renderCardSingle(cardData);
     }
   }
   throw FormatException(
     'markup should either be Map<String, dynamic> or a list of those',
-    markup,
+    cardData.markup,
   );
 }
 
@@ -106,21 +112,12 @@ Widget mustRenderCard(
 /// This means there will likely be infinite space in the vertical direction
 /// So returning another Widget that is Scrollable in the same direction
 /// here is probably not a great idea.
-Widget renderCardMulti(
-    List<dynamic> markupList,
-    {
-      required PostFunction postFunction,
-      bool preview = false,
-      bool topBar = false,
-    }
-    ) {
-  List<Map<String, dynamic>> typeFilteredMarkupList = markupList.whereType<Map<String,dynamic>>().toList();
-  var types = typeFilteredMarkupList.map((e) => e['@type']);
-  if (types.contains('DiscountOffer')
-      || types.contains('PromotionCard')
-  ) {
-    var card = PromoTabCard(markupList: typeFilteredMarkupList, preview: preview);
-    if (topBar) {
+Widget renderCardMulti(CardData cardData) {
+  // List<Map<String, dynamic>> typeFilteredMarkupList = (cardData.markup as List).whereType<Map<String,dynamic>>().toList();
+  var types = cardData.typeFilteredMarkupList.map((e) => e['@type']);
+  if (types.contains('DiscountOffer') || types.contains('PromotionCard')) {
+    var card = PromoTabCard(cardData: cardData);
+    if (cardData.topBar) {
       return surroundWithTopBar(card);
     } else {
       return card;
@@ -130,180 +127,184 @@ Widget renderCardMulti(
   org_model.Organization? organization;
   Uri? orgLogo;
   if (types.contains('Organization')) {
-    organization = org_model.Organization.fromJson(
-        markupList.firstWhere((element) => element is Map<String,dynamic> && element['@type'] == 'Organization')
-    );
+    organization = org_model.Organization.fromJson(cardData.markupList
+        .firstWhere((element) =>
+            element is Map<String, dynamic> &&
+            element['@type'] == 'Organization'));
     orgLogo = organization.logo;
   } else if (types.contains('NewsMediaOrganization')) {
-    organization = org_model.Organization.fromJson(
-        markupList.firstWhere((element) => element is Map<String,dynamic> && element['@type'] == 'NewsMediaOrganization')
-    );
+    organization = org_model.Organization.fromJson(cardData.markupList
+        .firstWhere((element) =>
+            element is Map<String, dynamic> &&
+            element['@type'] == 'NewsMediaOrganization'));
   }
 
   // Removing things we don't want to render in the card
-  markupList = removeMarkupClutter(markupList);
+  cardData.markup = removeMarkupClutter(cardData.markupList);
 
   // Now markupList should contain
   // Any single item (MusicAlbum, NewsArticle, etc.)
   // A list of items (multi-content case; email only)
   // Any itemList (0006422)
 
-
-  switch (markupList.length) {
-    case 0: {
-      throw FormatException(
-        'markup does not contain any valid cards',
-        markupList,
-      );
-    }
-    case 1 :
-      var subCard = renderCardSingle(
-        markupList.first,
-        postFunction: postFunction,
-        preview: preview,
-        topBar: topBar && orgLogo == null, // only show one top bar, org logo takes priority
-      );
-      if (topBar && orgLogo != null) {
-        return surroundWithLogoTopBar(UriImage(content: orgLogo, height: 16), organization?.name, subCard);
+  switch (cardData.markupList.length) {
+    case 0:
+      {
+        throw FormatException(
+          'markup does not contain any valid cards',
+          cardData.markupList,
+        );
+      }
+    case 1:
+      var subCard = renderCardSingle(CardData.fromOther(
+        cardData,
+        markup: cardData.markupList.first,
+        topBar: cardData.topBar &&
+            orgLogo == null, // only show one top bar, org logo takes priority
+      ));
+      if (cardData.topBar && orgLogo != null) {
+        return surroundWithLogoTopBar(UriImage(content: orgLogo, height: 16),
+            organization?.name, subCard);
       } else {
         return subCard;
       }
-    default: {
-      return TabbedMultiCard(
-        markupList: markupList,
-        preview: preview,
-        postFunction: postFunction,
-      );
-    }
+    default:
+      {
+        return TabbedMultiCard(cardData);
+      }
   }
 }
 
-Widget? tryRenderCardSingle(
-    Map<String, dynamic> markup,
-    {
-      required PostFunction postFunction,
-      bool preview = false,
-      bool topBar = false,
-    }
-    )  {
+Widget? tryRenderCardSingle(CardData cardData) {
   try {
-    return renderCardSingle(
-      markup,
-      postFunction: postFunction,
-      preview: preview,
-      topBar: topBar,
-    );
+    return renderCardSingle(cardData);
   } catch (e) {
     return null;
   }
 }
 
-Widget renderCardSingle(
-    Map<String, dynamic> markup,
-    {
-      required PostFunction postFunction,
-      bool preview = false,
-      bool topBar = false,
-    }
-    ) {
-  String? context = markup['@context'];
-  if (!['http://schema.org', 'http://schema.org/', 'https://schema.org', 'https://schema.org/', 'http://schema.googleapis.com/'].contains(context ?? '')) {
+Widget renderCardSingle(CardData cardData) {
+  String? context = cardData.markup['@context'];
+  if (![
+    'http://schema.org',
+    'http://schema.org/',
+    'https://schema.org',
+    'https://schema.org/',
+    'http://schema.googleapis.com/'
+  ].contains(context ?? '')) {
     developer.log(
-      'Warning Markup does not contain context tag, or context tag does not contain one of the known schema contexts like http://schema.org\n$markup',
+      'Warning Markup does not contain context tag, '
+          'or context tag does not contain one of the known schema contexts '
+          'like http://schema.org\n${cardData.markup}',
       name: 'jsonld2cards.card_rendering',
     );
   }
 
   /// Look through markup for phone numbers and emails and add corresponding potential actions
-  markup = enrichMarkupWithEmailAndPhoneActions(markup);
+  cardData.markup = enrichMarkupWithEmailAndPhoneActions(cardData.markup);
+
   /// Add default ViewAction "Visit" to cards that have a url.
-  markup = addDefaultViewActionToMarkup(markup);
-  markup = addSpecialViewActionToMarkup(markup);
+  cardData.markup = addDefaultViewActionToMarkup(cardData.markup);
+  cardData.markup = addSpecialViewActionToMarkup(cardData.markup);
 
-
-  String typeName = markup['@type'];
+  String typeName = cardData.markup['@type'];
   var type = getCardType(typeName);
   if (type != SchemaType.place) {
     // Append "Navigate to" and "View" Actions to cards that contain GeoCoordinates.
     // Don't do this for place cards, as they already add these actions themselves.
     // (Especially for liveLocation cards we cant to avoid buttons pointing to stale locations).
-    markup = enrichMarkupWithNavigationActions(markup);
+    cardData.markup = enrichMarkupWithNavigationActions(cardData.markup);
   }
   if (type == SchemaType.event) {
     /// On event markups, add potentialAction to share the event
-    markup = enrichMarkupWithShareEventAction(markup);
+    cardData.markup = enrichMarkupWithShareEventAction(cardData.markup);
   }
   late MarkupCard card;
   switch (type) {
-    case SchemaType.emailMessage: {
-      card =  EmailMessage(markup: markup, postFunction: postFunction, preview: preview);
-    }
-    // case SchemaType.bakery:
-    case SchemaType.place: {
-      card =  Place(markup: markup, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.musicRecording: {
-      // Song
-      card =  MusicCard(markup: markup, musicType: MusicType.song, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.musicGroup: {
-      // Playlist or Artist
-      card =  MusicCard(markup: markup, musicType: MusicType.playlist, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.musicAlbum: {
-      card =  MusicCard(markup: markup, musicType: MusicType.album, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.flightReservation: {
-      card =  FlightReservationCard(markup: markup, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.order: {
-      card =  OrderCard(markup: markup, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.invoice: {
-      card =  InvoiceCard(markup: markup, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.parcelDelivery: {
-      card =  ParcelDeliveryCard(markup: markup, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.blogPosting: {
-      card =  BlogPostingCard(markup: markup, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.itemList: {
-      card =  ItemListCard(markup: markup, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.confirmAction: {
-      card =  ActionCard(markup: markup, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.cancelAction: {
-      card =  ActionCard(markup: markup, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.event: {
-      card =  EventCard(markup: markup, postFunction: postFunction, preview: preview);
-    }
-    case SchemaType.promotionCard: {
-      card = PromoTabCard(markupList: [markup], preview: preview);
-    }
-    case SchemaType.simplePoll: {
-      card = SimplePollCard(markup: markup, postFunction: postFunction);
-    }
-    default: {
-      if (type?.isSimpleTemplatedType ?? false) {
-        card =  SimpleTemplateCard(markup: markup, postFunction: postFunction, preview: preview);
-      } else if (type?.isThreeColumnTemplatedType ?? false)  {
-        card =  ThreeColumnTemplateCard(markup: markup, postFunction: postFunction, preview: preview);
-      } else {
-        card =  DefaultMarkupCard(markup: markup, postFunction: postFunction, preview: preview);
+    case SchemaType.emailMessage:
+      {
+        card = EmailMessage(cardData);
       }
-    }
+    // case SchemaType.bakery:
+    case SchemaType.place:
+      {
+        card = Place(cardData);
+      }
+    case SchemaType.musicRecording:
+      {
+        // Song
+        card = MusicCard(cardData, musicType: MusicType.song);
+      }
+    case SchemaType.musicGroup:
+      {
+        // Playlist or Artist
+        card = MusicCard(cardData, musicType: MusicType.playlist);
+      }
+    case SchemaType.musicAlbum:
+      {
+        card = MusicCard(cardData, musicType: MusicType.album);
+      }
+    case SchemaType.flightReservation:
+      {
+        card = FlightReservationCard(cardData);
+      }
+    case SchemaType.order:
+      {
+        card = OrderCard(cardData);
+      }
+    case SchemaType.invoice:
+      {
+        card = InvoiceCard(cardData);
+      }
+    case SchemaType.parcelDelivery:
+      {
+        card = ParcelDeliveryCard(cardData);
+      }
+    case SchemaType.blogPosting:
+      {
+        card = BlogPostingCard(cardData);
+      }
+    case SchemaType.itemList:
+      {
+        card = ItemListCard(cardData);
+      }
+    case SchemaType.confirmAction:
+      {
+        card = ActionCard(cardData);
+      }
+    case SchemaType.cancelAction:
+      {
+        card = ActionCard(cardData);
+      }
+    case SchemaType.event:
+      {
+        card = EventCard(cardData);
+      }
+    case SchemaType.promotionCard:
+      {
+        card = PromoTabCard(cardData: cardData);
+      }
+    case SchemaType.simplePoll:
+      {
+        card = SimplePollCard(cardData);
+      }
+    default:
+      {
+        if (type?.isSimpleTemplatedType ?? false) {
+          card = SimpleTemplateCard(cardData);
+        } else if (type?.isThreeColumnTemplatedType ?? false) {
+          card = ThreeColumnTemplateCard(cardData);
+        } else {
+          card = DefaultMarkupCard(cardData);
+        }
+      }
   }
-  if (topBar) {
-  return surroundWithTopBar(card);
+  if (cardData.topBar) {
+    return surroundWithTopBar(card);
   } else {
     return card;
   }
 }
-
-
 
 Card surroundWithTopBar(MarkupCard card) {
   return Card(
@@ -318,17 +319,22 @@ Card surroundWithTopBar(MarkupCard card) {
     ),
   );
 }
+
 Card surroundWithLogoTopBar(Widget logoToUse, String? nameToUse, Widget card) {
   return Card(
     child: Padding(
       padding: const EdgeInsets.all(4.0),
       child: Column(
         children: [
-          Row(children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal:  4.0),
-              child: logoToUse,),
-            Text(nameToUse ?? ''),],),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: logoToUse,
+              ),
+              Text(nameToUse ?? ''),
+            ],
+          ),
           card,
         ],
       ),

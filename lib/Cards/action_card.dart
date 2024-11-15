@@ -4,26 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
-import 'BuildingBlocks/potential_actions.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'package:flutter/widgets.dart';
 
 import 'Models/action_model.dart' as action_model;
 
 class ActionCard extends StatelessWidget implements MarkupCard {
-  const ActionCard({
-    super.key,
-    required this.markup,
-    required this.postFunction,
-    this.preview = false,
-  });
+  const ActionCard(this.cardData, {super.key});
 
-  final Map<String, dynamic> markup;
-  final PostFunction postFunction;
-  final bool preview;
+  final CardData cardData;
 
   @override
   Widget build(BuildContext context) {
-    var action = action_model.Action.fromJson(markup);
+    var action = action_model.Action.fromJson(cardData.markup);
 
     // Setting title and subtitle, depending on available information
     String? titleText;
@@ -48,8 +41,7 @@ class ActionCard extends StatelessWidget implements MarkupCard {
       titleText: titleText,
       subtitleText: subtitleText,
       potentialAction: action.potentialAction,
-      potentialActionPostFunction: postFunction,
-      preview: preview,
+      cardData: cardData,
     );
   }
 

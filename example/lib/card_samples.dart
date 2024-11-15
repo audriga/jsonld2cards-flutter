@@ -312,6 +312,9 @@ void cardViewerDialog(BuildContext context) {
   );
 
   futureParameters.then((cardId) {
+    if (!context.mounted) {
+      return;
+    }
     Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => CardViewer(cardId: cardId, postFunction: postUrl),
     ));

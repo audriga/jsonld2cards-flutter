@@ -3,34 +3,26 @@ library flight_reservation_card;
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
+import 'package:jsonld2cards/card_data.dart';
 
 import 'BuildingBlocks/card_with_actions.dart';
-import 'BuildingBlocks/potential_actions.dart';
 import 'BuildingBlocks/three_column_card_content.dart';
 
 class FlightReservationCard extends StatelessWidget implements MarkupCard{
-  const FlightReservationCard({
-    super.key,
-    required this.markup,
-    required this.postFunction,
-    this.preview = false,
-  });
+  const FlightReservationCard(this.cardData, {super.key});
 
-  final Map<String, dynamic> markup;
-  final PostFunction postFunction;
-  final bool preview;
+  final CardData cardData;
 
   @override
   Widget build(BuildContext context) {
     FlightReservationWidget flightView =
-        FlightReservationWidget(markup: markup);
-    var potentialAction = markup['potentialAction'];
+        FlightReservationWidget(markup: cardData.markup);
+    var potentialAction = cardData.markup['potentialAction'];
 
     return CardWithActions(
       cardContents: [flightView],
       potentialAction: potentialAction,
-      potentialActionPostFunction: postFunction,
-      preview: preview,
+      cardData: cardData,
     );
   }
 

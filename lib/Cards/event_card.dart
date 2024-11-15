@@ -3,26 +3,19 @@ library event_card;
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
-import 'BuildingBlocks/potential_actions.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'package:flutter/widgets.dart';
 
 import 'Models/event_model.dart';
 
 class EventCard extends StatelessWidget implements MarkupCard {
-  const EventCard({
-    super.key,
-    required this.markup,
-    required this.postFunction,
-    this.preview = false,
-  });
+  const EventCard(this.cardData, {super.key});
 
-  final Map<String, dynamic> markup;
-  final PostFunction postFunction;
-  final bool preview;
+  final CardData cardData;
 
   @override
   Widget build(BuildContext context) {
-    var event = Event.fromJson(markup);
+    var event = Event.fromJson(cardData.markup);
 
     // Setting title and subtitle, depending on available information
     String? titleText;
@@ -63,8 +56,7 @@ class EventCard extends StatelessWidget implements MarkupCard {
       titleText: titleText,
       subtitleText: subtitleText,
       potentialAction: event.potentialAction,
-      potentialActionPostFunction: postFunction,
-      preview: preview,
+      cardData: cardData,
     );
   }
 

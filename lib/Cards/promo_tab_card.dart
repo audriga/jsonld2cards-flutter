@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'Models/organization_model.dart';
@@ -121,12 +122,15 @@ class PromotionCardData {
 class PromoTabCard extends StatelessWidget implements MarkupCard {
   PromoTabCard({
     super.key,
-    required this.markupList,
-    this.preview = false,
-  });
+    required this.cardData
+  }) {
+    markupList = cardData.typeFilteredMarkupList;
+    preview = cardData.preview;
+  }
 
-  final List<Map<String, dynamic>> markupList;
-  final bool preview;
+  final CardData cardData;
+  late final List<Map<String, dynamic>> markupList;
+  late final bool preview;
   final ScrollController _vertical = ScrollController();
 
   // todo

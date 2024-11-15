@@ -3,8 +3,7 @@ library music_card;
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
-// import '../Util/conversion.dart';
-import 'BuildingBlocks/potential_actions.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -16,17 +15,13 @@ enum MusicType {album, playlist, song}
 class MusicCard extends StatelessWidget implements MarkupCard {
   final MusicType musicType;
 
-  const MusicCard({
+  const MusicCard(this.cardData, {
     super.key,
-    required this.markup,
     this.musicType = MusicType.album,
-    required this.postFunction,
-    this.preview = false,
   });
 
-  final Map<String, dynamic> markup;
-  final PostFunction postFunction;
-  final bool preview;
+  final CardData cardData;
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,19 +39,18 @@ class MusicCard extends StatelessWidget implements MarkupCard {
         break;
     }
     Widget defaultAlbumCover =  Icon(defaultIcon);
-    UriImage? albumCover = findLeadingImage(markup);
+    UriImage? albumCover = findLeadingImage(cardData.markup);
     Widget leadingImage = albumCover ?? defaultAlbumCover;
 
 
-    var potentialAction = markup['potentialAction'];
+    var potentialAction = cardData.markup['potentialAction'];
 
     return SimpleCard(
       leadingImage: leadingImage,
-      titleText: markup['name'],
-      subtitleText: markup['description'],
+      titleText: cardData.markup['name'],
+      subtitleText: cardData.markup['description'],
       potentialAction: potentialAction,
-      potentialActionPostFunction: postFunction,
-      preview: preview,
+      cardData: cardData,
     );
   }
 

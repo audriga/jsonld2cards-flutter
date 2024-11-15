@@ -6,7 +6,8 @@ import 'dart:convert';
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Util/modify_markup.dart';
-import 'BuildingBlocks/potential_actions.dart';
+import 'package:jsonld2cards/card_data.dart';
+// import 'BuildingBlocks/potential_actions.dart';
 import '../GeoData/geo_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -17,18 +18,9 @@ import 'markup_card.dart';
 
 class Place extends StatefulWidget implements MarkupCard {
 
-  const Place({
-    super.key,
-    required this.markup,
-    required this.postFunction,
-    this.preview = false,
-    // this.autoDownload = false,
-  });
+  const Place(this.cardData, {super.key});
 
-  final Map<String, dynamic> markup;
-  final PostFunction postFunction;
-  final bool preview;
-  // final bool autoDownload;
+  final CardData cardData;
 
   @override
   State<Place> createState() => _PlaceState();
@@ -44,8 +36,8 @@ class Place extends StatefulWidget implements MarkupCard {
 
 class _PlaceState extends State<Place> {
   late Widget _placeThumb;
-  late GeoData geoData = GeoData.fromJson(widget.markup);
-  late Map<String, dynamic> originalMarkup = widget.markup;
+  late GeoData geoData = GeoData.fromJson(widget.cardData.markup);
+  late Map<String, dynamic> originalMarkup = widget.cardData.markup;
 
   Future<void> downloadImage() async {
     await geoData.downloadImage();
@@ -61,7 +53,7 @@ class _PlaceState extends State<Place> {
     );
     // Autodownoad works most of the time but sometimes completely breaks rendering for card in strange ways.
     // Since we currently don't need it, I have disabled it.
-    // if (widget.autoDownload) downloadImage();
+    // if (widget.cardData.autoDownload) downloadImage();
     super.initState();
   }
 
@@ -70,13 +62,13 @@ class _PlaceState extends State<Place> {
     // Otherwise redrawing the widget with a new markup will not result in updated properties
     // Alternatively, if this is a bad practice could also require caller to be carefull to construct a new widget
     // every time the markup changes
-    if (widget.markup != originalMarkup) {
-      originalMarkup = widget.markup;
-      geoData = GeoData.fromJson(widget.markup);
+    if (widget.cardData.markup != originalMarkup) {
+      originalMarkup = widget.cardData.markup;
+      geoData = GeoData.fromJson(widget.cardData.markup);
     }
 
 
-    var potentialAction = widget.markup['potentialAction'];
+    var potentialAction = widget.cardData.markup['potentialAction'];
 
 
     // var geo = markup['geo'];
@@ -137,13 +129,12 @@ class _PlaceState extends State<Place> {
       titleText: geoData.name ?? geoData.addressString ?? 'Shared Location',
       subtitleText: 'Latitude: $latitude, Longitude: $longitude',
       potentialAction: geoActions,
-      potentialActionPostFunction: (uriToPost, {dataToPost, successMessage = ""}) async {
-        await geoData.updateLive(updateImage: true, updateName: true);
-        setState(() {
-
-        });
-      },
-      preview: widget.preview,
+      cardData: CardData.fromOther(widget.cardData,
+        postFunction: (uriToPost, {dataToPost, successMessage = ""}) async {
+          await geoData.updateLive(updateImage: true, updateName: true);
+          setState(() {});
+        },
+      )
     );
   }
 }

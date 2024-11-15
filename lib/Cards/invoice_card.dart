@@ -4,23 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/Models/organization_model.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'BuildingBlocks/card_with_actions.dart';
-import 'BuildingBlocks/potential_actions.dart';
 
 import 'BuildingBlocks/uri_image.dart';
 import 'Models/invoice_model.dart';
 
 class InvoiceCard extends StatefulWidget implements MarkupCard {
-  const InvoiceCard({
-    super.key,
-    required this.markup,
-    required this.postFunction,
-    this.preview = false,
-  });
+  const InvoiceCard(this.cardData, {super.key});
 
-  final Map<String, dynamic> markup;
-  final PostFunction postFunction;
-  final bool preview;
+  final CardData cardData;
 
   @override
   State<InvoiceCard> createState() => _InvoiceCardState();
@@ -39,7 +32,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
 
   @override
   Widget build(BuildContext context) {
-    var invoice = Invoice.fromJson(widget.markup);
+    var invoice = Invoice.fromJson(widget.cardData.markup);
 
     // Setting title and subtitle, depending on available information
     // String? titleText;
@@ -308,8 +301,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
     return CardWithActions(
       cardContents: [cardContent],
       potentialAction: potentialAction,
-      potentialActionPostFunction: widget.postFunction,
-      preview: widget.preview,
+      cardData: widget.cardData,
     );
   }
 }
@@ -436,13 +428,13 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
         invoiceDateSpan
       ]));
     }
-    Widget? paymentStatusRendered;//todo?
-    if (widget.invoice.paymentStatus != null) {
-      var paymentStatus = ': ${widget.invoice.paymentStatus}';
-      paymentStatusRendered = Text.rich(TextSpan(
-        text: paymentStatus,
-      ));
-    }
+    // Widget? paymentStatusRendered;//todo?
+    // if (widget.invoice.paymentStatus != null) {
+    //   var paymentStatus = ': ${widget.invoice.paymentStatus}';
+    //   paymentStatusRendered = Text.rich(TextSpan(
+    //     text: paymentStatus,
+    //   ));
+    // }
 
     Text? deliveryToRendered;
     Text? deliveryDateRendered;
@@ -645,7 +637,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               children: [
                 Align(
                   alignment: Alignment.topLeft,
-                  child: IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
+                  child: IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
                 ),
                 const Spacer(),
                 Align(
