@@ -1,6 +1,7 @@
 library invoice_card;
 
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/mail_header.dart';
 import 'package:jsonld2cards/Cards/Models/organization_model.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
@@ -243,6 +244,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => DetailInvoicePage(
             invoice: invoice,
+            cardData: widget.cardData,
           ),
         ));
         // setState(() {
@@ -375,12 +377,14 @@ List<Widget> renderAttachments(Invoice invoice) {
 }
 
 class DetailInvoicePage extends StatefulWidget {
-  final Invoice invoice;
-
   const DetailInvoicePage({
     super.key,
     required this.invoice,
+    required this.cardData,
   });
+
+  final Invoice invoice;
+  final CardData cardData;
 
   @override
   State<DetailInvoicePage> createState() => _DetailInvoicePageState();
@@ -476,6 +480,8 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       body: Card(
         child: ListView(
           children: [
+            MailHeader(widget.cardData, expandable: true),
+            Divider(),
             ListTile(
               title: const Text.rich(
                 TextSpan(
