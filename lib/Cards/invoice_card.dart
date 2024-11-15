@@ -254,20 +254,25 @@ class _InvoiceCardState extends State<InvoiceCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                 if (leadingImage != null)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: leadingImage,
                   ),
-                Text.rich(
-                  textAlign: TextAlign.start,
-                  TextSpan(children: titleTextSpans),
-                  style: const TextStyle(
-                    fontSize: 18,
+                Flexible(
+                  child: Text.rich(
+                    textAlign: TextAlign.start,
+                    TextSpan(children: titleTextSpans),
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const Spacer(),
+                // const Spacer(flex: 1,),
                 Icon(expanded ? Icons.expand_less : Icons.expand_more)
               ]),
               if (expanded && invoice.description != null)
