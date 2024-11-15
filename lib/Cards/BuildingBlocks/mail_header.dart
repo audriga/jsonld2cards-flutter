@@ -10,6 +10,7 @@ class MailHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     const insets = EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0);
     var senders = cardData.message?.decodeSender();
     var sender = senders?.firstOrNull;
@@ -18,15 +19,15 @@ class MailHeader extends StatelessWidget {
     if (personalName != null) {
       var nameAbbr =
           personalName.split(' ').map((e) => e.substring(0, 1)).join();
-      avatarBase = Text(nameAbbr);
+      avatarBase = Text(nameAbbr, style: const TextStyle(fontSize: 12),);
     } else {
-      avatarBase = const Icon(Icons.person);
+      avatarBase = const Icon(Icons.person, size: 12,);
     }
     var avatar = Padding(
       padding: insets,
       child: CircleAvatar(
-        backgroundColor: Colors.blue,
-        maxRadius: 12,
+        backgroundColor: theme.hintColor,
+        radius: 10,
         child: avatarBase,
       ),
     );
@@ -37,9 +38,9 @@ class MailHeader extends StatelessWidget {
     String? senderMail = sender?.email;
     if (senderMail != null) {
       if (personalName != null && personalName != senderMail) {
-        senderRendered = Expanded(child: Text('$personalName<$senderMail>', overflow: TextOverflow.fade,));
+        senderRendered = Flexible(child: Text('$personalName<$senderMail>', overflow: TextOverflow.ellipsis,));
       } else {
-        senderRendered = Text(senderMail, overflow: TextOverflow.fade,);
+        senderRendered = Flexible(child: Text(senderMail, overflow: TextOverflow.ellipsis,));
       }
       senderWithAvatar = Padding(
         padding: insets,
@@ -51,7 +52,7 @@ class MailHeader extends StatelessWidget {
     if (cardData.message?.decodeSubject() case String subject) {
       subjectRendered = Padding(
         padding: insets,
-        child: Text(subject, overflow: TextOverflow.fade,),
+        child: Text(subject, overflow: TextOverflow.ellipsis,maxLines: 1,),
       );
     }
 
@@ -64,20 +65,23 @@ class MailHeader extends StatelessWidget {
     }
 
 
-    return Align(
-        alignment: Alignment.centerLeft,
-        child: Wrap(
-          alignment: WrapAlignment.start,
-          clipBehavior: Clip.hardEdge,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           children: [
             const Padding(
               padding: insets,
               child: Icon(Icons.mail),
             ),
-            if (subjectRendered != null) subjectRendered,
-            if (senderWithAvatar!= null) senderWithAvatar,
             if (dateRendered != null) dateRendered,
+            if (senderWithAvatar!= null) Flexible(child: senderWithAvatar),
+            // if (subjectRendered != null) subjectRendered,
           ],
-        ));
+        ),
+        if (subjectRendered != null) subjectRendered,
+        // if (senderWithAvatar!= null) senderWithAvatar,
+      ],
+    );
   }
 }
