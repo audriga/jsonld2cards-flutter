@@ -98,6 +98,7 @@ class Invoice extends Thing {
 }
 */
 
+  Map<String, dynamic> json;
   String? accountId;
   PriceSpecification? minimumPaymentDue;
   DateTime? paymentDue;
@@ -117,6 +118,7 @@ class Invoice extends Thing {
 
 
   Invoice({
+    required this.json,
     this.accountId,
     this.minimumPaymentDue,
     this.paymentDue,
@@ -135,7 +137,7 @@ class Invoice extends Thing {
     super.potentialAction,
   });
 
-  Invoice.fromJson(Map<String, dynamic> json) : super.fromJson(json){
+  Invoice.fromJson(this.json) : super.fromJson(json){
     accountId = json['accountId']?.toString();
     minimumPaymentDue = (json['minimumPaymentDue'] != null &&
         (json['minimumPaymentDue'] is Map))

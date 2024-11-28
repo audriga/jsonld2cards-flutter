@@ -256,9 +256,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 if (leadingImage != null)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -355,24 +353,34 @@ List<Widget> renderOrderedItems(Invoice invoice) {
 
 List<Widget> renderAttachments(Invoice invoice) {
   List<Widget> attachments = [];
-  var attachmentFileNames = ['protokoll.pdf', 'foo.txt', 'bar.json'];
-  var attachmentActions = <Widget>[
-    IconButton(onPressed: () {}, icon: const Icon(Icons.download, size: 16)),
-    IconButton(
-        onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
-    IconButton(
-        onPressed: () {}, icon: const Icon(Icons.forward_to_inbox, size: 16)),
-  ];
-  for (String fileName in attachmentFileNames) {
-    attachments.add(Row(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(fileName),
-        const Spacer(),
-        ...attachmentActions,
-      ],
-    ));
+
+  if (invoice.json['bg_24_additional_supporting_documents']
+      case List bg24AdditionalSupportingDocuments) {
+    Iterable<Map<String, dynamic>> attachmentMaps =
+        bg24AdditionalSupportingDocuments
+            .whereType<Map<String, dynamic>>()
+            .map((e) => e['bt_125_attached_document'])
+            .whereType<Map<String, dynamic>>();
+    var attachmentActions = <Widget>[
+      IconButton(onPressed: () {}, icon: const Icon(Icons.download, size: 16)),
+      IconButton(
+          onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
+      IconButton(
+          onPressed: () {}, icon: const Icon(Icons.forward_to_inbox, size: 16)),
+    ];
+    for (Map<String, dynamic> attachmentMap in attachmentMaps) {
+      var fileName = attachmentMap['bt_125_2_filename'];
+      attachments.add(Row(
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(fileName),
+          const Spacer(),
+          ...attachmentActions,
+        ],
+      ));
+    }
   }
+
   return attachments;
 }
 
@@ -445,29 +453,113 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     //   ));
     // }
 
+    String? invoicingPeriodText;
+    String? deliveryDateText;
+    String? deliveryPartyName;
+    Widget? deliveryAddressDetails;
+    if (widget.invoice.json['bg_13_delivery_information']
+        case Map<String, dynamic> bg13DeliveryInformation) {
+      if (bg13DeliveryInformation['bg_14_invoicing_period']
+          case Map<String, dynamic> invoicingPeriod) {
+        var startDate = invoicingPeriod['bt_73_start_date'];
+        var endDate = invoicingPeriod['bt_74_end_date'];
+        // todo I think I should do some date parsing here?
+        if (startDate != null && endDate != null) {
+          invoicingPeriodText = 'Leistungszeitraum von $startDate bis $endDate';
+        } else if (startDate != null) {
+          invoicingPeriodText = 'Leistungszeitraum ab $startDate';
+        } else if (endDate != null) {
+          invoicingPeriodText = 'Leistungszeitraum bis $endDate';
+        }
+      }
+      if (bg13DeliveryInformation['bt_72_actual_delivery_date']
+          case String bt72ActualDeliveryDate) {
+        deliveryDateText = bt72ActualDeliveryDate;
+      }
+      if (bg13DeliveryInformation['bt_70_deliver_to_party_name']
+          case String bt70DeliverToPartyName) {
+        deliveryPartyName = bt70DeliverToPartyName;
+      }
+      if (bg13DeliveryInformation['bg_15_deliver_to_address']
+          case Map<String, dynamic> bg15DeliverToAddress) {
+        var bt75AddressLine1 = bg15DeliverToAddress['bt_75_address_line1'];
+        var bt76AddressLine2 = bg15DeliverToAddress['bt_76_address_line2'];
+        var bt77City = bg15DeliverToAddress['bt_77_city'];
+        var bt78PostalCode = bg15DeliverToAddress['bt_78_postal_code'];
+        var bt80CountryCode = bg15DeliverToAddress['bt_80_country_code'];
+        deliveryAddressDetails = Text('$bt75AddressLine1\n'
+            '$bt76AddressLine2\n'
+            '$bt78PostalCode $bt77City ($bt80CountryCode)');
+      }
+    }
+
+    bool fullyPaid = false;
+    bool partiallyPaid = false;
+    String? paidAmount;
+    if (widget.invoice.json['bg_22_document_totals']
+        case Map<String, dynamic> bg22DocumentTotals) {
+      var bt112InvoiceTotalAmountWithVat =
+          bg22DocumentTotals['bt_112_invoice_total_amount_with_vat'];
+      var bt113PaidAmount = bg22DocumentTotals['bt_113_paid_amount'];
+      fullyPaid = bt112InvoiceTotalAmountWithVat == bt113PaidAmount;
+      if (bt113PaidAmount is String && bt113PaidAmount.isNotEmpty) {
+        paidAmount = bt113PaidAmount;
+        partiallyPaid = true;
+      } else if (bt113PaidAmount is num && bt113PaidAmount > 0) {
+        paidAmount = bt113PaidAmount.toString();
+        partiallyPaid = true;
+      }
+    }
+
     Text? deliveryToRendered;
     Text? deliveryDateRendered;
     if (widget.invoice.referencesOrder != null) {
-      // todo replace with delivery to thing
-      var deliveryToName = 'Mustermann Gmbh';
       deliveryToRendered = Text.rich(
         TextSpan(
           children: [
             const TextSpan(text: 'Lieferung an: '),
             TextSpan(
-                text: deliveryToName,
+                text: deliveryPartyName,
                 style: const TextStyle(fontWeight: FontWeight.bold))
           ],
         ),
       );
-      var deliveryDate = '02.12.2024';
-      deliveryDateRendered = Text.rich(TextSpan(children: [
-        const TextSpan(text: 'Lieferdatum: '),
-        TextSpan(
-          text: deliveryDate,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ]));
+      if (deliveryDateText != null) {
+        deliveryDateRendered = Text.rich(TextSpan(children: [
+          const TextSpan(text: 'Lieferdatum: '),
+          TextSpan(
+            text: deliveryDateText,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ]));
+      }
+    }
+    String? noteText;
+    if (widget.invoice.json['bg_1_invoice_note'] case List bg1InvoiceNote) {
+      noteText = bg1InvoiceNote
+          .whereType<Map<String, dynamic>>()
+          .map(
+            (e) => e['bt_22_content'],
+          )
+          .whereType<String>()
+          .join('\n');
+    }
+    String? paymentMeansText;
+    Widget? paymentDetails;
+    if (widget.invoice.json['bg_16_payment_instructions'] case Map<String, dynamic> bg16PaymentInstructions) {
+      var bt82PaymentMeansText = bg16PaymentInstructions['bt_82_payment_means_text'];
+      if (bt82PaymentMeansText is String) {
+        paymentMeansText = bt82PaymentMeansText;
+      }
+      var bt83RemittanceInformation = bg16PaymentInstructions['bt_83_remittance_information'];
+      // if(bg16PaymentInstructions['bg_17_credit_transfer'] case Map<String, dynamic> bg17CreditTransfer) {
+      //   var bt84PaymentId = bg16PaymentInstructions['bt_84_payment_id'];
+      //   var bt85PaymentAccountName = bg16PaymentInstructions['bt_85_payment_account_name'];
+      //   var bt86PaymentServiceProviderIdentifier = bg16PaymentInstructions['bt_86_payment_service_provider_identifier'];
+      // }
+      if (bt83RemittanceInformation != null) {
+        paymentDetails = Text('($bt83RemittanceInformation)');
+      }
     }
 
     var theme = Theme.of(context);
@@ -481,7 +573,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
         child: ListView(
           children: [
             MailHeader(widget.cardData, expandable: true),
-            Divider(),
+            const Divider(),
             ListTile(
               title: const Text.rich(
                 TextSpan(
@@ -518,21 +610,29 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Note\nLeistungszeitraum von bis',
-                          ),
+                          if (noteText != null) Text(noteText),
+                          if (invoicingPeriodText != null)
+                            Text(invoicingPeriodText),
                           if ((numberOfItems) > 0)
                             Text('$numberOfItems Rechnungsposten'),
                         ],
                       ),
-                      trailing: const Card(
+                      trailing: Card(
                         elevation: 0,
-                        color: Colors.green,
+                        color: fullyPaid
+                            ? Colors.green
+                            : partiallyPaid
+                                ? Colors.orange
+                                : Colors.deepOrange,
                         child: Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Bezahlt',
-                            style: TextStyle(
+                            fullyPaid
+                                ? 'Bezahlt'
+                                : partiallyPaid
+                                    ? '$paidAmount gezahlt'
+                                    : 'Offen',
+                            style: const TextStyle(
                               color: Colors.white,
                             ),
                           ),
@@ -552,18 +652,19 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 children: [
                   Padding(
                     padding: descriptionPadding,
-                    child: Text('Zahlung', style: TextStyle(color: theme.hintColor)),
+                    child: Text('Zahlung',
+                        style: TextStyle(color: theme.hintColor)),
                   ),
                   if (amountRendered != null)
                     ExpansionTile(
                       title: amountRendered,
-                      subtitle: const Text(
-                        'Wird eingezogen',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      children: const [
+                      subtitle: (paymentMeansText != null)?  Text(
+                        paymentMeansText,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ): null,
+                      children: [
                         ListTile(
-                          title: Text("This is some extra info"),
+                          title: paymentDetails,
                         ),
                       ],
                     ),
@@ -598,15 +699,16 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 children: [
                   Padding(
                     padding: descriptionPadding,
-                    child: Text('Lieferung', style: TextStyle(color: theme.hintColor)),
+                    child: Text('Lieferung',
+                        style: TextStyle(color: theme.hintColor)),
                   ),
                   if (deliveryToRendered != null)
                     ExpansionTile(
                       title: deliveryToRendered,
                       subtitle: deliveryDateRendered,
-                      children: const [
+                      children: [
                         ListTile(
-                          title: Text("This is some extra info"),
+                          title: deliveryAddressDetails,
                         ),
                       ],
                     ),
@@ -634,7 +736,8 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 children: [
                   Padding(
                     padding: descriptionPadding,
-                    child: Text('Anhänge', style: TextStyle(color: theme.hintColor)),
+                    child: Text('Anhänge',
+                        style: TextStyle(color: theme.hintColor)),
                   ),
                   if (numberOfAttachments > 0)
                     ExpansionTile(
@@ -648,7 +751,8 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               children: [
                 Align(
                   alignment: Alignment.topLeft,
-                  child: IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+                  child: IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.delete)),
                 ),
                 const Spacer(),
                 Align(
