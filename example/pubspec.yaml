@@ -27,6 +27,9 @@ dependencies:
   html2jsonld_dart:
     git:
       url: git@bitbucket.org:audriga/html2jsonld-dart.git
+  xrechnung_dart:
+    git:
+      url: git@bitbucket.org:audriga/xrechnung-dart.git
   http: ^1.2.1
 
   # The following adds the Cupertino Icons font to your application.

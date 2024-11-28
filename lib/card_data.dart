@@ -14,6 +14,7 @@ class CardData {
   MimeMessage? message;
   bool showMessageHeader;
 
+
   CardData(
     this.markup, {
     this.postFunction,

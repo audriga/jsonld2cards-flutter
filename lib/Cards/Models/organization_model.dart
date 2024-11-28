@@ -26,6 +26,8 @@ class Organization extends Thing {
   Uri? get logo {
     return logoImgObj?.url ?? logoUri;
   }
+  String? telephone;
+  String? email;
 
 
   Organization({
@@ -34,6 +36,8 @@ class Organization extends Thing {
     this.legalName,
     this.logoImgObj,
     this.logoUri,
+    this.telephone,
+    this.email,
   });
 
   Organization.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
@@ -47,6 +51,12 @@ class Organization extends Thing {
       logoImgObj = ImageObject.fromJson(logoAttr);
     } else if (logoAttr != null) {
       logoUri = tryCastOrParse(logoAttr);
+    }
+    if (json['telephone'] case String jTelephone) {
+      telephone = jTelephone;
+    }
+    if (json['email'] case String jEmail) {
+      email = jEmail;
     }
   }
 
@@ -62,6 +72,8 @@ class Organization extends Thing {
     } else {
       data['logo'] = logoUri?.toString();
     }
+    data['telephone'] = telephone;
+    data['email'] = email;
     return data;
   }
 }

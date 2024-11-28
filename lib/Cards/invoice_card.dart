@@ -6,6 +6,8 @@ import 'package:jsonld2cards/Cards/Models/organization_model.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
+import 'package:jsonld2cards/sml_app_context.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'BuildingBlocks/card_with_actions.dart';
 
 import 'BuildingBlocks/uri_image.dart';
@@ -361,15 +363,20 @@ List<Widget> renderAttachments(Invoice invoice) {
             .whereType<Map<String, dynamic>>()
             .map((e) => e['bt_125_attached_document'])
             .whereType<Map<String, dynamic>>();
-    var attachmentActions = <Widget>[
-      IconButton(onPressed: () {}, icon: const Icon(Icons.download, size: 16)),
-      IconButton(
-          onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
-      IconButton(
-          onPressed: () {}, icon: const Icon(Icons.forward_to_inbox, size: 16)),
-    ];
     for (Map<String, dynamic> attachmentMap in attachmentMaps) {
       var fileName = attachmentMap['bt_125_2_filename'];
+      var bt125Content = attachmentMap['bt_125_content'];
+      var bt1251MimeCode = attachmentMap['bt_125_1_mime_code'];
+      var attachmentActions = <Widget>[
+        if (bt125Content is String && bt125Content.isNotEmpty) IconButton(onPressed: (){
+
+        }, icon: const Icon(Icons.share)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.download, size: 16)),
+        IconButton(
+            onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
+        IconButton(
+            onPressed: () {}, icon: const Icon(Icons.forward_to_inbox, size: 16)),
+      ];
       attachments.add(Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -401,6 +408,19 @@ class DetailInvoicePage extends StatefulWidget {
 class _DetailInvoicePageState extends State<DetailInvoicePage> {
   @override
   Widget build(BuildContext context) {
+    Uri? uri = widget.invoice.url;
+    int? muid;
+    bool canShareXRechnung = false;
+    if (uri != null) {
+      if (['cid', 'fetchid'].contains(uri.scheme) && globalSMLAppContext?.shareAttachmentCallback != null) {
+        if (widget.cardData.markup['muid'] case int uid) {
+          muid = uid;
+          canShareXRechnung = true;
+        }
+      }
+    }
+
+
     Widget? amountRendered;
     if (widget.invoice.totalPaymentDue != null) {
       var invoiceAmountValue = widget.invoice.totalPaymentDue.toString();
@@ -562,9 +582,37 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       }
     }
 
+    var seller = widget.invoice.provider;
+    if (widget.invoice.json['bg_4_seller'] case Map<String, dynamic> bg4Seller) {
+      var bt34ElectronicAddress = bg4Seller['bt_34_electronic_address'];
+      if (bt34ElectronicAddress is String) {
+        seller?.email = bt34ElectronicAddress;
+      }
+      if (bg4Seller['bg_6_contact'] case Map<String, dynamic> bg6Contact) {
+        var bt42TelephoneNumber = bg6Contact['bt_42_telephone_number'];
+        if (bt42TelephoneNumber is String) {
+          seller?.telephone = bt42TelephoneNumber;
+        }
+      }
+    }
+    var customer = widget.invoice.customer;
+    if (widget.invoice.json['bg_7_buyer'] case Map<String, dynamic> bg7Buyer) {
+      var bt49ElectronicAddress = bg7Buyer['bt_49_electronic_address'];
+      if (bt49ElectronicAddress is String) {
+        customer?.email = bt49ElectronicAddress;
+      }
+      if (bg7Buyer['bg_9_contact'] case Map<String, dynamic> bg9Contact) {
+        var bt57TelephoneNumber = bg9Contact['bt_57_telephone_number'];
+        if (bt57TelephoneNumber is String) {
+          customer?.telephone = bt57TelephoneNumber;
+        }
+      }
+    }
+
     var theme = Theme.of(context);
     var descriptionPadding = const EdgeInsets.fromLTRB(8.0, 8.0, 0, 0);
     var subCardColor = theme.canvasColor;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
@@ -590,7 +638,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
             ),
             PersonTile(
               title: 'Seller',
-              organization: widget.invoice.provider,
+              organization: seller,
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
             ),
@@ -687,7 +735,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
             ),
             PersonTile(
               title: 'Käufer',
-              organization: widget.invoice.customer,
+              organization: customer,
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
             ),
@@ -773,6 +821,11 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                   child: Wrap(
                     alignment: WrapAlignment.end,
                     children: <Widget>[
+                      if (canShareXRechnung) IconButton(onPressed: (){
+                        if (muid != null && uri != null) {
+                          globalSMLAppContext!.shareAttachmentCallback!(muid, uri);
+                        }
+                      }, icon: const Icon(Icons.share)),
                       IconButton(
                           onPressed: () {}, icon: const Icon(Icons.download)),
                       IconButton(
@@ -872,9 +925,12 @@ class PersonTile extends StatelessWidget {
               children: <Widget>[
                 IconButton(
                     onPressed: () {}, icon: const Icon(Icons.add_circle)),
-                //todo why cancel?
-                IconButton(onPressed: () {}, icon: const Icon(Icons.call)),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.message)),
+                if (organization?.telephone != null) IconButton(onPressed: () {
+                  launchUrl(Uri(scheme: 'tel', path: organization?.telephone));
+                }, icon: const Icon(Icons.call)),
+                if (organization?.email != null) IconButton(onPressed: () {
+                  launchUrl(Uri(scheme: 'mailto', path: organization?.email));
+                }, icon: const Icon(Icons.message)),
               ],
             ),
           ),

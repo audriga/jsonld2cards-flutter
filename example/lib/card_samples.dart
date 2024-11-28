@@ -1,10 +1,16 @@
 library card_samples;
 
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
+import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
+import 'package:jsonld2cards/Cards/invoice_card.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/card_rendering.dart';
 import 'package:jsonld2cards/card_viewer.dart';
 import 'package:jsonld2cards/open_card_viewer_dialog.dart';
+import 'package:xrechnung_dart/xrechnung_dart.dart';
 
 import 'Util/network.dart';
 import 'dart:convert';
@@ -193,6 +199,7 @@ class _CardSamplesState extends State<CardSamples> {
                 markups: snapshot.requireData[_selectedAssetIndex],
                 postFunction: postUrl,
               );
+              case 3: return XRechnungList(showSource: showSource, preview: preview, topBar: topBar);
               default: return const Placeholder();
             }
           }  else if (snapshot.hasError) {
@@ -224,12 +231,16 @@ class _CardSamplesState extends State<CardSamples> {
             icon: Icon(Icons.account_tree),
             label: 'Adaptive View'
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt),
+            label: 'XRechnung'
+          ),
         ],
         currentIndex: _selectedScreenIndex,
         onTap: _onItemTapped,
       ),
       persistentFooterButtons: [
-        if (_selectedScreenIndex == 0) TextButton(
+        if ([0,3].contains(_selectedScreenIndex)) TextButton(
             onPressed: (){setState(() {showSource = !showSource;});},
             child: Text('Show source: ${showSource ? 'on' : 'off'}')
         ),
@@ -241,7 +252,7 @@ class _CardSamplesState extends State<CardSamples> {
             onPressed: (){setState(() {topBar = !topBar;});},
             child: Text('Top bar mode: ${topBar ? 'on' : 'off'}')
         ),
-        if (_selectedScreenIndex > 0) DropdownButton(
+        if (_selectedScreenIndex > 0 && _selectedScreenIndex <3) DropdownButton(
           value: _selectedAssetIndex,
           items: assetDropdownItems,
           onChanged: (newIndex) => setState(() {_selectedAssetIndex = newIndex!;}),
@@ -319,4 +330,56 @@ void cardViewerDialog(BuildContext context) {
         MaterialPageRoute(builder: (context) => CardViewer(cardId: cardId, postFunction: postUrl),
     ));
   });
+}
+
+class XRechnungList extends StatefulWidget {
+  final bool showSource;
+  final bool preview;
+  final bool topBar;
+
+  const XRechnungList({super.key, required this.showSource, required this.preview, required this.topBar});
+
+  @override
+  State<XRechnungList> createState() => _XRechnungListState();
+}
+
+class _XRechnungListState extends State<XRechnungList> {
+  late Future<List<Widget>> xInvoices;
+
+  @override
+  void initState() {
+    super.initState();
+    xInvoices = loadXInvoices();
+  }
+
+  Future<List<Widget>> loadXInvoices() async {
+    const sourceDirPath = '/home/frieder/Documents/xrechnung-js/test/resources/einvoicing-en16931/cii';
+    final sourceDir = Directory(sourceDirPath);
+    final entries = await sourceDir.list().toList();
+    List<File> files = entries.whereType<File>().toList()..sort((a, b) => a.path.compareTo(b.path),);
+    final xmlFiles = files.where((f) => f.path.endsWith('.xml')).toList();
+    final xmlStrings = xmlFiles.map((xmlFile) => xmlFile.readAsStringSync(),).toList();
+    List<Widget> widgets = [];
+    for (int i = 0; i < xmlStrings.length; i++) {
+      widgets.add(Text(xmlFiles[i].path)); //todo can't switch cause these are dynamically added
+      try {
+        final invoiceSchema = parseAndConvertXInvoice(xmlStrings[i]);
+        final cardData = CardData(invoiceSchema, topBar: widget.topBar, preview: widget.preview);
+        widgets.add(InvoiceCard(cardData));
+      } catch (e) {
+        widgets.add(ListTile(title: const Text('Error Rendering this file'), subtitle: Text(e.toString())));
+      }
+    }
+    return widgets;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(future: xInvoices, builder: (context, snapshot) => switch (snapshot.connectionState) {
+        ConnectionState.none => const Text('Not connected'),
+        ConnectionState.waiting => const Text('Loading'),
+        ConnectionState.active => const Text('Active'),
+        ConnectionState.done =>  ListView(children: snapshot.requireData,)
+        },);
+  }
 }
