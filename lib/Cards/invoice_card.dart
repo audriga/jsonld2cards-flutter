@@ -353,7 +353,7 @@ List<Widget> renderOrderedItems(Invoice invoice) {
   return orderedItems;
 }
 
-List<Widget> renderAttachments(Invoice invoice) {
+List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
   List<Widget> attachments = [];
 
   if (invoice.json['bg_24_additional_supporting_documents']
@@ -383,6 +383,30 @@ List<Widget> renderAttachments(Invoice invoice) {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(fileName),
+          ),
+          const Spacer(),
+          ...attachmentActions,
+        ],
+      ));
+    }
+    for (Attachment attachment in cardData.otherAttachments ?? []) {
+      var filename = attachment.filename;
+      var attachmentActions = <Widget>[
+        if (attachment.data != null) IconButton(onPressed: (){
+          globalSMLAppContext!.shareFileCallback!(attachment.data, attachment.mimeType, filename);
+        }, icon: const Icon(Icons.share, size: 16)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.download, size: 16)),
+        IconButton(
+            onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
+        IconButton(
+            onPressed: () {}, icon: const Icon(Icons.forward_to_inbox, size: 16)),
+      ];
+      attachments.add(Row(
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(filename ?? '(No file name)'),
           ),
           const Spacer(),
           ...attachmentActions,
@@ -437,7 +461,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
 
     List<Widget> orderedItems = renderOrderedItems(widget.invoice);
     var numberOfItems = widget.invoice.referencesOrder?.length ?? 0;
-    List<Widget> attachments = renderAttachments(widget.invoice);
+    List<Widget> attachments = renderAttachments(widget.invoice, widget.cardData);
     var numberOfAttachments = attachments.length; // ?? 0;
     var confirmationNumber =
         widget.invoice.identifier ?? widget.invoice.confirmationNumber;

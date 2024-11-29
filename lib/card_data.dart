@@ -1,9 +1,27 @@
 library card_context;
 
+import 'dart:typed_data';
+
 import 'package:enough_mail/mime.dart';
 import 'package:flutter/widgets.dart';
 
 import 'Cards/BuildingBlocks/potential_actions.dart';
+
+class Attachment {
+  Uint8List? data;
+  String? filename;
+  String? mimeType;
+  String? source;
+  String? description;
+
+  Attachment({
+    this.data,
+    this.filename,
+    this.mimeType,
+    this.source,
+    this.description,
+  });
+}
 
 class CardData {
   dynamic markup; // List<Map<String,dynamic>> or Map<String, dynamic>
@@ -13,7 +31,8 @@ class CardData {
   List<Widget>? additionalButtons;
   MimeMessage? message;
   bool showMessageHeader;
-
+  Attachment? sourceFile;
+  List<Attachment>? otherAttachments;
 
   CardData(
     this.markup, {
@@ -23,6 +42,8 @@ class CardData {
     this.additionalButtons,
     this.message,
     this.showMessageHeader = false,
+    this.sourceFile,
+    this.otherAttachments,
   });
 
   bool get markupIsList =>
