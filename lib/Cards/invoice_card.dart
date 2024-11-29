@@ -369,8 +369,8 @@ List<Widget> renderAttachments(Invoice invoice) {
       var bt1251MimeCode = attachmentMap['bt_125_1_mime_code'];
       var attachmentActions = <Widget>[
         if (bt125Content is String && bt125Content.isNotEmpty) IconButton(onPressed: (){
-
-        }, icon: const Icon(Icons.share)),
+          globalSMLAppContext!.shareFileCallback!(bt125Content, bt1251MimeCode, fileName);
+        }, icon: const Icon(Icons.share, size: 16)),
         IconButton(onPressed: () {}, icon: const Icon(Icons.download, size: 16)),
         IconButton(
             onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
@@ -380,7 +380,10 @@ List<Widget> renderAttachments(Invoice invoice) {
       attachments.add(Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(fileName),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(fileName),
+          ),
           const Spacer(),
           ...attachmentActions,
         ],
@@ -620,8 +623,8 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       body: Card(
         child: ListView(
           children: [
-            MailHeader(widget.cardData, expandable: true),
-            const Divider(),
+            if (widget.cardData.message != null) MailHeader(widget.cardData, expandable: true),
+            if (widget.cardData.message != null) const Divider(),
             ListTile(
               title: const Text.rich(
                 TextSpan(
