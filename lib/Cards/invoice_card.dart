@@ -192,22 +192,29 @@ class _InvoiceCardState extends State<InvoiceCard> {
 
     List<Widget> orderedItems = renderOrderedItems(invoice);
 
-    Widget? payee;
-    if (invoice.paymentMethod != null && invoice.paymentMethodId != null) {
-      payee = Text.rich(TextSpan(children: [
-        const TextSpan(
-          text: 'Payee: ',
-        ),
-        (TextSpan(
-          text: '${invoice.paymentMethodId}',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ))
-      ]));
-    }
+    // Widget? payee;
+    // if (invoice.paymentMethod != null && invoice.paymentMethodId != null) {
+    //   payee = Text.rich(TextSpan(children: [
+    //     const TextSpan(
+    //       text: 'Payee: ',
+    //     ),
+    //     (TextSpan(
+    //       text: '${invoice.paymentMethodId}',
+    //       style: const TextStyle(fontWeight: FontWeight.bold),
+    //     ))
+    //   ]));
+    // }
     // if (invoice.totalPaymentDue != null) {
     //   subTitleTextBuffer.write('\nTotal payment due: ${invoice.totalPaymentDue.toString()}');
     // }
-    var potentialAction = invoice.potentialAction;
+
+    List<Map<String, dynamic>> potentialAction;
+    if (invoice.potentialAction case List pAs) {
+      // todo this a lazy workaround to only have the share XRechnung button in the small card
+      potentialAction = pAs.whereType<Map<String,dynamic>>().where((m) => m['muid']?.toString().isNotEmpty ?? false).toList();
+    } else {
+      potentialAction = [];
+    }
     // todo: placeholder for actual CID property
     /*if (invoice.url case Uri uri) {
       if (uri.scheme == 'cid') {
@@ -290,7 +297,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
                 ...orderedItems
               else if ((numberOfItems) > 0)
                 Text('$numberOfItems Items'),
-              if (payee != null) payee,
+              // if (payee != null) payee,
             ],
           )),
     );
