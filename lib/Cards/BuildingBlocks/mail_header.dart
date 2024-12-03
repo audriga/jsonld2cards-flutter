@@ -1,7 +1,11 @@
 library mail_header;
 
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/card_data.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class MailHeader extends StatefulWidget {
   const MailHeader(this.cardData, {super.key, this.expandable = false});
@@ -15,13 +19,32 @@ class MailHeader extends StatefulWidget {
 
 class _MailHeaderState extends State<MailHeader> {
   bool _expanded = false;
+  late final WebViewController? controller;
+  late final String? plainText;
+
+  @override
+  void initState() {
+    super.initState();
+    var htmlPart = widget.cardData.message?.decodeTextHtmlPart();
+    plainText = widget.cardData.message?.decodeTextPlainPart();
+    if (htmlPart != null &&
+        !kIsWeb &&
+        (Platform.isAndroid || Platform.isIOS || Platform.isMacOS)) {
+      controller = WebViewController()
+        ..loadHtmlString(
+          htmlPart,
+        );
+    } else {
+      controller = null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    var textStyle =
-        _expanded ? theme.textTheme.titleLarge : theme.textTheme.bodySmall;
-    // var iconStyle = theme.ico
+    var textStyle = theme.textTheme.bodySmall;
+    // var textStyle = _expanded ? theme.textTheme.titleLarge : theme.textTheme.bodySmall;
+
     double fontSize = textStyle?.fontSize ?? 12;
     var avatarRadius = fontSize / 2;
     const insets = EdgeInsets.symmetric(horizontal: 4.0, vertical: 0);
@@ -46,7 +69,7 @@ class _MailHeaderState extends State<MailHeader> {
       );
     }
     var avatar = Padding(
-      padding: insets,
+      padding: const EdgeInsets.only(right: 4.0),
       child: CircleAvatar(
         backgroundColor: theme.hintColor,
         radius: avatarRadius,
@@ -63,7 +86,7 @@ class _MailHeaderState extends State<MailHeader> {
         senderRendered = Flexible(
           child: Text(
             '$personalName<$senderMail>',
-            overflow: _expanded? null : TextOverflow.ellipsis,
+            overflow: _expanded ? null : TextOverflow.ellipsis,
             style: textStyle,
             softWrap: _expanded,
           ),
@@ -72,7 +95,7 @@ class _MailHeaderState extends State<MailHeader> {
         senderRendered = Flexible(
           child: Text(
             senderMail,
-            overflow: _expanded? null : TextOverflow.ellipsis,
+            overflow: _expanded ? null : TextOverflow.ellipsis,
             style: textStyle,
             softWrap: _expanded,
           ),
@@ -92,7 +115,7 @@ class _MailHeaderState extends State<MailHeader> {
         padding: insets,
         child: Text(
           subject,
-          overflow: _expanded? null : TextOverflow.ellipsis,
+          overflow: _expanded ? null : TextOverflow.ellipsis,
           maxLines: _expanded ? null : 1,
           style: textStyle,
           softWrap: _expanded,
@@ -110,32 +133,43 @@ class _MailHeaderState extends State<MailHeader> {
         ),
       );
     }
-
+    bool showWebView = (controller != null);
+    bool showPlainText = (!showWebView && plainText != null);
     return InkWell(
       onTap: () => setState(() {
         _expanded = !_expanded;
       }),
       child: _expanded
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: insets,
-                      child: Icon(
-                        Icons.mail,
-                        size: fontSize + 2,
+          ? Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 0.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: insets,
+                        child: Icon(
+                          Icons.mail,
+                          size: fontSize + 2,
+                        ),
                       ),
-                    ),
-                    if (dateRendered != null) dateRendered,
+                      if (dateRendered != null) dateRendered,
 
-                    // if (subjectRendered != null) subjectRendered,
-                  ],
-                ),if (senderWithAvatar != null) senderWithAvatar,
-                if (subjectRendered != null) subjectRendered,
-                // if (senderWithAvatar!= null) senderWithAvatar,
-              ],
+                      // if (subjectRendered != null) subjectRendered,
+                    ],
+                  ),
+                  if (senderWithAvatar != null) senderWithAvatar,
+                  if (subjectRendered != null) subjectRendered,
+                  // if (senderWithAvatar!= null) senderWithAvatar,
+                  if (showWebView)
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 200),
+                      child: WebViewWidget(controller: controller!),
+                    ),
+                  if (showPlainText) Text(plainText!),
+                ],
+              ),
             )
           : SmallMailHeader(
               insets: insets,
