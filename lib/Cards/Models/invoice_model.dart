@@ -186,7 +186,8 @@ class Invoice extends Thing {
     if (json['paymentMethodId'] case String paymentMethodIdJ) {
       paymentMethodId = paymentMethodIdJ;
     }
-    if (json['dateIssued'] case String dateIssuedJ) {
+    var dateIssuedM = json['dateIssued'] ?? json['https://audriga.eu/Invoice/dateIssued'];
+    if (dateIssuedM case String dateIssuedJ) {
       dateIssued = DateTime.tryParse(dateIssuedJ);
     }
     if (json['paymentDueDate'] case String paymentDueDateJ) {
