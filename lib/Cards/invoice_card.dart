@@ -809,7 +809,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 ],
               ),
             ),
-            Card(
+            if (numberOfAttachments > 0) Card(
               elevation: 0,
               color: subCardColor,
               child: Column(
@@ -820,7 +820,6 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                     child: Text('Anhänge',
                         style: TextStyle(color: theme.hintColor)),
                   ),
-                  if (numberOfAttachments > 0)
                     ExpansionTile(
                       title: Text('$numberOfAttachments Anhänge'),
                       children: attachments,
