@@ -458,6 +458,12 @@ class DetailInvoicePage extends StatefulWidget {
 class _DetailInvoicePageState extends State<DetailInvoicePage> {
   @override
   Widget build(BuildContext context) {
+    Future<List<String>>? forwardAddresses;
+    var forwardAddressesFunc = globalSMLAppContext?.forwardEmailAddresses;
+    if (forwardAddressesFunc != null) {
+      forwardAddresses = forwardAddressesFunc();
+    }
+
     Uri? uri = widget.invoice.url;
     int? muid;
     bool canShareXRechnung = false;
@@ -867,14 +873,23 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                       IconButton(
                           onPressed: () {},
                           icon: const Icon(Icons.cloud_upload)),
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.forward_to_inbox)),
+                      // IconButton(
+                      //     onPressed: () {},
+                      //     icon: const Icon(Icons.forward_to_inbox)),
                     ],
                   ),
                 ),
               ],
             ),
+
+            if (widget.cardData.message != null && forwardAddresses != null && globalSMLAppContext?.forwardEmailCallback != null) FutureBuilder<List<String>>(future: forwardAddresses, builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return SplitButton(options: snapshot.data ?? [], onTap: (e) => globalSMLAppContext!.forwardEmailCallback!(e, widget.cardData.message!),);
+              } else {
+                return Container();
+              }
+            },
+            )
           ],
         ),
       ),
@@ -1293,6 +1308,56 @@ class PersonTile extends StatelessWidget {
           // PotentialActionRow(potentialAction: potentialAction, postFunction: postFunction)
         ],
       ),
+    );
+  }
+}
+
+typedef SplitButtonCallback = Function(String option);
+class SplitButton extends StatefulWidget {
+  final SplitButtonCallback onTap;
+  final List<String> options;
+  const SplitButton({super.key, required this.onTap, required this.options});
+
+  @override
+  State<SplitButton> createState() => _SplitButtonState();
+}
+
+class _SplitButtonState extends State<SplitButton> {
+  late String dropdownValue = widget.options.first;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Icon(Icons.forward_to_inbox),
+        TextButton(onPressed: () => widget.onTap(dropdownValue), child: Text(dropdownValue)),
+        MenuBar(
+          children: [SubmenuButton(
+            menuChildren: widget.options.map<MenuItemButton>((v) => MenuItemButton(child: Text(v), onPressed: (){
+              setState(() {
+                dropdownValue = v;
+              });
+            },)).toList(),
+            child: const Icon(Icons.arrow_drop_down),
+          ),],
+        ),
+        // DropdownMenu(
+        //
+        //   onSelected: (String? value){
+        //     setState(() {
+        //       dropdownValue = value!;
+        //     });
+        //   },
+        //   dropdownMenuEntries: widget.options.map<DropdownMenuEntry<String>>((String value) {
+        //     return DropdownMenuEntry<String>(
+        //       value: value,
+        //       // child: Text(value),
+        //       // labelWidget: TextButton(onPressed: (){}, child: Text(value)),
+        //       label: value,
+        //     );
+        //   }).toList(),
+        //
+        // ),
+      ],
     );
   }
 }
