@@ -43,7 +43,10 @@ class _InvoiceCardState extends State<InvoiceCard> {
     // String? subtitleText;
     Widget? leadingImage;
     // var confirmationNumber = invoice.identifier ?? invoice.confirmationNumber;
-    List<TextSpan> titleTextSpans = <TextSpan>[const TextSpan(text: 'Rechnung')]; //createTitleTextSpans(invoice);
+    List<TextSpan> titleTextSpans = <TextSpan>[
+      const TextSpan(
+          text: 'Rechnung', style: TextStyle(fontWeight: FontWeight.bold))
+    ]; //createTitleTextSpans(invoice);
 
     // List<TextSpan> subTitleTextSpans =
     //     createSubtitleTextSpans(confirmationNumber, invoice);
@@ -115,6 +118,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
     var theme = Theme.of(context);
     var descriptionPadding = const EdgeInsets.fromLTRB(8.0, 8.0, 0, 0);
     var subCardColor = theme.canvasColor;
+
     /// If this should blend in, use theme.cardTheme.color ?? theme.colorScheme.surfaceContainerLow;
     Widget cardContent = InkWell(
       onTap: () {
@@ -140,13 +144,21 @@ class _InvoiceCardState extends State<InvoiceCard> {
                     child: leadingImage,
                   ),
                 Flexible(
-                  child: Text.rich(
-                    textAlign: TextAlign.start,
-                    TextSpan(children: titleTextSpans),
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+                  child: Row(
+                    children: [
+                      Text.rich(
+                        textAlign: TextAlign.start,
+                        TextSpan(children: titleTextSpans),
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: PaidBadge(json: invoice.json),
+                      ),
+                    ],
                   ),
                 ),
                 // const Spacer(flex: 1,),
@@ -159,20 +171,18 @@ class _InvoiceCardState extends State<InvoiceCard> {
                   softWrap: true,
                 ),
               PersonTile(
-                title: 'Seller',
-                personData:
-                PartyData.fromJson(invoice.json, PartyType.seller),
-                subCardColor: subCardColor,
-                descriptionPadding: descriptionPadding,
-                big: false
-              ),
+                  title: 'Seller',
+                  personData:
+                      PartyData.fromJson(invoice.json, PartyType.seller),
+                  subCardColor: subCardColor,
+                  descriptionPadding: descriptionPadding,
+                  big: false),
               LeistungCard(
-                subCardColor: subCardColor,
-                descriptionPadding: descriptionPadding,
-                cardData: widget.cardData,
-                invoice: invoice,
-                big: false
-              ),
+                  subCardColor: subCardColor,
+                  descriptionPadding: descriptionPadding,
+                  cardData: widget.cardData,
+                  invoice: invoice,
+                  big: false),
               // Text.rich(
               //     textAlign: TextAlign.left,
               //     TextSpan(children: subTitleTextSpans)),
@@ -346,43 +356,94 @@ List<TextSpan> createTitleTextSpans(Invoice invoice) {
   return titleTextSpans;
 }
 
-List<Widget> renderOrderedItems(Invoice invoice) {
+List<Widget> renderOrderedItems(Map<String, dynamic> json) {
   List<Widget> orderedItems = [];
-  if (invoice.referencesOrder != null) {
-    for (var order in invoice.referencesOrder!) {
-      String? name = order.name ?? order.orderedItem?.name;
-      String? price = order.price ?? order.acceptedOffer?.price;
-      if (name == null || price == null) {
+  String? currencyCode;
+  if (json['bt_6_vat_accounting_currency_code'] case String bt6VatAccountingCurrencyCode) {
+    currencyCode = bt6VatAccountingCurrencyCode;
+  }
+  if (json['bg_25_invoice_line'] case List<dynamic> invoiceLines) {
+    for (var line in invoiceLines.whereType<Map<String, dynamic>>()) {
+      String? id;
+      if (line['bt_126_identifier'] case String bt126Identifier) {
+        id = bt126Identifier;
+      }
+      String? name;
+      if (line['bg_31_item_information'] case Map<String, dynamic> bg31ItemInformation){
+        if (bg31ItemInformation['bt_153_name'] case String bt153Name){
+          name = bt153Name;
+        }
+      }
+      var nameOrId = name?? id;
+      if (nameOrId == null) {
         continue;
       }
-      orderedItems.add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(name),
-          Text('$price€'),
-        ],
+      var nameBuffer = StringBuffer();
+
+      if (line['bt_129_quantity'] case String bt129Quantity){
+        nameBuffer.write('$bt129Quantity ');
+      }
+      nameBuffer.write(nameOrId);
+      String? price;
+      if (line['bt_131_net_amount'] case String bt131NetAmount){
+        price = priceInCurrency(bt131NetAmount, currencyCode);
+      }
+
+      String? oid;
+      if (line['bt_128_object_identifier'] case String bt128ObjectIdentifier){
+        oid = bt128ObjectIdentifier;
+      }
+      String? note;
+      if (line['bt_127_note'] case String bt127Note){
+        note = bt127Note;
+      }
+      orderedItems.add(Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(nameBuffer.toString().trim()),
+                if (price != null) Text(price),
+              ],
+            ),
+            if (oid != null) Padding(padding: const EdgeInsets.only(left: 4.0), child: Text(oid),),
+            if (note != null) Padding(padding: const EdgeInsets.only(left: 4.0), child: Text(note),),
+          ],
+        ),
       ));
-      // orderedItems.add(ListTile(
-      //   subtitle: Text(name),
-      //   trailing:   Text('$price€'),
-      // ));
-    }
-    if (invoice.totalPaymentDue != null) {
-      orderedItems.add(const Divider());
-      orderedItems.add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text('Total'),
-          Text(invoice.totalPaymentDue.toString()),
-        ],
-      )
-          // ListTile(
-          //   title: const Text('Total'),
-          //   trailing: Text(invoice.totalPaymentDue.toString()),
-          // )
-          );
     }
   }
+  // if (invoice.referencesOrder != null) {
+  //   for (var order in invoice.referencesOrder!) {
+  //     String? name = order.name ?? order.orderedItem?.name;
+  //     String? price = order.price ?? order.acceptedOffer?.price;
+  //     if (name == null || price == null) {
+  //       continue;
+  //     }
+  //     orderedItems.add(Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Text(name),
+  //         Text('$price€'),
+  //       ],
+  //     ));
+  //   }
+  //   // if (invoice.totalPaymentDue != null) {
+  //   //   orderedItems.add(const Divider());
+  //   //   orderedItems.add(Row(
+  //   //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //   //     children: [
+  //   //       const Text('Total'),
+  //   //       Text(invoice.totalPaymentDue.toString()),
+  //   //     ],
+  //   //   ));
+  //   // }
+  // }
   return orderedItems;
 }
 
@@ -626,6 +687,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                   PartyData.fromJson(widget.invoice.json, PartyType.seller),
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
+              invoiceId: widget.invoice.identifier,
             ),
             LeistungCard(
               subCardColor: subCardColor,
@@ -819,7 +881,7 @@ Widget? renderInvoiceHeader(Invoice invoice) {
   if (confirmationNumber != null) {
     var invoiceNr = ' $confirmationNumber';
     invoiceNrSpan = TextSpan(
-      text: invoiceNr,
+      text: 'Nr.$invoiceNr',
       // style: const TextStyle(fontWeight: FontWeight.bold),
     );
     invoiceNrRendered = Text.rich(invoiceNrSpan);
@@ -938,6 +1000,34 @@ String? renderNote(dynamic json) {
   return noteText;
 }
 
+String? priceInCurrency(String? price, String? currency) => (currency != null && price != null)? switch (currency) {
+  'EUR' => '$price $currency',
+  'USD' => '$currency $price',
+  _ => '$price $currency',
+} : price;
+
+Widget? renderAmountDue(dynamic json) {
+  if (json case Map<String, dynamic> map) {
+    if(map['bg_22_document_totals'] case Map<String, dynamic> bg22DocumentTotals) {
+      if (bg22DocumentTotals['bt_115_amount_due_for_payment'] case String bt115AmountDueForPayment){
+        String? currencyCode;
+        if (json['bt_6_vat_accounting_currency_code'] case String bt6VatAccountingCurrencyCode) {
+          currencyCode = bt6VatAccountingCurrencyCode;
+        }
+        var ammountDueInCurrency = priceInCurrency(bt115AmountDueForPayment, currencyCode);
+        if (ammountDueInCurrency != null) {
+          return Text.rich(
+            TextSpan(
+          text: ammountDueInCurrency,
+          style: const TextStyle(fontWeight: FontWeight.bold)),
+            style: const TextStyle(fontSize: 18),
+          );
+        }
+      }
+    }
+  }
+  return null;
+}
 Widget? renderAmount(Invoice invoice) {
   Widget? amountRendered;
   if (invoice.totalPaymentDue != null) {
@@ -972,31 +1062,44 @@ class LeistungCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget? amountRendered = renderAmount(invoice);
     const label = Text('Leistung');
-    if (!big) {
-      return Card(
-      elevation: 0,
-      color: subCardColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: descriptionPadding,
-            // todo what if small and no ammountRendered?
-            child: label,
-          ),
-          if (amountRendered != null) ListTile(
-            title: amountRendered,
-          )
-      ]
-      ),
-    );
-    }
+    // if (!big) {
+    //   return Card(
+    //   elevation: 0,
+    //   color: subCardColor,
+    //   child: Column(
+    //     crossAxisAlignment: CrossAxisAlignment.start,
+    //     children: [
+    //       Padding(
+    //         padding: descriptionPadding,
+    //         // todo what if small and no ammountRendered?
+    //         child: label,
+    //       ),
+    //       if (amountRendered != null) ListTile(
+    //         title: amountRendered,
+    //       )
+    //   ]
+    //   ),
+    // );
+    // }
     String? noteText = renderNote(cardData.markup);
     DeliveryInformation? deliveryInformation =
         renderDeliveryInformation(cardData.markup);
     String? invoicingPeriodText = deliveryInformation?.invoicingPeriodText;
-    List<Widget> orderedItems = renderOrderedItems(invoice);
+    List<Widget> orderedItems = renderOrderedItems(cardData.markup);
     var numberOfItems = invoice.referencesOrder?.length ?? 0;
+    var subtitle = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (noteText != null && noteText.isNotEmpty)
+          Text(
+            noteText,
+            maxLines: big ? null : 3,
+            overflow: TextOverflow.ellipsis,
+          ),
+        if (big && invoicingPeriodText != null) Text(invoicingPeriodText),
+        if (big && (numberOfItems) > 0) Text('$numberOfItems Rechnungsposten'),
+      ],
+    );
     return Card(
       elevation: 0,
       color: subCardColor,
@@ -1008,20 +1111,16 @@ class LeistungCard extends StatelessWidget {
             child: label,
           ),
           if (amountRendered != null)
-            ExpansionTile(
-              title: amountRendered,
-              subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (noteText != null) Text(noteText),
-                        if (invoicingPeriodText != null)
-                          Text(invoicingPeriodText),
-                        if ((numberOfItems) > 0)
-                          Text('$numberOfItems Rechnungsposten'),
-                      ],
-                    ),
-              children: orderedItems,
-            ),
+            big
+                ? ExpansionTile(
+                    title: amountRendered,
+                    subtitle: subtitle,
+                    children: orderedItems,
+                  )
+                : ListTile(
+                    title: amountRendered,
+                    subtitle: subtitle,
+                  ),
           // PotentialActionRow(potentialAction: potentialAction, postFunction: postFunction)
         ],
       ),
@@ -1033,9 +1132,11 @@ class PaidBadge extends StatelessWidget {
   const PaidBadge({
     super.key,
     required this.json,
+    this.big = true,
   });
 
   final Map<String, dynamic> json;
+  final bool big;
 
   @override
   Widget build(BuildContext context) {
@@ -1073,6 +1174,7 @@ class PaidBadge extends StatelessWidget {
                   : 'Offen',
           style: const TextStyle(
             color: Colors.white,
+            // fontSize: big? null : 3,
           ),
         ),
       ),
@@ -1103,7 +1205,7 @@ enum PartyType {
     contactKeys: ContactKeys(
       pointKey: 'bt_41_point',
       telephoneNumberKey: 'bt_42_telephone_number',
-      emailAddressKey: 'bt_41_point',
+      emailAddressKey: 'bt_43_email_address',
     ),
   ),
   buyer(
@@ -1341,15 +1443,15 @@ class PartyContact {
 }
 
 class PersonTile extends StatelessWidget {
-  const PersonTile({
-    super.key,
-    required this.title,
-    // required this.organization,
-    required this.personData,
-    required this.subCardColor,
-    required this.descriptionPadding,
-    this.big = true,
-  });
+  const PersonTile(
+      {super.key,
+      required this.title,
+      // required this.organization,
+      required this.personData,
+      required this.subCardColor,
+      required this.descriptionPadding,
+      this.big = true,
+      this.invoiceId});
 
   final String title;
 
@@ -1358,6 +1460,7 @@ class PersonTile extends StatelessWidget {
   final Color subCardColor;
   final EdgeInsetsGeometry descriptionPadding;
   final bool big;
+  final String? invoiceId; // for mailto
 
   @override
   Widget build(BuildContext context) {
@@ -1376,32 +1479,53 @@ class PersonTile extends StatelessWidget {
             ),
             if (tradingName != null) TextSpan(text: '\n($tradingName)')
           ]),
-          style: big? theme.textTheme.titleMedium : theme.textTheme.titleSmall
-      );
+          style:
+              big ? theme.textTheme.titleMedium : theme.textTheme.titleSmall);
       nameAbbr = name.split(' ').map((e) => e.substring(0, 1)).join();
       avatarBase = Text(
         nameAbbr,
-        style: big? null: theme.textTheme.labelSmall,
+        style: big ? null : theme.textTheme.labelSmall,
       );
     } else {
       avatarBase = Icon(
         Icons.person,
-        size: big? null :theme.textTheme.labelSmall?.fontSize,
+        size: big ? null : theme.textTheme.labelSmall?.fontSize,
       );
     }
     var avatar = CircleAvatar(
       backgroundColor: Colors.blue,
-      maxRadius: big? null : (theme.textTheme.labelSmall?.fontSize?? 16) + 4,
+      maxRadius: big ? null : (theme.textTheme.labelSmall?.fontSize ?? 16) + 4,
       child: avatarBase,
     );
     Widget? addressRendered;
     if (personData != null) {
       List<TextSpan> sellerSpans = [];
       var address = personData!.postalAddress;
-      sellerSpans.add(TextSpan(
-          text: '${address.addressLine1}\n'
-              '${address.addressLine2} ${address.addressLine3}'
-              '${address.postalCode} ${address.city} ${address.countryCode}'));
+      var line1Buffer = StringBuffer();
+      line1Buffer.write(address.addressLine1 ?? '');
+      var line2Buffer = StringBuffer();
+      line2Buffer.writeAll(
+          [address.addressLine2 ?? '', address.addressLine3 ?? ''], ' ');
+      var line3Buffer = StringBuffer();
+      line3Buffer.writeAll([
+        address.postalCode ?? '',
+        address.city ?? '',
+        address.countryCode ?? ''
+      ], ' ');
+      var addressBuffer = StringBuffer();
+      var line1 = line1Buffer.toString().trim();
+      if (line1.isNotEmpty) {
+        addressBuffer.writeln(line1);
+      }
+      var line2 = line2Buffer.toString().trim();
+      if (line2.isNotEmpty) {
+        addressBuffer.writeln(line2);
+      }
+      var line3 = line3Buffer.toString().trim();
+      if (line3.isNotEmpty) {
+        addressBuffer.write(line3);
+      }
+      sellerSpans.add(TextSpan(text: addressBuffer.toString().trim()));
       addressRendered = Text.rich(TextSpan(children: sellerSpans));
     }
 
@@ -1416,40 +1540,74 @@ class PersonTile extends StatelessWidget {
             padding: descriptionPadding,
             child: Text(title, style: TextStyle(color: theme.hintColor)),
           ),
-          big? ExpansionTile(
-            leading: avatar,
-            title: nameRendered ?? const Text(''),
-            children:[
-              ListTile(
-                title: addressRendered,
-              ),
-            ],
-          ) : ListTile(
-            leading: avatar,
-            title: nameRendered ?? const Text(''),
-          ),
-          if (big) Align(
-            alignment: Alignment.topRight,
-            child: Wrap(
-              alignment: WrapAlignment.end,
-              children: <Widget>[
-                IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.add_circle)),
-                if (personData?.contact.telephoneNumber case String telephone)
-                  IconButton(
-                      onPressed: () {
-                        launchUrl(Uri(scheme: 'tel', path: telephone));
-                      },
-                      icon: const Icon(Icons.call)),
-                if (personData?.contact.emailAddress case String email)
-                  IconButton(
-                      onPressed: () {
-                        launchUrl(Uri(scheme: 'mailto', path: email));
-                      },
-                      icon: const Icon(Icons.message)),
-              ],
-            ),
-          ),
+          big
+              ? ExpansionTile(
+                  leading: avatar,
+                  title: nameRendered ?? const Text(''),
+                  expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (personData?.contact.telephoneNumber
+                        case String telephone)
+                      InkWell(
+                        onTap: () {
+                          launchUrl(Uri(scheme: 'tel', path: telephone));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(telephone),
+                        ),
+                      ),
+                    if (personData?.contact.emailAddress case String email)
+                      InkWell(
+                        onTap: () {
+                          launchUrl(Uri(
+                            scheme: 'mailto',
+                            path: email,
+                            queryParameters: (invoiceId != null)
+                                ? {'subject': invoiceId}
+                                : null,
+                          ));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(email),
+                        ),
+                      ),
+                    ListTile(
+                      title: addressRendered,
+                    ),
+                  ],
+                )
+              : ListTile(
+                  leading: avatar,
+                  title: nameRendered ?? const Text(''),
+                ),
+          // if (big) Align(
+          //   alignment: Alignment.topRight,
+          //   child: Wrap(
+          //     alignment: WrapAlignment.end,
+          //     children: <Widget>[
+          //       IconButton(
+          //           onPressed: () {}, icon: const Icon(Icons.add_circle)),
+          //       if (personData?.contact.telephoneNumber case String telephone)
+          //         IconButton(
+          //             onPressed: () {
+          //               launchUrl(Uri(scheme: 'tel', path: telephone));
+          //             },
+          //             icon: const Icon(Icons.call)),
+          //       if (personData?.contact.emailAddress case String email)
+          //         IconButton(
+          //             onPressed: () {
+          //               launchUrl(Uri(
+          //                 scheme: 'mailto',
+          //                 path: email,
+          //                 queryParameters: (invoiceId != null )? {'subject': invoiceId} : null,
+          //               ));
+          //             },
+          //             icon: const Icon(Icons.email)),
+          //     ],
+          //   ),
+          // ),
           // PotentialActionRow(potentialAction: potentialAction, postFunction: postFunction)
         ],
       ),
