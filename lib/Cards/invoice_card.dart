@@ -1,5 +1,9 @@
 library invoice_card;
 
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/mail_header.dart';
 
@@ -469,8 +473,8 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
                     bt125Content, bt1251MimeCode, fileName);
               },
               icon: const Icon(Icons.share, size: 16)),
-        IconButton(
-            onPressed: () {}, icon: const Icon(Icons.download, size: 16)),
+        if (bt125Content is String && bt125Content.isNotEmpty) IconButton(
+            onPressed: () => saveB64File(fileName, bt125Content), icon: const Icon(Icons.download, size: 16)),
         IconButton(
             onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
         IconButton(
@@ -499,8 +503,8 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
                     attachment.data, attachment.mimeType, filename);
               },
               icon: const Icon(Icons.share, size: 16)),
-        IconButton(
-            onPressed: () {}, icon: const Icon(Icons.download, size: 16)),
+        if (attachment.data != null) IconButton(
+             onPressed: () => saveFile(filename, attachment.data!), icon: const Icon(Icons.download, size: 16)),
         IconButton(
             onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
         IconButton(
@@ -522,6 +526,20 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
   }
 
   return attachments;
+}
+
+saveB64File(String? fileName, String encodedContent) => saveFile(fileName, base64Decode(encodedContent));
+
+saveFile(String? fileName, Uint8List content) async {
+  String? _ = await FilePicker.platform.saveFile(
+    // dialogTitle: 'Please select an output file:',
+    fileName: fileName ?? 'attachment',
+    bytes: content,
+  );
+  //
+  // if (outputFile == null) {
+  //   // User canceled the picker
+  // }
 }
 
 class DetailInvoicePage extends StatefulWidget {
@@ -838,7 +856,13 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                             },
                             icon: const Icon(Icons.share)),
                       IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.download)),
+                          onPressed: () {
+                            // todo this does not work yet
+                            if (widget.cardData.sourceFile?.data case Uint8List data) {
+                              String? fileName = widget.cardData.sourceFile?.filename;
+                              saveFile(fileName, data);
+                            }
+                          }, icon: const Icon(Icons.download)),
                       IconButton(
                           onPressed: () {},
                           icon: const Icon(Icons.cloud_upload)),

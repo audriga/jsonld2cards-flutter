@@ -29,6 +29,7 @@ dependencies:
   simple_audio: ^2.0.1
   video_player: ^2.9.2
   enough_mail: ^2.1.6
+  file_picker: ^8.1.4
 
 dev_dependencies:
   flutter_test:
