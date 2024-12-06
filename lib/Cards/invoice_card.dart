@@ -42,15 +42,15 @@ class _InvoiceCardState extends State<InvoiceCard> {
     // String? titleText;
     // String? subtitleText;
     Widget? leadingImage;
-    var confirmationNumber = invoice.identifier ?? invoice.confirmationNumber;
-    List<TextSpan> titleTextSpans = createTitleTextSpans(invoice);
+    // var confirmationNumber = invoice.identifier ?? invoice.confirmationNumber;
+    List<TextSpan> titleTextSpans = <TextSpan>[const TextSpan(text: 'Rechnung')]; //createTitleTextSpans(invoice);
 
-    List<TextSpan> subTitleTextSpans =
-        createSubtitleTextSpans(confirmationNumber, invoice);
+    // List<TextSpan> subTitleTextSpans =
+    //     createSubtitleTextSpans(confirmationNumber, invoice);
 
-    Widget? sellerAndOrCustomer = sellerAndOrCustomerSpansWrapped(invoice);
+    // Widget? sellerAndOrCustomer = sellerAndOrCustomerSpansWrapped(invoice);
 
-    List<Widget> orderedItems = renderOrderedItems(invoice);
+    // List<Widget> orderedItems = renderOrderedItems(invoice);
 
     // Widget? payee;
     // if (invoice.paymentMethod != null && invoice.paymentMethodId != null) {
@@ -109,8 +109,13 @@ class _InvoiceCardState extends State<InvoiceCard> {
     // subtitleText = subTitleTextBuffer.toString().trim();
     // subTitleTextSpans.first.text?.trimLeft();
     // subTitleTextSpans.last.text?.trimRight();
+    Widget? invoiceHeader = renderInvoiceHeader(invoice);
 
-    var numberOfItems = invoice.referencesOrder?.length ?? 0;
+    // var numberOfItems = invoice.referencesOrder?.length ?? 0;
+    var theme = Theme.of(context);
+    var descriptionPadding = const EdgeInsets.fromLTRB(8.0, 8.0, 0, 0);
+    var subCardColor = theme.canvasColor;
+    /// If this should blend in, use theme.cardTheme.color ?? theme.colorScheme.surfaceContainerLow;
     Widget cardContent = InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -147,19 +152,35 @@ class _InvoiceCardState extends State<InvoiceCard> {
                 // const Spacer(flex: 1,),
                 Icon(expanded ? Icons.expand_less : Icons.expand_more)
               ]),
+              if (invoiceHeader != null) invoiceHeader,
               if (expanded && invoice.description != null)
                 Text(
                   invoice.descriptionString!,
                   softWrap: true,
                 ),
-              Text.rich(
-                  textAlign: TextAlign.left,
-                  TextSpan(children: subTitleTextSpans)),
-              if (expanded && sellerAndOrCustomer != null) sellerAndOrCustomer,
-              if (expanded)
-                ...orderedItems
-              else if ((numberOfItems) > 0)
-                Text('$numberOfItems Items'),
+              PersonTile(
+                title: 'Seller',
+                personData:
+                PartyData.fromJson(invoice.json, PartyType.seller),
+                subCardColor: subCardColor,
+                descriptionPadding: descriptionPadding,
+                big: false
+              ),
+              LeistungCard(
+                subCardColor: subCardColor,
+                descriptionPadding: descriptionPadding,
+                cardData: widget.cardData,
+                invoice: invoice,
+                big: false
+              ),
+              // Text.rich(
+              //     textAlign: TextAlign.left,
+              //     TextSpan(children: subTitleTextSpans)),
+              // if (expanded && sellerAndOrCustomer != null) sellerAndOrCustomer,
+              // if (expanded)
+              //   ...orderedItems
+              // else if ((numberOfItems) > 0)
+              //   Text('$numberOfItems Items'),
             ],
           )),
     );
@@ -181,6 +202,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
     );
   }
 }
+// todo we are temporarily breaking invoices that don't have xre format data.
 
 Widget? sellerAndOrCustomerSpansWrapped(Invoice invoice) {
   Widget? seller;
@@ -949,6 +971,26 @@ class LeistungCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? amountRendered = renderAmount(invoice);
+    const label = Text('Leistung');
+    if (!big) {
+      return Card(
+      elevation: 0,
+      color: subCardColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: descriptionPadding,
+            // todo what if small and no ammountRendered?
+            child: label,
+          ),
+          if (amountRendered != null) ListTile(
+            title: amountRendered,
+          )
+      ]
+      ),
+    );
+    }
     String? noteText = renderNote(cardData.markup);
     DeliveryInformation? deliveryInformation =
         renderDeliveryInformation(cardData.markup);
@@ -963,14 +1005,12 @@ class LeistungCard extends StatelessWidget {
         children: [
           Padding(
             padding: descriptionPadding,
-            // todo what if small and no ammountRendered?
-            child: const Text('Leistung'),
+            child: label,
           ),
           if (amountRendered != null)
             ExpansionTile(
               title: amountRendered,
-              subtitle: big
-                  ? Column(
+              subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (noteText != null) Text(noteText),
@@ -979,8 +1019,7 @@ class LeistungCard extends StatelessWidget {
                         if ((numberOfItems) > 0)
                           Text('$numberOfItems Rechnungsposten'),
                       ],
-                    )
-                  : null,
+                    ),
               children: orderedItems,
             ),
           // PotentialActionRow(potentialAction: potentialAction, postFunction: postFunction)
@@ -1309,6 +1348,7 @@ class PersonTile extends StatelessWidget {
     required this.personData,
     required this.subCardColor,
     required this.descriptionPadding,
+    this.big = true,
   });
 
   final String title;
@@ -1317,6 +1357,7 @@ class PersonTile extends StatelessWidget {
   final PartyData? personData;
   final Color subCardColor;
   final EdgeInsetsGeometry descriptionPadding;
+  final bool big;
 
   @override
   Widget build(BuildContext context) {
@@ -1335,14 +1376,22 @@ class PersonTile extends StatelessWidget {
             ),
             if (tradingName != null) TextSpan(text: '\n($tradingName)')
           ]),
-          style: theme.textTheme.titleMedium);
+          style: big? theme.textTheme.titleMedium : theme.textTheme.titleSmall
+      );
       nameAbbr = name.split(' ').map((e) => e.substring(0, 1)).join();
-      avatarBase = Text(nameAbbr);
+      avatarBase = Text(
+        nameAbbr,
+        style: big? null: theme.textTheme.labelSmall,
+      );
     } else {
-      avatarBase = const Icon(Icons.person);
+      avatarBase = Icon(
+        Icons.person,
+        size: big? null :theme.textTheme.labelSmall?.fontSize,
+      );
     }
     var avatar = CircleAvatar(
       backgroundColor: Colors.blue,
+      maxRadius: big? null : (theme.textTheme.labelSmall?.fontSize?? 16) + 4,
       child: avatarBase,
     );
     Widget? addressRendered;
@@ -1367,16 +1416,19 @@ class PersonTile extends StatelessWidget {
             padding: descriptionPadding,
             child: Text(title, style: TextStyle(color: theme.hintColor)),
           ),
-          ExpansionTile(
+          big? ExpansionTile(
             leading: avatar,
             title: nameRendered ?? const Text(''),
-            children: [
+            children:[
               ListTile(
                 title: addressRendered,
               ),
             ],
+          ) : ListTile(
+            leading: avatar,
+            title: nameRendered ?? const Text(''),
           ),
-          Align(
+          if (big) Align(
             alignment: Alignment.topRight,
             child: Wrap(
               alignment: WrapAlignment.end,
