@@ -42,154 +42,13 @@ class _InvoiceCardState extends State<InvoiceCard> {
     // String? titleText;
     // String? subtitleText;
     Widget? leadingImage;
-    var titleTextBuffer = StringBuffer('');
-    var titleTextSpans = <TextSpan>[];
-    if (invoice.broker?.name != null) {
-      var brokerName = '${invoice.broker?.name} ';
-      titleTextBuffer.write(brokerName);
-      titleTextSpans.add(TextSpan(
-          text: brokerName,
-          style: const TextStyle(fontWeight: FontWeight.bold)));
-    }
-    if (invoice.provider?.name != null) {
-      var providerName = '${invoice.provider?.name} ';
-      titleTextBuffer.write(providerName);
-      titleTextSpans.add(TextSpan(
-          text: providerName,
-          style: const TextStyle(fontWeight: FontWeight.bold)));
-    }
-    titleTextBuffer.write('Invoice');
-    titleTextSpans.add(const TextSpan(text: 'Invoice'));
     var confirmationNumber = invoice.identifier ?? invoice.confirmationNumber;
-    if (confirmationNumber != null) {
-      var invoiceNr = ' $confirmationNumber';
-      titleTextBuffer.write(invoiceNr);
-      titleTextSpans.add(TextSpan(
-          text: invoiceNr,
-          style: const TextStyle(fontWeight: FontWeight.bold)));
-    }
-    if (invoice.paymentStatus != null) {
-      var paymentStatus = ': ${invoice.paymentStatus}';
-      titleTextBuffer.write(paymentStatus);
-      titleTextSpans.add(TextSpan(
-        text: paymentStatus,
-      ));
-    }
+    List<TextSpan> titleTextSpans = createTitleTextSpans(invoice);
 
-    if (invoice.dateIssued != null) {
-      var dateIssued = invoice.dateIssued;
-      titleTextSpans.add(TextSpan(
-        text: ' ${dateIssued?.day}.${dateIssued?.month}.${dateIssued?.year} ',
-      ));
-    }
+    List<TextSpan> subTitleTextSpans =
+        createSubtitleTextSpans(confirmationNumber, invoice);
 
-    var subTitleTextBuffer = StringBuffer();
-    var subTitleTextSpans = <TextSpan>[];
-    if (confirmationNumber != null) {
-      var confirmationNr = 'Confirmation number: $confirmationNumber\n';
-      subTitleTextBuffer.write(confirmationNr);
-      subTitleTextSpans.add(TextSpan(
-        text: confirmationNr,
-      ));
-    }
-    if (invoice.accountId != null) {
-      var contractNr = 'Contract Number: ${invoice.accountId}\n';
-      subTitleTextBuffer.write(contractNr);
-      subTitleTextSpans.add(TextSpan(
-        text: contractNr,
-      ));
-    }
-    if (invoice.purchase?.orderNumber case String orderNr) {
-      var orderNrText = 'Order Number: $orderNr\n';
-      subTitleTextBuffer.write(orderNrText);
-      subTitleTextSpans.add(TextSpan(
-        text: orderNrText,
-      ));
-    }
-    var due = invoice.paymentDue;
-    if (due != null) {
-      var dueText = 'Due on ${due.day}.${due.month}.${due.year}\n';
-      subTitleTextBuffer.write(dueText);
-      subTitleTextSpans.add(TextSpan(
-        text: dueText,
-      ));
-    }
-    if (invoice.minimumPaymentDue?.price != null) {
-      var minimumDue =
-          'Minimum payment due: ${invoice.minimumPaymentDue?.price}\n';
-      subTitleTextBuffer.write(minimumDue);
-      subTitleTextSpans.add(TextSpan(
-        text: minimumDue,
-      ));
-    }
-    if (invoice.totalPaymentDue != null) {
-      var invoiceAmountDescr = 'Invoice Amount: ';
-      subTitleTextBuffer.write(invoiceAmountDescr);
-      subTitleTextSpans.add(TextSpan(
-        text: invoiceAmountDescr,
-      ));
-      var invoiceAmountValue = invoice.totalPaymentDue.toString();
-      subTitleTextBuffer.write(invoiceAmountValue);
-      subTitleTextSpans.add(TextSpan(
-          text: invoiceAmountValue,
-          style: const TextStyle(fontWeight: FontWeight.bold)));
-    }
-
-    var paymentDueDate = invoice.paymentDueDate;
-    if (paymentDueDate != null) {
-      bool overdue = paymentDueDate.isBefore(DateTime.now());
-      subTitleTextSpans.add(TextSpan(
-          text:
-              '\nDue ${paymentDueDate.day}.${paymentDueDate.month}.${paymentDueDate.year}', // todo forced format
-          style: TextStyle(
-            color: overdue ? Colors.red : Colors.green,
-          )));
-    }
-
-    Widget? seller;
-    if (invoice.provider != null) {
-      List<TextSpan> sellerSpans = [];
-      sellerSpans.add(const TextSpan(text: 'Seller: '));
-      if (invoice.provider!.name != null) {
-        sellerSpans.add(TextSpan(
-            text: '${invoice.provider!.name}\n',
-            style: const TextStyle(fontWeight: FontWeight.bold)));
-      }
-      if (invoice.provider!.address != null) {
-        var address = invoice.provider!.address!;
-        sellerSpans.add(TextSpan(
-            text: '\t\t${address.streetAddress}\n'
-                '\t\t${address.postalCode} ${address.addressLocality} ${address.addressCountry}'));
-      }
-      seller = Text.rich(TextSpan(children: sellerSpans));
-    }
-
-    Widget? customer;
-    if (invoice.customer != null) {
-      List<TextSpan> customerSpans = [];
-      customerSpans.add(const TextSpan(text: 'Customer: '));
-      if (invoice.customer!.name != null) {
-        customerSpans.add(TextSpan(
-            text: '${invoice.customer!.name}\n',
-            style: const TextStyle(fontWeight: FontWeight.bold)));
-      }
-      if (invoice.customer!.address != null) {
-        var address = invoice.customer!.address!;
-        customerSpans.add(TextSpan(
-            text: '\t\t${address.streetAddress}\n'
-                '\t\t${address.postalCode} ${address.addressLocality} ${address.addressCountry}'));
-      }
-      customer = Text.rich(TextSpan(children: customerSpans));
-    }
-    Widget? sellerAndOrCustomer;
-    if (seller != null && customer != null) {
-      sellerAndOrCustomer = Wrap(
-        alignment: WrapAlignment.spaceEvenly,
-        children: [seller, customer],
-      );
-    } else {
-      sellerAndOrCustomer = seller ?? customer;
-    }
+    Widget? sellerAndOrCustomer = sellerAndOrCustomerSpansWrapped(invoice);
 
     List<Widget> orderedItems = renderOrderedItems(invoice);
 
@@ -301,7 +160,6 @@ class _InvoiceCardState extends State<InvoiceCard> {
                 ...orderedItems
               else if ((numberOfItems) > 0)
                 Text('$numberOfItems Items'),
-              // if (payee != null) payee,
             ],
           )),
     );
@@ -322,6 +180,148 @@ class _InvoiceCardState extends State<InvoiceCard> {
       cardData: widget.cardData,
     );
   }
+}
+
+Widget? sellerAndOrCustomerSpansWrapped(Invoice invoice) {
+  Widget? seller;
+  if (invoice.provider != null) {
+    List<TextSpan> sellerSpans = [];
+    sellerSpans.add(const TextSpan(text: 'Seller: '));
+    if (invoice.provider!.name != null) {
+      sellerSpans.add(TextSpan(
+          text: '${invoice.provider!.name}\n',
+          style: const TextStyle(fontWeight: FontWeight.bold)));
+    }
+    if (invoice.provider!.address != null) {
+      var address = invoice.provider!.address!;
+      sellerSpans.add(TextSpan(
+          text: '\t\t${address.streetAddress}\n'
+              '\t\t${address.postalCode} ${address.addressLocality} ${address.addressCountry}'));
+    }
+    seller = Text.rich(TextSpan(children: sellerSpans));
+  }
+  Widget? customer;
+  if (invoice.customer != null) {
+    List<TextSpan> customerSpans = [];
+    customerSpans.add(const TextSpan(text: 'Customer: '));
+    if (invoice.customer!.name != null) {
+      customerSpans.add(TextSpan(
+          text: '${invoice.customer!.name}\n',
+          style: const TextStyle(fontWeight: FontWeight.bold)));
+    }
+    if (invoice.customer!.address != null) {
+      var address = invoice.customer!.address!;
+      customerSpans.add(TextSpan(
+          text: '\t\t${address.streetAddress}\n'
+              '\t\t${address.postalCode} ${address.addressLocality} ${address.addressCountry}'));
+    }
+    customer = Text.rich(TextSpan(children: customerSpans));
+  }
+  Widget? sellerAndOrCustomer;
+  if (seller != null && customer != null) {
+    sellerAndOrCustomer = Wrap(
+      alignment: WrapAlignment.spaceEvenly,
+      children: [seller, customer],
+    );
+  } else {
+    sellerAndOrCustomer = seller ?? customer;
+  }
+  return sellerAndOrCustomer;
+}
+
+List<TextSpan> createSubtitleTextSpans(
+    String? confirmationNumber, Invoice invoice) {
+  var subTitleTextSpans = <TextSpan>[];
+  if (confirmationNumber != null) {
+    var confirmationNr = 'Confirmation number: $confirmationNumber\n';
+    subTitleTextSpans.add(TextSpan(
+      text: confirmationNr,
+    ));
+  }
+  if (invoice.accountId != null) {
+    var contractNr = 'Contract Number: ${invoice.accountId}\n';
+    subTitleTextSpans.add(TextSpan(
+      text: contractNr,
+    ));
+  }
+  if (invoice.purchase?.orderNumber case String orderNr) {
+    var orderNrText = 'Order Number: $orderNr\n';
+    subTitleTextSpans.add(TextSpan(
+      text: orderNrText,
+    ));
+  }
+  var due = invoice.paymentDue;
+  if (due != null) {
+    var dueText = 'Due on ${due.day}.${due.month}.${due.year}\n';
+    subTitleTextSpans.add(TextSpan(
+      text: dueText,
+    ));
+  }
+  if (invoice.minimumPaymentDue?.price != null) {
+    var minimumDue =
+        'Minimum payment due: ${invoice.minimumPaymentDue?.price}\n';
+    subTitleTextSpans.add(TextSpan(
+      text: minimumDue,
+    ));
+  }
+  if (invoice.totalPaymentDue != null) {
+    var invoiceAmountDescr = 'Invoice Amount: ';
+    subTitleTextSpans.add(TextSpan(
+      text: invoiceAmountDescr,
+    ));
+    var invoiceAmountValue = invoice.totalPaymentDue.toString();
+    subTitleTextSpans.add(TextSpan(
+        text: invoiceAmountValue,
+        style: const TextStyle(fontWeight: FontWeight.bold)));
+  }
+
+  var paymentDueDate = invoice.paymentDueDate;
+  if (paymentDueDate != null) {
+    bool overdue = paymentDueDate.isBefore(DateTime.now());
+    subTitleTextSpans.add(TextSpan(
+        text:
+            '\nDue ${paymentDueDate.day}.${paymentDueDate.month}.${paymentDueDate.year}', // todo forced format
+        style: TextStyle(
+          color: overdue ? Colors.red : Colors.green,
+        )));
+  }
+  return subTitleTextSpans;
+}
+
+List<TextSpan> createTitleTextSpans(Invoice invoice) {
+  var titleTextSpans = <TextSpan>[];
+  if (invoice.broker?.name != null) {
+    var brokerName = '${invoice.broker?.name} ';
+    titleTextSpans.add(TextSpan(
+        text: brokerName, style: const TextStyle(fontWeight: FontWeight.bold)));
+  }
+  if (invoice.provider?.name != null) {
+    var providerName = '${invoice.provider?.name} ';
+    titleTextSpans.add(TextSpan(
+        text: providerName,
+        style: const TextStyle(fontWeight: FontWeight.bold)));
+  }
+  titleTextSpans.add(const TextSpan(text: 'Rechnung'));
+// if (confirmationNumber != null) {
+//   var invoiceNr = ' $confirmationNumber';
+//   titleTextSpans.add(TextSpan(
+//       text: invoiceNr,
+//       style: const TextStyle(fontWeight: FontWeight.bold)));
+// }
+  if (invoice.paymentStatus != null) {
+    var paymentStatus = ': ${invoice.paymentStatus}';
+    titleTextSpans.add(TextSpan(
+      text: paymentStatus,
+    ));
+  }
+
+  if (invoice.dateIssued != null) {
+    var dateIssued = invoice.dateIssued;
+    titleTextSpans.add(TextSpan(
+      text: ' ${dateIssued?.day}.${dateIssued?.month}.${dateIssued?.year} ',
+    ));
+  }
+  return titleTextSpans;
 }
 
 List<Widget> renderOrderedItems(Invoice invoice) {
@@ -477,61 +477,12 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       }
     }
 
-    Widget? amountRendered;
-    if (widget.invoice.totalPaymentDue != null) {
-      var invoiceAmountValue = widget.invoice.totalPaymentDue.toString();
-      amountRendered = Text.rich(
-        TextSpan(
-            text: invoiceAmountValue,
-            style: const TextStyle(fontWeight: FontWeight.bold)),
-        style: const TextStyle(fontSize: 18),
-      );
-    }
+    Widget? amountRendered = renderAmount(widget.invoice);
 
-    List<Widget> orderedItems = renderOrderedItems(widget.invoice);
-    var numberOfItems = widget.invoice.referencesOrder?.length ?? 0;
     List<Widget> attachments =
         renderAttachments(widget.invoice, widget.cardData);
     var numberOfAttachments = attachments.length; // ?? 0;
-    var confirmationNumber =
-        widget.invoice.identifier ?? widget.invoice.confirmationNumber;
-    Widget? invoiceNrRendered;
-    TextSpan? invoiceNrSpan;
-    if (confirmationNumber != null) {
-      var invoiceNr = ' $confirmationNumber';
-      invoiceNrSpan = TextSpan(
-        text: invoiceNr,
-        // style: const TextStyle(fontWeight: FontWeight.bold),
-      );
-      invoiceNrRendered = Text.rich(invoiceNrSpan);
-    }
-    Widget? invoiceDateRendered;
-    TextSpan? invoiceDateSpan;
-    if (widget.invoice.dateIssued != null) {
-      var dateIssued = widget.invoice.dateIssued;
-      invoiceDateSpan = TextSpan(
-        text: '${dateIssued?.day}.${dateIssued?.month}.${dateIssued?.year} ',
-      );
-      invoiceDateRendered = Text.rich(invoiceDateSpan);
-    } else if (widget.invoice.json['bt_2_invoice_issue_date']
-        case String dateIssuedText) {
-      var dateIssued = DateTime.tryParse(dateIssuedText);
-      if (dateIssued != null) {
-        invoiceDateSpan = TextSpan(
-          text: '${dateIssued.day}.${dateIssued.month}.${dateIssued.year} ',
-        );
-      } else {
-        invoiceDateSpan = TextSpan(text: dateIssuedText);
-      }
-    }
-    Widget? invoiceNrPlusDateRendered;
-    if (invoiceNrSpan != null && invoiceDateSpan != null) {
-      invoiceNrPlusDateRendered = Text.rich(TextSpan(children: [
-        invoiceNrSpan,
-        const TextSpan(text: ' vom '),
-        invoiceDateSpan
-      ]));
-    }
+    Widget? invoiceHeader = renderInvoiceHeader(widget.invoice);
     // Widget? paymentStatusRendered;//todo?
     // if (widget.invoice.paymentStatus != null) {
     //   var paymentStatus = ': ${widget.invoice.paymentStatus}';
@@ -540,45 +491,12 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     //   ));
     // }
 
-    String? invoicingPeriodText;
-    String? deliveryDateText;
-    String? deliveryPartyName;
-    Widget? deliveryAddressDetails;
-    if (widget.invoice.json['bg_13_delivery_information']
-        case Map<String, dynamic> bg13DeliveryInformation) {
-      if (bg13DeliveryInformation['bg_14_invoicing_period']
-          case Map<String, dynamic> invoicingPeriod) {
-        var startDate = invoicingPeriod['bt_73_start_date'];
-        var endDate = invoicingPeriod['bt_74_end_date'];
-        // todo I think I should do some date parsing here?
-        if (startDate != null && endDate != null) {
-          invoicingPeriodText = 'Leistungszeitraum von $startDate bis $endDate';
-        } else if (startDate != null) {
-          invoicingPeriodText = 'Leistungszeitraum ab $startDate';
-        } else if (endDate != null) {
-          invoicingPeriodText = 'Leistungszeitraum bis $endDate';
-        }
-      }
-      if (bg13DeliveryInformation['bt_72_actual_delivery_date']
-          case String bt72ActualDeliveryDate) {
-        deliveryDateText = bt72ActualDeliveryDate;
-      }
-      if (bg13DeliveryInformation['bt_70_deliver_to_party_name']
-          case String bt70DeliverToPartyName) {
-        deliveryPartyName = bt70DeliverToPartyName;
-      }
-      if (bg13DeliveryInformation['bg_15_deliver_to_address']
-          case Map<String, dynamic> bg15DeliverToAddress) {
-        var bt75AddressLine1 = bg15DeliverToAddress['bt_75_address_line1'];
-        var bt76AddressLine2 = bg15DeliverToAddress['bt_76_address_line2'];
-        var bt77City = bg15DeliverToAddress['bt_77_city'];
-        var bt78PostalCode = bg15DeliverToAddress['bt_78_postal_code'];
-        var bt80CountryCode = bg15DeliverToAddress['bt_80_country_code'];
-        deliveryAddressDetails = Text('$bt75AddressLine1\n'
-            '$bt76AddressLine2\n'
-            '$bt78PostalCode $bt77City ($bt80CountryCode)');
-      }
-    }
+    DeliveryInformation? deliveryInformation =
+        renderDeliveryInformation(widget.cardData.markup);
+    String? deliveryDateText = deliveryInformation?.deliveryDateText;
+    String? deliveryPartyName = deliveryInformation?.deliveryPartyName;
+    Widget? deliveryAddressDetails =
+        deliveryInformation?.deliveryAddressDetails;
 
     Text? deliveryToRendered;
     Text? deliveryDateRendered;
@@ -603,16 +521,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
         ]));
       }
     }
-    String? noteText;
-    if (widget.invoice.json['bg_1_invoice_note'] case List bg1InvoiceNote) {
-      noteText = bg1InvoiceNote
-          .whereType<Map<String, dynamic>>()
-          .map(
-            (e) => e['bt_22_content'],
-          )
-          .whereType<String>()
-          .join('\n');
-    }
+    // String? noteText = renderNote(widget.cardData.markup);
     String? paymentMeansText;
     Widget? paymentDetails;
     if (widget.invoice.json['bg_16_payment_instructions']
@@ -686,9 +595,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                   fontSize: 22,
                 ),
               ),
-              subtitle: invoiceNrPlusDateRendered ??
-                  invoiceNrRendered ??
-                  invoiceDateRendered,
+              subtitle: invoiceHeader,
               trailing: PaidBadge(json: widget.invoice.json),
             ),
             PersonTile(
@@ -698,34 +605,11 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
             ),
-            Card(
-              elevation: 0,
-              color: subCardColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: descriptionPadding,
-                    child: const Text('Leistung'),
-                  ),
-                  if (amountRendered != null)
-                    ExpansionTile(
-                      title: amountRendered,
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (noteText != null) Text(noteText),
-                          if (invoicingPeriodText != null)
-                            Text(invoicingPeriodText),
-                          if ((numberOfItems) > 0)
-                            Text('$numberOfItems Rechnungsposten'),
-                        ],
-                      ),
-                      children: orderedItems,
-                    ),
-                  // PotentialActionRow(potentialAction: potentialAction, postFunction: postFunction)
-                ],
-              ),
+            LeistungCard(
+              subCardColor: subCardColor,
+              descriptionPadding: descriptionPadding,
+              cardData: widget.cardData,
+              invoice: widget.invoice,
             ),
             Card(
               elevation: 0,
@@ -815,24 +699,25 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 ],
               ),
             ),
-            if (numberOfAttachments > 0) Card(
-              elevation: 0,
-              color: subCardColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: descriptionPadding,
-                    child: Text('Anhänge',
-                        style: TextStyle(color: theme.hintColor)),
-                  ),
+            if (numberOfAttachments > 0)
+              Card(
+                elevation: 0,
+                color: subCardColor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: descriptionPadding,
+                      child: Text('Anhänge',
+                          style: TextStyle(color: theme.hintColor)),
+                    ),
                     ExpansionTile(
                       title: Text('$numberOfAttachments Anhänge'),
                       children: attachments,
                     ),
-                ],
+                  ],
+                ),
               ),
-            ),
             Row(
               children: [
                 Align(
@@ -881,17 +766,225 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 ),
               ],
             ),
-
-            if (widget.cardData.message != null && forwardAddresses != null && globalSMLAppContext?.forwardEmailCallback != null) FutureBuilder<List<String>>(future: forwardAddresses, builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return SplitButton(options: snapshot.data ?? [], onTap: (e) => globalSMLAppContext!.forwardEmailCallback!(e, widget.cardData.message!),);
-              } else {
-                return Container();
-              }
-            },
-            )
+            if (widget.cardData.message != null &&
+                forwardAddresses != null &&
+                globalSMLAppContext?.forwardEmailCallback != null)
+              FutureBuilder<List<String>>(
+                future: forwardAddresses,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return SplitButton(
+                      options: snapshot.data ?? [],
+                      onTap: (e) => globalSMLAppContext!.forwardEmailCallback!(
+                          e, widget.cardData.message!),
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+              )
           ],
         ),
+      ),
+    );
+  }
+}
+
+Widget? renderInvoiceHeader(Invoice invoice) {
+  var confirmationNumber = invoice.identifier ?? invoice.confirmationNumber;
+  Widget? invoiceNrRendered;
+  TextSpan? invoiceNrSpan;
+  if (confirmationNumber != null) {
+    var invoiceNr = ' $confirmationNumber';
+    invoiceNrSpan = TextSpan(
+      text: invoiceNr,
+      // style: const TextStyle(fontWeight: FontWeight.bold),
+    );
+    invoiceNrRendered = Text.rich(invoiceNrSpan);
+  }
+  Widget? invoiceDateRendered;
+  TextSpan? invoiceDateSpan;
+  if (invoice.dateIssued != null) {
+    var dateIssued = invoice.dateIssued;
+    invoiceDateSpan = TextSpan(
+      text: '${dateIssued?.day}.${dateIssued?.month}.${dateIssued?.year} ',
+    );
+    invoiceDateRendered = Text.rich(invoiceDateSpan);
+  } else if (invoice.json['bt_2_invoice_issue_date']
+      case String dateIssuedText) {
+    var dateIssued = DateTime.tryParse(dateIssuedText);
+    if (dateIssued != null) {
+      invoiceDateSpan = TextSpan(
+        text: '${dateIssued.day}.${dateIssued.month}.${dateIssued.year} ',
+      );
+    } else {
+      invoiceDateSpan = TextSpan(text: dateIssuedText);
+    }
+  }
+  Widget? invoiceNrPlusDateRendered;
+  if (invoiceNrSpan != null && invoiceDateSpan != null) {
+    invoiceNrPlusDateRendered = Text.rich(TextSpan(children: [
+      invoiceNrSpan,
+      const TextSpan(text: ' vom '),
+      invoiceDateSpan
+    ]));
+  }
+
+  Widget? invoiceHeader =
+      invoiceNrPlusDateRendered ?? invoiceNrRendered ?? invoiceDateRendered;
+  return invoiceHeader;
+}
+
+DeliveryInformation? renderDeliveryInformation(dynamic json) {
+  if (json case Map<String, dynamic> map) {
+    if (map['bg_13_delivery_information']
+        case Map<String, dynamic> bg13DeliveryInformation) {
+      String? invoicingPeriodText;
+      String? deliveryDateText;
+      String? deliveryPartyName;
+      Widget? deliveryAddressDetails;
+      if (bg13DeliveryInformation['bg_14_invoicing_period']
+          case Map<String, dynamic> invoicingPeriod) {
+        var startDate = invoicingPeriod['bt_73_start_date'];
+        var endDate = invoicingPeriod['bt_74_end_date'];
+        // todo I think I should do some date parsing here?
+        if (startDate != null && endDate != null) {
+          invoicingPeriodText = 'Leistungszeitraum von $startDate bis $endDate';
+        } else if (startDate != null) {
+          invoicingPeriodText = 'Leistungszeitraum ab $startDate';
+        } else if (endDate != null) {
+          invoicingPeriodText = 'Leistungszeitraum bis $endDate';
+        }
+      }
+      if (bg13DeliveryInformation['bt_72_actual_delivery_date']
+          case String bt72ActualDeliveryDate) {
+        deliveryDateText = bt72ActualDeliveryDate;
+      }
+      if (bg13DeliveryInformation['bt_70_deliver_to_party_name']
+          case String bt70DeliverToPartyName) {
+        deliveryPartyName = bt70DeliverToPartyName;
+      }
+      if (bg13DeliveryInformation['bg_15_deliver_to_address']
+          case Map<String, dynamic> bg15DeliverToAddress) {
+        var bt75AddressLine1 = bg15DeliverToAddress['bt_75_address_line1'];
+        var bt76AddressLine2 = bg15DeliverToAddress['bt_76_address_line2'];
+        var bt77City = bg15DeliverToAddress['bt_77_city'];
+        var bt78PostalCode = bg15DeliverToAddress['bt_78_postal_code'];
+        var bt80CountryCode = bg15DeliverToAddress['bt_80_country_code'];
+        deliveryAddressDetails = Text('$bt75AddressLine1\n'
+            '$bt76AddressLine2\n'
+            '$bt78PostalCode $bt77City ($bt80CountryCode)');
+      }
+      return DeliveryInformation(
+        invoicingPeriodText: invoicingPeriodText,
+        deliveryDateText: deliveryDateText,
+        deliveryPartyName: deliveryPartyName,
+        deliveryAddressDetails: deliveryAddressDetails,
+      );
+    }
+  }
+
+  return null;
+}
+
+class DeliveryInformation {
+  String? invoicingPeriodText;
+  String? deliveryDateText;
+  String? deliveryPartyName;
+  Widget? deliveryAddressDetails;
+
+  DeliveryInformation(
+      {this.invoicingPeriodText,
+      this.deliveryDateText,
+      this.deliveryPartyName,
+      this.deliveryAddressDetails});
+}
+
+String? renderNote(dynamic json) {
+  String? noteText;
+  if (json case Map<String, dynamic> map) {
+    if (map['bg_1_invoice_note'] case List bg1InvoiceNote) {
+      noteText = bg1InvoiceNote
+          .whereType<Map<String, dynamic>>()
+          .map(
+            (e) => e['bt_22_content'],
+          )
+          .whereType<String>()
+          .join('\n');
+    }
+  }
+  return noteText;
+}
+
+Widget? renderAmount(Invoice invoice) {
+  Widget? amountRendered;
+  if (invoice.totalPaymentDue != null) {
+    var invoiceAmountValue = invoice.totalPaymentDue.toString();
+    amountRendered = Text.rich(
+      TextSpan(
+          text: invoiceAmountValue,
+          style: const TextStyle(fontWeight: FontWeight.bold)),
+      style: const TextStyle(fontSize: 18),
+    );
+  }
+  return amountRendered;
+}
+
+class LeistungCard extends StatelessWidget {
+  const LeistungCard({
+    super.key,
+    required this.subCardColor,
+    required this.descriptionPadding,
+    required this.cardData,
+    required this.invoice,
+    this.big = true,
+  });
+
+  final Color subCardColor;
+  final EdgeInsets descriptionPadding;
+  final CardData cardData;
+  final Invoice invoice;
+  final bool big;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget? amountRendered = renderAmount(invoice);
+    String? noteText = renderNote(cardData.markup);
+    DeliveryInformation? deliveryInformation =
+        renderDeliveryInformation(cardData.markup);
+    String? invoicingPeriodText = deliveryInformation?.invoicingPeriodText;
+    List<Widget> orderedItems = renderOrderedItems(invoice);
+    var numberOfItems = invoice.referencesOrder?.length ?? 0;
+    return Card(
+      elevation: 0,
+      color: subCardColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: descriptionPadding,
+            // todo what if small and no ammountRendered?
+            child: const Text('Leistung'),
+          ),
+          if (amountRendered != null)
+            ExpansionTile(
+              title: amountRendered,
+              subtitle: big
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (noteText != null) Text(noteText),
+                        if (invoicingPeriodText != null)
+                          Text(invoicingPeriodText),
+                        if ((numberOfItems) > 0)
+                          Text('$numberOfItems Rechnungsposten'),
+                      ],
+                    )
+                  : null,
+              children: orderedItems,
+            ),
+          // PotentialActionRow(potentialAction: potentialAction, postFunction: postFunction)
+        ],
       ),
     );
   }
@@ -1313,9 +1406,11 @@ class PersonTile extends StatelessWidget {
 }
 
 typedef SplitButtonCallback = Function(String option);
+
 class SplitButton extends StatefulWidget {
   final SplitButtonCallback onTap;
   final List<String> options;
+
   const SplitButton({super.key, required this.onTap, required this.options});
 
   @override
@@ -1324,21 +1419,31 @@ class SplitButton extends StatefulWidget {
 
 class _SplitButtonState extends State<SplitButton> {
   late String dropdownValue = widget.options.first;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         const Icon(Icons.forward_to_inbox),
-        TextButton(onPressed: () => widget.onTap(dropdownValue), child: Text(dropdownValue)),
+        TextButton(
+            onPressed: () => widget.onTap(dropdownValue),
+            child: Text(dropdownValue)),
         MenuBar(
-          children: [SubmenuButton(
-            menuChildren: widget.options.map<MenuItemButton>((v) => MenuItemButton(child: Text(v), onPressed: (){
-              setState(() {
-                dropdownValue = v;
-              });
-            },)).toList(),
-            child: const Icon(Icons.arrow_drop_down),
-          ),],
+          children: [
+            SubmenuButton(
+              menuChildren: widget.options
+                  .map<MenuItemButton>((v) => MenuItemButton(
+                        child: Text(v),
+                        onPressed: () {
+                          setState(() {
+                            dropdownValue = v;
+                          });
+                        },
+                      ))
+                  .toList(),
+              child: const Icon(Icons.arrow_drop_down),
+            ),
+          ],
         ),
         // DropdownMenu(
         //
