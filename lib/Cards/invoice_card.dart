@@ -209,10 +209,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
     //     TextSpan(children: subTitleTextSpans)
     //   ),
     // );
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
+    var cardContents = [
           cardContent,
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -229,7 +226,15 @@ class _InvoiceCardState extends State<InvoiceCard> {
                   child: const Text('Detailansicht'))
             ],
           )
-        ],
+        ];
+    if (widget.cardData.showMessageHeader) {
+      var messageHeader = MailHeader(widget.cardData, expandable: false,);
+      cardContents.insertAll(0, [messageHeader,const Divider()]);
+    }
+    return Card(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: cardContents,
       ),
     );
   }
@@ -788,8 +793,9 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               descriptionPadding: descriptionPadding,
             ),
             if (deliveryToRendered != null ||
-                deliveryDateRendered != null ||
-                deliveryAddressDetails != null)
+                deliveryDateRendered != null// ||
+                // deliveryAddressDetails != null
+            )
               Card(
                 elevation: 0,
                 color: subCardColor,
@@ -801,16 +807,18 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                       child: Text('Lieferung',
                           style: TextStyle(color: theme.hintColor)),
                     ),
-                    if (deliveryToRendered != null)
-                      ExpansionTile(
-                        title: deliveryToRendered,
-                        subtitle: deliveryDateRendered,
+                    (deliveryAddressDetails != null) ? ExpansionTile(
+                        title: deliveryToRendered ?? deliveryDateRendered ?? const Text(''),
+                        subtitle: (deliveryToRendered != null)? deliveryDateRendered : null,
                         children: [
                           ListTile(
                             title: deliveryAddressDetails,
                           ),
                         ],
-                      ),
+                      ) : ListTile(
+                      title: deliveryToRendered ?? deliveryDateRendered ?? const Text(''),
+                      subtitle: (deliveryToRendered != null)? deliveryDateRendered : null,
+                    ),
                     // Align(
                     //   alignment: Alignment.topRight,
                     //   child: Wrap(
@@ -1116,6 +1124,7 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
         var bt77City = bg15DeliverToAddress['bt_77_city'];
         var bt78PostalCode = bg15DeliverToAddress['bt_78_postal_code'];
         var bt80CountryCode = bg15DeliverToAddress['bt_80_country_code'];
+
         deliveryAddressDetails = Text('$bt75AddressLine1\n'
             '$bt76AddressLine2\n'
             '$bt78PostalCode $bt77City ($bt80CountryCode)');
