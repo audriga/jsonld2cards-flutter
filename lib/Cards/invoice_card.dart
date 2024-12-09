@@ -416,6 +416,10 @@ List<Widget> renderOrderedItems(Map<String, dynamic> json) {
         nameBuffer.write('$bt129Quantity ');
       }
       nameBuffer.write(nameOrId);
+      if (line['bt_130_quantity_unit_of_measure'] case String bt130QuantityUnitOfMeasure){
+        nameBuffer.write(' $bt130QuantityUnitOfMeasure');
+      }
+
       String? price;
       if (line['bt_131_net_amount'] case String bt131NetAmount) {
         price = priceInCurrency(bt131NetAmount, currencyCode);
