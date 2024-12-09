@@ -695,7 +695,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     var descriptionPadding = const EdgeInsets.fromLTRB(8.0, 8.0, 0, 0);
     var subCardColor = theme.canvasColor;
 
-    var globalButtons = [
+    var footerButtons = [
       Align(
         alignment: Alignment.topLeft,
         child: IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
@@ -855,7 +855,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 ),
               ),
             Row(
-              children: globalButtons,
+              children: footerButtons,
             ),
             if (widget.cardData.message != null &&
                 forwardAddresses != null &&
@@ -980,6 +980,7 @@ class Payment extends StatelessWidget {
 
     var theme = Theme.of(context);
     var details = [
+      if (bt82PaymentMeans != null) Text(bt82PaymentMeans),
       ...directDebitInfos,
       ...creditInfos,
       ...bankTransferInfo,
@@ -1001,12 +1002,10 @@ class Payment extends StatelessWidget {
           if (amountRendered != null)
             ExpansionTile(
               title: amountRendered,
-              subtitle: (bt82PaymentMeans != null)
-                  ? Text(
-                      bt82PaymentMeans,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  : null,
+              subtitle: const Text(
+                      'TODO MOCKDATA Wird eigezoven von Kreditkarte',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
               expandedCrossAxisAlignment: CrossAxisAlignment.start,
               children: details,
             ),
@@ -1236,7 +1235,7 @@ Widget? renderAmount(Invoice invoice) {
   return amountRendered;
 }
 
-class LeistungCard extends StatelessWidget {
+class LeistungCard extends StatefulWidget {
   const LeistungCard({
     super.key,
     required this.subCardColor,
@@ -1253,17 +1252,24 @@ class LeistungCard extends StatelessWidget {
   final bool big;
 
   @override
+  State<LeistungCard> createState() => _LeistungCardState();
+}
+
+class _LeistungCardState extends State<LeistungCard> {
+  // late final controller = ExpansionTileController();
+  bool _expandNotes = false;
+  @override
   Widget build(BuildContext context) {
     Widget? amountRendered; // = renderAmount(invoice);
 
-    if (cardData.markup['bg_22_document_totals']
+    if (widget.cardData.markup['bg_22_document_totals']
         case Map<String, dynamic> bg22DocumentTotals) {
       var bt112InvoiceTotalAmountWithVat =
           bg22DocumentTotals['bt_112_invoice_total_amount_with_vat'];
       amountRendered = Text.rich(
         TextSpan(
             text: priceInCurrencyFromJson(
-                bt112InvoiceTotalAmountWithVat, cardData.markup),
+                bt112InvoiceTotalAmountWithVat, widget.cardData.markup),
             style: const TextStyle(fontWeight: FontWeight.bold)),
         style: const TextStyle(fontSize: 18),
       );
@@ -1289,41 +1295,47 @@ class LeistungCard extends StatelessWidget {
     //   ),
     // );
     // }
-    String? noteText = renderNote(cardData.markup);
+    String? noteText = renderNote(widget.cardData.markup);
     DeliveryInformation? deliveryInformation =
-        renderDeliveryInformation(cardData.markup);
+        renderDeliveryInformation(widget.cardData.markup);
     String? invoicingPeriodText = deliveryInformation?.invoicingPeriodText;
-    List<Widget> orderedItems = renderOrderedItems(cardData.markup);
-    var numberOfItems = invoice.referencesOrder?.length ?? 0;
+    List<Widget> orderedItems = renderOrderedItems(widget.cardData.markup);
+    var numberOfItems = widget.invoice.referencesOrder?.length ?? 0;
     var subtitle = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (invoicingPeriodText != null) Text(invoicingPeriodText),
-        if (noteText != null && noteText.isNotEmpty)
+        if (widget.big  && noteText != null && noteText.isNotEmpty)
           Text(
             noteText,
-            maxLines: big ? null : 3,
+            maxLines: _expandNotes ? 1000 : 2,
+            softWrap: true,
             overflow: TextOverflow.ellipsis,
           ),
-        if (big && (numberOfItems) > 0) Text('$numberOfItems Rechnungsposten'),
+        if (widget.big && (numberOfItems) > 0) Text('$numberOfItems Rechnungsposten'),
       ],
     );
     return Card(
       elevation: 0,
-      color: subCardColor,
+      color: widget.subCardColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: descriptionPadding,
+            padding: widget.descriptionPadding,
             child: label,
           ),
           if (amountRendered != null)
-            big
+            widget.big
                 ? ExpansionTile(
                     title: amountRendered,
                     subtitle: subtitle,
                     children: orderedItems,
+              onExpansionChanged: (value) {
+                setState(() {
+                  _expandNotes = value;
+                });
+              },
                   )
                 : ListTile(
                     title: amountRendered,
