@@ -10,6 +10,7 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/mail_header.dart';
 // import 'package:jsonld2cards/Cards/Models/organization_model.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
+import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -75,16 +76,18 @@ class _InvoiceCardState extends State<InvoiceCard> {
     //   subTitleTextBuffer.write('\nTotal payment due: ${invoice.totalPaymentDue.toString()}');
     // }
 
-    List<Map<String, dynamic>> potentialAction;
-    if (invoice.potentialAction case List pAs) {
-      // todo this a lazy workaround to only have the share XRechnung button in the small card
-      potentialAction = pAs
-          .whereType<Map<String, dynamic>>()
-          .where((m) => m['muid']?.toString().isNotEmpty ?? false)
-          .toList();
-    } else {
-      potentialAction = [];
-    }
+    // No potential Actions in this card
+    // List<Map<String, dynamic>> potentialAction;
+    // if (invoice.potentialAction case List pAs) {
+    //   // todo this a lazy workaround to only have the share XRechnung button in the small card
+    //   potentialAction = pAs
+    //       .whereType<Map<String, dynamic>>()
+    //       .where((m) => m['muid']?.toString().isNotEmpty ?? false)
+    //       .toList();
+    // } else {
+    //   potentialAction = [];
+    // }
+
     // todo: placeholder for actual CID property
     /*if (invoice.url case Uri uri) {
       if (uri.scheme == 'cid') {
@@ -132,9 +135,6 @@ class _InvoiceCardState extends State<InvoiceCard> {
             cardData: widget.cardData,
           ),
         ));
-        // setState(() {
-        //   expanded = !expanded;
-        // });
       },
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -209,10 +209,28 @@ class _InvoiceCardState extends State<InvoiceCard> {
     //     TextSpan(children: subTitleTextSpans)
     //   ),
     // );
-    return CardWithActions(
-      cardContents: [cardContent],
-      potentialAction: potentialAction,
-      cardData: widget.cardData,
+    return Card(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          cardContent,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => DetailInvoicePage(
+                        invoice: invoice,
+                        cardData: widget.cardData,
+                      ),
+                    ));
+                  },
+                  child: const Text('Detailansicht'))
+            ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -617,7 +635,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
 
     Text? deliveryToRendered;
     Text? deliveryDateRendered;
-    if (widget.invoice.referencesOrder != null) {
+    if (deliveryPartyName != null) {
       deliveryToRendered = Text.rich(
         TextSpan(
           children: [
@@ -628,15 +646,15 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
           ],
         ),
       );
-      if (deliveryDateText != null) {
-        deliveryDateRendered = Text.rich(TextSpan(children: [
-          const TextSpan(text: 'Lieferdatum: '),
-          TextSpan(
-            text: deliveryDateText,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ]));
-      }
+    }
+    if (deliveryDateText != null) {
+      deliveryDateRendered = Text.rich(TextSpan(children: [
+        const TextSpan(text: 'Lieferdatum: '),
+        TextSpan(
+          text: deliveryDateText,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ]));
     }
     // String? noteText = renderNote(widget.cardData.markup);
 
@@ -672,6 +690,55 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     var descriptionPadding = const EdgeInsets.fromLTRB(8.0, 8.0, 0, 0);
     var subCardColor = theme.canvasColor;
 
+    var globalButtons = [
+      Align(
+        alignment: Alignment.topLeft,
+        child: IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+      ),
+      // const Spacer(),
+      // Align(
+      //   alignment: Alignment.topCenter,
+      //   child: Wrap(
+      //     children: [
+      //       IconButton(
+      //           onPressed: () {},
+      //           icon: const Icon(Icons.add_comment)),
+      //       IconButton(
+      //           onPressed: () {}, icon: const Icon(Icons.filter_alt)),
+      //     ],
+      //   ),
+      // ),
+      const Spacer(),
+      Align(
+        alignment: Alignment.topRight,
+        child: Wrap(
+          alignment: WrapAlignment.end,
+          children: <Widget>[
+            if (canShareXRechnung)
+              IconButton(
+                  onPressed: () {
+                    if (muid != null && uri != null) {
+                      globalSMLAppContext!.shareAttachmentCallback!(muid, uri);
+                    }
+                  },
+                  icon: const Icon(Icons.share)),
+            IconButton(
+                onPressed: () {
+                  // todo this does not work yet
+                  if (widget.cardData.sourceFile?.data case Uint8List data) {
+                    String? fileName = widget.cardData.sourceFile?.filename;
+                    saveFile(fileName, data);
+                  }
+                },
+                icon: const Icon(Icons.download)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.cloud_upload)),
+            // IconButton(
+            //     onPressed: () {},
+            //     icon: const Icon(Icons.forward_to_inbox)),
+          ],
+        ),
+      ),
+    ];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
@@ -720,43 +787,46 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
             ),
-            Card(
-              elevation: 0,
-              color: subCardColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: descriptionPadding,
-                    child: Text('Lieferung',
-                        style: TextStyle(color: theme.hintColor)),
-                  ),
-                  if (deliveryToRendered != null)
-                    ExpansionTile(
-                      title: deliveryToRendered,
-                      subtitle: deliveryDateRendered,
-                      children: [
-                        ListTile(
-                          title: deliveryAddressDetails,
-                        ),
-                      ],
+            if (deliveryToRendered != null ||
+                deliveryDateRendered != null ||
+                deliveryAddressDetails != null)
+              Card(
+                elevation: 0,
+                color: subCardColor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: descriptionPadding,
+                      child: Text('Lieferung',
+                          style: TextStyle(color: theme.hintColor)),
                     ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Wrap(
-                      alignment: WrapAlignment.end,
-                      children: <Widget>[
-                        IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.edit)),
-                        IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.map)),
-                      ],
-                    ),
-                  ),
-                  // PotentialActionRow(potentialAction: potentialAction, postFunction: postFunction)
-                ],
+                    if (deliveryToRendered != null)
+                      ExpansionTile(
+                        title: deliveryToRendered,
+                        subtitle: deliveryDateRendered,
+                        children: [
+                          ListTile(
+                            title: deliveryAddressDetails,
+                          ),
+                        ],
+                      ),
+                    // Align(
+                    //   alignment: Alignment.topRight,
+                    //   child: Wrap(
+                    //     alignment: WrapAlignment.end,
+                    //     children: <Widget>[
+                    //       IconButton(
+                    //           onPressed: () {}, icon: const Icon(Icons.edit)),
+                    //       IconButton(
+                    //           onPressed: () {}, icon: const Icon(Icons.map)),
+                    //     ],
+                    //   ),
+                    // ),
+                    // PotentialActionRow(potentialAction: potentialAction, postFunction: postFunction)
+                  ],
+                ),
               ),
-            ),
             if (numberOfAttachments > 0)
               Card(
                 elevation: 0,
@@ -777,61 +847,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 ),
               ),
             Row(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.delete)),
-                ),
-                const Spacer(),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Wrap(
-                    children: [
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.add_comment)),
-                      IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.filter_alt)),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Wrap(
-                    alignment: WrapAlignment.end,
-                    children: <Widget>[
-                      if (canShareXRechnung)
-                        IconButton(
-                            onPressed: () {
-                              if (muid != null && uri != null) {
-                                globalSMLAppContext!.shareAttachmentCallback!(
-                                    muid, uri);
-                              }
-                            },
-                            icon: const Icon(Icons.share)),
-                      IconButton(
-                          onPressed: () {
-                            // todo this does not work yet
-                            if (widget.cardData.sourceFile?.data
-                                case Uint8List data) {
-                              String? fileName =
-                                  widget.cardData.sourceFile?.filename;
-                              saveFile(fileName, data);
-                            }
-                          },
-                          icon: const Icon(Icons.download)),
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.cloud_upload)),
-                      // IconButton(
-                      //     onPressed: () {},
-                      //     icon: const Icon(Icons.forward_to_inbox)),
-                    ],
-                  ),
-                ),
-              ],
+              children: globalButtons,
             ),
             if (widget.cardData.message != null &&
                 forwardAddresses != null &&
@@ -871,14 +887,13 @@ class Payment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? amountRendered;
-
     if (json['bg_22_document_totals']
         case Map<String, dynamic> bg22DocumentTotals) {
       var bt115AmountDueForPayment =
           bg22DocumentTotals['bt_115_amount_due_for_payment'];
       amountRendered = Text.rich(
         TextSpan(
-            text: bt115AmountDueForPayment,
+            text: priceInCurrencyFromJson(bt115AmountDueForPayment, json),
             style: const TextStyle(fontWeight: FontWeight.bold)),
         style: const TextStyle(fontSize: 18),
       );
@@ -892,13 +907,14 @@ class Payment extends StatelessWidget {
     if (paymentReceiver != null) {
       bankTransferInfo.add(Text(paymentReceiver));
     }
-    if (payee.identifier.isNotEmpty){
+    if (payee.identifier.isNotEmpty) {
       bankTransferInfo.addAll(payee.identifier.map<Text>((id) => Text(id)));
     }
 
     if (json['bg_16_payment_instructions']
         case Map<String, dynamic> bg16PaymentInstructions) {
-      if (bg16PaymentInstructions['bt_82_payment_means_text'] case String bt82PaymentMeansText) {
+      if (bg16PaymentInstructions['bt_82_payment_means_text']
+          case String bt82PaymentMeansText) {
         bt82PaymentMeans = bt82PaymentMeansText;
       }
       var bt83RemittanceInformationText =
@@ -908,13 +924,15 @@ class Payment extends StatelessWidget {
       if (bg16PaymentInstructions['bg_17_credit_transfer']
           case List bg17CreditTransfer) {
         bg17CreditTransfer.whereType<Map<String, dynamic>>().forEach((ct) {
-          if(ct['bt_84_payment_id'] case String bt84PaymentId) {
+          if (ct['bt_84_payment_id'] case String bt84PaymentId) {
             bankTransferInfo.add(Text(bt84PaymentId));
           }
-          if(ct['bt_85_payment_account_name'] case String bt85PaymentAccountName) {
+          if (ct['bt_85_payment_account_name']
+              case String bt85PaymentAccountName) {
             bankTransferInfo.add(Text(bt85PaymentAccountName));
           }
-          if(ct['bt_86_payment_service_provider_identifier'] case String bt86PaymentServiceProviderIdentifier) {
+          if (ct['bt_86_payment_service_provider_identifier']
+              case String bt86PaymentServiceProviderIdentifier) {
             bankTransferInfo.add(Text(bt86PaymentServiceProviderIdentifier));
           }
         });
@@ -926,29 +944,42 @@ class Payment extends StatelessWidget {
     // bankeinzug
     var directDebitInfos = <Widget>[];
     if (json['bg_19_direct_debit'] case Map<String, dynamic> bg19DirectDebit) {
-      if (bg19DirectDebit['bt_89_mandate_reference_identifier'] case String bt89MandateReferenceIdentifier){
+      if (bg19DirectDebit['bt_89_mandate_reference_identifier']
+          case String bt89MandateReferenceIdentifier) {
         directDebitInfos.add(Text(bt89MandateReferenceIdentifier));
       }
-      if (bg19DirectDebit['bt_90_bank_assigned_creditor_identifier'] case String bt90BankAssignedCreditorIdentifier){
+      if (bg19DirectDebit['bt_90_bank_assigned_creditor_identifier']
+          case String bt90BankAssignedCreditorIdentifier) {
         directDebitInfos.add(Text(bt90BankAssignedCreditorIdentifier));
       }
-      if (bg19DirectDebit['bt_91_debited_account_identifier'] case String bt91DebitedAccountIdentifier){
+      if (bg19DirectDebit['bt_91_debited_account_identifier']
+          case String bt91DebitedAccountIdentifier) {
         directDebitInfos.add(Text(bt91DebitedAccountIdentifier));
       }
     }
-    // credi tcard
+    // credit card
     var creditInfos = <Widget>[];
-    if (json['bg_18_payment_card_information'] case Map<String,dynamic> bg18PaymentCardInformation){
-      if (bg18PaymentCardInformation['bt_87_primary_account_number'] case String bt87PrimaryAccountNumber){
+    if (json['bg_18_payment_card_information']
+        case Map<String, dynamic> bg18PaymentCardInformation) {
+      if (bg18PaymentCardInformation['bt_87_primary_account_number']
+          case String bt87PrimaryAccountNumber) {
         creditInfos.add(Text(bt87PrimaryAccountNumber));
       }
-      if (json['bt_88_holder_name'] case String bt88HolderName){
+      if (json['bt_88_holder_name'] case String bt88HolderName) {
         creditInfos.add(Text('($bt88HolderName)'));
       }
     }
-    
 
     var theme = Theme.of(context);
+    var details = [
+      ...directDebitInfos,
+      ...creditInfos,
+      ...bankTransferInfo,
+      if (bt83RemittanceInformation != null) bt83RemittanceInformation,
+    ];
+    if (details.isEmpty && amountRendered == null && bt82PaymentMeans == null) {
+      return Container();
+    }
     return Card(
       elevation: 0,
       color: subCardColor,
@@ -969,12 +1000,7 @@ class Payment extends StatelessWidget {
                     )
                   : null,
               expandedCrossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                  ...directDebitInfos,
-                  ...creditInfos,
-                  ...bankTransferInfo,
-                  if (bt83RemittanceInformation != null) bt83RemittanceInformation,
-              ],
+              children: details,
             ),
           // Align(
           //   alignment: Alignment.topRight,
@@ -1039,6 +1065,22 @@ Widget? renderInvoiceHeader(Invoice invoice) {
   return invoiceHeader;
 }
 
+String? renderDate(dynamic inDate) {
+  if (inDate is String) {
+    var parsed = DateTime.tryParse(inDate);
+    if (parsed != null) {
+      return '${parsed.day}.${parsed.month}.${parsed.year}';
+    }
+    return inDate;
+  } else {
+    var parsed = DateTime.tryParse(inDate.toString());
+    if (parsed != null) {
+      return '${parsed.day}.${parsed.month}.${parsed.year}';
+    }
+    return null;
+  }
+}
+
 DeliveryInformation? renderDeliveryInformation(dynamic json) {
   if (json case Map<String, dynamic> map) {
     if (map['bg_13_delivery_information']
@@ -1049,9 +1091,8 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
       Widget? deliveryAddressDetails;
       if (bg13DeliveryInformation['bg_14_invoicing_period']
           case Map<String, dynamic> invoicingPeriod) {
-        var startDate = invoicingPeriod['bt_73_start_date'];
-        var endDate = invoicingPeriod['bt_74_end_date'];
-        // todo I think I should do some date parsing here?
+        String? startDate = renderDate(invoicingPeriod['bt_73_start_date']);
+        var endDate = renderDate(invoicingPeriod['bt_74_end_date']);
         if (startDate != null && endDate != null) {
           invoicingPeriodText = 'Leistungszeitraum von $startDate bis $endDate';
         } else if (startDate != null) {
@@ -1062,7 +1103,7 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
       }
       if (bg13DeliveryInformation['bt_72_actual_delivery_date']
           case String bt72ActualDeliveryDate) {
-        deliveryDateText = bt72ActualDeliveryDate;
+        deliveryDateText = renderDate(bt72ActualDeliveryDate);
       }
       if (bg13DeliveryInformation['bt_70_deliver_to_party_name']
           case String bt70DeliverToPartyName) {
@@ -1129,6 +1170,18 @@ String? priceInCurrency(String? price, String? currency) =>
           }
         : price;
 
+String? priceInCurrencyFromJson(String price, Map<String, dynamic> json) {
+  String? currencyCode;
+  if (json['bt_6_vat_accounting_currency_code']
+      case String bt6VatAccountingCurrencyCode) {
+    currencyCode = bt6VatAccountingCurrencyCode;
+  }
+  if (json['bt_5_invoice_currency_code'] case String bt5InvoiceCurrencyCode) {
+    currencyCode = bt5InvoiceCurrencyCode;
+  }
+  return priceInCurrency(price, currencyCode);
+}
+
 Widget? renderAmountDue(dynamic json) {
   if (json case Map<String, dynamic> map) {
     if (map['bg_22_document_totals']
@@ -1192,7 +1245,7 @@ class LeistungCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget? amountRendered = renderAmount(invoice);
+    Widget? amountRendered; // = renderAmount(invoice);
 
     if (cardData.markup['bg_22_document_totals']
         case Map<String, dynamic> bg22DocumentTotals) {
@@ -1200,7 +1253,8 @@ class LeistungCard extends StatelessWidget {
           bg22DocumentTotals['bt_112_invoice_total_amount_with_vat'];
       amountRendered = Text.rich(
         TextSpan(
-            text: bt112InvoiceTotalAmountWithVat,
+            text: priceInCurrencyFromJson(
+                bt112InvoiceTotalAmountWithVat, cardData.markup),
             style: const TextStyle(fontWeight: FontWeight.bold)),
         style: const TextStyle(fontSize: 18),
       );
@@ -1235,13 +1289,13 @@ class LeistungCard extends StatelessWidget {
     var subtitle = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (invoicingPeriodText != null) Text(invoicingPeriodText),
         if (noteText != null && noteText.isNotEmpty)
           Text(
             noteText,
             maxLines: big ? null : 3,
             overflow: TextOverflow.ellipsis,
           ),
-        if (big && invoicingPeriodText != null) Text(invoicingPeriodText),
         if (big && (numberOfItems) > 0) Text('$numberOfItems Rechnungsposten'),
       ],
     );
@@ -1294,12 +1348,17 @@ class PaidBadge extends StatelessWidget {
           bg22DocumentTotals['bt_112_invoice_total_amount_with_vat'];
       var bt113PaidAmount = bg22DocumentTotals['bt_113_paid_amount'];
       fullyPaid = bt112InvoiceTotalAmountWithVat == bt113PaidAmount;
-      if (bt113PaidAmount is String && bt113PaidAmount.isNotEmpty) {
-        paidAmount = bt113PaidAmount;
-        partiallyPaid = true;
-      } else if (bt113PaidAmount is num && bt113PaidAmount > 0) {
-        paidAmount = bt113PaidAmount.toString();
-        partiallyPaid = true;
+      num? paidAmountNum = tryCastOrParseNum(bt113PaidAmount);
+      if (paidAmountNum == null || paidAmountNum > 0.0 || paidAmountNum < 0.0) {
+        // only render some paertial amount if it is not zero
+        if (bt113PaidAmount is String && bt113PaidAmount.isNotEmpty) {
+          paidAmount = priceInCurrencyFromJson(bt113PaidAmount, json);
+          partiallyPaid = true;
+        } else if (bt113PaidAmount is num && bt113PaidAmount > 0) {
+          paidAmount =
+              priceInCurrencyFromJson(bt113PaidAmount.toString(), json);
+          partiallyPaid = true;
+        }
       }
     }
     return Card(
@@ -1605,6 +1664,7 @@ class PersonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // todo detect if empty?
     var theme = Theme.of(context);
     Widget? nameRendered;
     String? nameAbbr;
