@@ -185,6 +185,13 @@
     "bt_62_name": "Vollständiger Name des steuerlichen Vertreters des Verkäufers (BT-62)",
     "bt_63_vat_identifier": "Umsatzsteuer-ID des steuerlichen Vertreters (BT-63)"
   },
+  "bg_12_seller_tax_representative_postal_address": {
+    "bt_64_address_line1": "Straße u. Hausnummer / Postfach (BT-64)",
+    "bt_65_address_line2": "Zusätzliche Adresszeile (BT-65)",
+    "bt_66_city": "Stadt/Ort (BT-66)",
+    "bt_67_postal_code": "PLZ (BT-67)",
+    "bt_69_country_code": "Ländercode (BT-69)"
+  },
   "bg_13_delivery_information": {
     "bt_70_deliver_to_party_name": "Vollständiger Firmenname des Waren- bzw. Leistungsempfängers (BT-70)",
     "bt_71_deliver_to_location_identifier": "Kennung des Lieferorts (BT-71)",
@@ -199,9 +206,11 @@
       "bt_77_city": "Stadt/Ort (BT-77)",
       "bt_78_postal_code": "PLZ (BT-78)",
       "bt_80_country_code": "Ländercode (BT-80)"
-    }
+    },
+    "bt_165_address_line_3": "Weitere zusätzliche Adresszeile (BT-165)"
   },
   "bg_22_document_totals": {
+    "bt_106_sum_invoice_line_net_amount": "Summe aller Positionen (netto) (BT-106)",
     "bt_109_invoice_total_amount_without_vat": "Gesamtsumme (netto) (BT-109)",
     "bt_112_invoice_total_amount_with_vat": "Gesamtsumme (brutto) (BT-112)",
     "bt_113_paid_amount": "Gezahlter Betrag (BT-113)",
@@ -209,7 +218,9 @@
   },
   "bg_24_additional_supporting_documents": [
     {
-      "bt_124_external_document_location_suffix": "Code für den Anhang (BT-124) hier ist der Code 916 zu verwenden",
+      "bt_122_supporting_document_reference": "Dateiname des eingebetteten Anhangs (BT-122)",
+      "bt_123_supporting_document_description": "Beschreibung des Anhangs (BT-123)",
+      "bt_124_external_document_location": "Code für den Anhang (BT-124) hier ist der Code 916 zu verwenden",
       "bt_125_attached_document": {
         "bt_125_content": "...Beispielhafte Darstellung eines eingebetteten Anhangs....\n      m9udE5hbWUgL0hlbHZldGljYQ0AKL0l0YWxpY0FuZ2xlIDANCi9TdGVtViAxMDUNCj4+DQplbmRv\n      YmoNCjMgMCBvYmoNCi9XaW5BbnNpRW5jb2RpbmcNCmVuZG9iag0KNCAwIG9iag0KPDwNCiVEZXZ0\n      eXBlIEhQTEo0ICAgIEZvbnQgSEVMVkUgICAgbm9ybWFsIExhbmcgREUNCi9UeXBlIC9Gb250DQov\n      U3VidHlwZSAvVHlwZTENCi9CYXNlRm9udCAvSGVsdmV0arWNhDQovTmFtZSAvRjAwMQ0KL0VuY29k\n      aW5nIDMgMCBSDQovRmlyc3RDaGFyIDMyDQovTGFzdENoYXIgMjU1DQolQ2hhcndpZHRoIHZhbHVl\n      cyBmcm9tIEhQTEo0IEhFTFZFIDA4MCBub3JtYWwNCi9XaWR0aHMNClsgMjc4IDMzMSA1MDAgNjMx\n      IDYzMSAxMDAwIDc1NiAzMzEgMzMxIDMzMSA2MzEgMTAwMCAzMzEgMzMxIDMzMSAzMzEgNjMxIDYz\n      MSA2MzEgNjMxIDYzMSA2MzEgNjMxIDYzMSA2MzEgNjMxIDMzMSAzMzEgMTAwMCAxMDAwIDEwMDAg\n      NTE5IDEwMDAgNzQ0IDYzMSA3MDYgNzI1IDU3NSA1NETYgNzQ0IDcyNSAyNzUgNTU2IDY2OSA1Mzgg\n      OTA2IDcyNSA3NTYgNTk0IDc3NSA2NTAgNjUwIDYzMSA3MjUgNzI1IDEwMDAgNzI1IDY4OCA2MTMg\n      MzMxIDMzMQ0KIDMzMSA1MDAgNTAwIDMzMSA1MzggNTc1IDUzOCA1NzUgNTM4IDM2OSA1NzUgNTc1\n      IDI0NCAyNDQgNTM4IDI0NCA4NjkgNTc1IDU3NSA1NzUgNTc1IDM1MCA1MDAgMzY5IDU3NSA1NTYg\n      ODY5IDU1NiA1NTYgNDgxIDQ0NCA1MDAgNDQ0IDEwMDAgMCA2MzEgMCAwIDAgMCAwIDAgMCAwIDAg\n      MCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDMzMSA2MzEgNjMx\n      IDYzMSA2MzEgNTAwIDYzMSAyMjUgNTAwIDQwNiA1NTYNCiAxMDAwIDAgNTAwIDIyNSAyMjUgMTAw\n      MCAzODggMzg4IDIyNSA1NTYgNjMxIDMzMSAyMjUgMzg4IDQwNiA1NTYgMTAwMCAxMDAwIDEwMDAg\n      NTE5IDc0NCA3NDQgNzQ0IDc0NCA3NDQgNzQ0IDk4MSA3MDYgNTc1IDU3NSA1NzUgNTc1IDI3NSAy\n    ",
         "bt_125_1_mime_code": "application/pdf",
@@ -217,19 +228,28 @@
       }
     },
     {
-      "bt_124_external_document_location_suffix": "130"
+      "bt_122_supporting_document_reference": "Objektkennung (BT-18)",
+      "bt_124_external_document_location": "130"
     },
     {
-      "bt_124_external_document_location_suffix": "50"
+      "bt_122_supporting_document_reference": "Vergabenummer (BT-17)",
+      "bt_124_external_document_location": "50"
     }
   ],
   "bg_25_invoice_line": [
     {
       "bt_126_identifier": "Positionsnummer (BT-126)",
       "bt_127_note": "Bemerkungs- / Kommentarfeld auf Positionsebene (BT-127)",
+      "bt_128_object_identifier": "Objektkennung auf Positionsebene (BT-128)",
       "bt_129_quantity": "Menge (BT-129)",
       "bt_130_quantity_unit_of_measure": "Mengeneinheit (BT-130)",
       "bt_131_net_amount": "Positionsgesamtpreis (netto)(BT-131)",
+      "bt_132_referenced_purchase_order_line": "Bestellpositionsnummer DB (BT-132)",
+      "bt_133_buyer_accounting_reference": "Kontierungsinformation (z. B. Bahnstelle) auf Positionsebene (BT-133)",
+      "bg_26_invoice_line_period": {
+        "bt_134_start_date": "Beginn Abrechnungszeitraum auf Positionsebene (BT-134)",
+        "bt_135_end_date": "Ende Abrechnungszeitraum auf Positionsebene (BT-135)"
+      },
       "bg_29_price_details": {
         "bt_146_item_net_price": "Preis pro Einheit (netto), nach Rabatt (BT-146)"
       },

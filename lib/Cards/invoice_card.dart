@@ -363,8 +363,12 @@ List<TextSpan> createTitleTextSpans(Invoice invoice) {
 List<Widget> renderOrderedItems(Map<String, dynamic> json) {
   List<Widget> orderedItems = [];
   String? currencyCode;
-  if (json['bt_6_vat_accounting_currency_code'] case String bt6VatAccountingCurrencyCode) {
+  if (json['bt_6_vat_accounting_currency_code']
+      case String bt6VatAccountingCurrencyCode) {
     currencyCode = bt6VatAccountingCurrencyCode;
+  }
+  if (json['bt_5_invoice_currency_code'] case String bt5InvoiceCurrencyCode) {
+    currencyCode = bt5InvoiceCurrencyCode;
   }
   if (json['bg_25_invoice_line'] case List<dynamic> invoiceLines) {
     for (var line in invoiceLines.whereType<Map<String, dynamic>>()) {
@@ -373,32 +377,33 @@ List<Widget> renderOrderedItems(Map<String, dynamic> json) {
         id = bt126Identifier;
       }
       String? name;
-      if (line['bg_31_item_information'] case Map<String, dynamic> bg31ItemInformation){
-        if (bg31ItemInformation['bt_153_name'] case String bt153Name){
+      if (line['bg_31_item_information']
+          case Map<String, dynamic> bg31ItemInformation) {
+        if (bg31ItemInformation['bt_153_name'] case String bt153Name) {
           name = bt153Name;
         }
       }
-      var nameOrId = name?? id;
+      var nameOrId = name ?? id;
       if (nameOrId == null) {
         continue;
       }
       var nameBuffer = StringBuffer();
 
-      if (line['bt_129_quantity'] case String bt129Quantity){
+      if (line['bt_129_quantity'] case String bt129Quantity) {
         nameBuffer.write('$bt129Quantity ');
       }
       nameBuffer.write(nameOrId);
       String? price;
-      if (line['bt_131_net_amount'] case String bt131NetAmount){
+      if (line['bt_131_net_amount'] case String bt131NetAmount) {
         price = priceInCurrency(bt131NetAmount, currencyCode);
       }
 
       String? oid;
-      if (line['bt_128_object_identifier'] case String bt128ObjectIdentifier){
+      if (line['bt_128_object_identifier'] case String bt128ObjectIdentifier) {
         oid = bt128ObjectIdentifier;
       }
       String? note;
-      if (line['bt_127_note'] case String bt127Note){
+      if (line['bt_127_note'] case String bt127Note) {
         note = bt127Note;
       }
       orderedItems.add(Padding(
@@ -415,8 +420,16 @@ List<Widget> renderOrderedItems(Map<String, dynamic> json) {
                 if (price != null) Text(price),
               ],
             ),
-            if (oid != null) Padding(padding: const EdgeInsets.only(left: 4.0), child: Text(oid),),
-            if (note != null) Padding(padding: const EdgeInsets.only(left: 4.0), child: Text(note),),
+            if (oid != null)
+              Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: Text(oid),
+              ),
+            if (note != null)
+              Padding(
+                padding: const EdgeInsets.only(left: 4.0),
+                child: Text(note),
+              ),
           ],
         ),
       ));
@@ -473,8 +486,10 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
                     bt125Content, bt1251MimeCode, fileName);
               },
               icon: const Icon(Icons.share, size: 16)),
-        if (bt125Content is String && bt125Content.isNotEmpty) IconButton(
-            onPressed: () => saveB64File(fileName, bt125Content), icon: const Icon(Icons.download, size: 16)),
+        if (bt125Content is String && bt125Content.isNotEmpty)
+          IconButton(
+              onPressed: () => saveB64File(fileName, bt125Content),
+              icon: const Icon(Icons.download, size: 16)),
         IconButton(
             onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
         IconButton(
@@ -503,8 +518,10 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
                     attachment.data, attachment.mimeType, filename);
               },
               icon: const Icon(Icons.share, size: 16)),
-        if (attachment.data != null) IconButton(
-             onPressed: () => saveFile(filename, attachment.data!), icon: const Icon(Icons.download, size: 16)),
+        if (attachment.data != null)
+          IconButton(
+              onPressed: () => saveFile(filename, attachment.data!),
+              icon: const Icon(Icons.download, size: 16)),
         IconButton(
             onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
         IconButton(
@@ -528,7 +545,8 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
   return attachments;
 }
 
-saveB64File(String? fileName, String encodedContent) => saveFile(fileName, base64Decode(encodedContent));
+saveB64File(String? fileName, String encodedContent) =>
+    saveFile(fileName, base64Decode(encodedContent));
 
 saveFile(String? fileName, Uint8List content) async {
   String? _ = await FilePicker.platform.saveFile(
@@ -578,8 +596,6 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       }
     }
 
-    Widget? amountRendered = renderAmount(widget.invoice);
-
     List<Widget> attachments =
         renderAttachments(widget.invoice, widget.cardData);
     var numberOfAttachments = attachments.length; // ?? 0;
@@ -623,26 +639,6 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       }
     }
     // String? noteText = renderNote(widget.cardData.markup);
-    String? paymentMeansText;
-    Widget? paymentDetails;
-    if (widget.invoice.json['bg_16_payment_instructions']
-        case Map<String, dynamic> bg16PaymentInstructions) {
-      var bt82PaymentMeansText =
-          bg16PaymentInstructions['bt_82_payment_means_text'];
-      if (bt82PaymentMeansText is String) {
-        paymentMeansText = bt82PaymentMeansText;
-      }
-      var bt83RemittanceInformation =
-          bg16PaymentInstructions['bt_83_remittance_information'];
-      // if(bg16PaymentInstructions['bg_17_credit_transfer'] case Map<String, dynamic> bg17CreditTransfer) {
-      //   var bt84PaymentId = bg16PaymentInstructions['bt_84_payment_id'];
-      //   var bt85PaymentAccountName = bg16PaymentInstructions['bt_85_payment_account_name'];
-      //   var bt86PaymentServiceProviderIdentifier = bg16PaymentInstructions['bt_86_payment_service_provider_identifier'];
-      // }
-      if (bt83RemittanceInformation != null) {
-        paymentDetails = Text('($bt83RemittanceInformation)');
-      }
-    }
 
     var seller = widget.invoice.provider;
     if (widget.invoice.json['bg_4_seller']
@@ -713,50 +709,10 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               cardData: widget.cardData,
               invoice: widget.invoice,
             ),
-            Card(
-              elevation: 0,
-              color: subCardColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: descriptionPadding,
-                    child: Text('Zahlung',
-                        style: TextStyle(color: theme.hintColor)),
-                  ),
-                  if (amountRendered != null)
-                    ExpansionTile(
-                      title: amountRendered,
-                      subtitle: (paymentMeansText != null)
-                          ? Text(
-                              paymentMeansText,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          : null,
-                      children: [
-                        ListTile(
-                          title: paymentDetails,
-                        ),
-                      ],
-                    ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Wrap(
-                      alignment: WrapAlignment.end,
-                      children: <Widget>[
-                        IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.edit)),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.credit_card)),
-                      ],
-                    ),
-                  ),
-                  // PotentialActionRow(potentialAction: potentialAction, postFunction: postFunction)
-                ],
-              ),
-            ),
+            Payment(
+                subCardColor: subCardColor,
+                descriptionPadding: descriptionPadding,
+                json: widget.cardData.markup),
             PersonTile(
               title: 'Käufer',
               personData:
@@ -858,11 +814,14 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                       IconButton(
                           onPressed: () {
                             // todo this does not work yet
-                            if (widget.cardData.sourceFile?.data case Uint8List data) {
-                              String? fileName = widget.cardData.sourceFile?.filename;
+                            if (widget.cardData.sourceFile?.data
+                                case Uint8List data) {
+                              String? fileName =
+                                  widget.cardData.sourceFile?.filename;
                               saveFile(fileName, data);
                             }
-                          }, icon: const Icon(Icons.download)),
+                          },
+                          icon: const Icon(Icons.download)),
                       IconButton(
                           onPressed: () {},
                           icon: const Icon(Icons.cloud_upload)),
@@ -893,6 +852,143 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Payment extends StatelessWidget {
+  const Payment(
+      {super.key,
+      required this.subCardColor,
+      required this.descriptionPadding,
+      required this.json});
+
+  final Color subCardColor;
+  final EdgeInsets descriptionPadding;
+  final Map<String, dynamic> json;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget? amountRendered;
+
+    if (json['bg_22_document_totals']
+        case Map<String, dynamic> bg22DocumentTotals) {
+      var bt115AmountDueForPayment =
+          bg22DocumentTotals['bt_115_amount_due_for_payment'];
+      amountRendered = Text.rich(
+        TextSpan(
+            text: bt115AmountDueForPayment,
+            style: const TextStyle(fontWeight: FontWeight.bold)),
+        style: const TextStyle(fontSize: 18),
+      );
+    }
+    String? bt82PaymentMeans;
+    Text? bt83RemittanceInformation;
+    List<Widget> bankTransferInfo = [];
+    var payee = PartyData.fromJson(json, PartyType.payee);
+    var seller = PartyData.fromJson(json, PartyType.seller);
+    var paymentReceiver = payee.name ?? seller.name ?? seller.tradingName;
+    if (paymentReceiver != null) {
+      bankTransferInfo.add(Text(paymentReceiver));
+    }
+    if (payee.identifier.isNotEmpty){
+      bankTransferInfo.addAll(payee.identifier.map<Text>((id) => Text(id)));
+    }
+
+    if (json['bg_16_payment_instructions']
+        case Map<String, dynamic> bg16PaymentInstructions) {
+      if (bg16PaymentInstructions['bt_82_payment_means_text'] case String bt82PaymentMeansText) {
+        bt82PaymentMeans = bt82PaymentMeansText;
+      }
+      var bt83RemittanceInformationText =
+          bg16PaymentInstructions['bt_83_remittance_information'];
+      var bt81PaymentMeansTypeCode =
+          bg16PaymentInstructions['bt_81_payment_means_type_code'];
+      if (bg16PaymentInstructions['bg_17_credit_transfer']
+          case List bg17CreditTransfer) {
+        bg17CreditTransfer.whereType<Map<String, dynamic>>().forEach((ct) {
+          if(ct['bt_84_payment_id'] case String bt84PaymentId) {
+            bankTransferInfo.add(Text(bt84PaymentId));
+          }
+          if(ct['bt_85_payment_account_name'] case String bt85PaymentAccountName) {
+            bankTransferInfo.add(Text(bt85PaymentAccountName));
+          }
+          if(ct['bt_86_payment_service_provider_identifier'] case String bt86PaymentServiceProviderIdentifier) {
+            bankTransferInfo.add(Text(bt86PaymentServiceProviderIdentifier));
+          }
+        });
+      }
+      if (bt83RemittanceInformationText != null) {
+        bt83RemittanceInformation = Text('($bt83RemittanceInformationText)');
+      }
+    }
+    // bankeinzug
+    var directDebitInfos = <Widget>[];
+    if (json['bg_19_direct_debit'] case Map<String, dynamic> bg19DirectDebit) {
+      if (bg19DirectDebit['bt_89_mandate_reference_identifier'] case String bt89MandateReferenceIdentifier){
+        directDebitInfos.add(Text(bt89MandateReferenceIdentifier));
+      }
+      if (bg19DirectDebit['bt_90_bank_assigned_creditor_identifier'] case String bt90BankAssignedCreditorIdentifier){
+        directDebitInfos.add(Text(bt90BankAssignedCreditorIdentifier));
+      }
+      if (bg19DirectDebit['bt_91_debited_account_identifier'] case String bt91DebitedAccountIdentifier){
+        directDebitInfos.add(Text(bt91DebitedAccountIdentifier));
+      }
+    }
+    // credi tcard
+    var creditInfos = <Widget>[];
+    if (json['bg_18_payment_card_information'] case Map<String,dynamic> bg18PaymentCardInformation){
+      if (bg18PaymentCardInformation['bt_87_primary_account_number'] case String bt87PrimaryAccountNumber){
+        creditInfos.add(Text(bt87PrimaryAccountNumber));
+      }
+      if (json['bt_88_holder_name'] case String bt88HolderName){
+        creditInfos.add(Text('($bt88HolderName)'));
+      }
+    }
+    
+
+    var theme = Theme.of(context);
+    return Card(
+      elevation: 0,
+      color: subCardColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: descriptionPadding,
+            child: Text('Zahlung', style: TextStyle(color: theme.hintColor)),
+          ),
+          if (amountRendered != null)
+            ExpansionTile(
+              title: amountRendered,
+              subtitle: (bt82PaymentMeans != null)
+                  ? Text(
+                      bt82PaymentMeans,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  : null,
+              expandedCrossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                  ...directDebitInfos,
+                  ...creditInfos,
+                  ...bankTransferInfo,
+                  if (bt83RemittanceInformation != null) bt83RemittanceInformation,
+              ],
+            ),
+          // Align(
+          //   alignment: Alignment.topRight,
+          //   child: Wrap(
+          //     alignment: WrapAlignment.end,
+          //     children: <Widget>[
+          //       IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+          //       IconButton(
+          //           onPressed: () {}, icon: const Icon(Icons.credit_card)),
+          //     ],
+          //   ),
+          // ),
+          // PotentialActionRow(potentialAction: potentialAction, postFunction: postFunction)
+        ],
       ),
     );
   }
@@ -1024,26 +1120,37 @@ String? renderNote(dynamic json) {
   return noteText;
 }
 
-String? priceInCurrency(String? price, String? currency) => (currency != null && price != null)? switch (currency) {
-  'EUR' => '$price $currency',
-  'USD' => '$currency $price',
-  _ => '$price $currency',
-} : price;
+String? priceInCurrency(String? price, String? currency) =>
+    (currency != null && price != null)
+        ? switch (currency) {
+            'EUR' => '$price $currency',
+            'USD' => '$currency $price',
+            _ => '$price $currency',
+          }
+        : price;
 
 Widget? renderAmountDue(dynamic json) {
   if (json case Map<String, dynamic> map) {
-    if(map['bg_22_document_totals'] case Map<String, dynamic> bg22DocumentTotals) {
-      if (bg22DocumentTotals['bt_115_amount_due_for_payment'] case String bt115AmountDueForPayment){
+    if (map['bg_22_document_totals']
+        case Map<String, dynamic> bg22DocumentTotals) {
+      if (bg22DocumentTotals['bt_115_amount_due_for_payment']
+          case String bt115AmountDueForPayment) {
         String? currencyCode;
-        if (json['bt_6_vat_accounting_currency_code'] case String bt6VatAccountingCurrencyCode) {
+        if (json['bt_6_vat_accounting_currency_code']
+            case String bt6VatAccountingCurrencyCode) {
           currencyCode = bt6VatAccountingCurrencyCode;
         }
-        var ammountDueInCurrency = priceInCurrency(bt115AmountDueForPayment, currencyCode);
+        if (json['bt_5_invoice_currency_code']
+            case String bt5InvoiceCurrencyCode) {
+          currencyCode = bt5InvoiceCurrencyCode;
+        }
+        var ammountDueInCurrency =
+            priceInCurrency(bt115AmountDueForPayment, currencyCode);
         if (ammountDueInCurrency != null) {
           return Text.rich(
             TextSpan(
-          text: ammountDueInCurrency,
-          style: const TextStyle(fontWeight: FontWeight.bold)),
+                text: ammountDueInCurrency,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
             style: const TextStyle(fontSize: 18),
           );
         }
@@ -1052,6 +1159,7 @@ Widget? renderAmountDue(dynamic json) {
   }
   return null;
 }
+
 Widget? renderAmount(Invoice invoice) {
   Widget? amountRendered;
   if (invoice.totalPaymentDue != null) {
@@ -1085,6 +1193,19 @@ class LeistungCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? amountRendered = renderAmount(invoice);
+
+    if (cardData.markup['bg_22_document_totals']
+        case Map<String, dynamic> bg22DocumentTotals) {
+      var bt112InvoiceTotalAmountWithVat =
+          bg22DocumentTotals['bt_112_invoice_total_amount_with_vat'];
+      amountRendered = Text.rich(
+        TextSpan(
+            text: bt112InvoiceTotalAmountWithVat,
+            style: const TextStyle(fontWeight: FontWeight.bold)),
+        style: const TextStyle(fontSize: 18),
+      );
+    }
+
     const label = Text('Leistung');
     // if (!big) {
     //   return Card(
@@ -1221,8 +1342,8 @@ enum PartyType {
       addressLine1Key: 'bt_35_address_line1',
       addressLine2Key: 'bt_36_address_line2',
       addressLine3Key: 'bt_162_address_line3',
-      cityKey: 'bt_162_address_line3',
-      postalCodeKey: 'bt_162_address_line3',
+      cityKey: 'bt_37_city',
+      postalCodeKey: 'bt_38_postal_code',
       countryCodeKey: 'bt_40_country_code',
     ),
     contactKey: 'bg_6_contact',
@@ -1237,22 +1358,22 @@ enum PartyType {
     nameKey: 'bt_44_name',
     tradingNameKey: 'bt_45_buyer_trading_name',
     identifierKey: 'bt_46_identifier',
-    legalRegistrationIdentifierKey: 'bt_46_identifier',
+    legalRegistrationIdentifierKey: 'bt_47_legal_registration_identifier',
     vatIdentifierKey: 'bt_48_vat_identifier',
     electronicAddressKey: 'bt_49_electronic_address',
     addressKey: 'bg_8_buyer_postal_address',
     addressKeys: AddressKeys(
       addressLine1Key: 'bt_50_address_line1',
       addressLine2Key: 'bt_51_address_line2',
-      addressLine3Key: 'bt_51_address_line2',
+      addressLine3Key: 'bt_163_address_line3',
       cityKey: 'bt_52_city',
-      postalCodeKey: 'bt_52_city',
-      countryCodeKey: 'bt_52_city',
+      postalCodeKey: 'bt_53_postal_code',
+      countryCodeKey: 'bt_55_country_code',
     ),
     contactKey: 'bg_9_contact',
     contactKeys: ContactKeys(
-      pointKey: 'bg_6_contact',
-      telephoneNumberKey: 'bg_6_contact',
+      pointKey: 'bt_56_point',
+      telephoneNumberKey: 'bt_57_telephone_number',
       emailAddressKey: 'bt_58_email_address',
     ),
   ),
@@ -1408,10 +1529,6 @@ class PostalAddress {
             case String addressLine1) {
           this.addressLine1 = addressLine1;
         }
-        if (addressMap[party.addressKeys?.addressLine1Key]
-            case String addressLine1) {
-          this.addressLine1 = addressLine1;
-        }
         if (addressMap[party.addressKeys?.addressLine2Key]
             case String addressLine2) {
           this.addressLine2 = addressLine2;
@@ -1522,35 +1639,10 @@ class PersonTile extends StatelessWidget {
       child: avatarBase,
     );
     Widget? addressRendered;
-    if (personData != null) {
-      List<TextSpan> sellerSpans = [];
-      var address = personData!.postalAddress;
-      var line1Buffer = StringBuffer();
-      line1Buffer.write(address.addressLine1 ?? '');
-      var line2Buffer = StringBuffer();
-      line2Buffer.writeAll(
-          [address.addressLine2 ?? '', address.addressLine3 ?? ''], ' ');
-      var line3Buffer = StringBuffer();
-      line3Buffer.writeAll([
-        address.postalCode ?? '',
-        address.city ?? '',
-        address.countryCode ?? ''
-      ], ' ');
-      var addressBuffer = StringBuffer();
-      var line1 = line1Buffer.toString().trim();
-      if (line1.isNotEmpty) {
-        addressBuffer.writeln(line1);
-      }
-      var line2 = line2Buffer.toString().trim();
-      if (line2.isNotEmpty) {
-        addressBuffer.writeln(line2);
-      }
-      var line3 = line3Buffer.toString().trim();
-      if (line3.isNotEmpty) {
-        addressBuffer.write(line3);
-      }
-      sellerSpans.add(TextSpan(text: addressBuffer.toString().trim()));
-      addressRendered = Text.rich(TextSpan(children: sellerSpans));
+    if (personData?.postalAddress != null) {
+      // List<TextSpan> sellerSpans = [];
+      String addressText = renderAddressText(personData!.postalAddress);
+      addressRendered = Text.rich(TextSpan(text: addressText.trim()));
     }
 
     return Card(
@@ -1639,6 +1731,33 @@ class PersonTile extends StatelessWidget {
   }
 }
 
+String renderAddressText(PostalAddress address) {
+  var line1Buffer = StringBuffer();
+  line1Buffer.write(address.addressLine1 ?? '');
+  var line2Buffer = StringBuffer();
+  line2Buffer
+      .writeAll([address.addressLine2 ?? '', address.addressLine3 ?? ''], ' ');
+  var line3Buffer = StringBuffer();
+  line3Buffer.writeAll(
+      [address.postalCode ?? '', address.city ?? '', address.countryCode ?? ''],
+      ' ');
+  var addressBuffer = StringBuffer();
+  var line1 = line1Buffer.toString().trim();
+  if (line1.isNotEmpty) {
+    addressBuffer.writeln(line1);
+  }
+  var line2 = line2Buffer.toString().trim();
+  if (line2.isNotEmpty) {
+    addressBuffer.writeln(line2);
+  }
+  var line3 = line3Buffer.toString().trim();
+  if (line3.isNotEmpty) {
+    addressBuffer.write(line3);
+  }
+  var addressText = addressBuffer.toString();
+  return addressText;
+}
+
 typedef SplitButtonCallback = Function(String option);
 
 class SplitButton extends StatefulWidget {
@@ -1652,33 +1771,36 @@ class SplitButton extends StatefulWidget {
 }
 
 class _SplitButtonState extends State<SplitButton> {
-  late String dropdownValue = widget.options.first;
+  late String? dropdownValue = widget.options.firstOrNull;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         const Icon(Icons.forward_to_inbox),
-        TextButton(
-            onPressed: () => widget.onTap(dropdownValue),
-            child: Text(dropdownValue)),
-        MenuBar(
-          children: [
-            SubmenuButton(
-              menuChildren: widget.options
-                  .map<MenuItemButton>((v) => MenuItemButton(
-                        child: Text(v),
-                        onPressed: () {
-                          setState(() {
-                            dropdownValue = v;
-                          });
-                        },
-                      ))
-                  .toList(),
-              child: const Icon(Icons.arrow_drop_down),
-            ),
-          ],
-        ),
+        if (dropdownValue != null)
+          TextButton(
+              onPressed: () => widget.onTap(dropdownValue!),
+              child: Text(dropdownValue!)),
+        widget.options.isNotEmpty
+            ? MenuBar(
+                children: [
+                  SubmenuButton(
+                    menuChildren: widget.options
+                        .map<MenuItemButton>((v) => MenuItemButton(
+                              child: Text(v),
+                              onPressed: () {
+                                setState(() {
+                                  dropdownValue = v;
+                                });
+                              },
+                            ))
+                        .toList(),
+                    child: const Icon(Icons.arrow_drop_down),
+                  ),
+                ],
+              )
+            : const Text('Dieses Menü wird Addressen zum weiterleiten Zeigen'),
         // DropdownMenu(
         //
         //   onSelected: (String? value){
