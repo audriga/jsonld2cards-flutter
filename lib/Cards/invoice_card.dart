@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/attachment_header.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/mail_header.dart';
 
 // import 'package:jsonld2cards/Cards/Models/organization_model.dart';
@@ -780,6 +781,10 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
         ),
       ),
     ];
+    var renderMessageHeader = widget.cardData.message != null;
+    var sourceFile = widget.cardData.sourceFile;
+    var otherAttachments = widget.cardData.otherAttachments;
+    var renderAttachmentsHeader = sourceFile != null || (otherAttachments?.isNotEmpty ?? false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
@@ -787,9 +792,10 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       body: Card(
         child: ListView(
           children: [
-            if (widget.cardData.message != null)
+            if (renderMessageHeader)
               MailHeader(widget.cardData, expandable: true),
-            if (widget.cardData.message != null) const Divider(),
+            if (renderAttachmentsHeader) AttachmentHeader(sourceFile: sourceFile, otherAttachments: otherAttachments),
+            if (renderMessageHeader || renderAttachmentsHeader) const Divider(),
             ListTile(
               title: const Text.rich(
                 TextSpan(
@@ -900,7 +906,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
             Row(
               children: footerButtons,
             ),
-            if (widget.cardData.message != null &&
+            if (renderMessageHeader &&
                 forwardAddresses != null &&
                 globalSMLAppContext?.forwardEmailCallback != null)
               FutureBuilder<List<String>>(

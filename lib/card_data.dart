@@ -66,11 +66,15 @@ class CardData {
     List<Widget>? additionalButtons,
     MimeMessage? message,
     bool? showMessageHeader,
+    Attachment? sourceFile,
+    List<Attachment>? otherAttachments,
   })  : markup = markup ?? o.markup,
         postFunction = postFunction ?? o.postFunction,
         preview = preview ?? o.preview,
         topBar = topBar ?? o.topBar,
         additionalButtons = additionalButtons ?? o.additionalButtons,
         message = message ?? o.message,
-        showMessageHeader = showMessageHeader ?? o.showMessageHeader;
+        showMessageHeader = showMessageHeader ?? o.showMessageHeader,
+        sourceFile = sourceFile ?? o.sourceFile,
+        otherAttachments = otherAttachments ?? o.otherAttachments;
 }
