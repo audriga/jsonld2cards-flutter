@@ -14,7 +14,7 @@ import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'BuildingBlocks/card_with_actions.dart';
+// import 'BuildingBlocks/card_with_actions.dart';
 
 import 'BuildingBlocks/uri_image.dart';
 import 'Models/invoice_model.dart';
@@ -413,12 +413,16 @@ List<Widget> renderOrderedItems(Map<String, dynamic> json) {
       var nameBuffer = StringBuffer();
 
       if (line['bt_129_quantity'] case String bt129Quantity) {
-        nameBuffer.write('$bt129Quantity ');
+        if (bt129Quantity.trim().isNotEmpty) {
+          nameBuffer.write('$bt129Quantity ');
+        }
+      }
+      if (line['bt_130_quantity_unit_of_measure'] case String bt130QuantityUnitOfMeasure){
+        if (bt130QuantityUnitOfMeasure.trim().isNotEmpty) {
+          nameBuffer.write('$bt130QuantityUnitOfMeasure ');
+        }
       }
       nameBuffer.write(nameOrId);
-      if (line['bt_130_quantity_unit_of_measure'] case String bt130QuantityUnitOfMeasure){
-        nameBuffer.write(' $bt130QuantityUnitOfMeasure');
-      }
 
       String? price;
       if (line['bt_131_net_amount'] case String bt131NetAmount) {
@@ -931,8 +935,8 @@ class Payment extends StatelessWidget {
       }
       var bt83RemittanceInformationText =
           bg16PaymentInstructions['bt_83_remittance_information'];
-      var bt81PaymentMeansTypeCode =
-          bg16PaymentInstructions['bt_81_payment_means_type_code'];
+      // Todo use to determine transaction type
+      // var bt81PaymentMeansTypeCode = bg16PaymentInstructions['bt_81_payment_means_type_code'];
       if (bg16PaymentInstructions['bg_17_credit_transfer']
           case List bg17CreditTransfer) {
         bg17CreditTransfer.whereType<Map<String, dynamic>>().forEach((ct) {
@@ -1124,13 +1128,32 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
           case Map<String, dynamic> bg15DeliverToAddress) {
         var bt75AddressLine1 = bg15DeliverToAddress['bt_75_address_line1'];
         var bt76AddressLine2 = bg15DeliverToAddress['bt_76_address_line2'];
+        var bt165addressLine3 = bg15DeliverToAddress['bt_165_address_line3'];
         var bt77City = bg15DeliverToAddress['bt_77_city'];
         var bt78PostalCode = bg15DeliverToAddress['bt_78_postal_code'];
         var bt80CountryCode = bg15DeliverToAddress['bt_80_country_code'];
-
-        deliveryAddressDetails = Text('$bt75AddressLine1\n'
-            '$bt76AddressLine2\n'
-            '$bt78PostalCode $bt77City ($bt80CountryCode)');
+        String? countryCodeInBrackets;
+        if (bt80CountryCode is String && bt80CountryCode.trim().isNotEmpty) {
+          countryCodeInBrackets = '($bt80CountryCode)';
+        }
+        var deliveryAddressBuffer = StringBuffer();
+        if (bt75AddressLine1 is String && bt75AddressLine1.trim().isNotEmpty) {
+          deliveryAddressBuffer.writeln(bt75AddressLine1);
+        }
+        if (bt76AddressLine2 is String && bt76AddressLine2.trim().isNotEmpty) {
+          deliveryAddressBuffer.writeln(bt76AddressLine2);
+        }
+        if (bt165addressLine3 is String && bt165addressLine3.trim().isNotEmpty) {
+          deliveryAddressBuffer.writeln(bt165addressLine3);
+        }
+        var line4Buffer = StringBuffer();
+        var line4Elements = [bt78PostalCode, bt77City, countryCodeInBrackets].whereType<String>().where((s) => s.trim().isNotEmpty);
+        line4Buffer.writeAll(line4Elements, ' ');
+        var line4 = line4Buffer.toString();
+        if (line4.trim().isNotEmpty) {
+          deliveryAddressBuffer.write(line4);
+        }
+        deliveryAddressDetails = Text(deliveryAddressBuffer.toString().trim());
       }
       return DeliveryInformation(
         invoicingPeriodText: invoicingPeriodText,
@@ -1819,11 +1842,10 @@ class PersonTile extends StatelessWidget {
 String renderAddressText(PostalAddress address) {
   var line1Buffer = StringBuffer();
   line1Buffer.write(address.addressLine1 ?? '');
-  var line2Buffer = StringBuffer();
-  line2Buffer
-      .writeAll([address.addressLine2 ?? '', address.addressLine3 ?? ''], ' ');
-  var line3Buffer = StringBuffer();
-  line3Buffer.writeAll(
+  // var line2Buffer = StringBuffer();
+  // line2Buffer.writeAll([address.addressLine2 ?? '', address.addressLine3 ?? ''], ' ');
+  var line4Buffer = StringBuffer();
+  line4Buffer.writeAll(
       [address.postalCode ?? '', address.city ?? '', address.countryCode ?? ''],
       ' ');
   var addressBuffer = StringBuffer();
@@ -1831,13 +1853,19 @@ String renderAddressText(PostalAddress address) {
   if (line1.isNotEmpty) {
     addressBuffer.writeln(line1);
   }
-  var line2 = line2Buffer.toString().trim();
-  if (line2.isNotEmpty) {
+  // var line2 = line2Buffer.toString().trim();
+  var line2 = address.addressLine2?.trim();
+  if (line2 != null && line2.isNotEmpty) {
     addressBuffer.writeln(line2);
   }
-  var line3 = line3Buffer.toString().trim();
-  if (line3.isNotEmpty) {
-    addressBuffer.write(line3);
+  var line3 = address.addressLine3?.trim();
+  if (line3 != null && line3.isNotEmpty) {
+    addressBuffer.writeln(line3);
+  }
+
+  var line4 = line4Buffer.toString().trim();
+  if (line4.isNotEmpty) {
+    addressBuffer.write(line4);
   }
   var addressText = addressBuffer.toString();
   return addressText;

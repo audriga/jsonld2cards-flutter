@@ -207,7 +207,7 @@
       "bt_78_postal_code": "PLZ (BT-78)",
       "bt_80_country_code": "Ländercode (BT-80)"
     },
-    "bt_165_address_line_3": "Weitere zusätzliche Adresszeile (BT-165)"
+    "bt_165_address_line3": "Weitere zusätzliche Adresszeile (BT-165)"
   },
   "bg_22_document_totals": {
     "bt_106_sum_invoice_line_net_amount": "Summe aller Positionen (netto) (BT-106)",
