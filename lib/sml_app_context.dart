@@ -30,6 +30,7 @@ class SMLAppContext {
     this.confirmCallback,
     this.eventCallback,
     this.shareAttachmentCallback,
+    this.saveAttachmentCallback,
     this.shareFileCallback,
     this.saveFileCallback,
     this.forwardEmailAddresses,

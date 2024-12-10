@@ -519,7 +519,7 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
               icon: const Icon(Icons.share, size: 16)),
         if (bt125Content is String && bt125Content.isNotEmpty)
           IconButton(
-              onPressed: () => saveB64File(fileName, bt125Content),
+              onPressed: () => globalSMLAppContext!.saveFileCallback!(fileName, bt1251MimeCode, bt125Content),
               icon: const Icon(Icons.download, size: 16)),
         IconButton(
             onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
@@ -551,7 +551,7 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
               icon: const Icon(Icons.share, size: 16)),
         if (attachment.data != null)
           IconButton(
-              onPressed: () => saveFile(filename, attachment.data!),
+              onPressed: () => globalSMLAppContext!.saveFileCallback!(attachment.data, attachment.mimeType, filename),
               icon: const Icon(Icons.download, size: 16)),
         IconButton(
             onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
@@ -576,20 +576,20 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
   return attachments;
 }
 
-saveB64File(String? fileName, String encodedContent) =>
-    saveFile(fileName, base64Decode(encodedContent));
+// saveB64File(String? fileName, String encodedContent) =>
+//     saveFile(fileName, base64Decode(encodedContent));
 
-saveFile(String? fileName, Uint8List content) async {
-  String? _ = await FilePicker.platform.saveFile(
-    // dialogTitle: 'Please select an output file:',
-    fileName: fileName ?? 'attachment',
-    bytes: content,
-  );
-  //
-  // if (outputFile == null) {
-  //   // User canceled the picker
-  // }
-}
+// saveFile(String? fileName, Uint8List content) async {
+//   String? _ = await FilePicker.platform.saveFile(
+//     // dialogTitle: 'Please select an output file:',
+//     fileName: fileName ?? 'attachment',
+//     bytes: content,
+//   );
+//   //
+//   // if (outputFile == null) {
+//   //   // User canceled the picker
+//   // }
+// }
 
 class DetailInvoicePage extends StatefulWidget {
   const DetailInvoicePage({
@@ -737,10 +737,13 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                   icon: const Icon(Icons.share)),
             IconButton(
                 onPressed: () {
-                  // todo this does not work yet
                   if (widget.cardData.sourceFile?.data case Uint8List data) {
                     String? fileName = widget.cardData.sourceFile?.filename;
-                    saveFile(fileName, data);
+                    String? mimeType = widget.cardData.sourceFile?.mimeType;
+                    globalSMLAppContext!.saveFileCallback!(data, mimeType, fileName);
+                    // saveFile(fileName, data);
+                  } else if (muid != null && uri != null) {
+                    globalSMLAppContext!.saveAttachmentCallback!(muid, uri);
                   }
                 },
                 icon: const Icon(Icons.download)),
