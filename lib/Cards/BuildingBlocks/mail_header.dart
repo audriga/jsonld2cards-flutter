@@ -8,17 +8,19 @@ import 'package:jsonld2cards/card_data.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MailHeader extends StatefulWidget {
-  const MailHeader(this.cardData, {super.key, this.expandable = false});
+  const MailHeader(this.cardData, {super.key, this.expandable = false, this.constraints = const BoxConstraints(maxHeight: 200), this.fullDisplay = false});
 
   final CardData cardData;
   final bool expandable;
+  final BoxConstraints? constraints;
+  final bool fullDisplay; // can only be expanded,
 
   @override
   State<MailHeader> createState() => _MailHeaderState();
 }
 
 class _MailHeaderState extends State<MailHeader> {
-  bool _expanded = false;
+  late bool _expanded = widget.fullDisplay; // starting with false, except wheen full display is wanted
   late final WebViewController? controller;
   late final String? plainText;
 
@@ -135,12 +137,14 @@ class _MailHeaderState extends State<MailHeader> {
     }
     bool showWebView = (controller != null);
     bool showPlainText = (!showWebView && plainText != null);
-    return InkWell(
-      onTap: () => setState(() {
-        _expanded = !_expanded;
-      }),
-      child: _expanded
-          ? Padding(
+    var smallMailHeader = SmallMailHeader(
+              insets: insets,
+              fontSize: fontSize,
+              dateRendered: dateRendered,
+              senderWithAvatar: senderWithAvatar,
+              subjectRendered: subjectRendered,
+            );
+    var bigMailHeader = Padding(
               padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 0.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,22 +167,23 @@ class _MailHeaderState extends State<MailHeader> {
                   if (subjectRendered != null) subjectRendered,
                   // if (senderWithAvatar!= null) senderWithAvatar,
                   if (showWebView)
+                    (widget.constraints != null)?
                     ConstrainedBox(
-                      constraints: const BoxConstraints(maxHeight: 200),
+                      constraints: widget.constraints!,
                       child: WebViewWidget(controller: controller!),
-                    ),
+                    ) : LayoutBuilder(builder: (context, constraints) => ConstrainedBox(constraints: constraints, child: WebViewWidget(controller: controller!),),),
                   if (showPlainText) Text(plainText!),
                 ],
               ),
-            )
-          : SmallMailHeader(
-              insets: insets,
-              fontSize: fontSize,
-              dateRendered: dateRendered,
-              senderWithAvatar: senderWithAvatar,
-              subjectRendered: subjectRendered,
-            ),
-    );
+            );
+    return widget.fullDisplay? bigMailHeader : widget.expandable ? InkWell(
+      onTap: () => setState(() {
+        _expanded = !_expanded;
+      }),
+      child: _expanded
+          ? bigMailHeader
+          : smallMailHeader,
+    ): smallMailHeader;
   }
 }
 
