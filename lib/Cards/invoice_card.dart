@@ -800,9 +800,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
             ),
-            if (deliveryToRendered != null ||
-                deliveryDateRendered != null// ||
-                // deliveryAddressDetails != null
+            if (deliveryToRendered != null || deliveryAddressDetails != null
             )
               Card(
                 elevation: 0,
@@ -1104,6 +1102,10 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
       String? deliveryDateText;
       String? deliveryPartyName;
       Widget? deliveryAddressDetails;
+      if (bg13DeliveryInformation['bt_72_actual_delivery_date']
+      case String bt72ActualDeliveryDate) {
+        deliveryDateText = renderDate(bt72ActualDeliveryDate);
+      }
       if (bg13DeliveryInformation['bg_14_invoicing_period']
           case Map<String, dynamic> invoicingPeriod) {
         String? startDate = renderDate(invoicingPeriod['bt_73_start_date']);
@@ -1116,9 +1118,8 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
           invoicingPeriodText = 'Leistungszeitraum bis $endDate';
         }
       }
-      if (bg13DeliveryInformation['bt_72_actual_delivery_date']
-          case String bt72ActualDeliveryDate) {
-        deliveryDateText = renderDate(bt72ActualDeliveryDate);
+      if (invoicingPeriodText == null && deliveryDateText != null) {
+        invoicingPeriodText = 'Leistungsdatum: $deliveryDateText';
       }
       if (bg13DeliveryInformation['bt_70_deliver_to_party_name']
           case String bt70DeliverToPartyName) {

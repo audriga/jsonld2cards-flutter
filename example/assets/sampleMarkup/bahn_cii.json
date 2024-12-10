@@ -203,11 +203,11 @@
     "bg_15_deliver_to_address": {
       "bt_75_address_line1": "Straße u. Hausnummer / Postfach (BT-75)",
       "bt_76_address_line2": "Zusätzliche Adresszeile (BT-76)",
+      "bt_165_address_line3": "Weitere zusätzliche Adresszeile (BT-165)",
       "bt_77_city": "Stadt/Ort (BT-77)",
       "bt_78_postal_code": "PLZ (BT-78)",
       "bt_80_country_code": "Ländercode (BT-80)"
-    },
-    "bt_165_address_line3": "Weitere zusätzliche Adresszeile (BT-165)"
+    }
   },
   "bg_22_document_totals": {
     "bt_106_sum_invoice_line_net_amount": "Summe aller Positionen (netto) (BT-106)",
