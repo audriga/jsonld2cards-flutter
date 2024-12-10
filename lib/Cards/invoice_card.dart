@@ -1,10 +1,9 @@
 library invoice_card;
 
-import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/attachment_header.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/mail_header.dart';
 
@@ -1611,6 +1610,7 @@ class PartyData {
   String? electronicAddress;
   PostalAddress postalAddress;
   PartyContact contact;
+  PartyType party;
 
   PartyData({
     this.name,
@@ -1622,11 +1622,12 @@ class PartyData {
     this.electronicAddress,
     postalAddress,
     contact,
+    required this.party,
   })  : identifier = identifier ?? [],
         postalAddress = postalAddress ?? PostalAddress(),
         contact = contact ?? PartyContact();
 
-  PartyData.fromJson(Map<String, dynamic> json, PartyType party)
+  PartyData.fromJson(Map<String, dynamic> json, this.party)
       : postalAddress = PostalAddress.fromJson(json, party),
         contact = PartyContact.fromJson(json, party) {
     identifier = [];
@@ -1761,6 +1762,8 @@ class PersonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // todo MOCK put bool smime valid into carddata
+    bool smimeValid = true;
     // todo detect if empty?
     var theme = Theme.of(context);
     Widget? nameRendered;
@@ -1790,11 +1793,33 @@ class PersonTile extends StatelessWidget {
         size: big ? null : theme.textTheme.labelSmall?.fontSize,
       );
     }
-    var avatar = CircleAvatar(
+    Widget fallbackAvatar = CircleAvatar(
       backgroundColor: Colors.blue,
       maxRadius: big ? null : (theme.textTheme.labelSmall?.fontSize ?? 16) + 4,
       child: avatarBase,
+
     );
+    Widget avatar;
+    if (smimeValid && personData?.party == PartyType.seller) {
+      var pictureAvatar = FutureBuilder(future: globalSMLAppContext!.contactList!(), builder: (context, snapshot) => switch (snapshot.connectionState) {
+        ConnectionState.done => snapshot.hasData? ContactAvatar(contacts: snapshot.data!, partyData: personData, fallback: fallbackAvatar,): fallbackAvatar,
+        _ => fallbackAvatar
+      // Stack(
+      //     children: [
+      //      fallbackAvatar,
+      //      const SizedBox(height: 10, width: 10, child: CircularProgressIndicator(),
+      //      )
+      //    ],
+      //   )
+      },);
+      avatar = Badge(
+        label: const Icon(Icons.verified),
+        backgroundColor: Colors.transparent,
+        child: pictureAvatar,
+      );
+    } else {
+      avatar = fallbackAvatar;
+    }
     Widget? addressRendered;
     if (personData?.postalAddress != null) {
       // List<TextSpan> sellerSpans = [];
@@ -1849,6 +1874,22 @@ class PersonTile extends StatelessWidget {
                     ListTile(
                       title: addressRendered,
                     ),
+                    if (personData?.party == PartyType.seller) TextButton(onPressed: (){
+                      FlutterContacts.openExternalInsert(
+                          Contact(
+                            displayName: personData?.contact.point ?? '',
+                            // name: Name(first: personData?.contact.point ?? ''),
+                            organizations: [
+                              Organization(company: personData?.name ?? ''),
+                            ],
+                            emails: [
+                              Email(personData?.contact.emailAddress ?? '', customLabel: 'xrechnung-seller-person'),
+                              Email(personData?.electronicAddress ?? '', customLabel: 'xrechnung-seller'),
+                            ]
+                          ),
+                      );
+                    }, child: const Text('Add to contacts'),
+                    ),
                   ],
                 )
               : ListTile(
@@ -1887,6 +1928,33 @@ class PersonTile extends StatelessWidget {
     );
   }
 }
+
+class ContactAvatar extends StatelessWidget {
+  const ContactAvatar({super.key, required this.contacts, required this.partyData, required this.fallback});
+  // todo: warning, if email isn't same as smime validated email, also currently picture seems to not be grabbed correctly
+  final List<Contact> contacts;
+  final PartyData? partyData;
+  final Widget fallback;
+
+  @override
+  Widget build(BuildContext context) {
+    if (partyData == null) {
+      return fallback;
+    }
+    for (var contact in contacts) {
+      Iterable<String> contactMailAddresses = contact.emails.map((m) => m.address);
+      if (contactMailAddresses.contains(partyData!.electronicAddress) || contactMailAddresses.contains(partyData!.contact.emailAddress)) {
+        if (contact.photoOrThumbnail != null) {
+          return CircleAvatar(
+            backgroundImage: MemoryImage(contact.photoOrThumbnail!),
+          );
+        }
+      }
+    }
+    return fallback;
+  }
+}
+
 
 String renderAddressText(PostalAddress address) {
   var line1Buffer = StringBuffer();
