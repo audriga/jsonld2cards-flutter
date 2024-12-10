@@ -210,26 +210,29 @@ class _InvoiceCardState extends State<InvoiceCard> {
     //   ),
     // );
     var cardContents = [
-          cardContent,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => DetailInvoicePage(
-                        invoice: invoice,
-                        cardData: widget.cardData,
-                      ),
-                    ));
-                  },
-                  child: const Text('Detailansicht'))
-            ],
-          )
-        ];
+      cardContent,
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => DetailInvoicePage(
+                    invoice: invoice,
+                    cardData: widget.cardData,
+                  ),
+                ));
+              },
+              child: const Text('Detailansicht'))
+        ],
+      )
+    ];
     if (widget.cardData.showMessageHeader) {
-      var messageHeader = MailHeader(widget.cardData, expandable: false,);
-      cardContents.insertAll(0, [messageHeader,const Divider()]);
+      var messageHeader = MailHeader(
+        widget.cardData,
+        expandable: false,
+      );
+      cardContents.insertAll(0, [messageHeader, const Divider()]);
     }
     return Card(
       child: Column(
@@ -417,7 +420,8 @@ List<Widget> renderOrderedItems(Map<String, dynamic> json) {
           nameBuffer.write('$bt129Quantity ');
         }
       }
-      if (line['bt_130_quantity_unit_of_measure'] case String bt130QuantityUnitOfMeasure){
+      if (line['bt_130_quantity_unit_of_measure']
+          case String bt130QuantityUnitOfMeasure) {
         if (bt130QuantityUnitOfMeasure.trim().isNotEmpty) {
           nameBuffer.write('$bt130QuantityUnitOfMeasure ');
         }
@@ -519,7 +523,8 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
               icon: const Icon(Icons.share, size: 16)),
         if (bt125Content is String && bt125Content.isNotEmpty)
           IconButton(
-              onPressed: () => globalSMLAppContext!.saveFileCallback!(fileName, bt1251MimeCode, bt125Content),
+              onPressed: () => globalSMLAppContext!.saveFileCallback!(
+                  fileName, bt1251MimeCode, bt125Content),
               icon: const Icon(Icons.download, size: 16)),
         IconButton(
             onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
@@ -551,7 +556,8 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
               icon: const Icon(Icons.share, size: 16)),
         if (attachment.data != null)
           IconButton(
-              onPressed: () => globalSMLAppContext!.saveFileCallback!(attachment.data, attachment.mimeType, filename),
+              onPressed: () => globalSMLAppContext!.saveFileCallback!(
+                  attachment.data, attachment.mimeType, filename),
               icon: const Icon(Icons.download, size: 16)),
         IconButton(
             onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
@@ -740,14 +746,33 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                   if (widget.cardData.sourceFile?.data case Uint8List data) {
                     String? fileName = widget.cardData.sourceFile?.filename;
                     String? mimeType = widget.cardData.sourceFile?.mimeType;
-                    globalSMLAppContext!.saveFileCallback!(data, mimeType, fileName);
+                    globalSMLAppContext!.saveFileCallback!(
+                        data, mimeType, fileName);
                     // saveFile(fileName, data);
                   } else if (muid != null && uri != null) {
                     globalSMLAppContext!.saveAttachmentCallback!(muid, uri);
                   }
                 },
                 icon: const Icon(Icons.download)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.cloud_upload)),
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Noch keine API Konfiguriert'),
+                      content: const Text(
+                          'Mit diesen Button könnten Sie die Rechnunng direkt an die API Ihres Rechnungssystem hochladen. Schicken Sie uns Feedback, und sagen Sie uns welches Rechnungssystem Sie hier verfügbar haben wollen.'),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Abbrechen')),
+                        const TextButton(
+                            onPressed: null, child: Text('Feedback senden'))
+                      ],
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.cloud_upload)),
             // IconButton(
             //     onPressed: () {},
             //     icon: const Icon(Icons.forward_to_inbox)),
@@ -803,8 +828,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
             ),
-            if (deliveryToRendered != null || deliveryAddressDetails != null
-            )
+            if (deliveryToRendered != null || deliveryAddressDetails != null)
               Card(
                 elevation: 0,
                 color: subCardColor,
@@ -816,18 +840,28 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                       child: Text('Lieferung',
                           style: TextStyle(color: theme.hintColor)),
                     ),
-                    (deliveryAddressDetails != null) ? ExpansionTile(
-                        title: deliveryToRendered ?? deliveryDateRendered ?? const Text(''),
-                        subtitle: (deliveryToRendered != null)? deliveryDateRendered : null,
-                        children: [
-                          ListTile(
-                            title: deliveryAddressDetails,
+                    (deliveryAddressDetails != null)
+                        ? ExpansionTile(
+                            title: deliveryToRendered ??
+                                deliveryDateRendered ??
+                                const Text(''),
+                            subtitle: (deliveryToRendered != null)
+                                ? deliveryDateRendered
+                                : null,
+                            children: [
+                              ListTile(
+                                title: deliveryAddressDetails,
+                              ),
+                            ],
+                          )
+                        : ListTile(
+                            title: deliveryToRendered ??
+                                deliveryDateRendered ??
+                                const Text(''),
+                            subtitle: (deliveryToRendered != null)
+                                ? deliveryDateRendered
+                                : null,
                           ),
-                        ],
-                      ) : ListTile(
-                      title: deliveryToRendered ?? deliveryDateRendered ?? const Text(''),
-                      subtitle: (deliveryToRendered != null)? deliveryDateRendered : null,
-                    ),
                     // Align(
                     //   alignment: Alignment.topRight,
                     //   child: Wrap(
@@ -1012,9 +1046,9 @@ class Payment extends StatelessWidget {
             ExpansionTile(
               title: amountRendered,
               subtitle: const Text(
-                      'TODO MOCKDATA Wird eigezoven von Kreditkarte',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                'TODO MOCKDATA Wird eigezoven von Kreditkarte',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               expandedCrossAxisAlignment: CrossAxisAlignment.start,
               children: details,
             ),
@@ -1106,7 +1140,7 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
       String? deliveryPartyName;
       Widget? deliveryAddressDetails;
       if (bg13DeliveryInformation['bt_72_actual_delivery_date']
-      case String bt72ActualDeliveryDate) {
+          case String bt72ActualDeliveryDate) {
         deliveryDateText = renderDate(bt72ActualDeliveryDate);
       }
       if (bg13DeliveryInformation['bg_14_invoicing_period']
@@ -1147,11 +1181,14 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
         if (bt76AddressLine2 is String && bt76AddressLine2.trim().isNotEmpty) {
           deliveryAddressBuffer.writeln(bt76AddressLine2);
         }
-        if (bt165addressLine3 is String && bt165addressLine3.trim().isNotEmpty) {
+        if (bt165addressLine3 is String &&
+            bt165addressLine3.trim().isNotEmpty) {
           deliveryAddressBuffer.writeln(bt165addressLine3);
         }
         var line4Buffer = StringBuffer();
-        var line4Elements = [bt78PostalCode, bt77City, countryCodeInBrackets].whereType<String>().where((s) => s.trim().isNotEmpty);
+        var line4Elements = [bt78PostalCode, bt77City, countryCodeInBrackets]
+            .whereType<String>()
+            .where((s) => s.trim().isNotEmpty);
         line4Buffer.writeAll(line4Elements, ' ');
         var line4 = line4Buffer.toString();
         if (line4.trim().isNotEmpty) {
@@ -1289,6 +1326,7 @@ class LeistungCard extends StatefulWidget {
 class _LeistungCardState extends State<LeistungCard> {
   // late final controller = ExpansionTileController();
   bool _expandNotes = false;
+
   @override
   Widget build(BuildContext context) {
     Widget? amountRendered; // = renderAmount(invoice);
@@ -1336,14 +1374,15 @@ class _LeistungCardState extends State<LeistungCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (invoicingPeriodText != null) Text(invoicingPeriodText),
-        if (widget.big  && noteText != null && noteText.isNotEmpty)
+        if (widget.big && noteText != null && noteText.isNotEmpty)
           Text(
             noteText,
             maxLines: _expandNotes ? 1000 : 2,
             softWrap: true,
             overflow: TextOverflow.ellipsis,
           ),
-        if (widget.big && (numberOfItems) > 0) Text('$numberOfItems Rechnungsposten'),
+        if (widget.big && (numberOfItems) > 0)
+          Text('$numberOfItems Rechnungsposten'),
       ],
     );
     return Card(
@@ -1362,11 +1401,11 @@ class _LeistungCardState extends State<LeistungCard> {
                     title: amountRendered,
                     subtitle: subtitle,
                     children: orderedItems,
-              onExpansionChanged: (value) {
-                setState(() {
-                  _expandNotes = value;
-                });
-              },
+                    onExpansionChanged: (value) {
+                      setState(() {
+                        _expandNotes = value;
+                      });
+                    },
                   )
                 : ListTile(
                     title: amountRendered,
@@ -1920,30 +1959,40 @@ class _SplitButtonState extends State<SplitButton> {
                 ],
               )
             : TextButton(
-          onPressed: () {
-            showDialog(context: context, builder: (context) => AlertDialog(
-              title: const Text('Keine Ziele Konfiguriert'),
-              content: const Text('Rechnungen können an Kontakte, die eine xrechnung email hinertlegt haben weitergeleitet werden.'
-                  'Hinterlegen Sie dafür bei einen Kontakt eine email addresse mit den label "xrechnug", und geben Sie dieser App die Berechtigung kontakte zu lesen.'),
-               actions: [
-                 TextButton(onPressed: () async {
-                   globalSMLAppContext!.reloadContacts!();
-                   var freshAddresses = await globalSMLAppContext!.forwardEmailAddresses!();
-                   if (context.mounted) {
-                     Navigator.pop(context, 'Ok');
-                   }
-                   if (freshAddresses.isNotEmpty) {
-                     setState(() {
-                       addresses = freshAddresses;
-                       dropdownValue = addresses.first;
-                     });
-                   }
-                 }, child: const Text('Kontakte neu laden')),
-                 TextButton(onPressed: () => Navigator.pop(context, 'Ok'), child: const Text('Ok'))
-               ],
-            ),);
-        }, child: const Text('Weiterleiten'),
-        ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Keine Ziele Konfiguriert'),
+                      content: const Text(
+                          'Rechnungen können an Kontakte, die eine xrechnung email hinertlegt haben weitergeleitet werden.'
+                          'Hinterlegen Sie dafür bei einen Kontakt eine email addresse mit den label "xrechnug", und geben Sie dieser App die Berechtigung kontakte zu lesen.'),
+                      actions: [
+                        TextButton(
+                            onPressed: () async {
+                              globalSMLAppContext!.reloadContacts!();
+                              var freshAddresses = await globalSMLAppContext!
+                                  .forwardEmailAddresses!();
+                              if (context.mounted) {
+                                Navigator.pop(context, 'Ok');
+                              }
+                              if (freshAddresses.isNotEmpty) {
+                                setState(() {
+                                  addresses = freshAddresses;
+                                  dropdownValue = addresses.first;
+                                });
+                              }
+                            },
+                            child: const Text('Kontakte neu laden')),
+                        TextButton(
+                            onPressed: () => Navigator.pop(context, 'Ok'),
+                            child: const Text('Ok'))
+                      ],
+                    ),
+                  );
+                },
+                child: const Text('Weiterleiten'),
+              ),
         // DropdownMenu(
         //
         //   onSelected: (String? value){
