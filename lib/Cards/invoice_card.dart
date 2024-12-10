@@ -1889,21 +1889,23 @@ class SplitButton extends StatefulWidget {
 
 class _SplitButtonState extends State<SplitButton> {
   late String? dropdownValue = widget.options.firstOrNull;
+  late List<String> addresses = widget.options;
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         const Icon(Icons.forward_to_inbox),
         if (dropdownValue != null)
           TextButton(
               onPressed: () => widget.onTap(dropdownValue!),
               child: Text(dropdownValue!)),
-        widget.options.isNotEmpty
+        addresses.isNotEmpty
             ? MenuBar(
                 children: [
                   SubmenuButton(
-                    menuChildren: widget.options
+                    menuChildren: addresses
                         .map<MenuItemButton>((v) => MenuItemButton(
                               child: Text(v),
                               onPressed: () {
@@ -1917,7 +1919,31 @@ class _SplitButtonState extends State<SplitButton> {
                   ),
                 ],
               )
-            : const Text('Dieses Menü wird Addressen zum weiterleiten Zeigen'),
+            : TextButton(
+          onPressed: () {
+            showDialog(context: context, builder: (context) => AlertDialog(
+              title: const Text('Keine Ziele Konfiguriert'),
+              content: const Text('Rechnungen können an Kontakte, die eine xrechnung email hinertlegt haben weitergeleitet werden.'
+                  'Hinterlegen Sie dafür bei einen Kontakt eine email addresse mit den label "xrechnug", und geben Sie dieser App die Berechtigung kontakte zu lesen.'),
+               actions: [
+                 TextButton(onPressed: () async {
+                   globalSMLAppContext!.reloadContacts!();
+                   var freshAddresses = await globalSMLAppContext!.forwardEmailAddresses!();
+                   if (context.mounted) {
+                     Navigator.pop(context, 'Ok');
+                   }
+                   if (freshAddresses.isNotEmpty) {
+                     setState(() {
+                       addresses = freshAddresses;
+                       dropdownValue = addresses.first;
+                     });
+                   }
+                 }, child: const Text('Kontakte neu laden')),
+                 TextButton(onPressed: () => Navigator.pop(context, 'Ok'), child: const Text('Ok'))
+               ],
+            ),);
+        }, child: const Text('Weiterleiten'),
+        ),
         // DropdownMenu(
         //
         //   onSelected: (String? value){

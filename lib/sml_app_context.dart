@@ -1,6 +1,7 @@
 library sml_app_context;
 
 import 'package:enough_mail/codecs.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 
 typedef SendEmailCallback = Function({dynamic dataToSend, String? subject, String? recipient});
 // todo define this for event/ ical potential actions
@@ -12,7 +13,8 @@ typedef ShareFileCallback = Function(dynamic fileData, String? mimeType, String?
 typedef SaveFileCallback = Function(dynamic fileData, String? mimeType, String? fileName);
 typedef ForwardEmailAddresses = Future<List<String>> Function();
 typedef ForwardEmailCallback = Function(String address, MimeMessage emailToForward);
-
+typedef ReloadContacts = Function();
+typedef ContactList = Future<List<Contact>> Function();
 SMLAppContext? globalSMLAppContext;
 
 class SMLAppContext {
@@ -24,6 +26,8 @@ class SMLAppContext {
   ShareFileCallback? shareFileCallback;
   SaveFileCallback? saveFileCallback;
   ForwardEmailAddresses? forwardEmailAddresses;
+  ReloadContacts? reloadContacts;
+  ContactList? contactList;
   ForwardEmailCallback? forwardEmailCallback;
 
   SMLAppContext({
@@ -35,5 +39,7 @@ class SMLAppContext {
     this.saveFileCallback,
     this.forwardEmailAddresses,
     this.forwardEmailCallback,
+    this.reloadContacts,
+    this.contactList,
   });
 }
