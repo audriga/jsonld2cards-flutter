@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/attachment_header.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/epc_qr.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/mail_header.dart';
 
 // import 'package:jsonld2cards/Cards/Models/organization_model.dart';
@@ -13,6 +14,7 @@ import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 // import 'BuildingBlocks/card_with_actions.dart';
 
@@ -130,10 +132,11 @@ class _InvoiceCardState extends State<InvoiceCard> {
     Widget cardContent = InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => DetailInvoicePage(
-            invoice: invoice,
-            cardData: widget.cardData,
-          ),
+          builder: (context) =>
+              DetailInvoicePage(
+                invoice: invoice,
+                cardData: widget.cardData,
+              ),
         ));
       },
       child: Padding(
@@ -177,7 +180,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
               PersonTile(
                   title: 'Seller',
                   personData:
-                      PartyData.fromJson(invoice.json, PartyType.seller),
+                  PartyData.fromJson(invoice.json, PartyType.seller),
                   subCardColor: subCardColor,
                   descriptionPadding: descriptionPadding,
                   big: false),
@@ -217,10 +220,11 @@ class _InvoiceCardState extends State<InvoiceCard> {
           TextButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => DetailInvoicePage(
-                    invoice: invoice,
-                    cardData: widget.cardData,
-                  ),
+                  builder: (context) =>
+                      DetailInvoicePage(
+                        invoice: invoice,
+                        cardData: widget.cardData,
+                      ),
                 ));
               },
               child: const Text('Detailansicht'))
@@ -258,7 +262,8 @@ Widget? sellerAndOrCustomerSpansWrapped(Invoice invoice) {
       var address = invoice.provider!.address!;
       sellerSpans.add(TextSpan(
           text: '\t\t${address.streetAddress}\n'
-              '\t\t${address.postalCode} ${address.addressLocality} ${address.addressCountry}'));
+              '\t\t${address.postalCode} ${address.addressLocality} ${address
+              .addressCountry}'));
     }
     seller = Text.rich(TextSpan(children: sellerSpans));
   }
@@ -275,7 +280,8 @@ Widget? sellerAndOrCustomerSpansWrapped(Invoice invoice) {
       var address = invoice.customer!.address!;
       customerSpans.add(TextSpan(
           text: '\t\t${address.streetAddress}\n'
-              '\t\t${address.postalCode} ${address.addressLocality} ${address.addressCountry}'));
+              '\t\t${address.postalCode} ${address.addressLocality} ${address
+              .addressCountry}'));
     }
     customer = Text.rich(TextSpan(children: customerSpans));
   }
@@ -291,8 +297,8 @@ Widget? sellerAndOrCustomerSpansWrapped(Invoice invoice) {
   return sellerAndOrCustomer;
 }
 
-List<TextSpan> createSubtitleTextSpans(
-    String? confirmationNumber, Invoice invoice) {
+List<TextSpan> createSubtitleTextSpans(String? confirmationNumber,
+    Invoice invoice) {
   var subTitleTextSpans = <TextSpan>[];
   if (confirmationNumber != null) {
     var confirmationNr = 'Confirmation number: $confirmationNumber\n';
@@ -342,7 +348,8 @@ List<TextSpan> createSubtitleTextSpans(
     bool overdue = paymentDueDate.isBefore(DateTime.now());
     subTitleTextSpans.add(TextSpan(
         text:
-            '\nDue ${paymentDueDate.day}.${paymentDueDate.month}.${paymentDueDate.year}', // todo forced format
+        '\nDue ${paymentDueDate.day}.${paymentDueDate.month}.${paymentDueDate
+            .year}', // todo forced format
         style: TextStyle(
           color: overdue ? Colors.red : Colors.green,
         )));
@@ -390,7 +397,7 @@ List<Widget> renderOrderedItems(Map<String, dynamic> json) {
   List<Widget> orderedItems = [];
   String? currencyCode;
   if (json['bt_6_vat_accounting_currency_code']
-      case String bt6VatAccountingCurrencyCode) {
+  case String bt6VatAccountingCurrencyCode) {
     currencyCode = bt6VatAccountingCurrencyCode;
   }
   if (json['bt_5_invoice_currency_code'] case String bt5InvoiceCurrencyCode) {
@@ -404,7 +411,7 @@ List<Widget> renderOrderedItems(Map<String, dynamic> json) {
       }
       String? name;
       if (line['bg_31_item_information']
-          case Map<String, dynamic> bg31ItemInformation) {
+      case Map<String, dynamic> bg31ItemInformation) {
         if (bg31ItemInformation['bt_153_name'] case String bt153Name) {
           name = bt153Name;
         }
@@ -416,13 +423,17 @@ List<Widget> renderOrderedItems(Map<String, dynamic> json) {
       var nameBuffer = StringBuffer();
 
       if (line['bt_129_quantity'] case String bt129Quantity) {
-        if (bt129Quantity.trim().isNotEmpty) {
+        if (bt129Quantity
+            .trim()
+            .isNotEmpty) {
           nameBuffer.write('$bt129Quantity ');
         }
       }
       if (line['bt_130_quantity_unit_of_measure']
-          case String bt130QuantityUnitOfMeasure) {
-        if (bt130QuantityUnitOfMeasure.trim().isNotEmpty) {
+      case String bt130QuantityUnitOfMeasure) {
+        if (bt130QuantityUnitOfMeasure
+            .trim()
+            .isNotEmpty) {
           nameBuffer.write('$bt130QuantityUnitOfMeasure ');
         }
       }
@@ -503,12 +514,12 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
   List<Widget> attachments = [];
 
   if (invoice.json['bg_24_additional_supporting_documents']
-      case List bg24AdditionalSupportingDocuments) {
+  case List bg24AdditionalSupportingDocuments) {
     Iterable<Map<String, dynamic>> attachmentMaps =
-        bg24AdditionalSupportingDocuments
-            .whereType<Map<String, dynamic>>()
-            .map((e) => e['bt_125_attached_document'])
-            .whereType<Map<String, dynamic>>();
+    bg24AdditionalSupportingDocuments
+        .whereType<Map<String, dynamic>>()
+        .map((e) => e['bt_125_attached_document'])
+        .whereType<Map<String, dynamic>>();
     for (Map<String, dynamic> attachmentMap in attachmentMaps) {
       var fileName = attachmentMap['bt_125_2_filename'];
       var bt125Content = attachmentMap['bt_125_content'];
@@ -523,8 +534,9 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
               icon: const Icon(Icons.share, size: 16)),
         if (bt125Content is String && bt125Content.isNotEmpty)
           IconButton(
-              onPressed: () => globalSMLAppContext!.saveFileCallback!(
-                  fileName, bt1251MimeCode, bt125Content),
+              onPressed: () =>
+                  globalSMLAppContext!.saveFileCallback!(
+                      fileName, bt1251MimeCode, bt125Content),
               icon: const Icon(Icons.download, size: 16)),
         IconButton(
             onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
@@ -556,8 +568,9 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
               icon: const Icon(Icons.share, size: 16)),
         if (attachment.data != null)
           IconButton(
-              onPressed: () => globalSMLAppContext!.saveFileCallback!(
-                  attachment.data, attachment.mimeType, filename),
+              onPressed: () =>
+                  globalSMLAppContext!.saveFileCallback!(
+                      attachment.data, attachment.mimeType, filename),
               icon: const Icon(Icons.download, size: 16)),
         IconButton(
             onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
@@ -634,7 +647,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     }
 
     List<Widget> attachments =
-        renderAttachments(widget.invoice, widget.cardData);
+    renderAttachments(widget.invoice, widget.cardData);
     var numberOfAttachments = attachments.length; // ?? 0;
     Widget? invoiceHeader = renderInvoiceHeader(widget.invoice);
     // Widget? paymentStatusRendered;//todo?
@@ -646,7 +659,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     // }
 
     DeliveryInformation? deliveryInformation =
-        renderDeliveryInformation(widget.cardData.markup);
+    renderDeliveryInformation(widget.cardData.markup);
     String? deliveryDateText = deliveryInformation?.deliveryDateText;
     String? deliveryPartyName = deliveryInformation?.deliveryPartyName;
     Widget? deliveryAddressDetails =
@@ -679,7 +692,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
 
     var seller = widget.invoice.provider;
     if (widget.invoice.json['bg_4_seller']
-        case Map<String, dynamic> bg4Seller) {
+    case Map<String, dynamic> bg4Seller) {
       var bt34ElectronicAddress = bg4Seller['bt_34_electronic_address'];
       if (bt34ElectronicAddress is String) {
         seller?.email = bt34ElectronicAddress;
@@ -758,18 +771,20 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Noch keine API Konfiguriert'),
-                      content: const Text(
-                          'Mit diesen Button könnten Sie die Rechnunng direkt an die API Ihres Rechnungssystem hochladen. Schicken Sie uns Feedback, und sagen Sie uns welches Rechnungssystem Sie hier verfügbar haben wollen.'),
-                      actions: [
-                        TextButton(
-                            onPressed: () => Navigator.pop(context, 'Cancel'),
-                            child: const Text('Abbrechen')),
-                        const TextButton(
-                            onPressed: null, child: Text('Feedback senden'))
-                      ],
-                    ),
+                    builder: (context) =>
+                        AlertDialog(
+                          title: const Text('Noch keine API Konfiguriert'),
+                          content: const Text(
+                              'Mit diesen Button könnten Sie die Rechnunng direkt an die API Ihres Rechnungssystem hochladen. Schicken Sie uns Feedback, und sagen Sie uns welches Rechnungssystem Sie hier verfügbar haben wollen.'),
+                          actions: [
+                            TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: const Text('Abbrechen')),
+                            const TextButton(
+                                onPressed: null, child: Text('Feedback senden'))
+                          ],
+                        ),
                   );
                 },
                 icon: const Icon(Icons.cloud_upload)),
@@ -814,7 +829,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
             PersonTile(
               title: 'Seller',
               personData:
-                  PartyData.fromJson(widget.invoice.json, PartyType.seller),
+              PartyData.fromJson(widget.invoice.json, PartyType.seller),
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
               invoiceId: widget.invoice.identifier,
@@ -832,7 +847,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
             PersonTile(
               title: 'Käufer',
               personData:
-                  PartyData.fromJson(widget.invoice.json, PartyType.buyer),
+              PartyData.fromJson(widget.invoice.json, PartyType.buyer),
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
             ),
@@ -850,26 +865,26 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                     ),
                     (deliveryAddressDetails != null)
                         ? ExpansionTile(
-                            title: deliveryToRendered ??
-                                deliveryDateRendered ??
-                                const Text(''),
-                            subtitle: (deliveryToRendered != null)
-                                ? deliveryDateRendered
-                                : null,
-                            children: [
-                              ListTile(
-                                title: deliveryAddressDetails,
-                              ),
-                            ],
-                          )
+                      title: deliveryToRendered ??
+                          deliveryDateRendered ??
+                          const Text(''),
+                      subtitle: (deliveryToRendered != null)
+                          ? deliveryDateRendered
+                          : null,
+                      children: [
+                        ListTile(
+                          title: deliveryAddressDetails,
+                        ),
+                      ],
+                    )
                         : ListTile(
-                            title: deliveryToRendered ??
-                                deliveryDateRendered ??
-                                const Text(''),
-                            subtitle: (deliveryToRendered != null)
-                                ? deliveryDateRendered
-                                : null,
-                          ),
+                      title: deliveryToRendered ??
+                          deliveryDateRendered ??
+                          const Text(''),
+                      subtitle: (deliveryToRendered != null)
+                          ? deliveryDateRendered
+                          : null,
+                    ),
                     // Align(
                     //   alignment: Alignment.topRight,
                     //   child: Wrap(
@@ -917,8 +932,9 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return SplitButton(
                       options: snapshot.data ?? [],
-                      onTap: (e) => globalSMLAppContext!.forwardEmailCallback!(
-                          e, widget.cardData.message!),
+                      onTap: (e) =>
+                          globalSMLAppContext!.forwardEmailCallback!(
+                              e, widget.cardData.message!),
                     );
                   } else {
                     return Container();
@@ -933,11 +949,10 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
 }
 
 class Payment extends StatelessWidget {
-  const Payment(
-      {super.key,
-      required this.subCardColor,
-      required this.descriptionPadding,
-      required this.json});
+  const Payment({super.key,
+    required this.subCardColor,
+    required this.descriptionPadding,
+    required this.json});
 
   final Color subCardColor;
   final EdgeInsets descriptionPadding;
@@ -947,9 +962,9 @@ class Payment extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget? amountRendered;
     if (json['bg_22_document_totals']
-        case Map<String, dynamic> bg22DocumentTotals) {
+    case Map<String, dynamic> bg22DocumentTotals) {
       var bt115AmountDueForPayment =
-          bg22DocumentTotals['bt_115_amount_due_for_payment'];
+      bg22DocumentTotals['bt_115_amount_due_for_payment'];
       amountRendered = Text.rich(
         TextSpan(
             text: priceInCurrencyFromJson(bt115AmountDueForPayment, json),
@@ -970,33 +985,58 @@ class Payment extends StatelessWidget {
       bankTransferInfo.addAll(payee.identifier.map<Text>((id) => Text(id)));
     }
 
+    List<CreditTransferInfo> ctInfos = [];
+    String? epcQrVersion;
+    String? epcQrRemittanceText;
+    // EpcQrIdentification? epcQrIdentification;
     if (json['bg_16_payment_instructions']
-        case Map<String, dynamic> bg16PaymentInstructions) {
+    case Map<String, dynamic> bg16PaymentInstructions) {
       if (bg16PaymentInstructions['bt_82_payment_means_text']
-          case String bt82PaymentMeansText) {
+      case String bt82PaymentMeansText) {
         bt82PaymentMeans = bt82PaymentMeansText;
       }
       var bt83RemittanceInformationText =
-          bg16PaymentInstructions['bt_83_remittance_information'];
+      bg16PaymentInstructions['bt_83_remittance_information'];
       // Todo use to determine transaction type
-      // var bt81PaymentMeansTypeCode = bg16PaymentInstructions['bt_81_payment_means_type_code'];
+      var bt81PaymentMeansTypeCode = bg16PaymentInstructions['bt_81_payment_means_type_code'];
+
+      if (bt81PaymentMeansTypeCode == '30') {
+        // Credit transfer (non-SEPA)
+        epcQrVersion = '001';
+      } else if (bt81PaymentMeansTypeCode == '58') {
+        // Credit transfer SEPA
+        // SCT
+        epcQrVersion = '002';
+        // epcQrIdentification = EpcQrIdentification.sct;
+      }
       if (bg16PaymentInstructions['bg_17_credit_transfer']
-          case List bg17CreditTransfer) {
+      case List bg17CreditTransfer) {
         bg17CreditTransfer.whereType<Map<String, dynamic>>().forEach((ct) {
+          String? iban;
+          String? accountName;
+          String? bic;
           if (ct['bt_84_payment_id'] case String bt84PaymentId) {
+            iban = bt84PaymentId;
             bankTransferInfo.add(Text(bt84PaymentId));
           }
           if (ct['bt_85_payment_account_name']
-              case String bt85PaymentAccountName) {
+          case String bt85PaymentAccountName) {
+            accountName = bt85PaymentAccountName;
             bankTransferInfo.add(Text(bt85PaymentAccountName));
           }
           if (ct['bt_86_payment_service_provider_identifier']
-              case String bt86PaymentServiceProviderIdentifier) {
+          case String bt86PaymentServiceProviderIdentifier) {
+            bic = bt86PaymentServiceProviderIdentifier;
             bankTransferInfo.add(Text(bt86PaymentServiceProviderIdentifier));
+          }
+          if (iban?.isNotEmpty ?? false) {
+            ctInfos.add(
+                CreditTransferInfo(iban: iban!, name: accountName, bic: bic));
           }
         });
       }
       if (bt83RemittanceInformationText != null) {
+        epcQrRemittanceText = bt83RemittanceInformationText;
         bt83RemittanceInformation = Text('($bt83RemittanceInformationText)');
       }
     }
@@ -1004,30 +1044,57 @@ class Payment extends StatelessWidget {
     var directDebitInfos = <Widget>[];
     if (json['bg_19_direct_debit'] case Map<String, dynamic> bg19DirectDebit) {
       if (bg19DirectDebit['bt_89_mandate_reference_identifier']
-          case String bt89MandateReferenceIdentifier) {
+      case String bt89MandateReferenceIdentifier) {
         directDebitInfos.add(Text(bt89MandateReferenceIdentifier));
       }
       if (bg19DirectDebit['bt_90_bank_assigned_creditor_identifier']
-          case String bt90BankAssignedCreditorIdentifier) {
+      case String bt90BankAssignedCreditorIdentifier) {
         directDebitInfos.add(Text(bt90BankAssignedCreditorIdentifier));
       }
       if (bg19DirectDebit['bt_91_debited_account_identifier']
-          case String bt91DebitedAccountIdentifier) {
+      case String bt91DebitedAccountIdentifier) {
         directDebitInfos.add(Text(bt91DebitedAccountIdentifier));
       }
     }
     // credit card
     var creditInfos = <Widget>[];
     if (json['bg_18_payment_card_information']
-        case Map<String, dynamic> bg18PaymentCardInformation) {
+    case Map<String, dynamic> bg18PaymentCardInformation) {
       if (bg18PaymentCardInformation['bt_87_primary_account_number']
-          case String bt87PrimaryAccountNumber) {
+      case String bt87PrimaryAccountNumber) {
         creditInfos.add(Text(bt87PrimaryAccountNumber));
       }
       if (json['bt_88_holder_name'] case String bt88HolderName) {
         creditInfos.add(Text('($bt88HolderName)'));
       }
     }
+
+    var qrCodes = <Widget>[];
+    var epcQrAmount = amountDueForEPC(json);
+    if ((epcQrAmount?.isNonZero ?? false) && ctInfos.isNotEmpty) {
+      for (var ctInfo in ctInfos) {
+        var name = ctInfo.name ?? payee.name ?? seller.tradingName ??
+            seller.name;
+        if (name == null) {
+          continue;
+        }
+        qrCodes.add(
+            EpcQr(
+              version: epcQrVersion ?? '002',
+              identification: EpcQrIdentification.sct,
+              //todo MOCK
+              bic: ctInfo.bic,
+              name: name,
+              iban: ctInfo.iban,
+              amount: epcQrAmount!.epcAmount,
+              purpose: EpcQrPurpose.gdds, // todo MOCK,
+              remittanceText: epcQrRemittanceText,
+            )
+        );
+      }
+    }
+
+    // var qr = EpcQr();
 
     var theme = Theme.of(context);
     var details = [
@@ -1036,6 +1103,8 @@ class Payment extends StatelessWidget {
       ...creditInfos,
       ...bankTransferInfo,
       if (bt83RemittanceInformation != null) bt83RemittanceInformation,
+      ...qrCodes
+      // if (qr != null) qr,
     ];
     if (details.isEmpty && amountRendered == null && bt82PaymentMeans == null) {
       return Container();
@@ -1099,7 +1168,7 @@ Widget? renderInvoiceHeader(Invoice invoice) {
     );
     invoiceDateRendered = Text.rich(invoiceDateSpan);
   } else if (invoice.json['bt_2_invoice_issue_date']
-      case String dateIssuedText) {
+  case String dateIssuedText) {
     var dateIssued = DateTime.tryParse(dateIssuedText);
     if (dateIssued != null) {
       invoiceDateSpan = TextSpan(
@@ -1142,17 +1211,17 @@ String? renderDate(dynamic inDate) {
 DeliveryInformation? renderDeliveryInformation(dynamic json) {
   if (json case Map<String, dynamic> map) {
     if (map['bg_13_delivery_information']
-        case Map<String, dynamic> bg13DeliveryInformation) {
+    case Map<String, dynamic> bg13DeliveryInformation) {
       String? invoicingPeriodText;
       String? deliveryDateText;
       String? deliveryPartyName;
       Widget? deliveryAddressDetails;
       if (bg13DeliveryInformation['bt_72_actual_delivery_date']
-          case String bt72ActualDeliveryDate) {
+      case String bt72ActualDeliveryDate) {
         deliveryDateText = renderDate(bt72ActualDeliveryDate);
       }
       if (bg13DeliveryInformation['bg_14_invoicing_period']
-          case Map<String, dynamic> invoicingPeriod) {
+      case Map<String, dynamic> invoicingPeriod) {
         String? startDate = renderDate(invoicingPeriod['bt_73_start_date']);
         var endDate = renderDate(invoicingPeriod['bt_74_end_date']);
         if (startDate != null && endDate != null) {
@@ -1167,11 +1236,11 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
         invoicingPeriodText = 'Leistungsdatum: $deliveryDateText';
       }
       if (bg13DeliveryInformation['bt_70_deliver_to_party_name']
-          case String bt70DeliverToPartyName) {
+      case String bt70DeliverToPartyName) {
         deliveryPartyName = bt70DeliverToPartyName;
       }
       if (bg13DeliveryInformation['bg_15_deliver_to_address']
-          case Map<String, dynamic> bg15DeliverToAddress) {
+      case Map<String, dynamic> bg15DeliverToAddress) {
         var bt75AddressLine1 = bg15DeliverToAddress['bt_75_address_line1'];
         var bt76AddressLine2 = bg15DeliverToAddress['bt_76_address_line2'];
         var bt165addressLine3 = bg15DeliverToAddress['bt_165_address_line3'];
@@ -1179,27 +1248,40 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
         var bt78PostalCode = bg15DeliverToAddress['bt_78_postal_code'];
         var bt80CountryCode = bg15DeliverToAddress['bt_80_country_code'];
         String? countryCodeInBrackets;
-        if (bt80CountryCode is String && bt80CountryCode.trim().isNotEmpty) {
+        if (bt80CountryCode is String && bt80CountryCode
+            .trim()
+            .isNotEmpty) {
           countryCodeInBrackets = '($bt80CountryCode)';
         }
         var deliveryAddressBuffer = StringBuffer();
-        if (bt75AddressLine1 is String && bt75AddressLine1.trim().isNotEmpty) {
+        if (bt75AddressLine1 is String && bt75AddressLine1
+            .trim()
+            .isNotEmpty) {
           deliveryAddressBuffer.writeln(bt75AddressLine1);
         }
-        if (bt76AddressLine2 is String && bt76AddressLine2.trim().isNotEmpty) {
+        if (bt76AddressLine2 is String && bt76AddressLine2
+            .trim()
+            .isNotEmpty) {
           deliveryAddressBuffer.writeln(bt76AddressLine2);
         }
         if (bt165addressLine3 is String &&
-            bt165addressLine3.trim().isNotEmpty) {
+            bt165addressLine3
+                .trim()
+                .isNotEmpty) {
           deliveryAddressBuffer.writeln(bt165addressLine3);
         }
         var line4Buffer = StringBuffer();
         var line4Elements = [bt78PostalCode, bt77City, countryCodeInBrackets]
             .whereType<String>()
-            .where((s) => s.trim().isNotEmpty);
+            .where((s) =>
+        s
+            .trim()
+            .isNotEmpty);
         line4Buffer.writeAll(line4Elements, ' ');
         var line4 = line4Buffer.toString();
-        if (line4.trim().isNotEmpty) {
+        if (line4
+            .trim()
+            .isNotEmpty) {
           deliveryAddressBuffer.write(line4);
         }
         deliveryAddressDetails = Text(deliveryAddressBuffer.toString().trim());
@@ -1222,11 +1304,10 @@ class DeliveryInformation {
   String? deliveryPartyName;
   Widget? deliveryAddressDetails;
 
-  DeliveryInformation(
-      {this.invoicingPeriodText,
-      this.deliveryDateText,
-      this.deliveryPartyName,
-      this.deliveryAddressDetails});
+  DeliveryInformation({this.invoicingPeriodText,
+    this.deliveryDateText,
+    this.deliveryPartyName,
+    this.deliveryAddressDetails});
 }
 
 String? renderNote(dynamic json) {
@@ -1237,7 +1318,7 @@ String? renderNote(dynamic json) {
           .whereType<Map<String, dynamic>>()
           .map(
             (e) => e['bt_22_content'],
-          )
+      )
           .whereType<String>()
           .join('\n');
     }
@@ -1248,16 +1329,16 @@ String? renderNote(dynamic json) {
 String? priceInCurrency(String? price, String? currency) =>
     (currency != null && price != null)
         ? switch (currency) {
-            'EUR' => '$price $currency',
-            'USD' => '$currency $price',
-            _ => '$price $currency',
-          }
+      'EUR' => '$price $currency',
+      'USD' => '$currency $price',
+      _ => '$price $currency',
+    }
         : price;
 
 String? priceInCurrencyFromJson(String price, Map<String, dynamic> json) {
   String? currencyCode;
   if (json['bt_6_vat_accounting_currency_code']
-      case String bt6VatAccountingCurrencyCode) {
+  case String bt6VatAccountingCurrencyCode) {
     currencyCode = bt6VatAccountingCurrencyCode;
   }
   if (json['bt_5_invoice_currency_code'] case String bt5InvoiceCurrencyCode) {
@@ -1269,20 +1350,20 @@ String? priceInCurrencyFromJson(String price, Map<String, dynamic> json) {
 Widget? renderAmountDue(dynamic json) {
   if (json case Map<String, dynamic> map) {
     if (map['bg_22_document_totals']
-        case Map<String, dynamic> bg22DocumentTotals) {
+    case Map<String, dynamic> bg22DocumentTotals) {
       if (bg22DocumentTotals['bt_115_amount_due_for_payment']
-          case String bt115AmountDueForPayment) {
+      case String bt115AmountDueForPayment) {
         String? currencyCode;
         if (json['bt_6_vat_accounting_currency_code']
-            case String bt6VatAccountingCurrencyCode) {
+        case String bt6VatAccountingCurrencyCode) {
           currencyCode = bt6VatAccountingCurrencyCode;
         }
         if (json['bt_5_invoice_currency_code']
-            case String bt5InvoiceCurrencyCode) {
+        case String bt5InvoiceCurrencyCode) {
           currencyCode = bt5InvoiceCurrencyCode;
         }
         var ammountDueInCurrency =
-            priceInCurrency(bt115AmountDueForPayment, currencyCode);
+        priceInCurrency(bt115AmountDueForPayment, currencyCode);
         if (ammountDueInCurrency != null) {
           return Text.rich(
             TextSpan(
@@ -1290,6 +1371,45 @@ Widget? renderAmountDue(dynamic json) {
                 style: const TextStyle(fontWeight: FontWeight.bold)),
             style: const TextStyle(fontSize: 18),
           );
+        }
+      }
+    }
+  }
+  return null;
+}
+
+class AmountDueAndCurrency {
+  num bt115AmountDueForPayment;
+  String currencyCode;
+
+  bool get isNonZero => bt115AmountDueForPayment.abs() > 0;
+
+  String get epcAmount =>
+      '$currencyCode${bt115AmountDueForPayment.toStringAsFixed(2)}';
+
+  AmountDueAndCurrency(this.bt115AmountDueForPayment, this.currencyCode);
+}
+
+AmountDueAndCurrency? amountDueForEPC(dynamic json) {
+  if (json case Map<String, dynamic> map) {
+    if (map['bg_22_document_totals']
+    case Map<String, dynamic> bg22DocumentTotals) {
+      var bt115AmountDueForPayment = bg22DocumentTotals['bt_115_amount_due_for_payment'];
+      var bt115AmountDueForPaymentNum = tryCastOrParseNum(
+          bt115AmountDueForPayment);
+      if (bt115AmountDueForPaymentNum != null) {
+        String? currencyCode;
+        if (json['bt_6_vat_accounting_currency_code']
+        case String bt6VatAccountingCurrencyCode) {
+          currencyCode = bt6VatAccountingCurrencyCode;
+        }
+        if (json['bt_5_invoice_currency_code']
+        case String bt5InvoiceCurrencyCode) {
+          currencyCode = bt5InvoiceCurrencyCode;
+        }
+        if (currencyCode?.isNotEmpty ?? false) {
+          return AmountDueAndCurrency(
+              bt115AmountDueForPaymentNum, currencyCode!);
         }
       }
     }
@@ -1340,9 +1460,9 @@ class _LeistungCardState extends State<LeistungCard> {
     Widget? amountRendered; // = renderAmount(invoice);
 
     if (widget.cardData.markup['bg_22_document_totals']
-        case Map<String, dynamic> bg22DocumentTotals) {
+    case Map<String, dynamic> bg22DocumentTotals) {
       var bt112InvoiceTotalAmountWithVat =
-          bg22DocumentTotals['bt_112_invoice_total_amount_with_vat'];
+      bg22DocumentTotals['bt_112_invoice_total_amount_with_vat'];
       amountRendered = Text.rich(
         TextSpan(
             text: priceInCurrencyFromJson(
@@ -1374,7 +1494,7 @@ class _LeistungCardState extends State<LeistungCard> {
     // }
     String? noteText = renderNote(widget.cardData.markup);
     DeliveryInformation? deliveryInformation =
-        renderDeliveryInformation(widget.cardData.markup);
+    renderDeliveryInformation(widget.cardData.markup);
     String? invoicingPeriodText = deliveryInformation?.invoicingPeriodText;
     List<Widget> orderedItems = renderOrderedItems(widget.cardData.markup);
     var numberOfItems = widget.invoice.referencesOrder?.length ?? 0;
@@ -1406,19 +1526,19 @@ class _LeistungCardState extends State<LeistungCard> {
           if (amountRendered != null)
             widget.big
                 ? ExpansionTile(
-                    title: amountRendered,
-                    subtitle: subtitle,
-                    children: orderedItems,
-                    onExpansionChanged: (value) {
-                      setState(() {
-                        _expandNotes = value;
-                      });
-                    },
-                  )
+              title: amountRendered,
+              subtitle: subtitle,
+              children: orderedItems,
+              onExpansionChanged: (value) {
+                setState(() {
+                  _expandNotes = value;
+                });
+              },
+            )
                 : ListTile(
-                    title: amountRendered,
-                    subtitle: subtitle,
-                  ),
+              title: amountRendered,
+              subtitle: subtitle,
+            ),
           // PotentialActionRow(potentialAction: potentialAction, postFunction: postFunction)
         ],
       ),
@@ -1442,9 +1562,9 @@ class PaidBadge extends StatelessWidget {
     bool partiallyPaid = false;
     String? paidAmount;
     if (json['bg_22_document_totals']
-        case Map<String, dynamic> bg22DocumentTotals) {
+    case Map<String, dynamic> bg22DocumentTotals) {
       var bt112InvoiceTotalAmountWithVat =
-          bg22DocumentTotals['bt_112_invoice_total_amount_with_vat'];
+      bg22DocumentTotals['bt_112_invoice_total_amount_with_vat'];
       var bt113PaidAmount = bg22DocumentTotals['bt_113_paid_amount'];
       fullyPaid = bt112InvoiceTotalAmountWithVat == bt113PaidAmount;
       num? paidAmountNum = tryCastOrParseNum(bt113PaidAmount);
@@ -1465,16 +1585,16 @@ class PaidBadge extends StatelessWidget {
       color: fullyPaid
           ? Colors.green
           : partiallyPaid
-              ? Colors.orange
-              : Colors.deepOrange,
+          ? Colors.orange
+          : Colors.deepOrange,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
           fullyPaid
               ? 'Bezahlt'
               : partiallyPaid
-                  ? '$paidAmount gezahlt'
-                  : 'Offen',
+              ? '$paidAmount gezahlt'
+              : 'Offen',
           style: const TextStyle(
             color: Colors.white,
             // fontSize: big? null : 3,
@@ -1626,7 +1746,8 @@ class PartyData {
     postalAddress,
     contact,
     required this.party,
-  })  : identifier = identifier ?? [],
+  })
+      : identifier = identifier ?? [],
         postalAddress = postalAddress ?? PostalAddress(),
         contact = contact ?? PartyContact();
 
@@ -1647,14 +1768,14 @@ class PartyData {
         this.identifier = [identifier];
       }
       if (partyMap[party.legalRegistrationIdentifierKey]
-          case String legalRegistrationIdentifierJ) {
+      case String legalRegistrationIdentifierJ) {
         legalRegistrationIdentifier = legalRegistrationIdentifierJ;
       }
       if (partyMap[party.vatIdentifierKey] case String vatIdentifier) {
         this.vatIdentifier = vatIdentifier;
       }
       if (partyMap[party.additionalLegalInformationKey]
-          case String additionalLegalInformation) {
+      case String additionalLegalInformation) {
         this.additionalLegalInformation = additionalLegalInformation;
       }
       if (partyMap[party.electronicAddressKey] case String electronicAddress) {
@@ -1686,26 +1807,26 @@ class PostalAddress {
     if (json[party.bgKey] case Map<String, dynamic> partyMap) {
       if (partyMap[party.addressKey] case Map<String, dynamic> addressMap) {
         if (addressMap[party.addressKeys?.addressLine1Key]
-            case String addressLine1) {
+        case String addressLine1) {
           this.addressLine1 = addressLine1;
         }
         if (addressMap[party.addressKeys?.addressLine2Key]
-            case String addressLine2) {
+        case String addressLine2) {
           this.addressLine2 = addressLine2;
         }
         if (addressMap[party.addressKeys?.addressLine3Key]
-            case String addressLine3) {
+        case String addressLine3) {
           this.addressLine3 = addressLine3;
         }
         if (addressMap[party.addressKeys?.cityKey] case String city) {
           this.city = city;
         }
         if (addressMap[party.addressKeys?.postalCodeKey]
-            case String postalCode) {
+        case String postalCode) {
           this.postalCode = postalCode;
         }
         if (addressMap[party.addressKeys?.countryCodeKey]
-            case String countryCode) {
+        case String countryCode) {
           this.countryCode = countryCode;
         }
       }
@@ -1731,11 +1852,11 @@ class PartyContact {
           this.point = point;
         }
         if (contactMap[party.contactKeys?.telephoneNumberKey]
-            case String telephoneNumber) {
+        case String telephoneNumber) {
           this.telephoneNumber = telephoneNumber;
         }
         if (contactMap[party.contactKeys?.emailAddressKey]
-            case String emailAddress) {
+        case String emailAddress) {
           this.emailAddress = emailAddress;
         }
       }
@@ -1809,20 +1930,22 @@ class _PersonTileState extends State<PersonTile> {
     Widget fallbackAvatar = CircleAvatar(
       backgroundColor: Colors.blue,
       maxRadius:
-          widget.big ? null : (theme.textTheme.labelSmall?.fontSize ?? 16) + 4,
+      widget.big ? null : (theme.textTheme.labelSmall?.fontSize ?? 16) + 4,
       child: avatarBase,
     );
     Widget avatar;
     if (smimeValid && widget.personData?.party == PartyType.seller) {
       var pictureAvatar = FutureBuilder(
         future: contact,
-        builder: (context, snapshot) => switch (snapshot.connectionState) {
-          ConnectionState.done => snapshot.hasData
+        builder: (context, snapshot) =>
+        switch (snapshot.connectionState) {
+          ConnectionState.done =>
+          snapshot.hasData
               ? ContactAvatar(
-                  contacts: [snapshot.data!],
-                  partyData: widget.personData,
-                  fallback: fallbackAvatar,
-                )
+            contacts: [snapshot.data!],
+            partyData: widget.personData,
+            fallback: fallbackAvatar,
+          )
               : fallbackAvatar,
           _ => fallbackAvatar
         },
@@ -1855,65 +1978,67 @@ class _PersonTileState extends State<PersonTile> {
           ),
           widget.big
               ? ExpansionTile(
-                  leading: avatar,
-                  title: nameRendered ?? const Text(''),
-                  expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (widget.personData?.contact.telephoneNumber
-                        case String telephone)
-                      InkWell(
-                        onTap: () {
-                          launchUrl(Uri(scheme: 'tel', path: telephone));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(telephone),
-                        ),
-                      ),
-                    if (widget.personData?.contact.emailAddress
-                        case String email)
-                      InkWell(
-                        onTap: () {
-                          launchUrl(Uri(
-                            scheme: 'mailto',
-                            path: email,
-                            queryParameters: (widget.invoiceId != null)
-                                ? {'subject': widget.invoiceId}
-                                : null,
-                          ));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(email),
-                        ),
-                      ),
-                    ListTile(
-                      title: addressRendered,
-                    ),
-                    if (widget.personData?.party == PartyType.seller)
-                      FutureBuilder(
-                        future: contact,
-                        builder: (context, snapshot) =>
-                            switch (snapshot.connectionState) {
-                          ConnectionState.done => snapshot.hasData
-                              ? EditContactButton(
-                                  contact: snapshot.data!,
-                                  postEditCallback: refreshContact,
-                                )
-                              : AddContactButton(
-                                  personData: widget.personData,
-                                  postAddCallback: refreshContact),
-                          _ => AddContactButton(
-                              personData: widget.personData,
-                              postAddCallback: refreshContact)
-                        },
-                      ),
-                  ],
-                )
-              : ListTile(
-                  leading: avatar,
-                  title: nameRendered ?? const Text(''),
+            leading: avatar,
+            title: nameRendered ?? const Text(''),
+            expandedCrossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (widget.personData?.contact.telephoneNumber
+              case String telephone)
+                InkWell(
+                  onTap: () {
+                    launchUrl(Uri(scheme: 'tel', path: telephone));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(telephone),
+                  ),
                 ),
+              if (widget.personData?.contact.emailAddress
+              case String email)
+                InkWell(
+                  onTap: () {
+                    launchUrl(Uri(
+                      scheme: 'mailto',
+                      path: email,
+                      queryParameters: (widget.invoiceId != null)
+                          ? {'subject': widget.invoiceId}
+                          : null,
+                    ));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(email),
+                  ),
+                ),
+              ListTile(
+                title: addressRendered,
+              ),
+              if (widget.personData?.party == PartyType.seller)
+                FutureBuilder(
+                  future: contact,
+                  builder: (context, snapshot) =>
+                  switch (snapshot.connectionState) {
+                    ConnectionState.done =>
+                    snapshot.hasData
+                        ? EditContactButton(
+                      contact: snapshot.data!,
+                      postEditCallback: refreshContact,
+                    )
+                        : AddContactButton(
+                        personData: widget.personData,
+                        postAddCallback: refreshContact),
+                    _ =>
+                        AddContactButton(
+                            personData: widget.personData,
+                            postAddCallback: refreshContact)
+                  },
+                ),
+            ],
+          )
+              : ListTile(
+            leading: avatar,
+            title: nameRendered ?? const Text(''),
+          ),
           // if (big) Align(
           //   alignment: Alignment.topRight,
           //   child: Wrap(
@@ -1948,7 +2073,7 @@ class _PersonTileState extends State<PersonTile> {
 
   refreshContact(editedContact) {
     // refresh whole of globalContext.refreshContacts?
-    if (globalSMLAppContext?.reloadContacts  != null) {
+    if (globalSMLAppContext?.reloadContacts != null) {
       globalSMLAppContext!.reloadContacts!();
     }
     if (editedContact == null) {
@@ -1978,7 +2103,7 @@ class _PersonTileState extends State<PersonTile> {
     var contacts = await globalSMLAppContext!.contactList!();
     for (var contact in contacts) {
       Iterable<String> contactMailAddresses =
-          contact.emails.map((m) => m.address);
+      contact.emails.map((m) => m.address);
       if (contactMailAddresses.contains(partyData.electronicAddress) ||
           contactMailAddresses.contains(partyData.contact.emailAddress)) {
         // todo potentially load photo for avatar here
@@ -2000,7 +2125,8 @@ class EditContactButton extends StatelessWidget {
   final Function(Contact? contact) postEditCallback;
 
   @override
-  Widget build(BuildContext context) => TextButton(
+  Widget build(BuildContext context) =>
+      TextButton(
         onPressed: () {
           FlutterContacts.openExternalEdit(contact.id).then(postEditCallback);
         },
@@ -2019,7 +2145,8 @@ class AddContactButton extends StatelessWidget {
   final Function(Contact? contact) postAddCallback;
 
   @override
-  Widget build(BuildContext context) => TextButton(
+  Widget build(BuildContext context) =>
+      TextButton(
         onPressed: () {
           FlutterContacts.openExternalInsert(
             Contact(
@@ -2041,11 +2168,10 @@ class AddContactButton extends StatelessWidget {
 }
 
 class ContactAvatar extends StatelessWidget {
-  const ContactAvatar(
-      {super.key,
-      required this.contacts,
-      required this.partyData,
-      required this.fallback});
+  const ContactAvatar({super.key,
+    required this.contacts,
+    required this.partyData,
+    required this.fallback});
 
   // todo: warning, if email isn't same as smime validated email
   final List<Contact> contacts;
@@ -2059,7 +2185,7 @@ class ContactAvatar extends StatelessWidget {
     }
     for (var contact in contacts) {
       Iterable<String> contactMailAddresses =
-          contact.emails.map((m) => m.address);
+      contact.emails.map((m) => m.address);
       if (contactMailAddresses.contains(partyData!.electronicAddress) ||
           contactMailAddresses.contains(partyData!.contact.emailAddress)) {
         // todo fetch photo here as opposed to loading all contacts with photos
@@ -2134,57 +2260,59 @@ class _SplitButtonState extends State<SplitButton> {
               child: Text(dropdownValue!)),
         addresses.isNotEmpty
             ? MenuBar(
-                children: [
-                  SubmenuButton(
-                    menuChildren: addresses
-                        .map<MenuItemButton>((v) => MenuItemButton(
-                              child: Text(v),
-                              onPressed: () {
-                                setState(() {
-                                  dropdownValue = v;
-                                });
-                              },
-                            ))
-                        .toList(),
-                    child: const Icon(Icons.arrow_drop_down),
-                  ),
-                ],
-              )
+          children: [
+            SubmenuButton(
+              menuChildren: addresses
+                  .map<MenuItemButton>((v) =>
+                  MenuItemButton(
+                    child: Text(v),
+                    onPressed: () {
+                      setState(() {
+                        dropdownValue = v;
+                      });
+                    },
+                  ))
+                  .toList(),
+              child: const Icon(Icons.arrow_drop_down),
+            ),
+          ],
+        )
             : TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Keine Ziele Konfiguriert'),
-                      content: const Text(
-                          'Rechnungen können an Kontakte, die eine xrechnung email hinertlegt haben weitergeleitet werden.'
-                          'Hinterlegen Sie dafür bei einen Kontakt eine email addresse mit den label "xrechnug", und geben Sie dieser App die Berechtigung kontakte zu lesen.'),
-                      actions: [
-                        TextButton(
-                            onPressed: () async {
-                              globalSMLAppContext!.reloadContacts!();
-                              var freshAddresses = await globalSMLAppContext!
-                                  .forwardEmailAddresses!();
-                              if (context.mounted) {
-                                Navigator.pop(context, 'Ok');
-                              }
-                              if (freshAddresses.isNotEmpty) {
-                                setState(() {
-                                  addresses = freshAddresses;
-                                  dropdownValue = addresses.first;
-                                });
-                              }
-                            },
-                            child: const Text('Kontakte neu laden')),
-                        TextButton(
-                            onPressed: () => Navigator.pop(context, 'Ok'),
-                            child: const Text('Ok'))
-                      ],
-                    ),
-                  );
-                },
-                child: const Text('Weiterleiten'),
-              ),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) =>
+                  AlertDialog(
+                    title: const Text('Keine Ziele Konfiguriert'),
+                    content: const Text(
+                        'Rechnungen können an Kontakte, die eine xrechnung email hinertlegt haben weitergeleitet werden.'
+                            'Hinterlegen Sie dafür bei einen Kontakt eine email addresse mit den label "xrechnug", und geben Sie dieser App die Berechtigung kontakte zu lesen.'),
+                    actions: [
+                      TextButton(
+                          onPressed: () async {
+                            globalSMLAppContext!.reloadContacts!();
+                            var freshAddresses = await globalSMLAppContext!
+                                .forwardEmailAddresses!();
+                            if (context.mounted) {
+                              Navigator.pop(context, 'Ok');
+                            }
+                            if (freshAddresses.isNotEmpty) {
+                              setState(() {
+                                addresses = freshAddresses;
+                                dropdownValue = addresses.first;
+                              });
+                            }
+                          },
+                          child: const Text('Kontakte neu laden')),
+                      TextButton(
+                          onPressed: () => Navigator.pop(context, 'Ok'),
+                          child: const Text('Ok'))
+                    ],
+                  ),
+            );
+          },
+          child: const Text('Weiterleiten'),
+        ),
         // DropdownMenu(
         //
         //   onSelected: (String? value){
