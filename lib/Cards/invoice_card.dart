@@ -783,7 +783,8 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     var renderMessageHeader = widget.cardData.message != null;
     var sourceFile = widget.cardData.sourceFile;
     var otherAttachments = widget.cardData.otherAttachments;
-    var renderAttachmentsHeader = sourceFile != null || (otherAttachments?.isNotEmpty ?? false);
+    var renderAttachmentsHeader =
+        sourceFile != null || (otherAttachments?.isNotEmpty ?? false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
@@ -793,7 +794,9 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
           children: [
             if (renderMessageHeader)
               MailHeader(widget.cardData, expandable: true),
-            if (renderAttachmentsHeader) AttachmentHeader(sourceFile: sourceFile, otherAttachments: otherAttachments),
+            if (renderAttachmentsHeader)
+              AttachmentHeader(
+                  sourceFile: sourceFile, otherAttachments: otherAttachments),
             if (renderMessageHeader || renderAttachmentsHeader) const Divider(),
             ListTile(
               title: const Text.rich(
@@ -1740,16 +1743,17 @@ class PartyContact {
   }
 }
 
-class PersonTile extends StatelessWidget {
-  const PersonTile(
-      {super.key,
-      required this.title,
-      // required this.organization,
-      required this.personData,
-      required this.subCardColor,
-      required this.descriptionPadding,
-      this.big = true,
-      this.invoiceId});
+class PersonTile extends StatefulWidget {
+  const PersonTile({
+    super.key,
+    required this.title,
+    // required this.organization,
+    required this.personData,
+    required this.subCardColor,
+    required this.descriptionPadding,
+    this.big = true,
+    this.invoiceId,
+  });
 
   final String title;
 
@@ -1758,8 +1762,16 @@ class PersonTile extends StatelessWidget {
   final Color subCardColor;
   final EdgeInsetsGeometry descriptionPadding;
   final bool big;
-  final String? invoiceId; // for mailto
+  final String? invoiceId;
 
+  @override
+  State<PersonTile> createState() => _PersonTileState();
+}
+
+class _PersonTileState extends State<PersonTile> {
+  late Future<Contact?> contact = _findContact();
+
+  // for mailto
   @override
   Widget build(BuildContext context) {
     // todo MOCK put bool smime valid into carddata
@@ -1769,9 +1781,9 @@ class PersonTile extends StatelessWidget {
     Widget? nameRendered;
     String? nameAbbr;
     Widget avatarBase;
-    if (personData?.name != null) {
-      var name = '${personData?.name}';
-      String? tradingName = personData?.tradingName;
+    if (widget.personData?.name != null) {
+      var name = '${widget.personData?.name}';
+      String? tradingName = widget.personData?.tradingName;
       nameRendered = Text.rich(
           TextSpan(children: [
             TextSpan(
@@ -1780,38 +1792,41 @@ class PersonTile extends StatelessWidget {
             ),
             if (tradingName != null) TextSpan(text: '\n($tradingName)')
           ]),
-          style:
-              big ? theme.textTheme.titleMedium : theme.textTheme.titleSmall);
+          style: widget.big
+              ? theme.textTheme.titleMedium
+              : theme.textTheme.titleSmall);
       nameAbbr = name.split(' ').map((e) => e.substring(0, 1)).join();
       avatarBase = Text(
         nameAbbr,
-        style: big ? null : theme.textTheme.labelSmall,
+        style: widget.big ? null : theme.textTheme.labelSmall,
       );
     } else {
       avatarBase = Icon(
         Icons.person,
-        size: big ? null : theme.textTheme.labelSmall?.fontSize,
+        size: widget.big ? null : theme.textTheme.labelSmall?.fontSize,
       );
     }
     Widget fallbackAvatar = CircleAvatar(
       backgroundColor: Colors.blue,
-      maxRadius: big ? null : (theme.textTheme.labelSmall?.fontSize ?? 16) + 4,
+      maxRadius:
+          widget.big ? null : (theme.textTheme.labelSmall?.fontSize ?? 16) + 4,
       child: avatarBase,
-
     );
     Widget avatar;
-    if (smimeValid && personData?.party == PartyType.seller) {
-      var pictureAvatar = FutureBuilder(future: globalSMLAppContext!.contactList!(), builder: (context, snapshot) => switch (snapshot.connectionState) {
-        ConnectionState.done => snapshot.hasData? ContactAvatar(contacts: snapshot.data!, partyData: personData, fallback: fallbackAvatar,): fallbackAvatar,
-        _ => fallbackAvatar
-      // Stack(
-      //     children: [
-      //      fallbackAvatar,
-      //      const SizedBox(height: 10, width: 10, child: CircularProgressIndicator(),
-      //      )
-      //    ],
-      //   )
-      },);
+    if (smimeValid && widget.personData?.party == PartyType.seller) {
+      var pictureAvatar = FutureBuilder(
+        future: contact,
+        builder: (context, snapshot) => switch (snapshot.connectionState) {
+          ConnectionState.done => snapshot.hasData
+              ? ContactAvatar(
+                  contacts: [snapshot.data!],
+                  partyData: widget.personData,
+                  fallback: fallbackAvatar,
+                )
+              : fallbackAvatar,
+          _ => fallbackAvatar
+        },
+      );
       avatar = Badge(
         label: const Icon(Icons.verified),
         backgroundColor: Colors.transparent,
@@ -1821,30 +1836,30 @@ class PersonTile extends StatelessWidget {
       avatar = fallbackAvatar;
     }
     Widget? addressRendered;
-    if (personData?.postalAddress != null) {
+    if (widget.personData?.postalAddress != null) {
       // List<TextSpan> sellerSpans = [];
-      String addressText = renderAddressText(personData!.postalAddress);
+      String addressText = renderAddressText(widget.personData!.postalAddress);
       addressRendered = Text.rich(TextSpan(text: addressText.trim()));
     }
 
     return Card(
       elevation: 0,
-      color: subCardColor,
+      color: widget.subCardColor,
       // surfaceTintColor: Colors.green,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: descriptionPadding,
-            child: Text(title, style: TextStyle(color: theme.hintColor)),
+            padding: widget.descriptionPadding,
+            child: Text(widget.title, style: TextStyle(color: theme.hintColor)),
           ),
-          big
+          widget.big
               ? ExpansionTile(
                   leading: avatar,
                   title: nameRendered ?? const Text(''),
                   expandedCrossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (personData?.contact.telephoneNumber
+                    if (widget.personData?.contact.telephoneNumber
                         case String telephone)
                       InkWell(
                         onTap: () {
@@ -1855,14 +1870,15 @@ class PersonTile extends StatelessWidget {
                           child: Text(telephone),
                         ),
                       ),
-                    if (personData?.contact.emailAddress case String email)
+                    if (widget.personData?.contact.emailAddress
+                        case String email)
                       InkWell(
                         onTap: () {
                           launchUrl(Uri(
                             scheme: 'mailto',
                             path: email,
-                            queryParameters: (invoiceId != null)
-                                ? {'subject': invoiceId}
+                            queryParameters: (widget.invoiceId != null)
+                                ? {'subject': widget.invoiceId}
                                 : null,
                           ));
                         },
@@ -1874,22 +1890,24 @@ class PersonTile extends StatelessWidget {
                     ListTile(
                       title: addressRendered,
                     ),
-                    if (personData?.party == PartyType.seller) TextButton(onPressed: (){
-                      FlutterContacts.openExternalInsert(
-                          Contact(
-                            displayName: personData?.contact.point ?? '',
-                            // name: Name(first: personData?.contact.point ?? ''),
-                            organizations: [
-                              Organization(company: personData?.name ?? ''),
-                            ],
-                            emails: [
-                              Email(personData?.contact.emailAddress ?? '', customLabel: 'xrechnung-seller-person'),
-                              Email(personData?.electronicAddress ?? '', customLabel: 'xrechnung-seller'),
-                            ]
-                          ),
-                      );
-                    }, child: const Text('Add to contacts'),
-                    ),
+                    if (widget.personData?.party == PartyType.seller)
+                      FutureBuilder(
+                        future: contact,
+                        builder: (context, snapshot) =>
+                            switch (snapshot.connectionState) {
+                          ConnectionState.done => snapshot.hasData
+                              ? EditContactButton(
+                                  contact: snapshot.data!,
+                                  postEditCallback: refreshContact,
+                                )
+                              : AddContactButton(
+                                  personData: widget.personData,
+                                  postAddCallback: refreshContact),
+                          _ => AddContactButton(
+                              personData: widget.personData,
+                              postAddCallback: refreshContact)
+                        },
+                      ),
                   ],
                 )
               : ListTile(
@@ -1927,11 +1945,109 @@ class PersonTile extends StatelessWidget {
       ),
     );
   }
+
+  refreshContact(editedContact) {
+    // refresh whole of globalContext.refreshContacts?
+    if (globalSMLAppContext?.reloadContacts  != null) {
+      globalSMLAppContext!.reloadContacts!();
+    }
+    if (editedContact == null) {
+      setState(() {
+        contact = _findContact();
+      });
+      return;
+    }
+    setState(() {
+      contact = FlutterContacts.getContact(editedContact.id,
+          deduplicateProperties: false,
+          withThumbnail: true,
+          withGroups: true,
+          withProperties: true,
+          withAccounts: true,
+          withPhoto: true);
+    });
+  }
+
+  Future<Contact?> _findContact() async {
+    var partyData = widget.personData;
+    if (partyData == null ||
+        globalSMLAppContext == null ||
+        globalSMLAppContext!.contactList == null) {
+      return null;
+    }
+    var contacts = await globalSMLAppContext!.contactList!();
+    for (var contact in contacts) {
+      Iterable<String> contactMailAddresses =
+          contact.emails.map((m) => m.address);
+      if (contactMailAddresses.contains(partyData.electronicAddress) ||
+          contactMailAddresses.contains(partyData.contact.emailAddress)) {
+        // todo potentially load photo for avatar here
+        return contact;
+      }
+    }
+    return null;
+  }
+}
+
+class EditContactButton extends StatelessWidget {
+  const EditContactButton({
+    super.key,
+    required this.contact,
+    required this.postEditCallback,
+  });
+
+  final Contact contact;
+  final Function(Contact? contact) postEditCallback;
+
+  @override
+  Widget build(BuildContext context) => TextButton(
+        onPressed: () {
+          FlutterContacts.openExternalEdit(contact.id).then(postEditCallback);
+        },
+        child: const Text('Kontakt bearbeiten'),
+      );
+}
+
+class AddContactButton extends StatelessWidget {
+  const AddContactButton({
+    super.key,
+    required this.personData,
+    required this.postAddCallback,
+  });
+
+  final PartyData? personData;
+  final Function(Contact? contact) postAddCallback;
+
+  @override
+  Widget build(BuildContext context) => TextButton(
+        onPressed: () {
+          FlutterContacts.openExternalInsert(
+            Contact(
+                displayName: personData?.contact.point ?? '',
+                // name: Name(first: personData?.contact.point ?? ''),
+                organizations: [
+                  Organization(company: personData?.name ?? ''),
+                ],
+                emails: [
+                  Email(personData?.contact.emailAddress ?? '',
+                      customLabel: 'xrechnung-seller-person'),
+                  Email(personData?.electronicAddress ?? '',
+                      customLabel: 'xrechnung-seller'),
+                ]),
+          ).then(postAddCallback);
+        },
+        child: const Text('Zu Kontakten hinzufügen'),
+      );
 }
 
 class ContactAvatar extends StatelessWidget {
-  const ContactAvatar({super.key, required this.contacts, required this.partyData, required this.fallback});
-  // todo: warning, if email isn't same as smime validated email, also currently picture seems to not be grabbed correctly
+  const ContactAvatar(
+      {super.key,
+      required this.contacts,
+      required this.partyData,
+      required this.fallback});
+
+  // todo: warning, if email isn't same as smime validated email
   final List<Contact> contacts;
   final PartyData? partyData;
   final Widget fallback;
@@ -1942,8 +2058,11 @@ class ContactAvatar extends StatelessWidget {
       return fallback;
     }
     for (var contact in contacts) {
-      Iterable<String> contactMailAddresses = contact.emails.map((m) => m.address);
-      if (contactMailAddresses.contains(partyData!.electronicAddress) || contactMailAddresses.contains(partyData!.contact.emailAddress)) {
+      Iterable<String> contactMailAddresses =
+          contact.emails.map((m) => m.address);
+      if (contactMailAddresses.contains(partyData!.electronicAddress) ||
+          contactMailAddresses.contains(partyData!.contact.emailAddress)) {
+        // todo fetch photo here as opposed to loading all contacts with photos
         if (contact.photoOrThumbnail != null) {
           return CircleAvatar(
             backgroundImage: MemoryImage(contact.photoOrThumbnail!),
@@ -1954,7 +2073,6 @@ class ContactAvatar extends StatelessWidget {
     return fallback;
   }
 }
-
 
 String renderAddressText(PostalAddress address) {
   var line1Buffer = StringBuffer();
