@@ -1,7 +1,7 @@
 library payment;
 
 import 'package:flutter/material.dart';
-import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/amont_due.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/amount_due.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/epc_qr.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
@@ -130,7 +130,7 @@ class Payment extends StatelessWidget {
     }
 
     var qrCodes = <Widget>[];
-    var epcQrAmount = amountDueForEPC(json);
+    var epcQrAmount = amountDueAndCurrency(json);
     if ((epcQrAmount?.isNonZero ?? false) && ctInfos.isNotEmpty) {
       for (var ctInfo in ctInfos) {
         var name =

@@ -2,8 +2,8 @@ library amunt_due;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
-import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
+import 'package:jsonld2cards/Util/conversion.dart';
 
 Widget? renderAmountDue(dynamic json) {
   if (json case Map<String, dynamic> map) {
@@ -20,12 +20,12 @@ Widget? renderAmountDue(dynamic json) {
             case String bt5InvoiceCurrencyCode) {
           currencyCode = bt5InvoiceCurrencyCode;
         }
-        var ammountDueInCurrency =
+        var amountDueInCurrency =
             priceInCurrency(bt115AmountDueForPayment, currencyCode);
-        if (ammountDueInCurrency != null) {
+        if (amountDueInCurrency != null) {
           return Text.rich(
             TextSpan(
-                text: ammountDueInCurrency,
+                text: amountDueInCurrency,
                 style: const TextStyle(fontWeight: FontWeight.bold)),
             style: const TextStyle(fontSize: 18),
           );
@@ -36,19 +36,19 @@ Widget? renderAmountDue(dynamic json) {
   return null;
 }
 
-class AmountDueAndCurrency {
-  num bt115AmountDueForPayment;
+class AmountAndCurrency {
+  // usually bt115AmountDueForPayment, but this class might be used for other monetary amounts as well
+  num amountPayment;
   String currencyCode;
 
-  bool get isNonZero => bt115AmountDueForPayment.abs() > 0;
+  bool get isNonZero => amountPayment.abs() > 0;
 
-  String get epcAmount =>
-      '$currencyCode${bt115AmountDueForPayment.toStringAsFixed(2)}';
+  String get epcAmount => '$currencyCode${amountPayment.toStringAsFixed(2)}';
 
-  AmountDueAndCurrency(this.bt115AmountDueForPayment, this.currencyCode);
+  AmountAndCurrency(this.amountPayment, this.currencyCode);
 }
 
-AmountDueAndCurrency? amountDueForEPC(dynamic json) {
+AmountAndCurrency? amountDueAndCurrency(dynamic json) {
   if (json case Map<String, dynamic> map) {
     if (map['bg_22_document_totals']
         case Map<String, dynamic> bg22DocumentTotals) {
@@ -67,8 +67,7 @@ AmountDueAndCurrency? amountDueForEPC(dynamic json) {
           currencyCode = bt5InvoiceCurrencyCode;
         }
         if (currencyCode?.isNotEmpty ?? false) {
-          return AmountDueAndCurrency(
-              bt115AmountDueForPaymentNum, currencyCode!);
+          return AmountAndCurrency(bt115AmountDueForPaymentNum, currencyCode!);
         }
       }
     }
