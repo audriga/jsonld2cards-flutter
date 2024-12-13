@@ -43,6 +43,8 @@ class AmountAndCurrency {
 
   bool get isNonZero => amountPayment.abs() > 0;
 
+  String get amountInCurrency =>
+      priceInCurrency(amountPayment.toStringAsFixed(2), currencyCode)!;
   String get epcAmount => '$currencyCode${amountPayment.toStringAsFixed(2)}';
 
   AmountAndCurrency(this.amountPayment, this.currencyCode);

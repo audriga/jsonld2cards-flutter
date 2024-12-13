@@ -1,8 +1,11 @@
 library payment;
 
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/amount_due.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/epc_qr.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/skonto.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
 
@@ -20,7 +23,23 @@ class Payment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? amountRendered;
-    if (json['bg_22_document_totals']
+    SkontoInfo? skontoInfo;
+    try {
+      skontoInfo = SkontoInfo.skontoInfoFromJson(json);
+    } catch (e) {
+      // potentially show error to user?
+      developer.log('Error in Skonto calculation',
+          name: 'jsonld2cards.xre.payment');
+    }
+    if (skontoInfo != null) {
+      amountRendered = Text.rich(
+        TextSpan(
+            text:
+                '${skontoInfo.toPayInCurrency} (${skontoInfo.bt115AmountDueAndCurrency.amountInCurrency} abzgl. Skonto)',
+            style: const TextStyle(fontWeight: FontWeight.bold)),
+        style: const TextStyle(fontSize: 18),
+      );
+    } else if (json['bg_22_document_totals']
         case Map<String, dynamic> bg22DocumentTotals) {
       var bt115AmountDueForPayment =
           bg22DocumentTotals['bt_115_amount_due_for_payment'];
