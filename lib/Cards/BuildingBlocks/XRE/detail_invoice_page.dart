@@ -35,12 +35,6 @@ class DetailInvoicePage extends StatefulWidget {
 class _DetailInvoicePageState extends State<DetailInvoicePage> {
   @override
   Widget build(BuildContext context) {
-    Future<List<String>>? forwardAddresses;
-    var forwardAddressesFunc = globalSMLAppContext?.forwardEmailAddresses;
-    if (forwardAddressesFunc != null) {
-      forwardAddresses = forwardAddressesFunc();
-    }
-
     Uri? uri = widget.invoice.url;
     int? muid;
     bool canShareXRechnung = false;
@@ -330,21 +324,10 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               children: footerButtons,
             ),
             if (renderMessageHeader &&
-                forwardAddresses != null &&
                 globalSMLAppContext?.forwardEmailCallback != null)
-              FutureBuilder<List<String>>(
-                future: forwardAddresses,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return SplitButton(
-                      options: snapshot.data ?? [],
-                      onTap: (e) => globalSMLAppContext!.forwardEmailCallback!(
-                          e, widget.cardData.message!),
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
+              ForwardButton(
+                onTap: (e) => globalSMLAppContext!.forwardEmailCallback!(
+                    e, widget.cardData.message!),
               )
           ],
         ),

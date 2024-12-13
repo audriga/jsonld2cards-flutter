@@ -5,6 +5,41 @@ import 'package:jsonld2cards/sml_app_context.dart';
 
 typedef SplitButtonCallback = Function(String option);
 
+class ForwardButton extends StatefulWidget {
+  final SplitButtonCallback onTap;
+
+  const ForwardButton({super.key, required this.onTap});
+
+  @override
+  State<ForwardButton> createState() => _ForwardButtonState();
+}
+
+class _ForwardButtonState extends State<ForwardButton> {
+  late final Future<List<String>>? _forwardAddresses = getForwardAddresses();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<String>>(
+      future: _forwardAddresses,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return SplitButton(options: snapshot.data ?? [], onTap: widget.onTap);
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+
+  Future<List<String>>? getForwardAddresses() {
+    var forwardAddressesFunc = globalSMLAppContext?.forwardEmailAddresses;
+    if (forwardAddressesFunc != null) {
+      return forwardAddressesFunc();
+    }
+    return null;
+  }
+}
+
 class SplitButton extends StatefulWidget {
   final SplitButtonCallback onTap;
   final List<String> options;

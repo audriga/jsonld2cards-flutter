@@ -4,7 +4,10 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/split_button.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/attachment_header.dart';
 import 'package:jsonld2cards/card_data.dart';
+import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MailHeader extends StatefulWidget {
@@ -20,7 +23,8 @@ class MailHeader extends StatefulWidget {
 }
 
 class _MailHeaderState extends State<MailHeader> {
-  late bool _expanded = widget.fullDisplay; // starting with false, except wheen full display is wanted
+  late bool _expanded = widget
+      .fullDisplay; // starting with false, except when full display is wanted
   late final WebViewController? controller;
   late final String? plainText;
 
@@ -144,38 +148,52 @@ class _MailHeaderState extends State<MailHeader> {
               senderWithAvatar: senderWithAvatar,
               subjectRendered: subjectRendered,
             );
-    var bigMailHeader = Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 0.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: insets,
-                        child: Icon(
-                          Icons.mail,
-                          size: fontSize + 2,
-                        ),
-                      ),
-                      if (dateRendered != null) dateRendered,
-
-                      // if (subjectRendered != null) subjectRendered,
-                    ],
+    var bigMailHeader = LayoutBuilder(builder: (context, constraints) {
+      var smaller = BoxConstraints(
+          maxWidth: constraints.maxWidth,
+          maxHeight: constraints.maxHeight - 200);
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 0.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: insets,
+                  child: Icon(
+                    Icons.mail,
+                    size: fontSize + 2,
                   ),
-                  if (senderWithAvatar != null) senderWithAvatar,
-                  if (subjectRendered != null) subjectRendered,
-                  // if (senderWithAvatar!= null) senderWithAvatar,
-                  if (showWebView)
-                    (widget.constraints != null)?
-                    ConstrainedBox(
-                      constraints: widget.constraints!,
-                      child: WebViewWidget(controller: controller!),
-                    ) : LayoutBuilder(builder: (context, constraints) => ConstrainedBox(constraints: constraints, child: WebViewWidget(controller: controller!),),),
-                  if (showPlainText) Text(plainText!),
-                ],
+                ),
+                if (dateRendered != null) dateRendered,
+                // if (subjectRendered != null) subjectRendered,
+              ],
+            ),
+            if (senderWithAvatar != null) senderWithAvatar,
+            if (subjectRendered != null) subjectRendered,
+            const Divider(),
+            if (widget.cardData.otherAttachments != null)
+              AttachmentHeader(
+                sourceFile: null,
+                otherAttachments: widget.cardData.otherAttachments,
               ),
-            );
+            // if (senderWithAvatar!= null) senderWithAvatar,
+            if (showWebView)
+              ConstrainedBox(
+                constraints: widget.constraints ?? smaller,
+                child: WebViewWidget(controller: controller!),
+              ),
+            if (showPlainText) Text(plainText!),
+            const Divider(),
+            ForwardButton(
+              onTap: (e) => globalSMLAppContext!.forwardEmailCallback!(
+                  e, widget.cardData.message!),
+            )
+          ],
+        ),
+      );
+    });
     return widget.fullDisplay? bigMailHeader : widget.expandable ? InkWell(
       onTap: () => setState(() {
         _expanded = !_expanded;
