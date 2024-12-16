@@ -1,6 +1,10 @@
 library epc_qr;
 
+import 'dart:math';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 enum EpcQrIdentification {
@@ -134,28 +138,70 @@ class EpcQr extends StatelessWidget {
       dataBuffer.write('\n$information');
     }
     var data = dataBuffer.toString();
-    return InkWell(
-      child: QrImageView(
-        data: data,
-        version: QrVersions.auto,
-        size: 200.0,
-        backgroundColor: Colors.white,
-      ),
-      onTap: () => showDialog(context: context, builder: (BuildContext context) => SimpleDialog(
-       children: [
-         LayoutBuilder(
-           builder: (context, constraints) {
-             return QrImageView(
-               data: data,
-               version: QrVersions.auto,
-               backgroundColor: Colors.white,
-               size: constraints.maxWidth,
-             );
-           }
-         ),
-       ],
-      )),
-    );
+    return LayoutBuilder(builder: (context, constraints) {
+      return InkWell(
+        child: QrImageView(
+          data: data,
+          version: QrVersions.auto,
+          size: 200.0,
+          backgroundColor: Colors.white,
+        ),
+        onTap: () => showDialog(
+          context: context,
+          builder: (BuildContext context) => SimpleDialog(
+            children: [
+              SizedBox(
+                height: min(constraints.maxHeight, constraints.maxWidth) * .8,
+                width: min(constraints.maxHeight, constraints.maxWidth) * .8,
+                child: Center(
+                  child: QrImageView(
+                    data: data,
+                    version: QrVersions.auto,
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
+              SimpleDialogOption(
+                child: const Text('Speichern'),
+                onPressed: () async {
+                  // QrCode qrImageData = QrCode.fromData(data: data, errorCorrectLevel: QrErrorCorrectLevel.L);
+                  // QrImage(qrImageData);
+                  Uint8List? qrBytes =
+                      (await QrPainter(data: data, version: QrVersions.auto)
+                              .toImageData(2048))
+                          ?.buffer
+                          .asUint8List();
+                  var fileName = 'epcQR_${name.replaceAll(' ', '-')}_$iban.png';
+                  if (globalSMLAppContext?.saveFileCallback != null) {
+                    globalSMLAppContext!.saveFileCallback!(
+                        qrBytes, 'image/png', fileName);
+                  }
+                },
+              ),
+              SimpleDialogOption(
+                child: const Text('Teilen'),
+                onPressed: () async {
+                  Uint8List? qrBytes =
+                      (await QrPainter(data: data, version: QrVersions.auto)
+                              .toImageData(2048))
+                          ?.buffer
+                          .asUint8List();
+                  var fileName = 'epcQR_${name.replaceAll(' ', '-')}_$iban.png';
+                  if (globalSMLAppContext?.shareFileCallback != null) {
+                    globalSMLAppContext!.shareFileCallback!(
+                        qrBytes, 'image/png', fileName);
+                  }
+                },
+              ),
+              SimpleDialogOption(
+                child: const Text('Schließen'),
+                onPressed: ()  => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }
 

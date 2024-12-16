@@ -149,7 +149,7 @@ class Payment extends StatelessWidget {
     }
 
     var qrCodes = <Widget>[];
-    var epcQrAmount = amountDueAndCurrency(json);
+    AmountAndCurrency? epcQrAmount = skontoInfo?.toPayAmountAndCurrency ?? amountDueAndCurrency(json);
     if ((epcQrAmount?.isNonZero ?? false) && ctInfos.isNotEmpty) {
       for (var ctInfo in ctInfos) {
         var name =
@@ -181,7 +181,7 @@ class Payment extends StatelessWidget {
       ...creditInfos,
       ...bankTransferInfo,
       if (bt83RemittanceInformation != null) bt83RemittanceInformation,
-      ...qrCodes
+      if (qrCodes.isNotEmpty) qrCodes.first,
       // if (qr != null) qr,
     ];
     if (details.isEmpty && amountRendered == null && bt82PaymentMeans == null) {

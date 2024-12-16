@@ -4,6 +4,8 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/amount_due.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
 
 class SkontoInfo {
+  AmountAndCurrency get toPayAmountAndCurrency => AmountAndCurrency(toPay, bt115AmountDueAndCurrency.currencyCode);
+
   String get skontoAmountInCurrency => priceInCurrency(
       skontoAmount.toStringAsFixed(2), bt115AmountDueAndCurrency.currencyCode)!;
 
