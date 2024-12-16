@@ -173,7 +173,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
                   ),
                 ),
                 // const Spacer(flex: 1,),
-                Icon(expanded ? Icons.expand_less : Icons.expand_more)
+                // Icon(expanded ? Icons.expand_less : Icons.expand_more)
               ]),
               if (invoiceHeader != null) invoiceHeader,
               if (expanded && invoice.description != null)

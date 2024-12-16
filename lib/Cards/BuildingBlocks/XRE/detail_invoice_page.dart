@@ -182,8 +182,10 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                         TextButton(
                             onPressed: () => Navigator.pop(context, 'Cancel'),
                             child: const Text('Abbrechen')),
-                        const TextButton(
-                            onPressed: null, child: Text('Feedback senden'))
+                        if (globalSMLAppContext?.feedbackCallback != null)TextButton(
+                            onPressed: () {
+                              globalSMLAppContext!.feedbackCallback!(body: 'API wunsch');
+                            }, child: const Text('Feedback senden'))
                       ],
                     ),
                   );
