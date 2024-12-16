@@ -17,6 +17,7 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/mail_header.dart';
 import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
+import 'dart:developer' as developer;
 
 class DetailInvoicePage extends StatefulWidget {
   const DetailInvoicePage({
@@ -200,6 +201,16 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     var otherAttachments = widget.cardData.otherAttachments;
     var renderAttachmentsHeader =
         sourceFile != null || (otherAttachments?.isNotEmpty ?? false);
+    Widget? paidBadge;
+    try {
+      paidBadge = PaidBadge(json: widget.invoice.json);}  catch (e) {
+      developer.log(
+        'Error rendering paid badge',
+        error: e,
+        name: 'jsonld2cards.invoice',
+      );
+      // todo error widget
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
@@ -224,7 +235,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 ),
               ),
               subtitle: invoiceHeader,
-              trailing: PaidBadge(json: widget.invoice.json),
+              trailing: paidBadge,
             ),
             PersonTile(
               title: 'Seller',

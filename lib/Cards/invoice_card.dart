@@ -13,6 +13,7 @@ import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
+import 'dart:developer' as developer;
 
 class InvoiceCard extends StatefulWidget implements MarkupCard {
   const InvoiceCard(this.cardData, {super.key});
@@ -120,8 +121,18 @@ class _InvoiceCardState extends State<InvoiceCard> {
     var theme = Theme.of(context);
     var descriptionPadding = const EdgeInsets.fromLTRB(8.0, 8.0, 0, 0);
     var subCardColor = theme.canvasColor;
-
     /// If this should blend in, use theme.cardTheme.color ?? theme.colorScheme.surfaceContainerLow;
+    Widget? paidBadge;
+    try {
+      paidBadge = PaidBadge(json: invoice.json);
+    } catch (e) {
+      developer.log(
+        'Error rendering paid badge',
+        error: e,
+        name: 'jsonld2cards.invoice',
+      );
+      // todo error widget
+    }
     Widget cardContent = InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -156,7 +167,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        child: PaidBadge(json: invoice.json),
+                        child: paidBadge,
                       ),
                     ],
                   ),
