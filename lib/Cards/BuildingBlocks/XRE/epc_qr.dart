@@ -167,7 +167,7 @@ class EpcQr extends StatelessWidget {
                   // QrCode qrImageData = QrCode.fromData(data: data, errorCorrectLevel: QrErrorCorrectLevel.L);
                   // QrImage(qrImageData);
                   Uint8List? qrBytes =
-                      (await QrPainter(data: data, version: QrVersions.auto)
+                      (await QrPainter(data: data, version: QrVersions.auto, gapless: true, emptyColor: Colors.white)
                               .toImageData(2048))
                           ?.buffer
                           .asUint8List();
@@ -182,7 +182,7 @@ class EpcQr extends StatelessWidget {
                 child: const Text('Teilen'),
                 onPressed: () async {
                   Uint8List? qrBytes =
-                      (await QrPainter(data: data, version: QrVersions.auto)
+                      (await QrPainter(data: data, version: QrVersions.auto, gapless: true, emptyColor: Colors.white)
                               .toImageData(2048))
                           ?.buffer
                           .asUint8List();
