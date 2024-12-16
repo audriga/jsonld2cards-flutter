@@ -167,6 +167,7 @@ class EpcQr extends StatelessWidget {
                   // QrCode qrImageData = QrCode.fromData(data: data, errorCorrectLevel: QrErrorCorrectLevel.L);
                   // QrImage(qrImageData);
                   Uint8List? qrBytes =
+                  // ignore: deprecated_member_use
                       (await QrPainter(data: data, version: QrVersions.auto, gapless: true, emptyColor: Colors.white)
                               .toImageData(2048))
                           ?.buffer
@@ -182,6 +183,7 @@ class EpcQr extends StatelessWidget {
                 child: const Text('Teilen'),
                 onPressed: () async {
                   Uint8List? qrBytes =
+                  // ignore: deprecated_member_use
                       (await QrPainter(data: data, version: QrVersions.auto, gapless: true, emptyColor: Colors.white)
                               .toImageData(2048))
                           ?.buffer
