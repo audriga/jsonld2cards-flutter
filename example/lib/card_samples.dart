@@ -3,7 +3,6 @@ library card_samples;
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
 import 'package:jsonld2cards/Cards/invoice_card.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/card_data.dart';

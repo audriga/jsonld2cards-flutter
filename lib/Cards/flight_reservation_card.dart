@@ -70,9 +70,7 @@ class FlightReservationWidget extends StatelessWidget {
 
     var middleColumn = Column(
       children: [
-        Text(reservationFor['airline']['iataCode'] +
-            ' ' +
-            reservationFor['flightNumber']),
+        Text('${reservationFor['airline']['iataCode']} ${reservationFor['flightNumber']}'),
         const Icon(Icons.flight),
       ],
     );

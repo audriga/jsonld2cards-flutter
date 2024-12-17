@@ -2,7 +2,6 @@ library detail_invoice_page;
 
 import 'dart:typed_data';
 
-import 'package:enough_mail/codecs.dart';
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/attachments.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/delivery_information.dart';
