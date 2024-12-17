@@ -29,7 +29,7 @@ class LeistungCard extends StatefulWidget {
 
 class _LeistungCardState extends State<LeistungCard> {
   // late final controller = ExpansionTileController();
-  bool _expandNotes = false;
+  // bool _expandNotes = false;
 
   @override
   Widget build(BuildContext context) {
@@ -78,13 +78,13 @@ class _LeistungCardState extends State<LeistungCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (invoicingPeriodText != null) Text(invoicingPeriodText),
-        if (widget.big && noteText != null && noteText.isNotEmpty)
-          Text(
-            noteText,
-            maxLines: _expandNotes ? 1000 : 2,
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
-          ),
+        // if (widget.big && noteText != null && noteText.isNotEmpty)
+        //   Text(
+        //     noteText,
+        //     maxLines: _expandNotes ? 1000 : 2,
+        //     softWrap: true,
+        //     overflow: TextOverflow.ellipsis,
+        //   ),
         if (widget.big && (numberOfItems) > 0)
           Text('$numberOfItems Rechnungsposten'),
       ],
@@ -104,12 +104,19 @@ class _LeistungCardState extends State<LeistungCard> {
                 ? ExpansionTile(
                     title: amountRendered,
                     subtitle: subtitle,
-                    children: orderedItems,
-                    onExpansionChanged: (value) {
-                      setState(() {
-                        _expandNotes = value;
-                      });
-                    },
+                    children: [
+                      if (widget.big && noteText != null && noteText.isNotEmpty)
+                        Text(
+                          noteText,
+                          softWrap: true,
+                        ),
+                      ...orderedItems
+                    ],
+                    // onExpansionChanged: (value) {
+                    //   setState(() {
+                    //     _expandNotes = value;
+                    //   });
+                    // },
                   )
                 : ListTile(
                     title: amountRendered,
