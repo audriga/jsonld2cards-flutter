@@ -11,7 +11,11 @@ import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MailHeader extends StatefulWidget {
-  const MailHeader(this.cardData, {super.key, this.expandable = false, this.constraints = const BoxConstraints(maxHeight: 200), this.fullDisplay = false});
+  const MailHeader(this.cardData,
+      {super.key,
+      this.expandable = false,
+      this.constraints = const BoxConstraints(maxHeight: 200),
+      this.fullDisplay = false});
 
   final CardData cardData;
   final bool expandable;
@@ -47,6 +51,26 @@ class _MailHeaderState extends State<MailHeader> {
 
   @override
   Widget build(BuildContext context) {
+    var footerButtons = [
+      if (widget.cardData.message != null)
+        Align(
+          alignment: Alignment.topLeft,
+          child: IconButton(
+              onPressed: () async {
+                await deleteMessage(widget.cardData.message!, context);
+              },
+              icon: const Icon(Icons.delete)),
+        ),
+      if (widget.cardData.message != null)
+        Align(
+          alignment: Alignment.topLeft,
+          child: IconButton(
+              onPressed: () async {
+                await archiveMessage(widget.cardData.message!, context);
+              },
+              icon: const Icon(Icons.archive)),
+        ),
+    ];
     ThemeData theme = Theme.of(context);
     var textStyle = theme.textTheme.bodySmall;
     // var textStyle = _expanded ? theme.textTheme.titleLarge : theme.textTheme.bodySmall;
@@ -142,12 +166,12 @@ class _MailHeaderState extends State<MailHeader> {
     bool showWebView = (controller != null);
     bool showPlainText = (!showWebView && plainText != null);
     var smallMailHeader = SmallMailHeader(
-              insets: insets,
-              fontSize: fontSize,
-              dateRendered: dateRendered,
-              senderWithAvatar: senderWithAvatar,
-              subjectRendered: subjectRendered,
-            );
+      insets: insets,
+      fontSize: fontSize,
+      dateRendered: dateRendered,
+      senderWithAvatar: senderWithAvatar,
+      subjectRendered: subjectRendered,
+    );
     var bigMailHeader = LayoutBuilder(builder: (context, constraints) {
       var smaller = BoxConstraints(
           maxWidth: constraints.maxWidth,
@@ -186,22 +210,26 @@ class _MailHeaderState extends State<MailHeader> {
               ),
             if (showPlainText) Text(plainText!),
             const Divider(),
+            Row(children: footerButtons),
             ForwardButton(
-              onTap: (e) => globalSMLAppContext!.forwardEmailCallback!(
-                  e, widget.cardData.message!),
+              onTap: (e) {
+                forwardMessage(e,widget.cardData.message!, context);
+              },
             )
           ],
         ),
       );
     });
-    return widget.fullDisplay? bigMailHeader : widget.expandable ? InkWell(
-      onTap: () => setState(() {
-        _expanded = !_expanded;
-      }),
-      child: _expanded
-          ? bigMailHeader
-          : smallMailHeader,
-    ): smallMailHeader;
+    return widget.fullDisplay
+        ? bigMailHeader
+        : widget.expandable
+            ? InkWell(
+                onTap: () => setState(() {
+                  _expanded = !_expanded;
+                }),
+                child: _expanded ? bigMailHeader : smallMailHeader,
+              )
+            : smallMailHeader;
   }
 }
 

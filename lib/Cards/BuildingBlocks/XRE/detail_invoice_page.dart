@@ -2,6 +2,7 @@ library detail_invoice_page;
 
 import 'dart:typed_data';
 
+import 'package:enough_mail/codecs.dart';
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/attachments.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/delivery_information.dart';
@@ -126,10 +127,24 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     var subCardColor = theme.canvasColor;
 
     var footerButtons = [
-      Align(
-        alignment: Alignment.topLeft,
-        child: IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
-      ),
+      if (widget.cardData.message != null)
+        Align(
+          alignment: Alignment.topLeft,
+          child: IconButton(
+              onPressed: () async {
+                await deleteMessage(widget.cardData.message!, context);
+              },
+              icon: const Icon(Icons.delete)),
+        ),
+      if (widget.cardData.message != null)
+        Align(
+          alignment: Alignment.topLeft,
+          child: IconButton(
+              onPressed: () async {
+                await archiveMessage(widget.cardData.message!, context);
+              },
+              icon: const Icon(Icons.archive)),
+        ),
       // const Spacer(),
       // Align(
       //   alignment: Alignment.topCenter,
@@ -182,10 +197,13 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                         TextButton(
                             onPressed: () => Navigator.pop(context, 'Cancel'),
                             child: const Text('Abbrechen')),
-                        if (globalSMLAppContext?.feedbackCallback != null)TextButton(
-                            onPressed: () {
-                              globalSMLAppContext!.feedbackCallback!(body: 'API wunsch');
-                            }, child: const Text('Feedback senden'))
+                        if (globalSMLAppContext?.feedbackCallback != null)
+                          TextButton(
+                              onPressed: () {
+                                globalSMLAppContext!.feedbackCallback!(
+                                    body: 'API wunsch');
+                              },
+                              child: const Text('Feedback senden'))
                       ],
                     ),
                   );
@@ -205,7 +223,8 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
         sourceFile != null || (otherAttachments?.isNotEmpty ?? false);
     Widget? paidBadge;
     try {
-      paidBadge = PaidBadge(json: widget.invoice.json);}  catch (e) {
+      paidBadge = PaidBadge(json: widget.invoice.json);
+    } catch (e) {
       developer.log(
         'Error rendering paid badge',
         error: e,
@@ -339,8 +358,9 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
             if (renderMessageHeader &&
                 globalSMLAppContext?.forwardEmailCallback != null)
               ForwardButton(
-                onTap: (e) => globalSMLAppContext!.forwardEmailCallback!(
-                    e, widget.cardData.message!),
+                onTap: (e) {
+                  forwardMessage(e,widget.cardData.message!, context);
+                },
               )
           ],
         ),
