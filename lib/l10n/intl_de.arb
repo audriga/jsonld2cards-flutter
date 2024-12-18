@@ -1,0 +1,8 @@
+{
+  "forwardButtonLabel": "Forward",
+  "noAddressesConfigured": "No addresses configured",
+  "reloadContacts": "Reload contacts",
+  "ok": "OK",
+  "noTargetsConfiguredMessage": "Invoices can be forwarded to contacts that have an xrechnung email address. Please configure this by adding an email address with the label 'xrechnung' to a contact and allow this app to access contacts.",
+  "errorTitle": "No targets configured"
+}
