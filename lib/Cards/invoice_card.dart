@@ -208,15 +208,15 @@ class _InvoiceCardState extends State<InvoiceCard> {
     // );
     var cardContents = [
       cardContent,
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          TextButton(
-              onPressed: () =>
-                  openDetailView(context, invoice, widget.cardData),
-              child: const Text('Detailansicht'))
-        ],
-      )
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.end,
+      //   children: [
+      //     TextButton(
+      //         onPressed: () =>
+      //             openDetailView(context, invoice, widget.cardData),
+      //         child: const Text('Detailansicht'))
+      //   ],
+      // )
     ];
     if (widget.cardData.showMessageHeader) {
       var messageHeader = MailHeader(
