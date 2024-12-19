@@ -1,5 +1,7 @@
 library person_tile;
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/contact_avatar.dart';
@@ -81,7 +83,9 @@ class _PersonTileState extends State<PersonTile> {
       child: avatarBase,
     );
     Widget avatar;
-    if (smimeValid && widget.personData?.party == PartyType.seller) {
+    var isValidSeller = smimeValid && widget.personData?.party == PartyType.seller;
+    var isBuyer = widget.personData?.party == PartyType.buyer;
+    if (isValidSeller || isBuyer) {
       var pictureAvatar = FutureBuilder(
         future: contact,
         builder: (context, snapshot) => switch (snapshot.connectionState) {
@@ -95,11 +99,15 @@ class _PersonTileState extends State<PersonTile> {
           _ => fallbackAvatar
         },
       );
-      avatar = Badge(
-        label: const Icon(Icons.verified),
-        backgroundColor: Colors.transparent,
-        child: pictureAvatar,
-      );
+      if (isValidSeller) {
+        avatar = Badge(
+          label: const Icon(Icons.verified),
+          backgroundColor: Colors.transparent,
+          child: pictureAvatar,
+        );
+      } else {
+        avatar = pictureAvatar;
+      }
     } else {
       avatar = fallbackAvatar;
     }
@@ -158,7 +166,7 @@ class _PersonTileState extends State<PersonTile> {
                     ListTile(
                       title: addressRendered,
                     ),
-                    if (widget.personData?.party == PartyType.seller)
+                    if ([PartyType.seller, PartyType.buyer].contains(widget.personData?.party))
                       FutureBuilder(
                         future: contact,
                         builder: (context, snapshot) =>
