@@ -112,16 +112,16 @@ class _MailHeaderState extends State<MailHeader> {
 
     String? senderMail = sender?.email;
     if (senderMail != null) {
-      if (personalName != null && personalName != senderMail) {
-        senderRendered = Flexible(
-          child: Text(
-            '$personalName<$senderMail>',
-            overflow: _expanded ? null : TextOverflow.ellipsis,
-            style: textStyle,
-            softWrap: _expanded,
-          ),
-        );
-      } else {
+      // if (personalName != null && personalName != senderMail) {
+      //   senderRendered = Flexible(
+      //     child: Text(
+      //       '$personalName<$senderMail>',
+      //       overflow: _expanded ? null : TextOverflow.ellipsis,
+      //       style: textStyle,
+      //       softWrap: _expanded,
+      //     ),
+      //   );
+      // } else {
         senderRendered = Flexible(
           child: Text(
             senderMail,
@@ -130,7 +130,7 @@ class _MailHeaderState extends State<MailHeader> {
             softWrap: _expanded,
           ),
         );
-      }
+      // }
       senderWithAvatar = Padding(
         padding: insets,
         child: Row(
