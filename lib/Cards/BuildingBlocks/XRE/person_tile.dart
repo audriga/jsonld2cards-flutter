@@ -1,7 +1,5 @@
 library person_tile;
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/contact_avatar.dart';
@@ -69,6 +67,9 @@ class _PersonTileState extends State<PersonTile> {
       avatarBase = Text(
         nameAbbr,
         style: widget.big ? null : theme.textTheme.labelSmall,
+        overflow: TextOverflow.clip,
+        softWrap: false,
+        maxLines: 1,
       );
     } else {
       avatarBase = Icon(

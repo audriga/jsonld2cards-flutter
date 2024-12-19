@@ -5,6 +5,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/amount_due.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/epc_qr.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/paid_badge.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/skonto.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
@@ -31,7 +32,7 @@ class Payment extends StatelessWidget {
       developer.log('Error in Skonto calculation',
           name: 'jsonld2cards.xre.payment');
     }
-    if (skontoInfo != null) {
+    if (skontoInfo != null && skontoInfo.toPay != skontoInfo.bt115AmountDueAndCurrency.amountPayment) {
       amountRendered = Text.rich(
         TextSpan(
             text:
@@ -120,6 +121,7 @@ class Payment extends StatelessWidget {
       }
     }
     // bankeinzug
+    String? directDebitAccountNr;
     var directDebitInfos = <Widget>[];
     if (json['bg_19_direct_debit'] case Map<String, dynamic> bg19DirectDebit) {
       if (bg19DirectDebit['bt_89_mandate_reference_identifier']
@@ -132,15 +134,19 @@ class Payment extends StatelessWidget {
       }
       if (bg19DirectDebit['bt_91_debited_account_identifier']
           case String bt91DebitedAccountIdentifier) {
+        directDebitAccountNr = bt91DebitedAccountIdentifier;
         directDebitInfos.add(Text(bt91DebitedAccountIdentifier));
       }
     }
+
+    String? creditCardNumber;
     // credit card
     var creditInfos = <Widget>[];
     if (json['bg_18_payment_card_information']
         case Map<String, dynamic> bg18PaymentCardInformation) {
       if (bg18PaymentCardInformation['bt_87_primary_account_number']
           case String bt87PrimaryAccountNumber) {
+        creditCardNumber = bt87PrimaryAccountNumber;
         creditInfos.add(Text(bt87PrimaryAccountNumber));
       }
       if (json['bt_88_holder_name'] case String bt88HolderName) {
@@ -187,7 +193,26 @@ class Payment extends StatelessWidget {
     if (details.isEmpty && amountRendered == null && bt82PaymentMeans == null) {
       return Container();
     }
-    return Card(
+    String? subtitleText;
+    if (json['bg_16_payment_instructions'] case Map<String, dynamic> bg16PaymentInstructions){
+      if (bg16PaymentInstructions['bt_81_payment_means_type_code'] case String bt81PaymentMeansTypeCode) {
+        subtitleText = switch (bt81PaymentMeansTypeCode) {
+          '38' || '58' => 'Fällig in ${dueInXDays(json) ?? '?'} Tagen',
+          '48' || '54' || '55' => 'Wird eingezogen von Karte ${creditCardNumber ??''}',
+          '59' => 'Wird eingezogen von Konto ${directDebitAccountNr ??''}',
+          '10' => 'Barzahlung',
+          '20' => 'Scheckzahlung',
+          '42' => 'Zahlung an Bank Account',
+          '57' => 'Bestehende Vereinbahrung',
+          '68' => 'Online Zahlung',
+          '97' => 'Zwischen Parntern geklärt',
+          'ZZZ' => 'Einvernehmlich definiert',
+          _ => null,
+        };
+      }
+    }
+
+        return Card(
       elevation: 0,
       color: subCardColor,
       child: Column(
@@ -200,10 +225,10 @@ class Payment extends StatelessWidget {
           if (amountRendered != null)
             ExpansionTile(
               title: amountRendered,
-              subtitle: const Text(
-                'TODO MOCKDATA Wird eigezoven von Kreditkarte',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+              subtitle: (subtitleText != null)? Text(
+                subtitleText,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ) : null,
               expandedCrossAxisAlignment: CrossAxisAlignment.start,
               expandedAlignment: Alignment.topLeft,
               childrenPadding: descriptionPadding,

@@ -131,3 +131,20 @@ class PaidBadge extends StatelessWidget {
     return inferredPaymentStatus;
   }
 
+DateTime? dueDate(Map<String, dynamic> json) {
+  if (json['bt_9_payment_due_date'] case String bt9PaymentDueDate){
+    var dueDate = DateTime.tryParse(bt9PaymentDueDate);
+    return dueDate;
+  }
+  return null;
+}
+
+int? dueInXDays(Map<String, dynamic> json) {
+  var due = dueDate(json);
+  if (due != null) {
+
+    var now = DateTime.timestamp();
+    return due.difference(now).inDays;
+  }
+  return null;
+}
