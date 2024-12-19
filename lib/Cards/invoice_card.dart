@@ -121,6 +121,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
     var theme = Theme.of(context);
     var descriptionPadding = const EdgeInsets.fromLTRB(8.0, 8.0, 0, 0);
     var subCardColor = theme.canvasColor;
+
     /// If this should blend in, use theme.cardTheme.color ?? theme.colorScheme.surfaceContainerLow;
     Widget? paidBadge;
     try {
@@ -133,78 +134,67 @@ class _InvoiceCardState extends State<InvoiceCard> {
       );
       // todo error widget
     }
-    Widget cardContent = InkWell(
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              DetailInvoicePage(
-                invoice: invoice,
-                cardData: widget.cardData,
+    Widget cardContent = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              if (leadingImage != null)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: leadingImage,
+                ),
+              Flexible(
+                child: Row(
+                  children: [
+                    Text.rich(
+                      textAlign: TextAlign.start,
+                      TextSpan(children: titleTextSpans),
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: paidBadge,
+                    ),
+                  ],
+                ),
               ),
+              // const Spacer(flex: 1,),
+              // Icon(expanded ? Icons.expand_less : Icons.expand_more)
+            ]),
+            if (invoiceHeader != null) invoiceHeader,
+            if (expanded && invoice.description != null)
+              Text(
+                invoice.descriptionString!,
+                softWrap: true,
+              ),
+            PersonTile(
+                title: 'Seller',
+                personData:
+                    PartyData.fromJson(invoice.json, PartyType.seller),
+                subCardColor: subCardColor,
+                descriptionPadding: descriptionPadding,
+                big: false),
+            LeistungCard(
+                subCardColor: subCardColor,
+                descriptionPadding: descriptionPadding,
+                cardData: widget.cardData,
+                invoice: invoice,
+                big: false),
+            // Text.rich(
+            //     textAlign: TextAlign.left,
+            //     TextSpan(children: subTitleTextSpans)),
+            // if (expanded && sellerAndOrCustomer != null) sellerAndOrCustomer,
+            // if (expanded)
+            //   ...orderedItems
+            // else if ((numberOfItems) > 0)
+            //   Text('$numberOfItems Items'),
+          ],
         ));
-      },
-      child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                if (leadingImage != null)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: leadingImage,
-                  ),
-                Flexible(
-                  child: Row(
-                    children: [
-                      Text.rich(
-                        textAlign: TextAlign.start,
-                        TextSpan(children: titleTextSpans),
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        child: paidBadge,
-                      ),
-                    ],
-                  ),
-                ),
-                // const Spacer(flex: 1,),
-                // Icon(expanded ? Icons.expand_less : Icons.expand_more)
-              ]),
-              if (invoiceHeader != null) invoiceHeader,
-              if (expanded && invoice.description != null)
-                Text(
-                  invoice.descriptionString!,
-                  softWrap: true,
-                ),
-              PersonTile(
-                  title: 'Seller',
-                  personData:
-                  PartyData.fromJson(invoice.json, PartyType.seller),
-                  subCardColor: subCardColor,
-                  descriptionPadding: descriptionPadding,
-                  big: false),
-              LeistungCard(
-                  subCardColor: subCardColor,
-                  descriptionPadding: descriptionPadding,
-                  cardData: widget.cardData,
-                  invoice: invoice,
-                  big: false),
-              // Text.rich(
-              //     textAlign: TextAlign.left,
-              //     TextSpan(children: subTitleTextSpans)),
-              // if (expanded && sellerAndOrCustomer != null) sellerAndOrCustomer,
-              // if (expanded)
-              //   ...orderedItems
-              // else if ((numberOfItems) > 0)
-              //   Text('$numberOfItems Items'),
-            ],
-          )),
-    );
     // cardContent = ;
     // var cardContent = ListTile(
     //   leading: leadingImage,
@@ -222,15 +212,8 @@ class _InvoiceCardState extends State<InvoiceCard> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      DetailInvoicePage(
-                        invoice: invoice,
-                        cardData: widget.cardData,
-                      ),
-                ));
-              },
+              onPressed: () =>
+                  openDetailView(context, invoice, widget.cardData),
               child: const Text('Detailansicht'))
         ],
       )
@@ -242,12 +225,24 @@ class _InvoiceCardState extends State<InvoiceCard> {
       );
       cardContents.insertAll(0, [messageHeader, const Divider()]);
     }
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: cardContents,
+    return InkWell(
+      onTap: () => openDetailView(context, invoice, widget.cardData),
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: cardContents,
+        ),
       ),
     );
   }
+}
+
+void openDetailView(BuildContext context, Invoice invoice, CardData cardData) {
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) => DetailInvoicePage(
+      invoice: invoice,
+      cardData: cardData,
+    ),
+  ));
 }
 // todo we are temporarily breaking invoices that don't have xre format data.
