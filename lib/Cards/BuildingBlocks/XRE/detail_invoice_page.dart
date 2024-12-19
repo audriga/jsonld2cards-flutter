@@ -74,7 +74,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       deliveryToRendered = Text.rich(
         TextSpan(
           children: [
-            const TextSpan(text: 'Lieferung an: '),
+            const TextSpan(text: 'An: '),
             TextSpan(
                 text: deliveryPartyName,
                 style: const TextStyle(fontWeight: FontWeight.bold))
