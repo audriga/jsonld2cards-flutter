@@ -205,6 +205,8 @@ class Payment extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               expandedCrossAxisAlignment: CrossAxisAlignment.start,
+              expandedAlignment: Alignment.topLeft,
+              childrenPadding: descriptionPadding,
               children: details,
             ),
           // Align(
