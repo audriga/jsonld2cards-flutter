@@ -61,6 +61,9 @@ class _PersonTileState extends State<PersonTile> {
               ? theme.textTheme.titleMedium
               : theme.textTheme.titleSmall);
       nameAbbr = name.split(' ').map((e) => e.substring(0, 1)).join();
+      if (nameAbbr.length > 3) {
+        nameAbbr = nameAbbr.substring(0, 4);
+      }
       avatarBase = Text(
         nameAbbr,
         style: widget.big ? null : theme.textTheme.labelSmall,
