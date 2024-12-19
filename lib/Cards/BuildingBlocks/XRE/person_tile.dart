@@ -113,9 +113,10 @@ class _PersonTileState extends State<PersonTile> {
       avatar = fallbackAvatar;
     }
     Widget? addressRendered;
+    String? addressText;
     if (widget.personData?.postalAddress != null) {
       // List<TextSpan> sellerSpans = [];
-      String addressText = renderAddressText(widget.personData!.postalAddress);
+      addressText = renderAddressText(widget.personData!.postalAddress);
       addressRendered = Text.rich(TextSpan(text: addressText.trim()));
     }
 
@@ -135,6 +136,7 @@ class _PersonTileState extends State<PersonTile> {
                   leading: avatar,
                   title: nameRendered ?? const Text(''),
                   expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                  expandedAlignment: Alignment.topLeft,
                   children: [
                     if (widget.personData?.contact.telephoneNumber
                         case String telephone)
@@ -164,8 +166,19 @@ class _PersonTileState extends State<PersonTile> {
                           child: Text(email),
                         ),
                       ),
-                    ListTile(
-                      title: addressRendered,
+                    if (addressRendered != null) InkWell(
+                      onTap: (){
+                        launchUrl(Uri(
+                          scheme: 'geo',
+                          queryParameters: {
+                            'q': addressText,
+                          }
+                        ));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: addressRendered,
+                      ),
                     ),
                     if ([PartyType.seller, PartyType.buyer].contains(widget.personData?.party))
                       FutureBuilder(

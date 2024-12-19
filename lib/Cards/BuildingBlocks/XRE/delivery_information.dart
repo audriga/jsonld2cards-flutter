@@ -2,6 +2,7 @@ library delivery_information;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 DeliveryInformation? renderDeliveryInformation(dynamic json) {
   if (json case Map<String, dynamic> map) {
@@ -66,7 +67,18 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
         if (line4.trim().isNotEmpty) {
           deliveryAddressBuffer.write(line4);
         }
-        deliveryAddressDetails = Text(deliveryAddressBuffer.toString().trim());
+        var deliveryAddressText = deliveryAddressBuffer.toString().trim();
+        deliveryAddressDetails = InkWell(
+            onTap: (){
+              launchUrl(Uri(
+                  scheme: 'geo',
+                  queryParameters: {
+                    'q': deliveryAddressText,
+                  }
+              ));
+            },
+
+            child: Text(deliveryAddressText));
       }
       return DeliveryInformation(
         invoicingPeriodText: invoicingPeriodText,
