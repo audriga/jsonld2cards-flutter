@@ -50,7 +50,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     }
 
     List<Widget> attachments =
-        renderAttachments(widget.invoice, widget.cardData);
+        renderAttachments(widget.invoice, widget.cardData, context);
     var numberOfAttachments = attachments.length; // ?? 0;
     Widget? invoiceHeader = renderInvoiceHeader(widget.invoice);
     // Widget? paymentStatusRendered;//todo?
@@ -185,28 +185,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 },
                 icon: const Icon(Icons.download)),
             IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Noch keine API Konfiguriert'),
-                      content: const Text(
-                          'Mit diesen Button könnten Sie die Rechnunng direkt an die API Ihres Rechnungssystem hochladen. Schicken Sie uns Feedback, und sagen Sie uns welches Rechnungssystem Sie hier verfügbar haben wollen.'),
-                      actions: [
-                        TextButton(
-                            onPressed: () => Navigator.pop(context, 'Cancel'),
-                            child: const Text('Abbrechen')),
-                        if (globalSMLAppContext?.feedbackCallback != null)
-                          TextButton(
-                              onPressed: () {
-                                globalSMLAppContext!.feedbackCallback!(
-                                    body: 'API wunsch');
-                              },
-                              child: const Text('Feedback senden'))
-                      ],
-                    ),
-                  );
-                },
+                onPressed: () => apiFeedbackDialog(context),
                 icon: const Icon(Icons.cloud_upload)),
             // IconButton(
             //     onPressed: () {},
@@ -231,6 +210,8 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       );
       // todo error widget
     }
+    // todo for i18n need to use plural/ singular for attachment(s), flutter i18n supports this directly
+    String attachmentTileTitle = (attachments.length > 1) ? 'Anhänge' : 'Anhang';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
@@ -345,7 +326,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                           style: TextStyle(color: theme.hintColor)),
                     ),
                     ExpansionTile(
-                      title: Text('$numberOfAttachments Anhänge'),
+                      title: Text('$numberOfAttachments $attachmentTileTitle'),
                       children: attachments,
                     ),
                   ],

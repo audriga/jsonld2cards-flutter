@@ -5,7 +5,7 @@ import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 
-List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
+List<Widget> renderAttachments(Invoice invoice, CardData cardData, BuildContext context) {
   List<Widget> attachments = [];
 
   if (invoice.json['bg_24_additional_supporting_documents']
@@ -30,24 +30,38 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
         if (bt125Content is String && bt125Content.isNotEmpty)
           IconButton(
               onPressed: () => globalSMLAppContext!.saveFileCallback!(
-                  fileName, bt1251MimeCode, bt125Content),
+                  bt125Content, bt1251MimeCode, fileName),
               icon: const Icon(Icons.download, size: 16)),
         IconButton(
-            onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
+            onPressed: () => apiFeedbackDialog(context),
+            icon: const Icon(Icons.cloud_upload, size: 16)),
         IconButton(
-            onPressed: () {},
+            onPressed: () {
+              if (globalSMLAppContext?.forwardFileCallback != null) {
+                globalSMLAppContext!.forwardFileCallback!(bt125Content, bt1251MimeCode, fileName);
+              }
+            },
             icon: const Icon(Icons.forward_to_inbox, size: 16)),
       ];
-      attachments.add(Row(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(fileName),
-          ),
-          const Spacer(),
-          ...attachmentActions,
-        ],
+      attachments.add(LayoutBuilder(
+        builder: (context, constraints) {
+          // only 60% for text part
+          var filenameConstraints = BoxConstraints(maxWidth:  constraints.maxWidth -  170);
+          return Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ConstrainedBox(
+                constraints: filenameConstraints,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(fileName, overflow: TextOverflow.ellipsis,),
+                ),
+              ),
+              const Spacer(),
+              ...attachmentActions,
+            ],
+          );
+        }
       ));
     }
     for (Attachment attachment in cardData.otherAttachments ?? []) {
@@ -66,9 +80,14 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
                   attachment.data, attachment.mimeType, filename),
               icon: const Icon(Icons.download, size: 16)),
         IconButton(
-            onPressed: () {}, icon: const Icon(Icons.cloud_upload, size: 16)),
+            onPressed: () => apiFeedbackDialog(context),
+            icon: const Icon(Icons.cloud_upload, size: 16)),
         IconButton(
-            onPressed: () {},
+            onPressed: () {
+              if (globalSMLAppContext?.forwardFileCallback != null) {
+                globalSMLAppContext!.forwardFileCallback!(attachment.data, attachment.mimeType, filename);
+              }
+            },
             icon: const Icon(Icons.forward_to_inbox, size: 16)),
       ];
       attachments.add(Row(
@@ -86,4 +105,26 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData) {
   }
 
   return attachments;
+}
+void apiFeedbackDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Noch keine API Konfiguriert'),
+      content: const Text(
+          'Mit diesen Button könnten Sie die Rechnunng direkt an die API Ihres Rechnungssystem hochladen. Schicken Sie uns Feedback, und sagen Sie uns welches Rechnungssystem Sie hier verfügbar haben wollen.'),
+      actions: [
+        TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Abbrechen')),
+        if (globalSMLAppContext?.feedbackCallback != null)
+          TextButton(
+              onPressed: () {
+                globalSMLAppContext!.feedbackCallback!(
+                    body: 'API wunsch');
+              },
+              child: const Text('Feedback senden'))
+      ],
+    ),
+  );
 }

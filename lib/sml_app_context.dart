@@ -17,6 +17,8 @@ typedef ShareFileCallback = Function(
     dynamic fileData, String? mimeType, String? fileName);
 typedef SaveFileCallback = Function(
     dynamic fileData, String? mimeType, String? fileName);
+typedef ForwardFileCallback = Function(
+    dynamic fileData, String? mimeType, String? fileName);
 typedef ForwardEmailAddresses = Future<List<String>> Function();
 typedef ForwardEmailCallback = Function(
     String address, MimeMessage emailToForward);
@@ -38,6 +40,7 @@ class SMLAppContext {
   SaveAttachmentCallback? saveAttachmentCallback;
   ShareFileCallback? shareFileCallback;
   SaveFileCallback? saveFileCallback;
+  ForwardFileCallback? forwardFileCallback;
   ForwardEmailAddresses? forwardEmailAddresses;
   ReloadContacts? reloadContacts;
   ContactList? contactList;
@@ -54,6 +57,7 @@ class SMLAppContext {
     this.saveAttachmentCallback,
     this.shareFileCallback,
     this.saveFileCallback,
+    this.forwardFileCallback,
     this.forwardEmailAddresses,
     this.forwardEmailCallback,
     this.reloadContacts,
