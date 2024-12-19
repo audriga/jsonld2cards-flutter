@@ -29,7 +29,7 @@ class LeistungCard extends StatefulWidget {
 
 class _LeistungCardState extends State<LeistungCard> {
   // late final controller = ExpansionTileController();
-  // bool _expandNotes = false;
+  bool _expandNotes = false;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +69,15 @@ class _LeistungCardState extends State<LeistungCard> {
     // );
     // }
     String? noteText = renderNote(widget.cardData.markup);
+    bool noteTooLong = (noteText?.length ?? 0) > 160;
+
+    String? shortNoteText;
+    if (noteTooLong) {
+      shortNoteText = '${noteText!.substring(0, 159)}…';
+    } else {
+      shortNoteText = noteText;
+    }
+    String? noteTextToDisplay = _expandNotes? noteText : shortNoteText;
     DeliveryInformation? deliveryInformation =
         renderDeliveryInformation(widget.cardData.markup);
     String? invoicingPeriodText = deliveryInformation?.invoicingPeriodText;
@@ -104,12 +113,18 @@ class _LeistungCardState extends State<LeistungCard> {
                 ? ExpansionTile(
                     title: amountRendered,
                     subtitle: subtitle,
+                    childrenPadding: widget.descriptionPadding,
                     children: [
-                      if (widget.big && noteText != null && noteText.isNotEmpty)
+                      if (widget.big && (noteTextToDisplay?.isNotEmpty ?? false))
                         Text(
-                          noteText,
+                          noteTextToDisplay!,
                           softWrap: true,
                         ),
+                      if (noteTooLong) TextButton(onPressed: (){
+                         setState(() {
+                            _expandNotes = !_expandNotes;
+                          });
+                      }, child: Text(_expandNotes ? 'Minimieren' : 'Weiterlesen')),
                       ...orderedItems
                     ],
                     // onExpansionChanged: (value) {
