@@ -178,7 +178,9 @@ class _InvoiceCardState extends State<InvoiceCard> {
                     PartyData.fromJson(invoice.json, PartyType.seller),
                 subCardColor: subCardColor,
                 descriptionPadding: descriptionPadding,
-                big: false),
+                big: false,
+                cardData: widget.cardData,
+            ),
             LeistungCard(
                 subCardColor: subCardColor,
                 descriptionPadding: descriptionPadding,

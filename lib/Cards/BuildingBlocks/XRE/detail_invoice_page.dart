@@ -245,6 +245,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
               invoiceId: widget.invoice.identifier,
+              cardData: widget.cardData,
             ),
             LeistungCard(
               subCardColor: subCardColor,
@@ -262,6 +263,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                   PartyData.fromJson(widget.invoice.json, PartyType.buyer),
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
+              cardData: widget.cardData,
             ),
             if (deliveryToRendered != null || deliveryAddressDetails != null)
               Card(

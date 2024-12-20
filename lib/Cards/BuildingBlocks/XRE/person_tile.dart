@@ -5,6 +5,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/contact_avatar.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/contact_buttons.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,6 +19,7 @@ class PersonTile extends StatefulWidget {
     required this.descriptionPadding,
     this.big = true,
     this.invoiceId,
+    required this.cardData,
   });
 
   final String title;
@@ -28,6 +30,7 @@ class PersonTile extends StatefulWidget {
   final EdgeInsetsGeometry descriptionPadding;
   final bool big;
   final String? invoiceId;
+  final CardData cardData;
 
   @override
   State<PersonTile> createState() => _PersonTileState();
@@ -84,19 +87,31 @@ class _PersonTileState extends State<PersonTile> {
       child: avatarBase,
     );
     Widget avatar;
-    var isValidSeller = smimeValid && widget.personData?.party == PartyType.seller;
+
+    var isSeller = widget.personData?.party == PartyType.seller;
+    var isValidSeller = false;
+    if (isSeller) {
+      var msg = widget.cardData.message;
+      // todo encoding?
+      var authResHeader = msg?.headers?.where((h) => h.name == 'Authentication-Results').firstOrNull?.value;
+      if (authResHeader != null && authResHeader.isNotEmpty) {
+        var headerParts = authResHeader.split(';').map((hp) => hp.trim());
+        var dkimPart = headerParts.where((hp) => hp.startsWith('dkim=')).firstOrNull;
+        isValidSeller = dkimPart == 'dkim=pass';
+      }
+    }
     var isBuyer = widget.personData?.party == PartyType.buyer;
-    if (isValidSeller || isBuyer) {
+    if (isSeller || isBuyer) {
       var pictureAvatar = FutureBuilder(
         future: contact,
         builder: (context, snapshot) => switch (snapshot.connectionState) {
-          ConnectionState.done => snapshot.hasData
-              ? ContactAvatar(
-                  contacts: [snapshot.data!],
+          ConnectionState.done => ContactAvatar(
+                  contacts: [snapshot.data].nonNulls.toList(),
                   partyData: widget.personData,
                   fallback: fallbackAvatar,
-                )
-              : fallbackAvatar,
+                  tryFavIcon: isValidSeller,
+                  senderAddress: widget.cardData.message?.decodeSender().firstOrNull,
+                ),
           _ => fallbackAvatar
         },
       );
@@ -192,9 +207,13 @@ class _PersonTileState extends State<PersonTile> {
                                 )
                               : AddContactButton(
                                   personData: widget.personData,
+                                  tryFavIcon: isValidSeller,
+                                  senderAddress: widget.cardData.message?.decodeSender().firstOrNull,
                                   postAddCallback: refreshContact),
                           _ => AddContactButton(
                               personData: widget.personData,
+                              tryFavIcon: isValidSeller,
+                              senderAddress: widget.cardData.message?.decodeSender().firstOrNull,
                               postAddCallback: refreshContact)
                         },
                       ),
