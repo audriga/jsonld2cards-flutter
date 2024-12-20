@@ -2,9 +2,9 @@ library split_button;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 typedef SplitButtonCallback = Function(String option);
-
 class ForwardButton extends StatefulWidget {
   final SplitButtonCallback onTap;
 
@@ -56,6 +56,7 @@ class _SplitButtonState extends State<SplitButton> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations l = AppLocalizations.of(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -87,10 +88,8 @@ class _SplitButtonState extends State<SplitButton> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text('Keine Ziele Konfiguriert'),
-                      content: const Text(
-                          'Rechnungen können an Kontakte, die eine xrechnung email hinertlegt haben weitergeleitet werden.'
-                          'Hinterlegen Sie dafür bei einen Kontakt eine email addresse mit den label "xrechnug", und geben Sie dieser App die Berechtigung kontakte zu lesen.'),
+                      title: Text(l!.errorTitleNoTargetsConfigured),
+                      content: Text(l!.noTargetsConfiguredMessage),
                       actions: [
                         TextButton(
                             onPressed: () async {
@@ -107,15 +106,15 @@ class _SplitButtonState extends State<SplitButton> {
                                 });
                               }
                             },
-                            child: const Text('Kontakte neu laden')),
+                            child: Text(l!.reloadContacts)),
                         TextButton(
                             onPressed: () => Navigator.pop(context, 'Ok'),
-                            child: const Text('Ok'))
+                            child: Text(l!.ok))
                       ],
                     ),
                   );
                 },
-                child: const Text('Weiterleiten'),
+                child: Text(l!.forwardButtonLabel),
               ),
         // DropdownMenu(
         //

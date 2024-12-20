@@ -1,0 +1,8 @@
+{
+  "forwardButtonLabel": "Nach vorne",
+  "noAddressesConfigured": "Keine Adressen konfiguriert",
+  "reloadContacts": "Kontakte neu laden",
+  "ok": "OK",
+  "noTargetsConfiguredMessage": "Rechnungen können an Kontakte weitergeleitet werden, die über eine xrechnung-E-Mail-Adresse verfügen. Bitte konfigurieren Sie dies, indem Sie einem Kontakt eine E-Mail-Adresse mit der Bezeichnung „xrechnung“ hinzufügen und dieser App den Zugriff auf Kontakte erlauben.",
+  "errorTitleNoTargetsConfigured": "Keine Ziele konfiguriert"
+}
