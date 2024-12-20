@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/hints.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/split_button.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/attachment_header.dart';
 import 'package:jsonld2cards/card_data.dart';
@@ -196,6 +197,7 @@ class _MailHeaderState extends State<MailHeader> {
             ),
             if (senderWithAvatar != null) senderWithAvatar,
             if (subjectRendered != null) subjectRendered,
+            HintsHeader(hints: widget.cardData.hints),
             const Divider(),
             if (widget.cardData.otherAttachments != null)
               AttachmentHeader(

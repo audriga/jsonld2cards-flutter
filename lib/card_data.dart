@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:enough_mail/mime.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/hints.dart';
 
 import 'Cards/BuildingBlocks/potential_actions.dart';
 
@@ -13,14 +14,16 @@ class Attachment {
   String? mimeType;
   String? source;
   String? description;
+  List<HintData> hints;
 
-  Attachment({
-    this.data,
-    this.filename,
-    this.mimeType,
-    this.source,
-    this.description,
-  });
+  Attachment(
+      {this.data,
+      this.filename,
+      this.mimeType,
+      this.source,
+      this.description,
+      List<HintData>? hints})
+      : hints = hints ?? [];
 }
 
 class CardData {
@@ -33,18 +36,19 @@ class CardData {
   bool showMessageHeader;
   Attachment? sourceFile;
   List<Attachment>? otherAttachments;
+  List<HintData> hints;
 
-  CardData(
-    this.markup, {
-    this.postFunction,
-    this.preview = false,
-    this.topBar = false,
-    this.additionalButtons,
-    this.message,
-    this.showMessageHeader = false,
-    this.sourceFile,
-    this.otherAttachments,
-  });
+  CardData(this.markup,
+      {this.postFunction,
+      this.preview = false,
+      this.topBar = false,
+      this.additionalButtons,
+      this.message,
+      this.showMessageHeader = false,
+      this.sourceFile,
+      this.otherAttachments,
+      List<HintData>? hints})
+      : hints = hints ?? [];
 
   bool get markupIsList =>
       (markup is List<dynamic>) || (markup is List<Map<String, dynamic>>);
@@ -68,6 +72,7 @@ class CardData {
     bool? showMessageHeader,
     Attachment? sourceFile,
     List<Attachment>? otherAttachments,
+    List<HintData>? hints,
   })  : markup = markup ?? o.markup,
         postFunction = postFunction ?? o.postFunction,
         preview = preview ?? o.preview,
@@ -76,5 +81,6 @@ class CardData {
         message = message ?? o.message,
         showMessageHeader = showMessageHeader ?? o.showMessageHeader,
         sourceFile = sourceFile ?? o.sourceFile,
-        otherAttachments = otherAttachments ?? o.otherAttachments;
+        otherAttachments = otherAttachments ?? o.otherAttachments,
+        hints = hints ?? o.hints;
 }
