@@ -6,7 +6,9 @@ enum HintType {
 
 enum HintProblemType {
   failedParseXml, // Had an xml file but did not successfully parse it into XRE.
-  failedParsePdf; // Had a PDF file, that contained attachments, but was not XRE
+  failedParsePdf, // Had a PDF file, that contained attachments, but was not XRE
+  pdfContainsNoAttachments, // Had a PDF file, but contained no attachments
+  nonXREAttachment, // Contains an attachment that is not XRE
 }
 
 class HintData {
