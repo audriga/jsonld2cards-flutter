@@ -81,7 +81,7 @@ class _LeistungCardState extends State<LeistungCard> {
     DeliveryInformation? deliveryInformation =
         renderDeliveryInformation(widget.cardData.markup);
     String? invoicingPeriodText = deliveryInformation?.invoicingPeriodText;
-    List<Widget> orderedItems = renderOrderedItems(widget.cardData.markup);
+    List<Widget> orderedItems = renderOrderedItems(widget.cardData.markup, context);
     var numberOfItems = widget.invoice.referencesOrder?.length ?? 0;
     var subtitle = Column(
       crossAxisAlignment: CrossAxisAlignment.start,

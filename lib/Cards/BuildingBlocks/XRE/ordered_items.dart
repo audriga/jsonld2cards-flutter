@@ -2,8 +2,9 @@ library ordered_items;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
+import 'package:jsonld2cards/Util/conversion.dart';
 
-List<Widget> renderOrderedItems(Map<String, dynamic> json) {
+List<Widget> renderOrderedItems(Map<String, dynamic> json, BuildContext context) {
   List<Widget> orderedItems = [];
   String? currencyCode;
   if (json['bt_6_vat_accounting_currency_code']
@@ -32,15 +33,21 @@ List<Widget> renderOrderedItems(Map<String, dynamic> json) {
       }
       var nameBuffer = StringBuffer();
 
+      bool plural = false;
       if (line['bt_129_quantity'] case String bt129Quantity) {
         if (bt129Quantity.trim().isNotEmpty) {
+          var numberQ = tryCastOrParseNum(bt129Quantity.trim());
+          if (numberQ != null && numberQ != 1) {
+            plural = true;
+          }
           nameBuffer.write('$bt129Quantity ');
         }
       }
       if (line['bt_130_quantity_unit_of_measure']
           case String bt130QuantityUnitOfMeasure) {
         if (bt130QuantityUnitOfMeasure.trim().isNotEmpty) {
-          nameBuffer.write('$bt130QuantityUnitOfMeasure ');
+          String localizedUnit = localizeUnit(bt130QuantityUnitOfMeasure.trim(), plural, context);
+          nameBuffer.write('$localizedUnit ');
         }
       }
       nameBuffer.write(nameOrId);
@@ -115,5 +122,16 @@ List<Widget> renderOrderedItems(Map<String, dynamic> json) {
   // }
   return orderedItems;
 }
+
+// TODO: Localize the codes from https://web.audriga.com/wiki/index.php/XRechnung/BT-130#Codes
+// Use bt130-<CODE> as the corresponding keys for i18n.
+// for example here the i18n keys should be
+// bt130-IE, and bt130-10
+// Also use plural feature of i18n
+String localizeUnit(String code, bool plural, BuildContext context) => switch(code) {
+  'IE' => plural? 'Person': 'Personen',
+  '10' => plural? 'Gruppe': 'Gruppen',
+  _ => code,
+};
 
 // static
