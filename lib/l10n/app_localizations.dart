@@ -132,6 +132,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No targets configured'**
   String get errorTitleNoTargetsConfigured;
+
+  /// No description provided for @bt130_IE.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Person} other {Persons}}'**
+  String bt130_IE(num count);
+
+  /// No description provided for @bt130_10.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Group} other {Groups}}'**
+  String bt130_10(num count);
+
+  /// No description provided for @bt130_ROM.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Room} other {Rooms}}'**
+  String bt130_ROM(num count);
+
+  /// No description provided for @bt130_B17.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Credit} other {Credits}}'**
+  String bt130_B17(num count);
+
+  /// No description provided for @bt130_PR.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Pair} other {Pairs}}'**
+  String bt130_PR(num count);
+
+  /// No description provided for @bt130_13.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Ration} other {Rations}}'**
+  String bt130_13(num count);
+
+  /// No description provided for @bt130_14.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Shot} other {Shots}}'**
+  String bt130_14(num count);
+
+  /// No description provided for @bt130_H87.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Piece} other {Pieces}}'**
+  String bt130_H87(num count);
+
+  /// No description provided for @bt130_SET.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Set} other {Sets}}'**
+  String bt130_SET(num count);
+
+  /// No description provided for @bt130_SG.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Segment} other {Segments}}'**
+  String bt130_SG(num count);
+
+  /// No description provided for @bt130_C62.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{One} other {Ones}}'**
+  String bt130_C62(num count);
+
+  /// No description provided for @bt130_XPP.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Loose unpacked article} other {Loose unpacked articles}}'**
+  String bt130_XPP(num count);
+
+  /// No description provided for @bt130_NAR.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Number of article} other {Number of articles}}'**
+  String bt130_NAR(num count);
+
+  /// No description provided for @bt130_ZZ.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Mutually defined} other {Mutually defined}}'**
+  String bt130_ZZ(num count);
+
+  /// No description provided for @bt130_MMK.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Square millimeter} other {Square millimeters}}'**
+  String bt130_MMK(num count);
+
+  /// No description provided for @bt130_MTK.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Square meter} other {Square meters}}'**
+  String bt130_MTK(num count);
+
+  /// No description provided for @bt130_KMK.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Square kilometer} other {Square kilometers}}'**
+  String bt130_KMK(num count);
+
+  /// No description provided for @bt130_INK.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Square inch} other {Square inches}}'**
+  String bt130_INK(num count);
+
+  /// No description provided for @bt130_C37.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Kilobit} other {Kilobits}}'**
+  String bt130_C37(num count);
+
+  /// No description provided for @bt130_INH.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Inch} other {Inches}}'**
+  String bt130_INH(num count);
+
+  /// No description provided for @bt130_MMT.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Millimeter} other {Millimeters}}'**
+  String bt130_MMT(num count);
+
+  /// No description provided for @bt130_MTR.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Meter} other {Meters}}'**
+  String bt130_MTR(num count);
+
+  /// No description provided for @bt130_KMT.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Kilometer} other {Kilometers}}'**
+  String bt130_KMT(num count);
+
+  /// No description provided for @bt130_YRD.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Yard} other {Yards}}'**
+  String bt130_YRD(num count);
+
+  /// No description provided for @bt130_MLT.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Milliliter} other {Milliliters}}'**
+  String bt130_MLT(num count);
+
+  /// No description provided for @bt130_LTR.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Liter} other {Liters}}'**
+  String bt130_LTR(num count);
+
+  /// No description provided for @bt130_HLT.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Hectoliter} other {Hectoliters}}'**
+  String bt130_HLT(num count);
+
+  /// No description provided for @bt130_AMH.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Ampere hour} other {Ampere hours}}'**
+  String bt130_AMH(num count);
+
+  /// No description provided for @bt130_KWH.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Kilowatt hour} other {Kilowatt hours}}'**
+  String bt130_KWH(num count);
+
+  /// No description provided for @bt130_KWT.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Kilowatt} other {Kilowatts}}'**
+  String bt130_KWT(num count);
+
+  /// No description provided for @bt130_MAW.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Megawatt} other {Megawatts}}'**
+  String bt130_MAW(num count);
+
+  /// No description provided for @bt130_C26.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Millisecond} other {Milliseconds}}'**
+  String bt130_C26(num count);
+
+  /// No description provided for @bt130_SEC.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Second} other {Seconds}}'**
+  String bt130_SEC(num count);
+
+  /// No description provided for @bt130_MIN.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Minute} other {Minutes}}'**
+  String bt130_MIN(num count);
+
+  /// No description provided for @bt130_HUR.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Hour} other {Hours}}'**
+  String bt130_HUR(num count);
+
+  /// No description provided for @bt130_DAY.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Day} other {Days}}'**
+  String bt130_DAY(num count);
+
+  /// No description provided for @bt130_WEE.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Week} other {Weeks}}'**
+  String bt130_WEE(num count);
+
+  /// No description provided for @bt130_MON.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Month} other {Months}}'**
+  String bt130_MON(num count);
+
+  /// No description provided for @bt130_ANN.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Year} other {Years}}'**
+  String bt130_ANN(num count);
+
+  /// No description provided for @bt130_MMQ.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Cubic millimeter} other {Cubic millimeters}}'**
+  String bt130_MMQ(num count);
+
+  /// No description provided for @bt130_MTQ.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Cubic meter} other {Cubic meters}}'**
+  String bt130_MTQ(num count);
+
+  /// No description provided for @bt130_INQ.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Cubic inch} other {Cubic inches}}'**
+  String bt130_INQ(num count);
+
+  /// No description provided for @bt130_MC.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Microgram} other {Micrograms}}'**
+  String bt130_MC(num count);
+
+  /// No description provided for @bt130_MGM.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Milligram} other {Milligrams}}'**
+  String bt130_MGM(num count);
+
+  /// No description provided for @bt130_GRM.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Gram} other {Grams}}'**
+  String bt130_GRM(num count);
+
+  /// No description provided for @bt130_KGM.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Kilogram} other {Kilograms}}'**
+  String bt130_KGM(num count);
+
+  /// No description provided for @bt130_TNE.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Ton} other {Tons}}'**
+  String bt130_TNE(num count);
+
+  /// No description provided for @bt130_KTN.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Kiloton} other {Kilotons}}'**
+  String bt130_KTN(num count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
