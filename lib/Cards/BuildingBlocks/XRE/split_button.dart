@@ -2,7 +2,7 @@ library split_button;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 typedef SplitButtonCallback = Function(String option);
 class ForwardButton extends StatefulWidget {
