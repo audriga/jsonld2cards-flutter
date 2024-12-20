@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -23,4 +25,532 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get errorTitleNoTargetsConfigured => 'Aucun destinataire configuré';
+
+  @override
+  String bt130_IE(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Personnes',
+      one: 'Personne',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_10(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Groupes',
+      one: 'Groupe',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_ROM(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Chambres',
+      one: 'Chambre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_B17(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Crédits',
+      one: 'Crédit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_PR(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Paires',
+      one: 'Paire',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_13(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Rations',
+      one: 'Ration',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_14(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tirs',
+      one: 'Tir',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_H87(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pièces',
+      one: 'Pièce',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_SET(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ensembles',
+      one: 'Ensemble',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_SG(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Segments',
+      one: 'Segment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_C62(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Uns',
+      one: 'Un',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_XPP(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Articles en vrac',
+      one: 'Article en vrac',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_NAR(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Nombre d\'articles',
+      one: 'Nombre d\'article',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_ZZ(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Définis mutuellement',
+      one: 'Défini mutuellement',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MMK(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Millimètres carrés',
+      one: 'Millimètre carré',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MTK(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mètres carrés',
+      one: 'Mètre carré',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_KMK(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kilomètres carrés',
+      one: 'Kilomètre carré',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_INK(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pouces carrés',
+      one: 'Pouce carré',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_C37(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kilobits',
+      one: 'Kilobit',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_INH(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pouces',
+      one: 'Pouce',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MMT(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Millimètres',
+      one: 'Millimètre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MTR(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mètres',
+      one: 'Mètre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_KMT(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kilomètres',
+      one: 'Kilomètre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_YRD(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Yards',
+      one: 'Yard',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MLT(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Millilitres',
+      one: 'Millilitre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_LTR(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Litres',
+      one: 'Litre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_HLT(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Hectolitres',
+      one: 'Hectolitre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_AMH(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ampères-heures',
+      one: 'Ampère-heure',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_KWH(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kilowatts-heures',
+      one: 'Kilowatt-heure',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_KWT(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kilowatts',
+      one: 'Kilowatt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MAW(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mégawatts',
+      one: 'Mégawatt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_C26(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Millisecondes',
+      one: 'Milliseconde',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_SEC(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Secondes',
+      one: 'Seconde',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MIN(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Minutes',
+      one: 'Minute',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_HUR(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Heures',
+      one: 'Heure',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_DAY(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Jours',
+      one: 'Jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_WEE(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Semaines',
+      one: 'Semaine',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MON(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mois',
+      one: 'Mois',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_ANN(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Ans',
+      one: 'An',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MMQ(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Millimètres cubes',
+      one: 'Millimètre cube',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MTQ(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Mètres cubes',
+      one: 'Mètre cube',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_INQ(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pouces cubes',
+      one: 'Pouce cube',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MC(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Microgrammes',
+      one: 'Microgramme',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_MGM(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Milligrammes',
+      one: 'Milligramme',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_GRM(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Grammes',
+      one: 'Gramme',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_KGM(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kilogrammes',
+      one: 'Kilogramme',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_TNE(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tonnes',
+      one: 'Tonne',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bt130_KTN(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Kilotonnes',
+      one: 'Kilotonne',
+    );
+    return '$_temp0';
+  }
 }

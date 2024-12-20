@@ -43,4 +43,4 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 # VSCode launch file to test php
-/example_cardviewer_standalone/.vscode/launch.json
+/example_cardviewer_standal=1/.vscode/launch.json
