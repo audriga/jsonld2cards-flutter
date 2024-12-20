@@ -2,11 +2,9 @@ library split_button;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 typedef SplitButtonCallback = Function(String option);
-
 class ForwardButton extends StatefulWidget {
   final SplitButtonCallback onTap;
 
@@ -58,6 +56,7 @@ class _SplitButtonState extends State<SplitButton> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations l = AppLocalizations.of(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -89,8 +88,8 @@ class _SplitButtonState extends State<SplitButton> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text(AppLocalizations.of(context)!.errorTitle),
-                      content: Text(AppLocalizations.of(context)!.noTargetsConfiguredMessage),
+                      title: Text(l!.errorTitleNoTargetsConfigured),
+                      content: Text(l!.noTargetsConfiguredMessage),
                       actions: [
                         TextButton(
                             onPressed: () async {
@@ -107,15 +106,15 @@ class _SplitButtonState extends State<SplitButton> {
                                 });
                               }
                             },
-                            child: Text(AppLocalizations.of(context)!.reloadContacts)),
+                            child: Text(l!.reloadContacts)),
                         TextButton(
                             onPressed: () => Navigator.pop(context, 'Ok'),
-                            child: Text(AppLocalizations.of(context)!.ok))
+                            child: Text(l!.ok))
                       ],
                     ),
                   );
                 },
-                child: Text(AppLocalizations.of(context)!.forwardButtonLabel),
+                child: Text(l!.forwardButtonLabel),
               ),
         // DropdownMenu(
         //

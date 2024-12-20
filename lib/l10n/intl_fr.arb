@@ -4,5 +4,5 @@
   "reloadContacts": "Recharger les contacts",
   "ok": "D'accord",
   "noTargetsConfiguredMessage": "Les factures peuvent être envoyées à des contacts ayant une adresse e-mail xrechnung. Configurez cela en ajoutant une adresse e-mail avec le label 'xrechnung' à un contact et autorisez cette application à accéder aux contacts.",
-  "errorTitle": "Aucun destinataire configuré"
+  "errorTitleNoTargetsConfigured": "Aucun destinataire configuré"
 }

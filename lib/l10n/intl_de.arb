@@ -1,8 +1,8 @@
 {
-  "forwardButtonLabel": "Forward",
-  "noAddressesConfigured": "No addresses configured",
-  "reloadContacts": "Reload contacts",
+  "forwardButtonLabel": "Nach vorne",
+  "noAddressesConfigured": "Keine Adressen konfiguriert",
+  "reloadContacts": "Kontakte neu laden",
   "ok": "OK",
-  "noTargetsConfiguredMessage": "Invoices can be forwarded to contacts that have an xrechnung email address. Please configure this by adding an email address with the label 'xrechnung' to a contact and allow this app to access contacts.",
-  "errorTitle": "No targets configured"
+  "noTargetsConfiguredMessage": "Rechnungen können an Kontakte weitergeleitet werden, die über eine xrechnung-E-Mail-Adresse verfügen. Bitte konfigurieren Sie dies, indem Sie einem Kontakt eine E-Mail-Adresse mit der Bezeichnung „xrechnung“ hinzufügen und dieser App den Zugriff auf Kontakte erlauben.",
+  "errorTitleNoTargetsConfigured": "Keine Ziele konfiguriert"
 }
