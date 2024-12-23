@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 enum EpcQrIdentification {
   sct('SCT'),
@@ -139,6 +140,7 @@ class EpcQr extends StatelessWidget {
     }
     var data = dataBuffer.toString();
     return LayoutBuilder(builder: (context, constraints) {
+      AppLocalizations l = AppLocalizations.of(context);
       return InkWell(
         child: QrImageView(
           data: data,
@@ -162,7 +164,7 @@ class EpcQr extends StatelessWidget {
                 ),
               ),
               SimpleDialogOption(
-                child: const Text('Speichern'),
+                child: Text(l.save),
                 onPressed: () async {
                   // QrCode qrImageData = QrCode.fromData(data: data, errorCorrectLevel: QrErrorCorrectLevel.L);
                   // QrImage(qrImageData);
@@ -180,7 +182,7 @@ class EpcQr extends StatelessWidget {
                 },
               ),
               SimpleDialogOption(
-                child: const Text('Teilen'),
+                child: Text(l.share),
                 onPressed: () async {
                   Uint8List? qrBytes =
                   // ignore: deprecated_member_use
@@ -196,7 +198,7 @@ class EpcQr extends StatelessWidget {
                 },
               ),
               SimpleDialogOption(
-                child: const Text('Schließen'),
+                child: Text(l.close),
                 onPressed: ()  => Navigator.of(context).pop(),
               ),
             ],

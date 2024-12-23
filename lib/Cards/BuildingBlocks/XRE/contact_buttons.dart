@@ -9,6 +9,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 class EditContactButton extends StatelessWidget {
   const EditContactButton({
@@ -21,12 +22,15 @@ class EditContactButton extends StatelessWidget {
   final Function(Contact? contact) postEditCallback;
 
   @override
-  Widget build(BuildContext context) => TextButton(
-        onPressed: () {
-          FlutterContacts.openExternalEdit(contact.id).then(postEditCallback);
-        },
-        child: const Text('Kontakt bearbeiten'),
-      );
+  Widget build(BuildContext context) {
+    AppLocalizations l = AppLocalizations.of(context);
+    return TextButton(
+      onPressed: () {
+        FlutterContacts.openExternalEdit(contact.id).then(postEditCallback);
+      },
+      child: Text(l.editContact),
+    );
+  }
 }
 
 
@@ -41,12 +45,15 @@ class ViewContactButton extends StatelessWidget {
   final Null Function(dynamic value)  postViewCallback;
 
   @override
-  Widget build(BuildContext context) => TextButton(
-        onPressed: () {
-          FlutterContacts.openExternalView(contact.id).then(postViewCallback);
-        },
-        child: const Text('Kontakt ansehen'),
-      );
+  Widget build(BuildContext context) {
+    AppLocalizations l = AppLocalizations.of(context);
+    return TextButton(
+      onPressed: () {
+        FlutterContacts.openExternalView(contact.id).then(postViewCallback);
+      },
+      child: Text(l.viewContact),
+    );
+  }
 }
 
 class AddContactButton extends StatelessWidget {
@@ -64,57 +71,69 @@ class AddContactButton extends StatelessWidget {
   final MailAddress? senderAddress;
 
   @override
-  Widget build(BuildContext context) => TextButton(
-        onPressed: () async {
-          Uint8List? iconBytes;
-          if (tryFavIcon && senderAddress != null) {
-            var hostName = senderAddress!.hostName;
-            var ico = Uri.tryParse('https://icons.duckduckgo.com/ip3/$hostName.ico');
-            if (ico != null) {
-              var response = await http.get(ico);
-              if (response.statusCode == 200) {
-                iconBytes = response.bodyBytes;
-              }
+  Widget build(BuildContext context) {
+    AppLocalizations l = AppLocalizations.of(context);
+    return TextButton(
+      onPressed: () async {
+        Uint8List? iconBytes;
+        if (tryFavIcon && senderAddress != null) {
+          var hostName = senderAddress!.hostName;
+          var ico = Uri.tryParse(
+              'https://icons.duckduckgo.com/ip3/$hostName.ico');
+          if (ico != null) {
+            var response = await http.get(ico);
+            if (response.statusCode == 200) {
+              iconBytes = response.bodyBytes;
             }
           }
-          var contactPointName = personData?.contact.point;
-          var contactPointNameParts = contactPointName?.split(' ');
-          var first = contactPointNameParts?.firstOrNull;
-          String? last;
-          String? middle;
-          if ((contactPointNameParts?.length?? 0) > 1) {
-            last = contactPointNameParts!.last;
-            if (contactPointNameParts.length > 2) {
-              middle = contactPointNameParts.sublist(1, contactPointNameParts.length -1).join(' ');
-            }
+        }
+        var contactPointName = personData?.contact.point;
+        var contactPointNameParts = contactPointName?.split(' ');
+        var first = contactPointNameParts?.firstOrNull;
+        String? last;
+        String? middle;
+        if ((contactPointNameParts?.length ?? 0) > 1) {
+          last = contactPointNameParts!.last;
+          if (contactPointNameParts.length > 2) {
+            middle = contactPointNameParts.sublist(
+                1, contactPointNameParts.length - 1).join(' ');
           }
-          var contact = Contact(
-                photo: iconBytes,
-                displayName: contactPointName ?? '',
-                name: Name(first: first ?? '', middle: middle??'', last: last??''),
-                organizations: [
-                  Organization(company: personData?.name ?? ''),
-                ],
-                emails: [
-                  Email(personData?.contact.emailAddress ?? '',
-                      label: EmailLabel.custom,
-                      customLabel: 'xrechnung-${personData?.party.name}'),
-                  Email(personData?.electronicAddress ?? '',
-                      label: EmailLabel.custom,
-                      // todo make this equivalent for buyer
-                      customLabel: 'xrechnung-${personData?.party.name}'),
-                ],
+        }
+        var contact = Contact(
+            photo: iconBytes,
+            displayName: contactPointName ?? '',
+            name: Name(
+                first: first ?? '', middle: middle ?? '', last: last ?? ''),
+            organizations: [
+              Organization(company: personData?.name ?? ''),
+            ],
+            emails: [
+              Email(personData?.contact.emailAddress ?? '',
+                  label: EmailLabel.custom,
+                  customLabel: 'xrechnung-${personData?.party.name}'),
+              Email(personData?.electronicAddress ?? '',
+                  label: EmailLabel.custom,
+                  // todo make this equivalent for buyer
+                  customLabel: 'xrechnung-${personData?.party.name}'),
+            ],
             groups: [Group('', 'xrechnung-seller')],
             sourceId: 'xre',
             notes: [Note('XRE ${personData?.party.name}')]
-          );
-          var inserted = await FlutterContacts.insertContact(contact);
-          var c = await FlutterContacts.getContact(inserted.id, deduplicateProperties: false,withGroups: true, withProperties: true, withAccounts: true, withPhoto: true, withThumbnail: true);
-          JsonEncoder encoder = const JsonEncoder.withIndent('  ');
-          String prettyprint = encoder.convert(c?.toJson());
-          developer.log(prettyprint);
-          FlutterContacts.openExternalEdit(inserted.id,).then(postAddCallback);
-        },
-        child: const Text('Zu Kontakten hinzufügen'),
-      );
+        );
+        var inserted = await FlutterContacts.insertContact(contact);
+        var c = await FlutterContacts.getContact(
+            inserted.id, deduplicateProperties: false,
+            withGroups: true,
+            withProperties: true,
+            withAccounts: true,
+            withPhoto: true,
+            withThumbnail: true);
+        JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+        String prettyprint = encoder.convert(c?.toJson());
+        developer.log(prettyprint);
+        FlutterContacts.openExternalEdit(inserted.id,).then(postAddCallback);
+      },
+      child: Text(l.addToContacts),
+    );
+  }
 }

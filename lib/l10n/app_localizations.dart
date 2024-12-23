@@ -420,6 +420,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{Kiloton} other {Kilotons}}'**
   String bt130_KTN(num count);
+
+  /// No description provided for @noApiConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'No API configured yet.'**
+  String get noApiConfigured;
+
+  /// No description provided for @uploadInvoiceToApi.
+  ///
+  /// In en, this message translates to:
+  /// **'With this button, you can upload the invoice directly to the API of your billing system. Send us feedback and let us know which billing system you would like to have available here.'**
+  String get uploadInvoiceToApi;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel.'**
+  String get cancel;
+
+  /// No description provided for @apiRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'API request.'**
+  String get apiRequest;
+
+  /// No description provided for @sendFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback.'**
+  String get sendFeedback;
+
+  /// No description provided for @noFileName.
+  ///
+  /// In en, this message translates to:
+  /// **'No file name.'**
+  String get noFileName;
+
+  /// No description provided for @viewContact.
+  ///
+  /// In en, this message translates to:
+  /// **'View contact.'**
+  String get viewContact;
+
+  /// No description provided for @editContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit contact.'**
+  String get editContact;
+
+  /// No description provided for @addToContacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to contacts.'**
+  String get addToContacts;
+
+  /// No description provided for @to.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get to;
+
+  /// No description provided for @deliveryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery date'**
+  String get deliveryDate;
+
+  /// No description provided for @invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice'**
+  String get invoice;
+
+  /// No description provided for @attachments.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Attachment} other {Attachments}}'**
+  String attachments(num count);
+
+  /// No description provided for @details.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get details;
+
+  /// No description provided for @buyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyer'**
+  String get buyer;
+
+  /// No description provided for @delivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get delivery;
+
+  /// No description provided for @seller.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller'**
+  String get seller;
+
+  /// No description provided for @servicePeriodFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Service period from'**
+  String get servicePeriodFrom;
+
+  /// No description provided for @servicePeriodTill.
+  ///
+  /// In en, this message translates to:
+  /// **'Service period until'**
+  String get servicePeriodTill;
+
+  /// No description provided for @servicePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Period'**
+  String get servicePeriod;
+
+  /// No description provided for @service.
+  ///
+  /// In en, this message translates to:
+  /// **'Service'**
+  String get service;
+
+  /// No description provided for @invoiceItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice items'**
+  String get invoiceItems;
+
+  /// No description provided for @minimize.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimize'**
+  String get minimize;
+
+  /// No description provided for @readMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Read more'**
+  String get readMore;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'save'**
+  String get save;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'close'**
+  String get close;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

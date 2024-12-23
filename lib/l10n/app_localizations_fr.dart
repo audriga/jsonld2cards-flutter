@@ -553,4 +553,93 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get noApiConfigured => 'Aucune API configurée pour le moment.';
+
+  @override
+  String get uploadInvoiceToApi => 'Avec ce bouton, vous pouvez télécharger directement la facture sur l\'API de votre système de facturation. Envoyez-nous vos commentaires et dites-nous quel système de facturation vous souhaitez voir disponible ici.';
+
+  @override
+  String get cancel => 'Annuler.';
+
+  @override
+  String get apiRequest => 'requête API.';
+
+  @override
+  String get sendFeedback => 'Envoyer des commentaires.';
+
+  @override
+  String get noFileName => 'Pas de nom de fichier.';
+
+  @override
+  String get viewContact => 'Voir le contact.';
+
+  @override
+  String get editContact => 'Modifier le contact.';
+
+  @override
+  String get addToContacts => 'Ajouter aux contacts.';
+
+  @override
+  String get to => 'À';
+
+  @override
+  String get deliveryDate => 'Date de livraison';
+
+  @override
+  String get invoice => 'Facture';
+
+  @override
+  String attachments(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Pièces jointes',
+      one: 'Pièce jointe',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get details => 'Détails';
+
+  @override
+  String get buyer => 'Acheteur';
+
+  @override
+  String get delivery => 'Livraison';
+
+  @override
+  String get seller => 'Vendeur';
+
+  @override
+  String get servicePeriodFrom => 'Service period from';
+
+  @override
+  String get servicePeriodTill => 'Service period until';
+
+  @override
+  String get servicePeriod => 'Service Period';
+
+  @override
+  String get service => 'Service';
+
+  @override
+  String get invoiceItems => 'Invoice items';
+
+  @override
+  String get minimize => 'Minimize';
+
+  @override
+  String get readMore => 'Read more';
+
+  @override
+  String get save => 'save';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get close => 'close';
 }

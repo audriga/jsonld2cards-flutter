@@ -3,8 +3,11 @@ library delivery_information;
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
-DeliveryInformation? renderDeliveryInformation(dynamic json) {
+DeliveryInformation? renderDeliveryInformation(dynamic json, BuildContext context) {
+  AppLocalizations l = AppLocalizations.of(context);
+
   if (json case Map<String, dynamic> map) {
     if (map['bg_13_delivery_information']
         case Map<String, dynamic> bg13DeliveryInformation) {
@@ -21,15 +24,15 @@ DeliveryInformation? renderDeliveryInformation(dynamic json) {
         String? startDate = renderDate(invoicingPeriod['bt_73_start_date']);
         var endDate = renderDate(invoicingPeriod['bt_74_end_date']);
         if (startDate != null && endDate != null) {
-          invoicingPeriodText = 'Leistungszeitraum von $startDate bis $endDate';
+          invoicingPeriodText = '${l.servicePeriodFrom} $startDate ${l.to} $endDate';
         } else if (startDate != null) {
-          invoicingPeriodText = 'Leistungszeitraum ab $startDate';
+          invoicingPeriodText = '${l.servicePeriodFrom} $startDate';
         } else if (endDate != null) {
-          invoicingPeriodText = 'Leistungszeitraum bis $endDate';
+          invoicingPeriodText = '${l.servicePeriodTill} $endDate';
         }
       }
       if (invoicingPeriodText == null && deliveryDateText != null) {
-        invoicingPeriodText = 'Leistungsdatum: $deliveryDateText';
+        invoicingPeriodText = '${l.servicePeriod}: $deliveryDateText';
       }
       if (bg13DeliveryInformation['bt_70_deliver_to_party_name']
           case String bt70DeliverToPartyName) {

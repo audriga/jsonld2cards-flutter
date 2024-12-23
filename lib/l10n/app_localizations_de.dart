@@ -553,4 +553,93 @@ class AppLocalizationsDe extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get noApiConfigured => 'Mit diesen Button könnten Sie die Rechnunng direkt an die API Ihres Rechnungssystem hochladen. Schicken Sie uns Feedback, und sagen Sie uns welches Rechnungssystem Sie hier verfügbar haben wollen.';
+
+  @override
+  String get uploadInvoiceToApi => 'With this button, you can upload the invoice directly to the API of your billing system. Send us feedback and let us know which billing system you would like to have available here.';
+
+  @override
+  String get cancel => 'Abbrechen.';
+
+  @override
+  String get apiRequest => 'API wunsch.';
+
+  @override
+  String get sendFeedback => 'Feedback senden.';
+
+  @override
+  String get noFileName => 'Kein Dateiname.';
+
+  @override
+  String get viewContact => 'Kontakt ansehen.';
+
+  @override
+  String get editContact => 'Kontakt bearbeiten.';
+
+  @override
+  String get addToContacts => 'Zu Kontakten hinzufügen.';
+
+  @override
+  String get to => 'An';
+
+  @override
+  String get deliveryDate => 'Lieferdatum';
+
+  @override
+  String get invoice => 'Rechnung';
+
+  @override
+  String attachments(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Anhänge',
+      one: 'Anhang',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get details => 'Details';
+
+  @override
+  String get buyer => 'Käufer';
+
+  @override
+  String get delivery => 'Lieferung';
+
+  @override
+  String get seller => 'Verkäufer';
+
+  @override
+  String get servicePeriodFrom => 'Leistungszeitraum von';
+
+  @override
+  String get servicePeriodTill => 'Leistungszeitraum bis';
+
+  @override
+  String get servicePeriod => 'Leistungsdatum';
+
+  @override
+  String get service => 'Leistung';
+
+  @override
+  String get invoiceItems => 'Rechnungsposten';
+
+  @override
+  String get minimize => 'Minimieren';
+
+  @override
+  String get readMore => 'Weiterlesen';
+
+  @override
+  String get save => 'Speichern';
+
+  @override
+  String get share => 'Teilen';
+
+  @override
+  String get close => 'Schließen';
 }
