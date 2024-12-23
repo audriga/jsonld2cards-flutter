@@ -18,6 +18,7 @@ enum HintProblemType {
   multipleStructuredData, // There are multiple XREs, but only first one is shown
   bt3Not380, // Not a commercial invoice
   bt24Unknown, // BT 24 unknown or unsupported type
+  ubl, // We know this is UBL and we still need to do some work with ubl
 }
 
 class HintData {
@@ -94,5 +95,6 @@ class HintsHeader extends StatelessWidget {
     HintProblemType.multipleStructuredData => 'Mail enthält mehre XRechnungen, nur eine davon wird angezeigt',
     HintProblemType.bt3Not380 => 'XRechnungs Typ (BT-3) nicht 380 (Waren-/ Handelsrechnung)',
     HintProblemType.bt24Unknown => 'XRechnungs Spezifikation (BT-24) Unbekannter oder nicht unterstützter Wert',
+    HintProblemType.ubl => 'XRechnung ist im UBL-Format, welches wir noch nicht unterstützen',
   };
 }
