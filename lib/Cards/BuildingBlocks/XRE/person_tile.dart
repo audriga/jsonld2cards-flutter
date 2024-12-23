@@ -43,7 +43,7 @@ class _PersonTileState extends State<PersonTile> {
   @override
   Widget build(BuildContext context) {
     // todo MOCK put bool smime valid into carddata
-    bool smimeValid = true;
+    // bool smimeValid = true;
     // todo detect if empty?
     var theme = Theme.of(context);
     Widget? nameRendered;

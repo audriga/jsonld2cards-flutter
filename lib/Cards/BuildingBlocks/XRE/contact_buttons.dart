@@ -110,7 +110,7 @@ class AddContactButton extends StatelessWidget {
           );
           var inserted = await FlutterContacts.insertContact(contact);
           var c = await FlutterContacts.getContact(inserted.id, deduplicateProperties: false,withGroups: true, withProperties: true, withAccounts: true, withPhoto: true, withThumbnail: true);
-          JsonEncoder encoder = JsonEncoder.withIndent('  ');
+          JsonEncoder encoder = const JsonEncoder.withIndent('  ');
           String prettyprint = encoder.convert(c?.toJson());
           developer.log(prettyprint);
           FlutterContacts.openExternalEdit(inserted.id,).then(postAddCallback);
