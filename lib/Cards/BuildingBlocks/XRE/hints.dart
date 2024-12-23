@@ -16,6 +16,8 @@ enum HintProblemType {
   nonXREAttachment, // Contains an attachment that is not XRE
   noStructuredData, // Message had no attachments or structured data
   multipleStructuredData, // There are multiple XREs, but only first one is shown
+  bt3Not380, // Not a commercial invoice
+  bt24Unknown, // BT 24 unknown or unsupported type
 }
 
 class HintData {
@@ -45,7 +47,31 @@ class HintsHeader extends StatelessWidget {
       var hintRows = hints.map<Widget>((h) => Row(
         children: [
           Padding(padding: insets, child: Icon(h.type.icon, size: fontSize + 2,),),
-          Padding(padding: insets, child: Text(hintMessage(h, context)??'')),
+          Expanded(
+            child: Padding(padding: insets, child: TextButton(onPressed: () {
+
+              showDialog(
+                context: context,
+                builder: (context) {
+                  var message = h.message;
+                  var errorString = h.error?.toString();
+                  bool hasExtraInfo = (message?.isNotEmpty ?? false) || (errorString?.isNotEmpty ?? false);
+                  return AlertDialog(
+                  title: Text(hintMessage(h, context)??'', softWrap: true,),
+                  content:  hasExtraInfo ? Text(
+                      'Zusätzliche Informationen\n${message ?? ''}\n${errorString ?? ''}',
+                  softWrap: true,): null,
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.pop(context, 'Ok'),
+                        child: const Text('Ok')),
+                  ],
+                );
+                },
+              );
+            },
+            child: Text(hintMessage(h, context)??'', overflow: TextOverflow.ellipsis,))),
+          ),
         ],
       ),);
       headerRows.addAll(hintRows);
@@ -66,5 +92,7 @@ class HintsHeader extends StatelessWidget {
     HintProblemType.nonXREAttachment => 'Mail enthält keine XRechnung Anhänge',
     HintProblemType.noStructuredData => 'Mail enthält keine XRechnung',
     HintProblemType.multipleStructuredData => 'Mail enthält mehre XRechnungen, nur eine davon wird angezeigt',
+    HintProblemType.bt3Not380 => 'XRechnungs Typ (BT-3) nicht 380 (Waren-/ Handelsrechnung)',
+    HintProblemType.bt24Unknown => 'XRechnungs Spezifikation (BT-24) Unbekannter oder nicht unterstützter Wert',
   };
 }
