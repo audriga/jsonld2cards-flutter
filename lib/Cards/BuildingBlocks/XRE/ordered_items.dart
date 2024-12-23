@@ -6,7 +6,7 @@ import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 List<Widget> renderOrderedItems(Map<String, dynamic> json, BuildContext context) {
-  AppLocalizations l = AppLocalizations.of(context)!;
+  AppLocalizations l = AppLocalizations.of(context);
   List<Widget> orderedItems = [];
   String? currencyCode;
   if (json['bt_6_vat_accounting_currency_code']
