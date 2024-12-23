@@ -553,4 +553,63 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get noApiConfigured => 'No API configured yet.';
+
+  @override
+  String get uploadInvoiceToApi => 'With this button, you can upload the invoice directly to the API of your billing system. Send us feedback and let us know which billing system you would like to have available here.';
+
+  @override
+  String get cancel => 'Cancel.';
+
+  @override
+  String get apiRequest => 'API request.';
+
+  @override
+  String get sendFeedback => 'Send feedback.';
+
+  @override
+  String get noFileName => 'No file name.';
+
+  @override
+  String get viewContact => 'View contact.';
+
+  @override
+  String get editContact => 'Edit contact.';
+
+  @override
+  String get addToContacts => 'Add to contacts.';
+
+  @override
+  String get to => 'To';
+
+  @override
+  String get deliveryDate => 'Delivery date';
+
+  @override
+  String get invoice => 'Invoice';
+
+  @override
+  String attachments(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Attachments',
+      one: 'Attachment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get details => 'Details';
+
+  @override
+  String get buyer => 'Buyer';
+
+  @override
+  String get delivery => 'Delivery';
+
+  @override
+  String get seller => 'Seller';
 }

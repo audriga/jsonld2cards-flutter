@@ -52,5 +52,22 @@
   "bt130_GRM": "{count, plural, =1{Gramme} other {Grammes}}",
   "bt130_KGM": "{count, plural, =1{Kilogramme} other {Kilogrammes}}",
   "bt130_TNE": "{count, plural, =1{Tonne} other {Tonnes}}",
-  "bt130_KTN": "{count, plural, =1{Kilotonne} other {Kilotonnes}}"
+  "bt130_KTN": "{count, plural, =1{Kilotonne} other {Kilotonnes}}",
+  "noApiConfigured": "Aucune API configurée pour le moment.",
+  "uploadInvoiceToApi": "Avec ce bouton, vous pouvez télécharger directement la facture sur l''API de votre système de facturation. Envoyez-nous vos commentaires et dites-nous quel système de facturation vous souhaitez voir disponible ici.",
+  "cancel": "Annuler.",
+  "apiRequest": "requête API.",
+  "sendFeedback": "Envoyer des commentaires.",
+  "noFileName": "Pas de nom de fichier.",
+  "viewContact": "Voir le contact.",
+  "editContact": "Modifier le contact.",
+  "addToContacts": "Ajouter aux contacts.",
+  "to": "À",
+  "deliveryDate": "Date de livraison",
+  "invoice": "Facture",
+  "attachments": "{count, plural, =1{Pièce jointe} other {Pièces jointes}}",
+  "details": "Détails",
+  "buyer": "Acheteur",
+  "delivery": "Livraison",
+  "seller": "Vendeur"
   }

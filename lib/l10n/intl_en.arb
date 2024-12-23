@@ -52,5 +52,22 @@
   "bt130_GRM": "{count, plural, =1{Gram} other {Grams}}",
   "bt130_KGM": "{count, plural, =1{Kilogram} other {Kilograms}}",
   "bt130_TNE": "{count, plural, =1{Ton} other {Tons}}",
-  "bt130_KTN": "{count, plural, =1{Kiloton} other {Kilotons}}"
+  "bt130_KTN": "{count, plural, =1{Kiloton} other {Kilotons}}",
+  "noApiConfigured": "No API configured yet.",
+  "uploadInvoiceToApi": "With this button, you can upload the invoice directly to the API of your billing system. Send us feedback and let us know which billing system you would like to have available here.",
+  "cancel": "Cancel.",
+  "apiRequest": "API request.",
+  "sendFeedback": "Send feedback.",
+  "noFileName": "No file name.",
+  "viewContact": "View contact.",
+  "editContact": "Edit contact.",
+  "addToContacts": "Add to contacts.",
+  "to": "To",
+  "deliveryDate": "Delivery date",
+  "invoice": "Invoice",
+  "attachments": "{count, plural, =1{Attachment} other {Attachments}}",
+  "details": "Details",
+  "buyer": "Buyer",
+  "delivery": "Delivery",
+  "seller": "Seller"
 }

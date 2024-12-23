@@ -18,6 +18,7 @@ import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 import 'dart:developer' as developer;
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 class DetailInvoicePage extends StatefulWidget {
   const DetailInvoicePage({
@@ -36,6 +37,7 @@ class DetailInvoicePage extends StatefulWidget {
 class _DetailInvoicePageState extends State<DetailInvoicePage> {
   @override
   Widget build(BuildContext context) {
+    AppLocalizations l = AppLocalizations.of(context);
     Uri? uri = widget.invoice.url;
     int? muid;
     bool canShareXRechnung = false;
@@ -74,7 +76,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       deliveryToRendered = Text.rich(
         TextSpan(
           children: [
-            const TextSpan(text: 'An: '),
+            TextSpan(text: '${l.to}: '),
             TextSpan(
                 text: deliveryPartyName,
                 style: const TextStyle(fontWeight: FontWeight.bold))
@@ -84,7 +86,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     }
     if (deliveryDateText != null) {
       deliveryDateRendered = Text.rich(TextSpan(children: [
-        const TextSpan(text: 'Lieferdatum: '),
+        TextSpan(text: '${l.deliveryDate}: '),
         TextSpan(
           text: deliveryDateText,
           style: const TextStyle(fontWeight: FontWeight.bold),
@@ -211,10 +213,10 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       // todo error widget
     }
     // todo for i18n need to use plural/ singular for attachment(s), flutter i18n supports this directly
-    String attachmentTileTitle = (attachments.length > 1) ? 'Anhänge' : 'Anhang';
+    String attachmentTileTitle = (attachments.length > 1) ? l.attachments(2): l.attachments(1);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Details'),
+        title: Text(l.details),
       ),
       body: Card(
         child: ListView(
@@ -226,12 +228,12 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                   sourceFile: sourceFile, otherAttachments: otherAttachments),
             if (renderMessageHeader || renderAttachmentsHeader) const Divider(),
             ListTile(
-              title: const Text.rich(
+              title:  Text.rich(
                 TextSpan(
-                  text: 'Rechnung',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  text: l.invoice,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 22,
                 ),
               ),
@@ -239,7 +241,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               trailing: paidBadge,
             ),
             PersonTile(
-              title: 'Seller',
+              title: l.seller,
               personData:
                   PartyData.fromJson(widget.invoice.json, PartyType.seller),
               subCardColor: subCardColor,
@@ -258,7 +260,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 descriptionPadding: descriptionPadding,
                 json: widget.cardData.markup),
             PersonTile(
-              title: 'Käufer',
+              title: l.buyer,
               personData:
                   PartyData.fromJson(widget.invoice.json, PartyType.buyer),
               subCardColor: subCardColor,
@@ -274,7 +276,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                   children: [
                     Padding(
                       padding: descriptionPadding,
-                      child: Text('Lieferung',
+                      child: Text(l.delivery,
                           style: TextStyle(color: theme.hintColor)),
                     ),
                     (deliveryAddressDetails != null)
@@ -324,7 +326,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                   children: [
                     Padding(
                       padding: descriptionPadding,
-                      child: Text('Anhänge',
+                      child: Text(l.attachments(2),
                           style: TextStyle(color: theme.hintColor)),
                     ),
                     ExpansionTile(

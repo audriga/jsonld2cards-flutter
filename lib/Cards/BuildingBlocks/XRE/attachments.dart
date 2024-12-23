@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 List<Widget> renderAttachments(Invoice invoice, CardData cardData, BuildContext context) {
   List<Widget> attachments = [];
+  AppLocalizations l = AppLocalizations.of(context);
 
   if (invoice.json['bg_24_additional_supporting_documents']
       case List bg24AdditionalSupportingDocuments) {
@@ -95,7 +97,7 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData, BuildContext 
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(filename ?? '(No file name)'),
+            child: Text(filename ?? l.noFileName),
           ),
           const Spacer(),
           ...attachmentActions,
@@ -107,23 +109,23 @@ List<Widget> renderAttachments(Invoice invoice, CardData cardData, BuildContext 
   return attachments;
 }
 void apiFeedbackDialog(BuildContext context) {
+  AppLocalizations l = AppLocalizations.of(context);
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Noch keine API Konfiguriert'),
-      content: const Text(
-          'Mit diesen Button könnten Sie die Rechnunng direkt an die API Ihres Rechnungssystem hochladen. Schicken Sie uns Feedback, und sagen Sie uns welches Rechnungssystem Sie hier verfügbar haben wollen.'),
+      title: Text(l.noApiConfigured),
+      content: Text(l.uploadInvoiceToApi),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Abbrechen')),
+            onPressed: () => Navigator.pop(context, l.cancel),
+            child: Text(l.cancel)),
         if (globalSMLAppContext?.feedbackCallback != null)
           TextButton(
               onPressed: () {
                 globalSMLAppContext!.feedbackCallback!(
-                    body: 'API wunsch');
+                    body: l.apiRequest);
               },
-              child: const Text('Feedback senden'))
+              child: Text(l.sendFeedback))
       ],
     ),
   );
