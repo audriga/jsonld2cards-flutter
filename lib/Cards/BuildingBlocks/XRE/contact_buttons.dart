@@ -55,10 +55,21 @@ class AddContactButton extends StatelessWidget {
               }
             }
           }
+          var contactPointName = personData?.contact.point;
+          var contactPointNameParts = contactPointName?.split(' ');
+          var first = contactPointNameParts?.firstOrNull;
+          String? last;
+          String? middle;
+          if ((contactPointNameParts?.length?? 0) > 1) {
+            last = contactPointNameParts!.last;
+            if (contactPointNameParts > 2) {
+              middle = contactPointNameParts.sublist(1, contactPointNameParts.length -1).join(' ');
+            }
+          }
           var contact = Contact(
                 photo: iconBytes,
-                displayName: personData?.contact.point ?? '',
-                name: Name(first: personData?.contact.point ?? ''),
+                displayName: contactPointName ?? '',
+                name: Name(first: first ?? '', middle: middle??'', last: last??''),
                 organizations: [
                   Organization(company: personData?.name ?? ''),
                 ],
