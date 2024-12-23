@@ -88,8 +88,8 @@ class _SplitButtonState extends State<SplitButton> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text(l!.errorTitleNoTargetsConfigured),
-                      content: Text(l!.noTargetsConfiguredMessage),
+                      title: Text(l.errorTitleNoTargetsConfigured),
+                      content: Text(l.noTargetsConfiguredMessage),
                       actions: [
                         TextButton(
                             onPressed: () async {
@@ -106,15 +106,15 @@ class _SplitButtonState extends State<SplitButton> {
                                 });
                               }
                             },
-                            child: Text(l!.reloadContacts)),
+                            child: Text(l.reloadContacts)),
                         TextButton(
                             onPressed: () => Navigator.pop(context, 'Ok'),
-                            child: Text(l!.ok))
+                            child: Text(l.ok))
                       ],
                     ),
                   );
                 },
-                child: Text(l!.forwardButtonLabel),
+                child: Text(l.forwardButtonLabel),
               ),
         // DropdownMenu(
         //
