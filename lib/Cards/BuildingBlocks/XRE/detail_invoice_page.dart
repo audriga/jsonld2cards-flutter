@@ -64,7 +64,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     // }
 
     DeliveryInformation? deliveryInformation =
-        renderDeliveryInformation(widget.cardData.markup);
+        renderDeliveryInformation(widget.cardData.markup, context);
     String? deliveryDateText = deliveryInformation?.deliveryDateText;
     String? deliveryPartyName = deliveryInformation?.deliveryPartyName;
     Widget? deliveryAddressDetails =

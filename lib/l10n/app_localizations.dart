@@ -522,6 +522,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Seller'**
   String get seller;
+
+  /// No description provided for @servicePeriodFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Service period from'**
+  String get servicePeriodFrom;
+
+  /// No description provided for @servicePeriodTill.
+  ///
+  /// In en, this message translates to:
+  /// **'Service period until'**
+  String get servicePeriodTill;
+
+  /// No description provided for @servicePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Period'**
+  String get servicePeriod;
+
+  /// No description provided for @service.
+  ///
+  /// In en, this message translates to:
+  /// **'Service'**
+  String get service;
+
+  /// No description provided for @invoiceItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice items'**
+  String get invoiceItems;
+
+  /// No description provided for @minimize.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimize'**
+  String get minimize;
+
+  /// No description provided for @readMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Read more'**
+  String get readMore;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

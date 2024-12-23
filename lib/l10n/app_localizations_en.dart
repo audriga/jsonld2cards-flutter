@@ -612,4 +612,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get seller => 'Seller';
+
+  @override
+  String get servicePeriodFrom => 'Service period from';
+
+  @override
+  String get servicePeriodTill => 'Service period until';
+
+  @override
+  String get servicePeriod => 'Service Period';
+
+  @override
+  String get service => 'Service';
+
+  @override
+  String get invoiceItems => 'Invoice items';
+
+  @override
+  String get minimize => 'Minimize';
+
+  @override
+  String get readMore => 'Read more';
 }

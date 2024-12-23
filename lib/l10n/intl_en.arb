@@ -69,5 +69,16 @@
   "details": "Details",
   "buyer": "Buyer",
   "delivery": "Delivery",
-  "seller": "Seller"
+  "seller": "Seller",
+  "servicePeriodFrom": "Service period from",
+  "servicePeriodTill": "Service period until",
+  "servicePeriod": "Service Period",
+  "service": "Service",
+  "invoiceItems": "Invoice items",
+  "minimize": "Minimize",
+  "readMore": "Read more"
+
+
+
+
 }

@@ -6,6 +6,7 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/ordered_items.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
 import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
 import 'package:jsonld2cards/card_data.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 class LeistungCard extends StatefulWidget {
   const LeistungCard({
@@ -34,6 +35,7 @@ class _LeistungCardState extends State<LeistungCard> {
   @override
   Widget build(BuildContext context) {
     Widget? amountRendered; // = renderAmount(invoice);
+    AppLocalizations l = AppLocalizations.of(context);
 
     if (widget.cardData.markup['bg_22_document_totals']
         case Map<String, dynamic> bg22DocumentTotals) {
@@ -48,7 +50,7 @@ class _LeistungCardState extends State<LeistungCard> {
       );
     }
 
-    const label = Text('Leistung');
+    final label = Text(l.service);
     // if (!big) {
     //   return Card(
     //   elevation: 0,
@@ -79,7 +81,7 @@ class _LeistungCardState extends State<LeistungCard> {
     }
     String? noteTextToDisplay = _expandNotes? noteText : shortNoteText;
     DeliveryInformation? deliveryInformation =
-        renderDeliveryInformation(widget.cardData.markup);
+        renderDeliveryInformation(widget.cardData.markup, context);
     String? invoicingPeriodText = deliveryInformation?.invoicingPeriodText;
     List<Widget> orderedItems = renderOrderedItems(widget.cardData.markup, context);
     var numberOfItems = widget.invoice.referencesOrder?.length ?? 0;
@@ -95,7 +97,7 @@ class _LeistungCardState extends State<LeistungCard> {
         //     overflow: TextOverflow.ellipsis,
         //   ),
         if (widget.big && (numberOfItems) > 0)
-          Text('$numberOfItems Rechnungsposten'),
+          Text('$numberOfItems ${l.invoiceItems}'),
       ],
     );
     return Card(
@@ -124,7 +126,7 @@ class _LeistungCardState extends State<LeistungCard> {
                          setState(() {
                             _expandNotes = !_expandNotes;
                           });
-                      }, child: Text(_expandNotes ? 'Minimieren' : 'Weiterlesen')),
+                      }, child: Text(_expandNotes ? l.minimize : l.readMore)),
                       ...orderedItems
                     ],
                     // onExpansionChanged: (value) {

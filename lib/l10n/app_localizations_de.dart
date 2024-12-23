@@ -612,4 +612,25 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get seller => 'Verkäufer';
+
+  @override
+  String get servicePeriodFrom => 'Leistungszeitraum von';
+
+  @override
+  String get servicePeriodTill => 'Leistungszeitraum bis';
+
+  @override
+  String get servicePeriod => 'Leistungsdatum';
+
+  @override
+  String get service => 'Leistung';
+
+  @override
+  String get invoiceItems => 'Rechnungsposten';
+
+  @override
+  String get minimize => 'Minimieren';
+
+  @override
+  String get readMore => 'Weiterlesen';
 }

@@ -69,6 +69,13 @@
   "details": "Details",
   "buyer": "Käufer",
   "delivery": "Lieferung",
-  "seller": "Verkäufer"
+  "seller": "Verkäufer",
+  "servicePeriodFrom": "Leistungszeitraum von",
+  "servicePeriodTill": "Leistungszeitraum bis",
+  "servicePeriod": "Leistungsdatum",
+  "service": "Leistung",
+  "invoiceItems": "Rechnungsposten",
+  "minimize": "Minimieren",
+  "readMore": "Weiterlesen"
 
 }
