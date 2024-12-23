@@ -1,12 +1,14 @@
 library contact_buttons;
 
+import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:enough_mail/src/mail_address.dart';
+import 'package:enough_mail/codecs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer' as developer;
 
 class EditContactButton extends StatelessWidget {
   const EditContactButton({
@@ -24,6 +26,26 @@ class EditContactButton extends StatelessWidget {
           FlutterContacts.openExternalEdit(contact.id).then(postEditCallback);
         },
         child: const Text('Kontakt bearbeiten'),
+      );
+}
+
+
+class ViewContactButton extends StatelessWidget {
+  const ViewContactButton({
+    super.key,
+    required this.contact,
+    required this.postViewCallback,
+  });
+
+  final Contact contact;
+  final Null Function(dynamic value)  postViewCallback;
+
+  @override
+  Widget build(BuildContext context) => TextButton(
+        onPressed: () {
+          FlutterContacts.openExternalView(contact.id).then(postViewCallback);
+        },
+        child: const Text('Kontakt ansehen'),
       );
 }
 
@@ -62,7 +84,7 @@ class AddContactButton extends StatelessWidget {
           String? middle;
           if ((contactPointNameParts?.length?? 0) > 1) {
             last = contactPointNameParts!.last;
-            if (contactPointNameParts > 2) {
+            if (contactPointNameParts.length > 2) {
               middle = contactPointNameParts.sublist(1, contactPointNameParts.length -1).join(' ');
             }
           }
@@ -75,13 +97,22 @@ class AddContactButton extends StatelessWidget {
                 ],
                 emails: [
                   Email(personData?.contact.emailAddress ?? '',
-                      customLabel: 'xrechnung-seller-person'),
+                      label: EmailLabel.custom,
+                      customLabel: 'xrechnung-${personData?.party.name}'),
                   Email(personData?.electronicAddress ?? '',
+                      label: EmailLabel.custom,
                       // todo make this equivalent for buyer
-                      customLabel: 'xrechnung-seller'),
+                      customLabel: 'xrechnung-${personData?.party.name}'),
                 ],
+            groups: [Group('', 'xrechnung-seller')],
+            sourceId: 'xre',
+            notes: [Note('XRE ${personData?.party.name}')]
           );
           var inserted = await FlutterContacts.insertContact(contact);
+          var c = await FlutterContacts.getContact(inserted.id, deduplicateProperties: false,withGroups: true, withProperties: true, withAccounts: true, withPhoto: true, withThumbnail: true);
+          JsonEncoder encoder = JsonEncoder.withIndent('  ');
+          String prettyprint = encoder.convert(c?.toJson());
+          developer.log(prettyprint);
           FlutterContacts.openExternalEdit(inserted.id,).then(postAddCallback);
         },
         child: const Text('Zu Kontakten hinzufügen'),

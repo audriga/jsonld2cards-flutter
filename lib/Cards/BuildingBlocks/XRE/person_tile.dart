@@ -201,9 +201,9 @@ class _PersonTileState extends State<PersonTile> {
                         builder: (context, snapshot) =>
                             switch (snapshot.connectionState) {
                           ConnectionState.done => snapshot.hasData
-                              ? EditContactButton(
+                              ? ViewContactButton(
                                   contact: snapshot.data!,
-                                  postEditCallback: refreshContact,
+                                  postViewCallback: (value) => refreshContact(null),
                                 )
                               : AddContactButton(
                                   personData: widget.personData,
