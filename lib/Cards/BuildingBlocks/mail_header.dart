@@ -172,6 +172,7 @@ class _MailHeaderState extends State<MailHeader> {
       dateRendered: dateRendered,
       senderWithAvatar: senderWithAvatar,
       subjectRendered: subjectRendered,
+      cardData: widget.cardData,
     );
     var bigMailHeader = LayoutBuilder(builder: (context, constraints) {
       var smaller = BoxConstraints(
@@ -198,6 +199,7 @@ class _MailHeaderState extends State<MailHeader> {
             if (senderWithAvatar != null) senderWithAvatar,
             if (subjectRendered != null) subjectRendered,
             HintsHeader(hints: widget.cardData.hints),
+            if (widget.cardData.otherAttachments != null) HintsHeader(hints: widget.cardData.otherAttachments!.expand((o) => o.hints).toList()),
             const Divider(),
             if (widget.cardData.otherAttachments != null)
               AttachmentHeader(
@@ -243,6 +245,7 @@ class SmallMailHeader extends StatelessWidget {
     required this.dateRendered,
     required this.senderWithAvatar,
     required this.subjectRendered,
+    required this.cardData,
   });
 
   final EdgeInsets insets;
@@ -250,6 +253,7 @@ class SmallMailHeader extends StatelessWidget {
   final Widget? dateRendered;
   final Widget? senderWithAvatar;
   final Widget? subjectRendered;
+  final CardData cardData;
 
   @override
   Widget build(BuildContext context) {

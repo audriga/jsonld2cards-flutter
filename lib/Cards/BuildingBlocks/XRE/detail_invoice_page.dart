@@ -19,6 +19,8 @@ import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 import 'dart:developer' as developer;
 
+import 'hints.dart';
+
 class DetailInvoicePage extends StatefulWidget {
   const DetailInvoicePage({
     super.key,
@@ -224,6 +226,8 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
             if (renderAttachmentsHeader)
               AttachmentHeader(
                   sourceFile: sourceFile, otherAttachments: otherAttachments),
+            HintsHeader(hints: widget.cardData.hints),
+            if (widget.cardData.otherAttachments != null) HintsHeader(hints: widget.cardData.otherAttachments!.expand((o) => o.hints).toList()),
             if (renderMessageHeader || renderAttachmentsHeader) const Divider(),
             ListTile(
               title: const Text.rich(

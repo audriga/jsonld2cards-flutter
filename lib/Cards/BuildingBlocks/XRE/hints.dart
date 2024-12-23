@@ -14,7 +14,7 @@ enum HintProblemType {
   failedParsePdf, // Had a PDF file, that contained attachments, but was not XRE
   pdfContainsNoAttachments, // Had a PDF file, but contained no attachments
   nonXREAttachment, // Contains an attachment that is not XRE
-  noStructuredData, // Message had attachments but was not XRE
+  noStructuredData, // Message had no attachments or structured data
   multipleStructuredData, // There are multiple XREs, but only first one is shown
 }
 
@@ -60,11 +60,11 @@ class HintsHeader extends StatelessWidget {
 
   String? hintMessage(HintData hint, BuildContext context) => switch(hint.hintProblemType) {
     null => hint.message,
-    HintProblemType.failedParseXml => 'XML datei keien Gültige XRechung',
+    HintProblemType.failedParseXml => 'XML datei ist keine gültige XRechung',
     HintProblemType.failedParsePdf => 'PDF enthält xml anhang, aber keine gültige XRechnung',
     HintProblemType.pdfContainsNoAttachments => 'PDF enthält keine Anhänge',
-    HintProblemType.nonXREAttachment => 'Mail enthielt keine xml Anhänge',
-    HintProblemType.noStructuredData => 'Mail enthielt keine Anhänge',
+    HintProblemType.nonXREAttachment => 'Mail enthält keine XRechnung Anhänge',
+    HintProblemType.noStructuredData => 'Mail enthält keine XRechnung',
     HintProblemType.multipleStructuredData => 'Mail enthält mehre XRechnungen, nur eine davon wird angezeigt',
   };
 }
