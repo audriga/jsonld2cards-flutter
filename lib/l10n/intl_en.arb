@@ -76,7 +76,10 @@
   "service": "Service",
   "invoiceItems": "Invoice items",
   "minimize": "Minimize",
-  "readMore": "Read more"
+  "readMore": "Read more",
+  "save": "save",
+  "share": "Share",
+  "close": "close"
 
 
 

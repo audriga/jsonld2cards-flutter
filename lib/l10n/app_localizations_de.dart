@@ -633,4 +633,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get readMore => 'Weiterlesen';
+
+  @override
+  String get save => 'Speichern';
+
+  @override
+  String get share => 'Teilen';
+
+  @override
+  String get close => 'Schließen';
 }

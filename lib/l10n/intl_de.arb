@@ -76,6 +76,10 @@
   "service": "Leistung",
   "invoiceItems": "Rechnungsposten",
   "minimize": "Minimieren",
-  "readMore": "Weiterlesen"
+  "readMore": "Weiterlesen",
+  "save": "Speichern",
+  "share": "Teilen",
+  "close": "Schließen"
+
 
 }

@@ -633,4 +633,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get readMore => 'Read more';
+
+  @override
+  String get save => 'save';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get close => 'close';
 }
