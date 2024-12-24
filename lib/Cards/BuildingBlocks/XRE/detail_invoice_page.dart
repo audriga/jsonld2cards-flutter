@@ -56,7 +56,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     List<Widget> attachments =
         renderAttachments(widget.invoice, widget.cardData, context);
     var numberOfAttachments = attachments.length; // ?? 0;
-    Widget? invoiceHeader = renderInvoiceHeader(widget.invoice);
+    Widget? invoiceHeader = renderInvoiceHeader(widget.invoice, context);
     // Widget? paymentStatusRendered;//todo?
     // if (widget.invoice.paymentStatus != null) {
     //   var paymentStatus = ': ${widget.invoice.paymentStatus}';
@@ -205,7 +205,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
         sourceFile != null || (otherAttachments?.isNotEmpty ?? false);
     Widget? paidBadge;
     try {
-      paidBadge = PaidBadge(json: widget.invoice.json);
+      paidBadge = PaidBadge(json: widget.invoice.json, context: context);
     } catch (e) {
       developer.log(
         'Error rendering paid badge',

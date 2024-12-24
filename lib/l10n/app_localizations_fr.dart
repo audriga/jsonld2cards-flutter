@@ -642,4 +642,76 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get close => 'close';
+
+  @override
+  String get additionalInformation => 'Additional Information';
+
+  @override
+  String get theXMLFileNotValidXRechnung => 'The XML file is not a valid XRechnung';
+
+  @override
+  String get thePDFContainsAnXMLButNotValidXRechnung => 'The PDF contains an XML attachment, but it is not a valid XRechnung';
+
+  @override
+  String get thePDFContainsNoAttachments => 'The PDF contains no attachments';
+
+  @override
+  String get theEmailContainsNoXRechnungAttachments => 'The email contains no XRechnung attachments';
+
+  @override
+  String get theEmailContainsNoXRechnung => 'The email contains no XRechnung';
+
+  @override
+  String get theEmailContainsMultipleXRechnungOnlyOneDisplayed => 'The email contains multiple XRechnungen, only one of them is displayed';
+
+  @override
+  String get xRechnungTypeBT3Not380 => 'XRechnung type (BT-3) not 380 (Goods/Commercial Invoice)';
+
+  @override
+  String get xRechnungSpecificationBT24UnknownUnsupported => 'XRechnung specification (BT-24) unknown or unsupported value';
+
+  @override
+  String get xRechnungInUBLFormatNotSupported => 'The XRechnung is in UBL format, which we do not yet support';
+
+  @override
+  String get number => 'No.';
+
+  @override
+  String get dated => 'dated';
+
+  @override
+  String get paid => 'Paid';
+
+  @override
+  String get collected => 'Will be collected';
+
+  @override
+  String get transfer => 'Transfer';
+
+  @override
+  String get open => 'Open';
+
+  @override
+  String get other => 'Other';
+
+  @override
+  String get refund => 'Refund';
+
+  @override
+  String get missing => 'Missing';
+
+  @override
+  String get couldNotParseToNumber => 'Could not get parsed to number!';
+
+  @override
+  String get notSet => 'Not set!';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get couldNotParse => 'Could not parse';
+
+  @override
+  String get isMissing => 'is missing';
 }

@@ -79,7 +79,32 @@
   "readMore": "Read more",
   "save": "save",
   "share": "Share",
-  "close": "close"
+  "close": "close",
+  "additionalInformation": "Additional Information",
+  "theXMLFileNotValidXRechnung": "The XML file is not a valid XRechnung",
+  "thePDFContainsAnXMLButNotValidXRechnung": "The PDF contains an XML attachment, but it is not a valid XRechnung",
+  "thePDFContainsNoAttachments": "The PDF contains no attachments",
+  "theEmailContainsNoXRechnungAttachments": "The email contains no XRechnung attachments",
+  "theEmailContainsNoXRechnung": "The email contains no XRechnung",
+  "theEmailContainsMultipleXRechnungOnlyOneDisplayed": "The email contains multiple XRechnungen, only one of them is displayed",
+  "xRechnungTypeBT3Not380": "XRechnung type (BT-3) not 380 (Goods/Commercial Invoice)",
+  "xRechnungSpecificationBT24UnknownUnsupported": "XRechnung specification (BT-24) unknown or unsupported value",
+  "xRechnungInUBLFormatNotSupported": "The XRechnung is in UBL format, which we do not yet support",
+  "number": "No.",
+  "dated": "dated",
+  "paid": "Paid",
+  "collected": "Will be collected",
+  "transfer": "Transfer",
+  "open": "Open",
+  "other": "Other",
+  "refund": "Refund",
+  "missing": "Missing",
+  "couldNotParseToNumber": "Could not get parsed to number!",
+  "notSet": "Not set!",
+  "no": "No",
+  "couldNotParse": "Could not parse",
+  "isMissing": "is missing"
+
 
 
 

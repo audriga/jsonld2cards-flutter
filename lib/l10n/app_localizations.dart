@@ -582,6 +582,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'close'**
   String get close;
+
+  /// No description provided for @additionalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Information'**
+  String get additionalInformation;
+
+  /// No description provided for @theXMLFileNotValidXRechnung.
+  ///
+  /// In en, this message translates to:
+  /// **'The XML file is not a valid XRechnung'**
+  String get theXMLFileNotValidXRechnung;
+
+  /// No description provided for @thePDFContainsAnXMLButNotValidXRechnung.
+  ///
+  /// In en, this message translates to:
+  /// **'The PDF contains an XML attachment, but it is not a valid XRechnung'**
+  String get thePDFContainsAnXMLButNotValidXRechnung;
+
+  /// No description provided for @thePDFContainsNoAttachments.
+  ///
+  /// In en, this message translates to:
+  /// **'The PDF contains no attachments'**
+  String get thePDFContainsNoAttachments;
+
+  /// No description provided for @theEmailContainsNoXRechnungAttachments.
+  ///
+  /// In en, this message translates to:
+  /// **'The email contains no XRechnung attachments'**
+  String get theEmailContainsNoXRechnungAttachments;
+
+  /// No description provided for @theEmailContainsNoXRechnung.
+  ///
+  /// In en, this message translates to:
+  /// **'The email contains no XRechnung'**
+  String get theEmailContainsNoXRechnung;
+
+  /// No description provided for @theEmailContainsMultipleXRechnungOnlyOneDisplayed.
+  ///
+  /// In en, this message translates to:
+  /// **'The email contains multiple XRechnungen, only one of them is displayed'**
+  String get theEmailContainsMultipleXRechnungOnlyOneDisplayed;
+
+  /// No description provided for @xRechnungTypeBT3Not380.
+  ///
+  /// In en, this message translates to:
+  /// **'XRechnung type (BT-3) not 380 (Goods/Commercial Invoice)'**
+  String get xRechnungTypeBT3Not380;
+
+  /// No description provided for @xRechnungSpecificationBT24UnknownUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'XRechnung specification (BT-24) unknown or unsupported value'**
+  String get xRechnungSpecificationBT24UnknownUnsupported;
+
+  /// No description provided for @xRechnungInUBLFormatNotSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'The XRechnung is in UBL format, which we do not yet support'**
+  String get xRechnungInUBLFormatNotSupported;
+
+  /// No description provided for @number.
+  ///
+  /// In en, this message translates to:
+  /// **'No.'**
+  String get number;
+
+  /// No description provided for @dated.
+  ///
+  /// In en, this message translates to:
+  /// **'dated'**
+  String get dated;
+
+  /// No description provided for @paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get paid;
+
+  /// No description provided for @collected.
+  ///
+  /// In en, this message translates to:
+  /// **'Will be collected'**
+  String get collected;
+
+  /// No description provided for @transfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
+  String get transfer;
+
+  /// No description provided for @open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get open;
+
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
+  /// No description provided for @refund.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund'**
+  String get refund;
+
+  /// No description provided for @missing.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get missing;
+
+  /// No description provided for @couldNotParseToNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not get parsed to number!'**
+  String get couldNotParseToNumber;
+
+  /// No description provided for @notSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set!'**
+  String get notSet;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @couldNotParse.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not parse'**
+  String get couldNotParse;
+
+  /// No description provided for @isMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'is missing'**
+  String get isMissing;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

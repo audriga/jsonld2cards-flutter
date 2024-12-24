@@ -2,17 +2,20 @@ library paid_badge;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 enum PaymentStatus {
   paid, toPayAutomatic, toPayManual, toPayUnknown, refund;
 }
 
 class PaidBadge extends StatelessWidget {
+
   PaidBadge({
     super.key,
     required this.json,
+    required BuildContext context,
     this.big = true,
-  }) : inferredPaymentStatus = inferPaymentStatus(json);
+  }) : inferredPaymentStatus = inferPaymentStatus(json, AppLocalizations.of(context));
 
   final Map<String, dynamic> json;
   final bool big;
@@ -20,6 +23,7 @@ class PaidBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations l = AppLocalizations.of(context);
     Map<String, dynamic>? bg16PaymentInstructions;
     // bool hasBG18PaymentCard = false;
     // bool hasBG19DirectDebit = false;
@@ -37,7 +41,7 @@ class PaidBadge extends StatelessWidget {
     if (json['bt_9_payment_due_date'] case String bt9PaymentDueDate){
       var dueDate = DateTime.tryParse(bt9PaymentDueDate);
       if (dueDate == null) {
-        throw const FormatException('Could not parse BT-9');
+        throw FormatException('${l.couldNotParse} BT-9');
       }
       var now = DateTime.timestamp();
       overdue = now.isAfter(dueDate);
@@ -54,11 +58,11 @@ class PaidBadge extends StatelessWidget {
     };
     // See https://web.audriga.com/wiki/index.php/XRE/Implementation#Payment_badge
     String label = switch(inferredPaymentStatus) {
-      PaymentStatus.paid => 'Bezahlt',
-      PaymentStatus.toPayAutomatic => 'Wird eingezogen',
-      PaymentStatus.toPayManual => hasBG17CreditTransfer?  'Überweisen' : 'Offen',
-      PaymentStatus.toPayUnknown => 'Anders',
-      PaymentStatus.refund => 'Rückzahlung',
+      PaymentStatus.paid => l.paid,
+      PaymentStatus.toPayAutomatic => l.collected,
+      PaymentStatus.toPayManual => hasBG17CreditTransfer?  l.transfer : l.open,
+      PaymentStatus.toPayUnknown => l.other,
+      PaymentStatus.refund => l.refund,
     };
 
     var theme = Theme.of(context);
@@ -80,17 +84,17 @@ class PaidBadge extends StatelessWidget {
   }
 }
 
-  PaymentStatus inferPaymentStatus(Map<String, dynamic> json) {
+  PaymentStatus inferPaymentStatus(Map<String, dynamic> json, AppLocalizations l) {
     PaymentStatus inferredPaymentStatus;
     if (json['bg_22_document_totals']
         case Map<String, dynamic> bg22DocumentTotals) {
       var bt115AmountDueForPayment = bg22DocumentTotals['bt_115_amount_due_for_payment'];
       if (bt115AmountDueForPayment == null) {
-        throw const FormatException('BT-115 is missing!');
+        throw FormatException('BT-115 ${l.isMissing}');
       }
       num? bt115AmountDueForPaymentNum = tryCastOrParseNum(bt115AmountDueForPayment);
       if (bt115AmountDueForPaymentNum == null) {
-        throw const FormatException('BT-115 could not get parsed to number!');
+        throw  FormatException('BT-115 ${l.couldNotParseToNumber}');
       }
       if (bt115AmountDueForPaymentNum > 0.0) {
         if (json['bg_16_payment_instructions'] case Map<String, dynamic> bg16PaymentInstructions){
@@ -115,10 +119,10 @@ class PaidBadge extends StatelessWidget {
              }
            }
          } else  {
-           throw const FormatException('BT-81 not set!');
+           throw FormatException('BT-81 ${l.notSet}');
          }
         } else  {
-          throw const FormatException('BG-16 not set!');
+          throw FormatException('BG-16 ${l.notSet}');
         }
       } else  if (bt115AmountDueForPaymentNum < 0.0) {
         inferredPaymentStatus = PaymentStatus.refund;
@@ -126,7 +130,7 @@ class PaidBadge extends StatelessWidget {
         inferredPaymentStatus = PaymentStatus.paid;
       }
     } else {
-      throw const FormatException('No BG-9!');
+      throw FormatException('${l.no} BG-9!');
     }
     return inferredPaymentStatus;
   }
