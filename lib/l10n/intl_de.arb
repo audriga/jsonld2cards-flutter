@@ -103,7 +103,21 @@
   "notSet": "Nicht gesetzt!",
   "no": "Nein",
   "couldNotParse": "Konnte nicht geparst werden",
-  "isMissing": "fehlt"
+  "isMissing": "fehlt",
+  "errorInSkontoCalculation": "Fehler bei der Skontoberechnung",
+  "dueIn": "Fällig in ",
+  "days": "Tagen",
+  "willBeCollectedByCard": "Wird eingezogen von Karte",
+  "willBeCollectedByAccount": "Wird eingezogen von Konto",
+  "cashPayment": "Barzahlung",
+  "chequePayment": "Scheckzahlung",
+  "paymentToBankAccount": "Zahlung an Bankkonto",
+  "existingAgreement": "Bestehende Vereinbarung",
+  "onlinePayment": "Online Zahlung",
+  "betweenPartnersClarified": "Zwischen Partnern geklärt",
+  "mutuallyDefined": "Einvernehmlich definiert",
+  "payment": "Zahlung",
+  "amountTooHigh": "Betrag zu hoch"
 
 
 

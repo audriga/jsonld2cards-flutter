@@ -714,4 +714,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get isMissing => 'is missing';
+
+  @override
+  String get errorInSkontoCalculation => 'Error in Skonto calculation';
+
+  @override
+  String get dueIn => 'Due in';
+
+  @override
+  String get days => 'days';
+
+  @override
+  String get willBeCollectedByCard => 'Will be collected by card';
+
+  @override
+  String get willBeCollectedByAccount => 'Will be collected by account';
+
+  @override
+  String get cashPayment => 'Cash payment';
+
+  @override
+  String get chequePayment => 'Cheque payment';
+
+  @override
+  String get paymentToBankAccount => 'Payment to bank account';
+
+  @override
+  String get existingAgreement => 'Existing agreement';
+
+  @override
+  String get onlinePayment => 'Online payment';
+
+  @override
+  String get betweenPartnersClarified => 'Between partners clarified';
+
+  @override
+  String get mutuallyDefined => 'Mutually defined';
+
+  @override
+  String get payment => 'Payment';
+
+  @override
+  String get amountTooHigh => 'Amount too high';
 }

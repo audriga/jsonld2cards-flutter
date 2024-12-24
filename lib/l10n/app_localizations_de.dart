@@ -714,4 +714,46 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get isMissing => 'fehlt';
+
+  @override
+  String get errorInSkontoCalculation => 'Fehler bei der Skontoberechnung';
+
+  @override
+  String get dueIn => 'Fällig in ';
+
+  @override
+  String get days => 'Tagen';
+
+  @override
+  String get willBeCollectedByCard => 'Wird eingezogen von Karte';
+
+  @override
+  String get willBeCollectedByAccount => 'Wird eingezogen von Konto';
+
+  @override
+  String get cashPayment => 'Barzahlung';
+
+  @override
+  String get chequePayment => 'Scheckzahlung';
+
+  @override
+  String get paymentToBankAccount => 'Zahlung an Bankkonto';
+
+  @override
+  String get existingAgreement => 'Bestehende Vereinbarung';
+
+  @override
+  String get onlinePayment => 'Online Zahlung';
+
+  @override
+  String get betweenPartnersClarified => 'Zwischen Partnern geklärt';
+
+  @override
+  String get mutuallyDefined => 'Einvernehmlich definiert';
+
+  @override
+  String get payment => 'Zahlung';
+
+  @override
+  String get amountTooHigh => 'Betrag zu hoch';
 }

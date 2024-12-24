@@ -726,6 +726,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'is missing'**
   String get isMissing;
+
+  /// No description provided for @errorInSkontoCalculation.
+  ///
+  /// In en, this message translates to:
+  /// **'Error in Skonto calculation'**
+  String get errorInSkontoCalculation;
+
+  /// No description provided for @dueIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Due in'**
+  String get dueIn;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get days;
+
+  /// No description provided for @willBeCollectedByCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Will be collected by card'**
+  String get willBeCollectedByCard;
+
+  /// No description provided for @willBeCollectedByAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Will be collected by account'**
+  String get willBeCollectedByAccount;
+
+  /// No description provided for @cashPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash payment'**
+  String get cashPayment;
+
+  /// No description provided for @chequePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque payment'**
+  String get chequePayment;
+
+  /// No description provided for @paymentToBankAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment to bank account'**
+  String get paymentToBankAccount;
+
+  /// No description provided for @existingAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Existing agreement'**
+  String get existingAgreement;
+
+  /// No description provided for @onlinePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Online payment'**
+  String get onlinePayment;
+
+  /// No description provided for @betweenPartnersClarified.
+  ///
+  /// In en, this message translates to:
+  /// **'Between partners clarified'**
+  String get betweenPartnersClarified;
+
+  /// No description provided for @mutuallyDefined.
+  ///
+  /// In en, this message translates to:
+  /// **'Mutually defined'**
+  String get mutuallyDefined;
+
+  /// No description provided for @payment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get payment;
+
+  /// No description provided for @amountTooHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount too high'**
+  String get amountTooHigh;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

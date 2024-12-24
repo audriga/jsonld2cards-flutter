@@ -103,7 +103,21 @@
   "notSet": "Not set!",
   "no": "No",
   "couldNotParse": "Could not parse",
-  "isMissing": "is missing"
+  "isMissing": "is missing",
+  "errorInSkontoCalculation": "Error in Skonto calculation",
+  "dueIn": "Due in",
+  "days": "days",
+  "willBeCollectedByCard": "Will be collected by card",
+  "willBeCollectedByAccount": "Will be collected by account",
+  "cashPayment": "Cash payment",
+  "chequePayment": "Cheque payment",
+  "paymentToBankAccount": "Payment to bank account",
+  "existingAgreement": "Existing agreement",
+  "onlinePayment": "Online payment",
+  "betweenPartnersClarified": "Between partners clarified",
+  "mutuallyDefined": "Mutually defined",
+  "payment": "Payment",
+  "amountTooHigh": "Amount too high"
 
 
 
