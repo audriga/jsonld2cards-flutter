@@ -114,29 +114,25 @@ class _MailAvatarState extends State<MailAvatar> {
           ConnectionState.done =>
               Builder(builder: (context) {
                 var contact = snapshot.data;
-                if (contact == null) {
-                  var hostName = sender.hostName;
-                  var ico = 'https://icons.duckduckgo.com/ip3/$hostName.ico';
-                  try {
-                    return CircleAvatar(
-                      backgroundImage: NetworkImage(ico),
-                      radius: avatarRadius,
-                    );
-                  } catch (_) {
-                    developer.log('Failed networkImage, falling back',
-                        name: 'jsonld2cards.xre.avatar');
-                    return fallbackAvatar;
-                  }
-                }
-                if (contact.photoOrThumbnail != null) {
+                if (contact != null && contact.photoOrThumbnail != null) {
                   return CircleAvatar(
                     backgroundImage: MemoryImage(contact.photoOrThumbnail!),
                     radius: avatarRadius,
                   );
                 }
+                var hostName = sender.hostName;
+                var ico = 'https://icons.duckduckgo.com/ip3/$hostName.ico';
+                try {
+                  return CircleAvatar(
+                    backgroundImage: NetworkImage(ico),
+                    radius: avatarRadius,
+                  );
+                } catch (_) {
+                  developer.log('Failed networkImage, falling back',
+                      name: 'jsonld2cards.xre.avatar');
+                  return fallbackAvatar;
+                }
 
-
-                return fallbackAvatar;
               }),
           _ => fallbackAvatar
         },
