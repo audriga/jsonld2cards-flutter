@@ -602,6 +602,17 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String furtherAttachments(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Further Attachments',
+      one: 'Further Attachment',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get details => 'Détails';
 
   @override
@@ -647,22 +658,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get additionalInformation => 'Additional Information';
 
   @override
-  String get theXMLFileNotValidXRechnung => 'The XML file is not a valid XRechnung';
+  String get theXMLFileNotValidXRechnung => 'The XML file is not a valid eInvoice';
 
   @override
-  String get thePDFContainsAnXMLButNotValidXRechnung => 'The PDF contains an XML attachment, but it is not a valid XRechnung';
+  String get thePDFContainsAnXMLButNotValidXRechnung => 'The PDF contains an XML attachment, but it is not a valid eInvoice';
 
   @override
   String get thePDFContainsNoAttachments => 'The PDF contains no attachments';
 
   @override
-  String get theEmailContainsNoXRechnungAttachments => 'The email contains no XRechnung attachments';
+  String get theEmailContainsNoXRechnungAttachments => 'The email contains no eInvoice attachments';
 
   @override
-  String get theEmailContainsNoXRechnung => 'The email contains no XRechnung';
+  String get theEmailContainsNoXRechnung => 'The email contains no eInvoice';
 
   @override
-  String get theEmailContainsMultipleXRechnungOnlyOneDisplayed => 'The email contains multiple XRechnungen, only one of them is displayed';
+  String get theEmailContainsMultipleXRechnungOnlyOneDisplayed => 'The email contains multiple eInvoiceen, only one of them is displayed';
 
   @override
   String get xRechnungTypeBT3Not380 => 'XRechnung type (BT-3) not 380 (Goods/Commercial Invoice)';
@@ -671,7 +682,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get xRechnungSpecificationBT24UnknownUnsupported => 'XRechnung specification (BT-24) unknown or unsupported value';
 
   @override
-  String get xRechnungInUBLFormatNotSupported => 'The XRechnung is in UBL format, which we do not yet support';
+  String get xRechnungInUBLFormatNotSupported => 'The eInvoice is in UBL format, which we do not yet support';
 
   @override
   String get number => 'No.';
@@ -756,4 +767,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get amountTooHigh => 'Amount too high';
+
+  @override
+  String get noticeXREGeneratedFromPDF => 'This invoice has been extracted from an attachment';
 }

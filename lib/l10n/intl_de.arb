@@ -54,7 +54,7 @@
   "bt130_TNE": "{count, plural, =1{Tonne} other {Tonnen}}",
   "bt130_KTN": "{count, plural, =1{Kilotonne} other {Kilotonnen}}",
   "noApiConfigured": "Noch keine API Konfiguriert.",
-  "noApiConfigured": "Mit diesen Button könnten Sie die Rechnunng direkt an die API Ihres Rechnungssystem hochladen. Schicken Sie uns Feedback, und sagen Sie uns welches Rechnungssystem Sie hier verfügbar haben wollen.",
+  "uploadInvoiceToApi": "Mit diesen Button könnten Sie die Rechnunng direkt an die API Ihres Rechnungssystem hochladen. Schicken Sie uns Feedback, und sagen Sie uns welches Rechnungssystem Sie hier verfügbar haben wollen.",
   "cancel": "Abbrechen.",
   "apiRequest": "API wunsch.",
   "sendFeedback": "Feedback senden.",
@@ -66,6 +66,7 @@
   "deliveryDate": "Lieferdatum",
   "invoice": "Rechnung",
   "attachments": "{count, plural, =1{Anhang} other {Anhänge}}",
+  "furtherAttachments": "{count, plural, =1{Weiterer Anhang} other {Weitere Anhänge}}",
   "details": "Details",
   "buyer": "Käufer",
   "delivery": "Lieferung",
@@ -117,9 +118,6 @@
   "betweenPartnersClarified": "Zwischen Partnern geklärt",
   "mutuallyDefined": "Einvernehmlich definiert",
   "payment": "Zahlung",
-  "amountTooHigh": "Betrag zu hoch"
-
-
-
-
+  "amountTooHigh": "Betrag zu hoch",
+  "noticeXREGeneratedFromPDF": "Diese Rechnung wurde aus einen Anhang extrahiert"
 }

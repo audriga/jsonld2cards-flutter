@@ -14,6 +14,7 @@ import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'dart:developer' as developer;
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 class InvoiceCard extends StatefulWidget implements MarkupCard {
   const InvoiceCard(this.cardData, {super.key});
@@ -37,6 +38,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations l = AppLocalizations.of(context);
     var invoice = Invoice.fromJson(widget.cardData.markup);
 
     // Setting title and subtitle, depending on available information
@@ -45,8 +47,8 @@ class _InvoiceCardState extends State<InvoiceCard> {
     Widget? leadingImage;
     // var confirmationNumber = invoice.identifier ?? invoice.confirmationNumber;
     List<TextSpan> titleTextSpans = <TextSpan>[
-      const TextSpan(
-          text: 'Rechnung', style: TextStyle(fontWeight: FontWeight.bold))
+       TextSpan(
+          text: l.invoice, style: const TextStyle(fontWeight: FontWeight.bold))
     ]; //createTitleTextSpans(invoice);
 
     // List<TextSpan> subTitleTextSpans =
@@ -173,7 +175,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
                 softWrap: true,
               ),
             PersonTile(
-                title: 'Seller',
+                title: l.seller,
                 personData:
                     PartyData.fromJson(invoice.json, PartyType.seller),
                 subCardColor: subCardColor,

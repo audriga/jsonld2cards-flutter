@@ -124,7 +124,7 @@ abstract class AppLocalizations {
   /// No description provided for @noTargetsConfiguredMessage.
   ///
   /// In en, this message translates to:
-  /// **'Invoices can be forwarded to contacts that have an xrechnung email address. Please configure this by adding an email address with the label \'xrechnung\' to a contact and allow this app to access contacts.'**
+  /// **'Invoices can be forwarded to contacts that have an eInvoice email address. Please configure this by adding an email address with the label \'xrechnung\' to a contact and allow this app to access contacts.'**
   String get noTargetsConfiguredMessage;
 
   /// No description provided for @errorTitleNoTargetsConfigured.
@@ -499,6 +499,12 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{Attachment} other {Attachments}}'**
   String attachments(num count);
 
+  /// No description provided for @furtherAttachments.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Further Attachment} other {Further Attachments}}'**
+  String furtherAttachments(num count);
+
   /// No description provided for @details.
   ///
   /// In en, this message translates to:
@@ -592,13 +598,13 @@ abstract class AppLocalizations {
   /// No description provided for @theXMLFileNotValidXRechnung.
   ///
   /// In en, this message translates to:
-  /// **'The XML file is not a valid XRechnung'**
+  /// **'The XML file is not a valid eInvoice'**
   String get theXMLFileNotValidXRechnung;
 
   /// No description provided for @thePDFContainsAnXMLButNotValidXRechnung.
   ///
   /// In en, this message translates to:
-  /// **'The PDF contains an XML attachment, but it is not a valid XRechnung'**
+  /// **'The PDF contains an XML attachment, but it is not a valid eInvoice'**
   String get thePDFContainsAnXMLButNotValidXRechnung;
 
   /// No description provided for @thePDFContainsNoAttachments.
@@ -610,19 +616,19 @@ abstract class AppLocalizations {
   /// No description provided for @theEmailContainsNoXRechnungAttachments.
   ///
   /// In en, this message translates to:
-  /// **'The email contains no XRechnung attachments'**
+  /// **'The email contains no eInvoice attachments'**
   String get theEmailContainsNoXRechnungAttachments;
 
   /// No description provided for @theEmailContainsNoXRechnung.
   ///
   /// In en, this message translates to:
-  /// **'The email contains no XRechnung'**
+  /// **'The email contains no eInvoice'**
   String get theEmailContainsNoXRechnung;
 
   /// No description provided for @theEmailContainsMultipleXRechnungOnlyOneDisplayed.
   ///
   /// In en, this message translates to:
-  /// **'The email contains multiple XRechnungen, only one of them is displayed'**
+  /// **'The email contains multiple eInvoiceen, only one of them is displayed'**
   String get theEmailContainsMultipleXRechnungOnlyOneDisplayed;
 
   /// No description provided for @xRechnungTypeBT3Not380.
@@ -640,7 +646,7 @@ abstract class AppLocalizations {
   /// No description provided for @xRechnungInUBLFormatNotSupported.
   ///
   /// In en, this message translates to:
-  /// **'The XRechnung is in UBL format, which we do not yet support'**
+  /// **'The eInvoice is in UBL format, which we do not yet support'**
   String get xRechnungInUBLFormatNotSupported;
 
   /// No description provided for @number.
@@ -810,6 +816,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Amount too high'**
   String get amountTooHigh;
+
+  /// No description provided for @noticeXREGeneratedFromPDF.
+  ///
+  /// In en, this message translates to:
+  /// **'This invoice has been extracted from an attachment'**
+  String get noticeXREGeneratedFromPDF;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

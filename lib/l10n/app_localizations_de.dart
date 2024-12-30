@@ -555,10 +555,10 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get noApiConfigured => 'Mit diesen Button könnten Sie die Rechnunng direkt an die API Ihres Rechnungssystem hochladen. Schicken Sie uns Feedback, und sagen Sie uns welches Rechnungssystem Sie hier verfügbar haben wollen.';
+  String get noApiConfigured => 'Noch keine API Konfiguriert.';
 
   @override
-  String get uploadInvoiceToApi => 'With this button, you can upload the invoice directly to the API of your billing system. Send us feedback and let us know which billing system you would like to have available here.';
+  String get uploadInvoiceToApi => 'Mit diesen Button könnten Sie die Rechnunng direkt an die API Ihres Rechnungssystem hochladen. Schicken Sie uns Feedback, und sagen Sie uns welches Rechnungssystem Sie hier verfügbar haben wollen.';
 
   @override
   String get cancel => 'Abbrechen.';
@@ -597,6 +597,17 @@ class AppLocalizationsDe extends AppLocalizations {
       locale: localeName,
       other: 'Anhänge',
       one: 'Anhang',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String furtherAttachments(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Weitere Anhänge',
+      one: 'Weiterer Anhang',
     );
     return '$_temp0';
   }
@@ -756,4 +767,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get amountTooHigh => 'Betrag zu hoch';
+
+  @override
+  String get noticeXREGeneratedFromPDF => 'Diese Rechnung wurde aus einen Anhang extrahiert';
 }

@@ -3,7 +3,7 @@
   "noAddressesConfigured": "No addresses configured",
   "reloadContacts": "Reload contacts",
   "ok": "OK",
-  "noTargetsConfiguredMessage": "Invoices can be forwarded to contacts that have an xrechnung email address. Please configure this by adding an email address with the label 'xrechnung' to a contact and allow this app to access contacts.",
+  "noTargetsConfiguredMessage": "Invoices can be forwarded to contacts that have an eInvoice email address. Please configure this by adding an email address with the label 'xrechnung' to a contact and allow this app to access contacts.",
   "errorTitleNoTargetsConfigured": "No targets configured",
   "bt130_IE": "{count, plural, =1{Person} other {Persons}}",
   "bt130_10": "{count, plural, =1{Group} other {Groups}}",
@@ -66,6 +66,7 @@
   "deliveryDate": "Delivery date",
   "invoice": "Invoice",
   "attachments": "{count, plural, =1{Attachment} other {Attachments}}",
+  "furtherAttachments": "{count, plural, =1{Further Attachment} other {Further Attachments}}",
   "details": "Details",
   "buyer": "Buyer",
   "delivery": "Delivery",
@@ -81,15 +82,15 @@
   "share": "Share",
   "close": "close",
   "additionalInformation": "Additional Information",
-  "theXMLFileNotValidXRechnung": "The XML file is not a valid XRechnung",
-  "thePDFContainsAnXMLButNotValidXRechnung": "The PDF contains an XML attachment, but it is not a valid XRechnung",
+  "theXMLFileNotValidXRechnung": "The XML file is not a valid eInvoice",
+  "thePDFContainsAnXMLButNotValidXRechnung": "The PDF contains an XML attachment, but it is not a valid eInvoice",
   "thePDFContainsNoAttachments": "The PDF contains no attachments",
-  "theEmailContainsNoXRechnungAttachments": "The email contains no XRechnung attachments",
-  "theEmailContainsNoXRechnung": "The email contains no XRechnung",
-  "theEmailContainsMultipleXRechnungOnlyOneDisplayed": "The email contains multiple XRechnungen, only one of them is displayed",
+  "theEmailContainsNoXRechnungAttachments": "The email contains no eInvoice attachments",
+  "theEmailContainsNoXRechnung": "The email contains no eInvoice",
+  "theEmailContainsMultipleXRechnungOnlyOneDisplayed": "The email contains multiple eInvoiceen, only one of them is displayed",
   "xRechnungTypeBT3Not380": "XRechnung type (BT-3) not 380 (Goods/Commercial Invoice)",
   "xRechnungSpecificationBT24UnknownUnsupported": "XRechnung specification (BT-24) unknown or unsupported value",
-  "xRechnungInUBLFormatNotSupported": "The XRechnung is in UBL format, which we do not yet support",
+  "xRechnungInUBLFormatNotSupported": "The eInvoice is in UBL format, which we do not yet support",
   "number": "No.",
   "dated": "dated",
   "paid": "Paid",
@@ -117,10 +118,6 @@
   "betweenPartnersClarified": "Between partners clarified",
   "mutuallyDefined": "Mutually defined",
   "payment": "Payment",
-  "amountTooHigh": "Amount too high"
-
-
-
-
-
+  "amountTooHigh": "Amount too high",
+  "noticeXREGeneratedFromPDF": "This invoice has been extracted from an attachment"
 }
