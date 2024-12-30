@@ -120,19 +120,20 @@ class _MailAvatarState extends State<MailAvatar> {
                     radius: avatarRadius,
                   );
                 }
-                var hostName = sender.hostName;
-                var ico = 'https://icons.duckduckgo.com/ip3/$hostName.ico';
-                try {
-                  return CircleAvatar(
-                    backgroundImage: NetworkImage(ico),
-                    radius: avatarRadius,
-                  );
-                } catch (_) {
-                  developer.log('Failed networkImage, falling back',
-                      name: 'jsonld2cards.xre.avatar');
-                  return fallbackAvatar;
+                if (['rechnungsversand@lexoffice.de', 'noreply@sevdesk.de'].contains(sender.email)) {
+                  var hostName = sender.hostName;
+                  var ico = 'https://icons.duckduckgo.com/ip3/$hostName.ico';
+                  try {
+                    return CircleAvatar(
+                      backgroundImage: NetworkImage(ico),
+                      radius: avatarRadius,
+                    );
+                  } catch (_) {
+                    developer.log('Failed networkImage, falling back',
+                        name: 'jsonld2cards.xre.avatar');
+                    return fallbackAvatar;
+                  }
                 }
-
               }),
           _ => fallbackAvatar
         },
