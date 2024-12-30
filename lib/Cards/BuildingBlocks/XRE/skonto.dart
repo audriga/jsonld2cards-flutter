@@ -1,7 +1,9 @@
 library skonto;
 
+import 'package:flutter/cupertino.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/amount_due.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 class SkontoInfo {
   AmountAndCurrency get toPayAmountAndCurrency => AmountAndCurrency(toPay, bt115AmountDueAndCurrency.currencyCode);
@@ -30,7 +32,7 @@ class SkontoInfo {
   });
 
   // Wiki: If TO_PAY_MANUAL and Skonto is defined and in time, we can reduce the amount to pay
-  static SkontoInfo? skontoInfoFromJson(dynamic json) {
+  static SkontoInfo? skontoInfoFromJson(dynamic json, BuildContext context) {
     if (json case Map<String, dynamic> map) {
       List<SkontoSegments>? allSkontoSegments;
       DateTime? dateIssued;
@@ -72,6 +74,8 @@ class SkontoInfo {
 
       num skontoAmount;
       num skontoToPay;
+      AppLocalizations l = AppLocalizations.of(context);
+
       if (skontoSegmentsToUse.baseAmount != null) {
         // Liegt dem zu berechnenden Betrag nicht "Amount due for payment" (BT-115)
         // zugrunde, sondern nur ein Teil des fälligen Betrags der Rechnung,
@@ -79,7 +83,7 @@ class SkontoInfo {
         // „BASISBETRAG=n“ gemäß dem semantischen Datentypen Amount anzugeben.
         if (skontoSegmentsToUse.baseAmount! >
             bt115AmountDueAndCurrency.amountPayment) {
-          throw const SkontoException('Amount too high');
+          throw SkontoException(l.amountTooHigh);
         }
         // cutting off after two digits.
         skontoAmount = ((skontoSegmentsToUse.baseAmount! *

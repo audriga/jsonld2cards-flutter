@@ -97,7 +97,7 @@ class _SplitButtonState extends State<SplitButton> {
                               var freshAddresses = await globalSMLAppContext!
                                   .forwardEmailAddresses!();
                               if (context.mounted) {
-                                Navigator.pop(context, 'Ok');
+                                Navigator.pop(context, l.ok);
                               }
                               if (freshAddresses.isNotEmpty) {
                                 setState(() {
@@ -108,7 +108,7 @@ class _SplitButtonState extends State<SplitButton> {
                             },
                             child: Text(l.reloadContacts)),
                         TextButton(
-                            onPressed: () => Navigator.pop(context, 'Ok'),
+                            onPressed: () => Navigator.pop(context, l.ok),
                             child: Text(l.ok))
                       ],
                     ),

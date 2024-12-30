@@ -642,4 +642,118 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get close => 'Schließen';
+
+  @override
+  String get additionalInformation => 'Zusätzliche Informationen';
+
+  @override
+  String get theXMLFileNotValidXRechnung => 'XML datei ist keine gültige XRechung';
+
+  @override
+  String get thePDFContainsAnXMLButNotValidXRechnung => 'PDF enthält xml anhang, aber keine gültige XRechnung';
+
+  @override
+  String get thePDFContainsNoAttachments => 'PDF enthält keine Anhänge';
+
+  @override
+  String get theEmailContainsNoXRechnungAttachments => 'Mail enthält keine XRechnung Anhänge';
+
+  @override
+  String get theEmailContainsNoXRechnung => 'Mail enthält keine XRechnung';
+
+  @override
+  String get theEmailContainsMultipleXRechnungOnlyOneDisplayed => 'Mail enthält mehre XRechnungen, nur eine davon wird angezeigt';
+
+  @override
+  String get xRechnungTypeBT3Not380 => 'XRechnungs Typ (BT-3) nicht 380 (Waren-/ Handelsrechnung)';
+
+  @override
+  String get xRechnungSpecificationBT24UnknownUnsupported => 'XRechnungs Spezifikation (BT-24) Unbekannter oder nicht unterstützter Wert';
+
+  @override
+  String get xRechnungInUBLFormatNotSupported => 'XRechnung ist im UBL-Format, welches wir noch nicht unterstützen';
+
+  @override
+  String get number => 'Nr.';
+
+  @override
+  String get dated => 'vom';
+
+  @override
+  String get paid => 'Bezahlt';
+
+  @override
+  String get collected => 'Wird eingezogen';
+
+  @override
+  String get transfer => 'Überweisen';
+
+  @override
+  String get open => 'Offen';
+
+  @override
+  String get other => 'Anders';
+
+  @override
+  String get refund => 'Rückzahlung';
+
+  @override
+  String get missing => 'Fehlend';
+
+  @override
+  String get couldNotParseToNumber => 'Konnte nicht in eine Zahl umgewandelt werden!';
+
+  @override
+  String get notSet => 'Nicht gesetzt!';
+
+  @override
+  String get no => 'Nein';
+
+  @override
+  String get couldNotParse => 'Konnte nicht geparst werden';
+
+  @override
+  String get isMissing => 'fehlt';
+
+  @override
+  String get errorInSkontoCalculation => 'Fehler bei der Skontoberechnung';
+
+  @override
+  String get dueIn => 'Fällig in ';
+
+  @override
+  String get days => 'Tagen';
+
+  @override
+  String get willBeCollectedByCard => 'Wird eingezogen von Karte';
+
+  @override
+  String get willBeCollectedByAccount => 'Wird eingezogen von Konto';
+
+  @override
+  String get cashPayment => 'Barzahlung';
+
+  @override
+  String get chequePayment => 'Scheckzahlung';
+
+  @override
+  String get paymentToBankAccount => 'Zahlung an Bankkonto';
+
+  @override
+  String get existingAgreement => 'Bestehende Vereinbarung';
+
+  @override
+  String get onlinePayment => 'Online Zahlung';
+
+  @override
+  String get betweenPartnersClarified => 'Zwischen Partnern geklärt';
+
+  @override
+  String get mutuallyDefined => 'Einvernehmlich definiert';
+
+  @override
+  String get payment => 'Zahlung';
+
+  @override
+  String get amountTooHigh => 'Betrag zu hoch';
 }

@@ -1,6 +1,7 @@
 library hints;
 
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 enum HintType {
   info(Icons.info), warn(Icons.warning), err(Icons.error);
@@ -39,6 +40,7 @@ class HintsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations l = AppLocalizations.of(context);
     ThemeData theme = Theme.of(context);
     var textStyle = theme.textTheme.bodySmall;
     double fontSize = textStyle?.fontSize ?? 12;
@@ -58,20 +60,20 @@ class HintsHeader extends StatelessWidget {
                   var errorString = h.error?.toString();
                   bool hasExtraInfo = (message?.isNotEmpty ?? false) || (errorString?.isNotEmpty ?? false);
                   return AlertDialog(
-                  title: Text(hintMessage(h, context)??'', softWrap: true,),
+                  title: Text(hintMessage(h, context, l)??'', softWrap: true,),
                   content:  hasExtraInfo ? Text(
-                      'Zusätzliche Informationen\n${message ?? ''}\n${errorString ?? ''}',
+                      '${l.additionalInformation}\n${message ?? ''}\n${errorString ?? ''}',
                   softWrap: true,): null,
                   actions: [
                     TextButton(
-                        onPressed: () => Navigator.pop(context, 'Ok'),
-                        child: const Text('Ok')),
+                        onPressed: () => Navigator.pop(context, l.ok),
+                        child:  Text(l.ok)),
                   ],
                 );
                 },
               );
             },
-            child: Text(hintMessage(h, context)??'', overflow: TextOverflow.ellipsis,))),
+            child: Text(hintMessage(h, context, l)??'', overflow: TextOverflow.ellipsis))),
           ),
         ],
       ),);
@@ -85,16 +87,16 @@ class HintsHeader extends StatelessWidget {
 
   }
 
-  String? hintMessage(HintData hint, BuildContext context) => switch(hint.hintProblemType) {
+  String? hintMessage(HintData hint, BuildContext context, AppLocalizations l) => switch(hint.hintProblemType) {
     null => hint.message,
-    HintProblemType.failedParseXml => 'XML datei ist keine gültige XRechung',
-    HintProblemType.failedParsePdf => 'PDF enthält xml anhang, aber keine gültige XRechnung',
-    HintProblemType.pdfContainsNoAttachments => 'PDF enthält keine Anhänge',
-    HintProblemType.nonXREAttachment => 'Mail enthält keine XRechnung Anhänge',
-    HintProblemType.noStructuredData => 'Mail enthält keine XRechnung',
-    HintProblemType.multipleStructuredData => 'Mail enthält mehre XRechnungen, nur eine davon wird angezeigt',
-    HintProblemType.bt3Not380 => 'XRechnungs Typ (BT-3) nicht 380 (Waren-/ Handelsrechnung)',
-    HintProblemType.bt24Unknown => 'XRechnungs Spezifikation (BT-24) Unbekannter oder nicht unterstützter Wert',
-    HintProblemType.ubl => 'XRechnung ist im UBL-Format, welches wir noch nicht unterstützen',
+    HintProblemType.failedParseXml => l.theXMLFileNotValidXRechnung,
+    HintProblemType.failedParsePdf => l.thePDFContainsAnXMLButNotValidXRechnung,
+    HintProblemType.pdfContainsNoAttachments => l.thePDFContainsNoAttachments,
+    HintProblemType.nonXREAttachment => l.theEmailContainsNoXRechnungAttachments,
+    HintProblemType.noStructuredData => l.theEmailContainsNoXRechnung,
+    HintProblemType.multipleStructuredData => l.theEmailContainsMultipleXRechnungOnlyOneDisplayed,
+    HintProblemType.bt3Not380 => l.xRechnungTypeBT3Not380,
+    HintProblemType.bt24Unknown => l.xRechnungSpecificationBT24UnknownUnsupported,
+    HintProblemType.ubl => l.xRechnungInUBLFormatNotSupported,
   };
 }

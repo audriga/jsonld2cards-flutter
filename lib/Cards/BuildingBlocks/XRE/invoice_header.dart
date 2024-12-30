@@ -2,15 +2,17 @@ library invoice_header;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
-Widget? renderInvoiceHeader(Invoice invoice) {
+Widget? renderInvoiceHeader(Invoice invoice, BuildContext context) {
+  AppLocalizations l = AppLocalizations.of(context);
   var confirmationNumber = invoice.identifier ?? invoice.confirmationNumber;
   Widget? invoiceNrRendered;
   TextSpan? invoiceNrSpan;
   if (confirmationNumber != null) {
     var invoiceNr = ' $confirmationNumber';
     invoiceNrSpan = TextSpan(
-      text: 'Nr.$invoiceNr',
+      text: '${l.number}$invoiceNr',
       // style: const TextStyle(fontWeight: FontWeight.bold),
     );
     invoiceNrRendered = Text.rich(invoiceNrSpan);
@@ -38,7 +40,7 @@ Widget? renderInvoiceHeader(Invoice invoice) {
   if (invoiceNrSpan != null && invoiceDateSpan != null) {
     invoiceNrPlusDateRendered = Text.rich(TextSpan(children: [
       invoiceNrSpan,
-      const TextSpan(text: ' vom '),
+      TextSpan(text: ' ${l.dated} '),
       invoiceDateSpan
     ]));
   }

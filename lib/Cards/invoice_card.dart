@@ -115,7 +115,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
     // subtitleText = subTitleTextBuffer.toString().trim();
     // subTitleTextSpans.first.text?.trimLeft();
     // subTitleTextSpans.last.text?.trimRight();
-    Widget? invoiceHeader = renderInvoiceHeader(invoice);
+    Widget? invoiceHeader = renderInvoiceHeader(invoice, context);
 
     // var numberOfItems = invoice.referencesOrder?.length ?? 0;
     var theme = Theme.of(context);
@@ -125,7 +125,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
     /// If this should blend in, use theme.cardTheme.color ?? theme.colorScheme.surfaceContainerLow;
     Widget? paidBadge;
     try {
-      paidBadge = PaidBadge(json: invoice.json);
+      paidBadge = PaidBadge(json: invoice.json, context: context);
     } catch (e) {
       developer.log(
         'Error rendering paid badge',

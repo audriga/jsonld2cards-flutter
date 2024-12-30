@@ -9,6 +9,7 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/paid_badge.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/skonto.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 class Payment extends StatelessWidget {
   const Payment(
@@ -23,10 +24,11 @@ class Payment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations l = AppLocalizations.of(context);
     Widget? amountRendered;
     SkontoInfo? skontoInfo;
     try {
-      skontoInfo = SkontoInfo.skontoInfoFromJson(json);
+      skontoInfo = SkontoInfo.skontoInfoFromJson(json, context);
     } catch (e) {
       // potentially show error to user?
       developer.log('Error in Skonto calculation',
@@ -197,16 +199,16 @@ class Payment extends StatelessWidget {
     if (json['bg_16_payment_instructions'] case Map<String, dynamic> bg16PaymentInstructions){
       if (bg16PaymentInstructions['bt_81_payment_means_type_code'] case String bt81PaymentMeansTypeCode) {
         subtitleText = switch (bt81PaymentMeansTypeCode) {
-          '38' || '58' => 'Fällig in ${dueInXDays(json) ?? '?'} Tagen',
-          '48' || '54' || '55' => 'Wird eingezogen von Karte ${creditCardNumber ??''}',
-          '59' => 'Wird eingezogen von Konto ${directDebitAccountNr ??''}',
-          '10' => 'Barzahlung',
-          '20' => 'Scheckzahlung',
-          '42' => 'Zahlung an Bank Account',
-          '57' => 'Bestehende Vereinbahrung',
-          '68' => 'Online Zahlung',
-          '97' => 'Zwischen Parntern geklärt',
-          'ZZZ' => 'Einvernehmlich definiert',
+          '38' || '58' => '${l.dueIn} ${dueInXDays(json) ?? '?'} ${l.days}',
+          '48' || '54' || '55' => '${l.willBeCollectedByCard} ${creditCardNumber ??''}',
+          '59' => '${l.willBeCollectedByAccount} ${directDebitAccountNr ??''}',
+          '10' => l.cashPayment,
+          '20' => l.chequePayment,
+          '42' => l.paymentToBankAccount,
+          '57' => l.existingAgreement,
+          '68' => l.onlinePayment,
+          '97' => l.betweenPartnersClarified,
+          'ZZZ' => l.mutuallyDefined,
           _ => null,
         };
       }
@@ -220,7 +222,7 @@ class Payment extends StatelessWidget {
         children: [
           Padding(
             padding: descriptionPadding,
-            child: Text('Zahlung', style: TextStyle(color: theme.hintColor)),
+            child: Text(l.payment, style: TextStyle(color: theme.hintColor)),
           ),
           if (amountRendered != null)
             ExpansionTile(
