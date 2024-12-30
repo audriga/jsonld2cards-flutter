@@ -93,12 +93,7 @@ class _PersonTileState extends State<PersonTile> {
     if (isSeller) {
       var msg = widget.cardData.message;
       // todo encoding?
-      var authResHeader = msg?.headers?.where((h) => h.name == 'Authentication-Results').firstOrNull?.value;
-      if (authResHeader != null && authResHeader.isNotEmpty) {
-        var headerParts = authResHeader.split(';').map((hp) => hp.trim());
-        var dkimPart = headerParts.where((hp) => hp.startsWith('dkim=')).firstOrNull;
-        isValidSeller = dkimPart == 'dkim=pass';
-      }
+      isValidSeller = dkimHeaderValid(msg);
     }
     var isBuyer = widget.personData?.party == PartyType.buyer;
     if (isSeller || isBuyer) {
@@ -115,15 +110,17 @@ class _PersonTileState extends State<PersonTile> {
           _ => fallbackAvatar
         },
       );
-      if (isValidSeller) {
-        avatar = Badge(
-          label: const Icon(Icons.verified),
-          backgroundColor: Colors.transparent,
-          child: pictureAvatar,
-        );
-      } else {
-        avatar = pictureAvatar;
-      }
+      avatar = pictureAvatar;
+      // Removed Verified badge for now
+      // if (isValidSeller) {
+      //   avatar = Badge(
+      //     label: const Icon(Icons.verified),
+      //     backgroundColor: Colors.transparent,
+      //     child: pictureAvatar,
+      //   );
+      // } else {
+      //   avatar = pictureAvatar;
+      // }
     } else {
       avatar = fallbackAvatar;
     }

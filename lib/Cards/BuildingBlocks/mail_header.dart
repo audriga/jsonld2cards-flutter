@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/contact_avatar.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/hints.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/split_button.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/attachment_header.dart';
@@ -77,36 +78,16 @@ class _MailHeaderState extends State<MailHeader> {
     // var textStyle = _expanded ? theme.textTheme.titleLarge : theme.textTheme.bodySmall;
 
     double fontSize = textStyle?.fontSize ?? 12;
-    var avatarRadius = fontSize / 2;
     const insets = EdgeInsets.symmetric(horizontal: 4.0, vertical: 0);
     var senders = widget.cardData.message?.decodeSender();
     var sender = senders?.firstOrNull;
-    var personalName = sender?.personalName;
-    Widget avatarBase;
-    if (personalName != null) {
-      var nameAbbr =
-          personalName.split(' ').map((e) => e.substring(0, 1)).join();
-      avatarBase = Text(
-        nameAbbr,
-        style: TextStyle(fontSize: avatarRadius * 1.2
-
-            /// nameAbbr.length,
-            ),
-      );
-    } else {
-      avatarBase = Icon(
-        Icons.person,
-        size: avatarRadius * 1.2,
+    Widget? avatar;
+    if (widget.cardData.message != null) {
+      avatar = Padding(
+        padding: const EdgeInsets.only(right: 4.0),
+        child: MailAvatar(message: widget.cardData.message!),
       );
     }
-    var avatar = Padding(
-      padding: const EdgeInsets.only(right: 4.0),
-      child: CircleAvatar(
-        backgroundColor: theme.hintColor,
-        radius: avatarRadius,
-        child: avatarBase,
-      ),
-    );
 
     Widget? senderRendered;
     Widget? senderWithAvatar;
@@ -135,7 +116,7 @@ class _MailHeaderState extends State<MailHeader> {
       senderWithAvatar = Padding(
         padding: insets,
         child: Row(
-          children: [avatar, senderRendered],
+          children: [avatar, senderRendered].nonNulls.toList(),
         ),
       );
     }
