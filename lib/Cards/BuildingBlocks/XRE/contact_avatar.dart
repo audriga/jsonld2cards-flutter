@@ -133,6 +133,8 @@ class _MailAvatarState extends State<MailAvatar> {
                         name: 'jsonld2cards.xre.avatar');
                     return fallbackAvatar;
                   }
+                } else {
+                  return fallbackAvatar;
                 }
               }),
           _ => fallbackAvatar
