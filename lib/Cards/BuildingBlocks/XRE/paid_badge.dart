@@ -130,7 +130,7 @@ class PaidBadge extends StatelessWidget {
         inferredPaymentStatus = PaymentStatus.paid;
       }
     } else {
-      throw FormatException('${l.no} BG-9!');
+      throw FormatException('BG-9 ${l.notSet}');
     }
     return inferredPaymentStatus;
   }

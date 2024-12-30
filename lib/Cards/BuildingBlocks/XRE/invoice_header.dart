@@ -40,7 +40,7 @@ Widget? renderInvoiceHeader(Invoice invoice, BuildContext context) {
   if (invoiceNrSpan != null && invoiceDateSpan != null) {
     invoiceNrPlusDateRendered = Text.rich(TextSpan(children: [
       invoiceNrSpan,
-      TextSpan(text: l.dated),
+      TextSpan(text: ' ${l.dated} '),
       invoiceDateSpan
     ]));
   }
