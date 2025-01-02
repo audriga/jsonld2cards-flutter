@@ -1,13 +1,13 @@
 library potential_actions;
 
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jsonld2cards/MultiMedia/video_popup.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:simple_audio/simple_audio.dart';
+// import 'package:simple_audio/simple_audio.dart';
 
 import '../../Util/conversion.dart';
 
@@ -185,10 +185,10 @@ class PotentialActionButton extends StatelessWidget {
         );
         return button;
       }
-      case 'ListenAction': {
-        button = AudioActionButton(preview: preview, potentialAction: potentialAction, actionTarget: actionTarget);
-        return button;
-      }
+      // case 'ListenAction': {
+      //   button = AudioActionButton(preview: preview, potentialAction: potentialAction, actionTarget: actionTarget);
+      //   return button;
+      // }
       /// Special Case for Live Location
       case 'UpdateAction': {
         button = IconButton(
@@ -284,65 +284,65 @@ class PotentialActionButton extends StatelessWidget {
   }
 }
 
-class AudioActionButton extends StatefulWidget {
-  const AudioActionButton({
-    super.key,
-    required this.preview,
-    required this.potentialAction,
-    required this.actionTarget,
-  });
-
-  final bool preview;
-  final Map<String, dynamic> potentialAction;
-  final dynamic actionTarget;
-
-  @override
-  State<AudioActionButton> createState() => _AudioActionButtonState();
-}
-
-class _AudioActionButtonState extends State<AudioActionButton> {
-  SimpleAudio? player;
-  bool currentlyPlaying = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton.icon(
-        onPressed: widget.preview ? null : () async {
-          Uri? uriToLaunch = tryCastOrParse(widget.potentialAction['url']);
-          if (uriToLaunch != null && uriToLaunch.path.endsWith('.mp3')) {
-            // todo make list of supported formats
-            if (player == null) {
-              await SimpleAudio.init();
-              player = SimpleAudio(shouldNormalizeVolume: false);
-              player!.open(uriToLaunch.toString());
-              setState(() {
-                currentlyPlaying = true;
-              });
-            } else {
-              if (currentlyPlaying) {
-                player!.stop();
-                setState(() {
-                  currentlyPlaying = false;
-                });
-              } else {
-                player!.play();
-                setState(() {
-                  currentlyPlaying = true;
-                });
-              }
-            }
-          }
-          // Spotify
-          // TODO this assumes an order! replace with string prefix search
-           uriToLaunch = defaultTargetPlatform == TargetPlatform.android
-              ? tryCastOrParse(widget.actionTarget[1])
-              : tryCastOrParse(widget.actionTarget[0]['urlTemplate']);
-          if (uriToLaunch != null) {
-            launchUrl(uriToLaunch);
-          }
-        },
-        label: Text(widget.potentialAction['name']??'Listen Now'),
-        icon: currentlyPlaying ? const Icon(Icons.stop) : const Icon(Icons.music_note),
-      );
-  }
-}
+// class AudioActionButton extends StatefulWidget {
+//   const AudioActionButton({
+//     super.key,
+//     required this.preview,
+//     required this.potentialAction,
+//     required this.actionTarget,
+//   });
+//
+//   final bool preview;
+//   final Map<String, dynamic> potentialAction;
+//   final dynamic actionTarget;
+//
+//   @override
+//   State<AudioActionButton> createState() => _AudioActionButtonState();
+// }
+//
+// class _AudioActionButtonState extends State<AudioActionButton> {
+//   SimpleAudio? player;
+//   bool currentlyPlaying = false;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextButton.icon(
+//         onPressed: widget.preview ? null : () async {
+//           Uri? uriToLaunch = tryCastOrParse(widget.potentialAction['url']);
+//           if (uriToLaunch != null && uriToLaunch.path.endsWith('.mp3')) {
+//             // todo make list of supported formats
+//             if (player == null) {
+//               await SimpleAudio.init();
+//               player = SimpleAudio(shouldNormalizeVolume: false);
+//               player!.open(uriToLaunch.toString());
+//               setState(() {
+//                 currentlyPlaying = true;
+//               });
+//             } else {
+//               if (currentlyPlaying) {
+//                 player!.stop();
+//                 setState(() {
+//                   currentlyPlaying = false;
+//                 });
+//               } else {
+//                 player!.play();
+//                 setState(() {
+//                   currentlyPlaying = true;
+//                 });
+//               }
+//             }
+//           }
+//           // Spotify
+//           // TODO this assumes an order! replace with string prefix search
+//            uriToLaunch = defaultTargetPlatform == TargetPlatform.android
+//               ? tryCastOrParse(widget.actionTarget[1])
+//               : tryCastOrParse(widget.actionTarget[0]['urlTemplate']);
+//           if (uriToLaunch != null) {
+//             launchUrl(uriToLaunch);
+//           }
+//         },
+//         label: Text(widget.potentialAction['name']??'Listen Now'),
+//         icon: currentlyPlaying ? const Icon(Icons.stop) : const Icon(Icons.music_note),
+//       );
+//   }
+// }
