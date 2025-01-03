@@ -90,7 +90,7 @@
   "theEmailContainsMultipleXRechnungOnlyOneDisplayed": "Mail enthält mehre XRechnungen, nur eine davon wird angezeigt",
   "xRechnungTypeBT3Not380": "XRechnungs Typ (BT-3) nicht 380 (Waren-/ Handelsrechnung)",
   "xRechnungSpecificationBT24UnknownUnsupported": "XRechnungs Spezifikation (BT-24) Unbekannter oder nicht unterstützter Wert",
-  "xRechnungInUBLFormatNotSupported": "XRechnung ist im UBL-Format, welches wir noch nicht unterstützen",
+  "xRechnungInUBLFormatNotSupported": "XRechnung ist im UBL-Format, welches wir noch nicht vollständig unterstützen",
   "number": "Nr.",
   "dated": "vom",
   "paid": "Bezahlt",

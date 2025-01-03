@@ -90,7 +90,7 @@
   "theEmailContainsMultipleXRechnungOnlyOneDisplayed": "The email contains multiple eInvoiceen, only one of them is displayed",
   "xRechnungTypeBT3Not380": "XRechnung type (BT-3) not 380 (Goods/Commercial Invoice)",
   "xRechnungSpecificationBT24UnknownUnsupported": "XRechnung specification (BT-24) unknown or unsupported value",
-  "xRechnungInUBLFormatNotSupported": "The eInvoice is in UBL format, which we do not yet support",
+  "xRechnungInUBLFormatNotSupported": "The eInvoice is in UBL format, which we do not yet fully support",
   "number": "No.",
   "dated": "dated",
   "paid": "Paid",

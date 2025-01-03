@@ -646,7 +646,7 @@ abstract class AppLocalizations {
   /// No description provided for @xRechnungInUBLFormatNotSupported.
   ///
   /// In en, this message translates to:
-  /// **'The eInvoice is in UBL format, which we do not yet support'**
+  /// **'The eInvoice is in UBL format, which we do not yet fully support'**
   String get xRechnungInUBLFormatNotSupported;
 
   /// No description provided for @number.

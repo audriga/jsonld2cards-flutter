@@ -682,7 +682,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get xRechnungSpecificationBT24UnknownUnsupported => 'XRechnung specification (BT-24) unknown or unsupported value';
 
   @override
-  String get xRechnungInUBLFormatNotSupported => 'The eInvoice is in UBL format, which we do not yet support';
+  String get xRechnungInUBLFormatNotSupported => 'The eInvoice is in UBL format, which we do not yet fully support';
 
   @override
   String get number => 'No.';
