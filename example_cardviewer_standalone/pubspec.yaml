@@ -41,7 +41,7 @@ dependencies:
 
   http: ^1.2.1
   go_router: ^14.0.2
-  flutter_adaptive_scaffold: ^0.1.10+2
+  flutter_adaptive_scaffold: ^0.3.1
   html2jsonld_dart:
     git:
       url: git@bitbucket.org:audriga/html2jsonld-dart.git
@@ -62,8 +62,8 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.2
-  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.2
 
 flutter_launcher_icons:
   image_path: "assets/images/logo_no_text.png"

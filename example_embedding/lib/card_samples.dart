@@ -7,7 +7,7 @@ import 'package:jsonld2cards/open_card_viewer_dialog.dart';
 import 'Util/network.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:html2jsonld_dart/html2jsonld_dart.dart' as ht2j;
+import 'package:html2jsonld_dart/html2jsonld_full.dart' as ht2j;
 // Web embedding is web only :)
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
