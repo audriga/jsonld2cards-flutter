@@ -32,7 +32,7 @@ import 'Util/modify_markup.dart';
 
 /// Renders a card, based on the given markup.
 ///
-/// Assumes [markup] is either a single Map<String, dynamic>, or a List<Map<String, dynamic>>
+/// Assumes [markup] is either a single `Map<String, dynamic>`, or a `List<Map<String, dynamic>>`
 ///
 /// [postFunction] is the function which is used to post data on action
 ///  buttons that post data (f.e. ConfirmAction button). Can be set to a dummy function if not needed.

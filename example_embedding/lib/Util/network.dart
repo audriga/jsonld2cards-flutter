@@ -12,7 +12,7 @@ import 'globals.dart';
 /// This should not be included in the library itself because `snackBarKey`
 /// is the Global Key for the ScaffoldMessengerState of which there should only be one per app
 /// Basically the root problem is that in order to display some feedback to the user,
-/// after the (async) post we need such a GlobalKey<ScaffoldMessengerState>
+/// after the (async) post we need such a `GlobalKey<ScaffoldMessengerState>`
 ///
 /// Making the caller supply a function like this one solves this problem, but I'm not
 /// sure if it is the nicest solution to this problem.
