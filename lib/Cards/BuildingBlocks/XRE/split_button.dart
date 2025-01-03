@@ -1,4 +1,4 @@
-library split_button;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/sml_app_context.dart';

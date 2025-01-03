@@ -1,4 +1,4 @@
-library card_context;
+library;
 
 import 'dart:typed_data';
 

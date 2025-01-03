@@ -1,4 +1,4 @@
-library order_model;
+library;
 
 import 'package:jsonld2cards/Cards/Models/thing_model.dart';
 import 'package:jsonld2cards/Util/conversion.dart';

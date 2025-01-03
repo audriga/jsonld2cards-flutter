@@ -1,4 +1,4 @@
-library tile_util;
+library;
 
 import 'dart:math';
 

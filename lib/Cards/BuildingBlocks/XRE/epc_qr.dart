@@ -1,4 +1,4 @@
-library epc_qr;
+library;
 
 import 'dart:math';
 import 'dart:typed_data';

@@ -1,4 +1,4 @@
-library markup_card;
+library;
 
 import 'package:flutter/widgets.dart';
 

@@ -1,4 +1,4 @@
-library card_rendering;
+library;
 
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';

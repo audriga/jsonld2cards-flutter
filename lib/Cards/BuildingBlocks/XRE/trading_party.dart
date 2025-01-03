@@ -1,4 +1,4 @@
-library trading_party;
+library;
 
 enum PartyType {
   seller(

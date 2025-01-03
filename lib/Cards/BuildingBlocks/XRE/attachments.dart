@@ -1,4 +1,4 @@
-library attachments;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/card_data.dart';

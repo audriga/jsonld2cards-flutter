@@ -1,4 +1,4 @@
-library three_column_card_content;
+library;
 
 import 'package:flutter/widgets.dart';
 

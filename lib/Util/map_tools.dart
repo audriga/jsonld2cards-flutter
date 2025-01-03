@@ -1,4 +1,4 @@
-library map_tools;
+library;
 
 // Based on https://stackoverflow.com/a/75978633
 // note this changes the original map

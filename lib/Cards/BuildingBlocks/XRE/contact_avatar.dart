@@ -1,4 +1,4 @@
-library contact_avatar;
+library;
 
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';

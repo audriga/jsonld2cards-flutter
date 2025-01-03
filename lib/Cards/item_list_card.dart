@@ -1,4 +1,4 @@
-library item_list_card;
+library;
 
 import 'package:jsonld2cards/Cards/Models/item_list_model.dart';
 import 'package:jsonld2cards/Cards/Models/list_item_model.dart';

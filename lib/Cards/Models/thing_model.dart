@@ -1,4 +1,4 @@
-library thing_model;
+library;
 
 import 'package:jsonld2cards/Util/conversion.dart';
 

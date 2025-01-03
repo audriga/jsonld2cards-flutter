@@ -1,4 +1,4 @@
-library detail_invoice_page;
+library;
 
 import 'dart:typed_data';
 

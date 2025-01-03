@@ -1,4 +1,4 @@
-library flight_reservation_card;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';

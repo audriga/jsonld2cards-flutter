@@ -1,4 +1,4 @@
-library attachment_header;
+library;
 
 import 'dart:io';
 

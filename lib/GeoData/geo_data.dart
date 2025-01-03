@@ -1,4 +1,4 @@
-library geo_data;
+library;
 
 import 'dart:convert';
 

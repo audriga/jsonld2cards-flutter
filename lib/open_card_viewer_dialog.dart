@@ -1,4 +1,4 @@
-library open_card_viewe_dialog;
+library;
 
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,4 @@
-library uri_image;
+library;
 
 import 'dart:convert';
 

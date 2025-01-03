@@ -1,4 +1,4 @@
-library xre_format_utils;
+library;
 
 String? renderDate(dynamic inDate) {
   if (inDate is String) {

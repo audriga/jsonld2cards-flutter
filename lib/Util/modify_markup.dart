@@ -1,4 +1,4 @@
-library modify_markup;
+library;
 
 import 'package:jsonld2cards/Util/conversion.dart';
 

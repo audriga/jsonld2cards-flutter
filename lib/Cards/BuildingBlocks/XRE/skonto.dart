@@ -1,4 +1,4 @@
-library skonto;
+library;
 
 import 'package:flutter/cupertino.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/amount_due.dart';

@@ -1,4 +1,4 @@
-library invoice_card;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/detail_invoice_page.dart';

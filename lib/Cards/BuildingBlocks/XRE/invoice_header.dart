@@ -1,4 +1,4 @@
-library invoice_header;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/Models/invoice_model.dart';

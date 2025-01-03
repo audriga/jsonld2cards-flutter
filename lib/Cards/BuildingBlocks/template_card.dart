@@ -1,4 +1,4 @@
-library template_card;
+library;
 
 import 'package:flutter/widgets.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';

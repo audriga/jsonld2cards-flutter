@@ -1,4 +1,4 @@
-library parcel_delivery;
+library;
 
 
 // Note: This is a "quick and dirty" model, to make creation of the card easier.

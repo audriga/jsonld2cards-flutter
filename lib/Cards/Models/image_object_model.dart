@@ -1,4 +1,4 @@
-library image_object_model;
+library;
 
 import 'thing_model.dart';
 

@@ -1,4 +1,4 @@
-library leistung_card;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/delivery_information.dart';

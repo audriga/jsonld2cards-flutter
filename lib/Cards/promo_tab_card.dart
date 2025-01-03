@@ -1,4 +1,4 @@
-library promo_tab_card;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';

@@ -1,4 +1,4 @@
-library sml_app_context;
+library;
 
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-library action_model;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/Models/thing_model.dart';

@@ -1,4 +1,4 @@
-library mail_header;
+library;
 
 import 'dart:io';
 

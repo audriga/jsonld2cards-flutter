@@ -1,4 +1,4 @@
-library place_card;
+library;
 
 
 import 'dart:convert';

@@ -1,4 +1,4 @@
-library tabbed_cards;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';

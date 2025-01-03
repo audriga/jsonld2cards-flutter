@@ -1,4 +1,4 @@
-library paid_badge;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Util/conversion.dart';

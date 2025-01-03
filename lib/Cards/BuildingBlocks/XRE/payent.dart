@@ -1,4 +1,4 @@
-library payment;
+library;
 
 import 'dart:developer' as developer;
 

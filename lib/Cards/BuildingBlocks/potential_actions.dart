@@ -1,4 +1,4 @@
-library potential_actions;
+library;
 
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

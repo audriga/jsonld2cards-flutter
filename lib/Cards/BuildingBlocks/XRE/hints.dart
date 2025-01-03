@@ -1,4 +1,4 @@
-library hints;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/l10n/app_localizations.dart';

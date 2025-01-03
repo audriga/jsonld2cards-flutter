@@ -1,4 +1,4 @@
-library card_samples;
+library;
 
 import 'dart:io';
 

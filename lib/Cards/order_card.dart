@@ -1,4 +1,4 @@
-library order_card;
+library;
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';

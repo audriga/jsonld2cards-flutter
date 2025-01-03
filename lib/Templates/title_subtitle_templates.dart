@@ -1,4 +1,4 @@
-library title_subtitle_templates;
+library;
 
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 

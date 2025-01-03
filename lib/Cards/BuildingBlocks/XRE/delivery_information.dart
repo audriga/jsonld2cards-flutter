@@ -1,4 +1,4 @@
-library delivery_information;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';

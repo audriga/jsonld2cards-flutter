@@ -1,4 +1,4 @@
-library music_card;
+library;
 
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';

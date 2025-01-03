@@ -1,4 +1,4 @@
-library card_samples;
+library;
 
 import 'package:jsonld2cards/card_rendering.dart';
 import 'package:jsonld2cards/card_viewer.dart';

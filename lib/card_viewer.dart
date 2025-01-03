@@ -1,4 +1,4 @@
-library card_viewer;
+library;
 
 import 'card_rendering.dart';
 import 'Util/conversion.dart';

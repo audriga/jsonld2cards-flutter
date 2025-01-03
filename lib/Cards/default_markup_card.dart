@@ -1,4 +1,4 @@
-library default_markup_card;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';

@@ -1,4 +1,4 @@
-library schema_types;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/Models/music_model.dart';
