@@ -14,7 +14,7 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/split_button.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/attachment_header.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/mail_header.dart';
-import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
+import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 import 'dart:developer' as developer;
@@ -25,11 +25,9 @@ import 'hints.dart';
 class DetailInvoicePage extends StatefulWidget {
   const DetailInvoicePage({
     super.key,
-    required this.invoice,
     required this.cardData,
   });
 
-  final Invoice invoice;
   final CardData cardData;
 
   @override
@@ -40,23 +38,29 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
   @override
   Widget build(BuildContext context) {
     AppLocalizations l = AppLocalizations.of(context);
-    Uri? uri = widget.invoice.url;
+
+    var json = widget.cardData.markup;
+    Uri? uri = tryCastOrParse(json['url']);
     int? muid;
     bool canShareXRechnung = false;
     if (uri != null) {
       if (['cid', 'fetchid'].contains(uri.scheme) &&
           globalSMLAppContext?.shareAttachmentCallback != null) {
-        if (widget.cardData.markup['muid'] case int uid) {
+        if (json['muid'] case int uid) {
           muid = uid;
           canShareXRechnung = true;
         }
       }
     }
+    String? invoiceId;
+    if (json['bt_1_invoice_number'] case String bt1InvoiceNumber){
+      invoiceId = bt1InvoiceNumber;
+    }
 
     List<Widget> attachments =
-        renderAttachments(widget.invoice, widget.cardData, context);
+        renderAttachments(widget.cardData, context);
     var numberOfAttachments = attachments.length; // ?? 0;
-    Widget? invoiceHeader = renderInvoiceHeader(widget.invoice, context);
+    Widget? invoiceHeader = renderEInvoiceHeader(json, context);
     // Widget? paymentStatusRendered;//todo?
     // if (widget.invoice.paymentStatus != null) {
     //   var paymentStatus = ': ${widget.invoice.paymentStatus}';
@@ -66,7 +70,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     // }
 
     DeliveryInformation? deliveryInformation =
-        renderDeliveryInformation(widget.cardData.markup, context);
+        renderDeliveryInformation(json, context);
     String? deliveryDateText = deliveryInformation?.deliveryDateText;
     String? deliveryPartyName = deliveryInformation?.deliveryPartyName;
     Widget? deliveryAddressDetails =
@@ -96,34 +100,6 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       ]));
     }
     // String? noteText = renderNote(widget.cardData.markup);
-
-    var seller = widget.invoice.provider;
-    if (widget.invoice.json['bg_4_seller']
-        case Map<String, dynamic> bg4Seller) {
-      var bt34ElectronicAddress = bg4Seller['bt_34_electronic_address'];
-      if (bt34ElectronicAddress is String) {
-        seller?.email = bt34ElectronicAddress;
-      }
-      if (bg4Seller['bg_6_contact'] case Map<String, dynamic> bg6Contact) {
-        var bt42TelephoneNumber = bg6Contact['bt_42_telephone_number'];
-        if (bt42TelephoneNumber is String) {
-          seller?.telephone = bt42TelephoneNumber;
-        }
-      }
-    }
-    var customer = widget.invoice.customer;
-    if (widget.invoice.json['bg_7_buyer'] case Map<String, dynamic> bg7Buyer) {
-      var bt49ElectronicAddress = bg7Buyer['bt_49_electronic_address'];
-      if (bt49ElectronicAddress is String) {
-        customer?.email = bt49ElectronicAddress;
-      }
-      if (bg7Buyer['bg_9_contact'] case Map<String, dynamic> bg9Contact) {
-        var bt57TelephoneNumber = bg9Contact['bt_57_telephone_number'];
-        if (bt57TelephoneNumber is String) {
-          customer?.telephone = bt57TelephoneNumber;
-        }
-      }
-    }
 
     var theme = Theme.of(context);
     var descriptionPadding = const EdgeInsets.fromLTRB(8.0, 8.0, 0, 0);
@@ -205,7 +181,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
         sourceFile != null || (otherAttachments?.isNotEmpty ?? false);
     Widget? paidBadge;
     try {
-      paidBadge = PaidBadge(json: widget.invoice.json, context: context);
+      paidBadge = PaidBadge(json: json, context: context);
     } catch (e) {
       developer.log(
         'Error rendering paid badge',
@@ -247,26 +223,25 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
             PersonTile(
               title: l.seller,
               personData:
-                  PartyData.fromJson(widget.invoice.json, PartyType.seller),
+                  PartyData.fromJson(json, PartyType.seller),
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
-              invoiceId: widget.invoice.identifier,
+              invoiceId: invoiceId,
               cardData: widget.cardData,
             ),
             LeistungCard(
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
               cardData: widget.cardData,
-              invoice: widget.invoice,
             ),
             Payment(
                 subCardColor: subCardColor,
                 descriptionPadding: descriptionPadding,
-                json: widget.cardData.markup),
+                json: json),
             PersonTile(
               title: l.buyer,
               personData:
-                  PartyData.fromJson(widget.invoice.json, PartyType.buyer),
+                  PartyData.fromJson(json, PartyType.buyer),
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
               cardData: widget.cardData,

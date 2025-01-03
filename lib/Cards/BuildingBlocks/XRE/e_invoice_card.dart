@@ -8,8 +8,6 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/paid_badge.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/person_tile.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/mail_header.dart';
-import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
-import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
@@ -34,17 +32,16 @@ class EInvoiceCard extends StatefulWidget implements MarkupCard {
 }
 
 class _EInvoiceCardState extends State<EInvoiceCard> {
-  bool expanded = false;
+  // bool expanded = false;
 
   @override
   Widget build(BuildContext context) {
     AppLocalizations l = AppLocalizations.of(context);
-    var invoice = Invoice.fromJson(widget.cardData.markup);
+    // var invoice = Invoice.fromJson(widget.cardData.markup);
 
     // Setting title and subtitle, depending on available information
     // String? titleText;
     // String? subtitleText;
-    Widget? leadingImage;
     // var confirmationNumber = invoice.identifier ?? invoice.confirmationNumber;
     List<TextSpan> titleTextSpans = <TextSpan>[
        TextSpan(
@@ -104,20 +101,18 @@ class _EInvoiceCardState extends State<EInvoiceCard> {
       }
     }*/
 
-    if ((invoice.broker ?? invoice.provider)?.logo case Uri logo) {
-      leadingImage = UriImage(
-        content: logo,
-        height: 32.0,
-        width: 32.0,
-        fit: BoxFit.scaleDown,
-      );
-    }
-
     // titleText = titleTextBuffer.toString();
     // subtitleText = subTitleTextBuffer.toString().trim();
     // subTitleTextSpans.first.text?.trimLeft();
     // subTitleTextSpans.last.text?.trimRight();
-    Widget? invoiceHeader = renderInvoiceHeader(invoice, context);
+    if (!widget.cardData.markupIsMap) {
+      // todo error handle this
+      if (widget.cardData.markupIsList) {
+
+      }
+    }
+    Map<String, dynamic> json = widget.cardData.markup;
+    Widget? invoiceHeader = renderEInvoiceHeader(json, context);
 
     // var numberOfItems = invoice.referencesOrder?.length ?? 0;
     var theme = Theme.of(context);
@@ -127,7 +122,7 @@ class _EInvoiceCardState extends State<EInvoiceCard> {
     /// If this should blend in, use theme.cardTheme.color ?? theme.colorScheme.surfaceContainerLow;
     Widget? paidBadge;
     try {
-      paidBadge = PaidBadge(json: invoice.json, context: context);
+      paidBadge = PaidBadge(json: json, context: context);
     } catch (e) {
       developer.log(
         'Error rendering paid badge',
@@ -142,11 +137,6 @@ class _EInvoiceCardState extends State<EInvoiceCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              if (leadingImage != null)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: leadingImage,
-                ),
               Flexible(
                 child: Row(
                   children: [
@@ -169,15 +159,10 @@ class _EInvoiceCardState extends State<EInvoiceCard> {
               // Icon(expanded ? Icons.expand_less : Icons.expand_more)
             ]),
             if (invoiceHeader != null) invoiceHeader,
-            if (expanded && invoice.description != null)
-              Text(
-                invoice.descriptionString!,
-                softWrap: true,
-              ),
             PersonTile(
                 title: l.seller,
                 personData:
-                    PartyData.fromJson(invoice.json, PartyType.seller),
+                    PartyData.fromJson(json, PartyType.seller),
                 subCardColor: subCardColor,
                 descriptionPadding: descriptionPadding,
                 big: false,
@@ -187,7 +172,6 @@ class _EInvoiceCardState extends State<EInvoiceCard> {
                 subCardColor: subCardColor,
                 descriptionPadding: descriptionPadding,
                 cardData: widget.cardData,
-                invoice: invoice,
                 big: false),
             // Text.rich(
             //     textAlign: TextAlign.left,
@@ -230,7 +214,7 @@ class _EInvoiceCardState extends State<EInvoiceCard> {
       cardContents.insertAll(0, [messageHeader, const Divider()]);
     }
     return InkWell(
-      onTap: () => openDetailView(context, invoice, widget.cardData),
+      onTap: () => openDetailView(context, widget.cardData),
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -241,10 +225,9 @@ class _EInvoiceCardState extends State<EInvoiceCard> {
   }
 }
 
-void openDetailView(BuildContext context, Invoice invoice, CardData cardData) {
+void openDetailView(BuildContext context, CardData cardData) {
   Navigator.of(context).push(MaterialPageRoute(
     builder: (context) => DetailInvoicePage(
-      invoice: invoice,
       cardData: cardData,
     ),
   ));

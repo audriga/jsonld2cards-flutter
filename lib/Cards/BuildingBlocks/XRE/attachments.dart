@@ -1,16 +1,15 @@
 library attachments;
 
 import 'package:flutter/material.dart';
-import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:jsonld2cards/l10n/app_localizations.dart';
 
-List<Widget> renderAttachments(Invoice invoice, CardData cardData, BuildContext context) {
+List<Widget> renderAttachments(CardData cardData, BuildContext context) {
   List<Widget> attachments = [];
   AppLocalizations l = AppLocalizations.of(context);
 
-  if (invoice.json['bg_24_additional_supporting_documents']
+  if (cardData.markup['bg_24_additional_supporting_documents']
       case List bg24AdditionalSupportingDocuments) {
     Iterable<Map<String, dynamic>> attachmentMaps =
         bg24AdditionalSupportingDocuments

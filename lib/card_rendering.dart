@@ -2,9 +2,10 @@ library card_rendering;
 
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
-import 'package:jsonld2cards/Cards/event_card.dart';
-import 'package:jsonld2cards/Cards/simple_poll_card.dart';
-import 'package:jsonld2cards/card_data.dart';
+import 'Cards/BuildingBlocks/XRE/e_invoice_card.dart';
+import 'Cards/event_card.dart';
+import 'Cards/simple_poll_card.dart';
+import 'card_data.dart';
 import 'Cards/BuildingBlocks/potential_actions.dart';
 import 'Cards/BuildingBlocks/template_card.dart';
 import 'Cards/BuildingBlocks/uri_image.dart';
@@ -184,6 +185,16 @@ Widget? tryRenderCardSingle(CardData cardData) {
 }
 
 Widget renderCardSingle(CardData cardData) {
+  // XRE eInvoice Cards are a special case (non-Schema.org)
+  if (cardData.markup['bt_1_invoice_number'] != null) {
+    var card = EInvoiceCard(cardData);
+    if (cardData.topBar) {
+      return surroundWithTopBar(card);
+    } else {
+      return card;
+    }
+  }
+
   String? context = cardData.markup['@context'];
   if (![
     'http://schema.org',

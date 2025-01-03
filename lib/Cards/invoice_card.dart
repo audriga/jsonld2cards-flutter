@@ -16,6 +16,8 @@ import 'package:jsonld2cards/card_data.dart';
 import 'dart:developer' as developer;
 import 'package:jsonld2cards/l10n/app_localizations.dart';
 
+// TODO XRE Invoice has been moved to a separate class called EInvoice.
+// Should this file be reverted back to support schema.org invoices?
 class InvoiceCard extends StatefulWidget implements MarkupCard {
   const InvoiceCard(this.cardData, {super.key});
 
@@ -117,7 +119,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
     // subtitleText = subTitleTextBuffer.toString().trim();
     // subTitleTextSpans.first.text?.trimLeft();
     // subTitleTextSpans.last.text?.trimRight();
-    Widget? invoiceHeader = renderInvoiceHeader(invoice, context);
+    Widget? invoiceHeader = renderSchemaOrgInvoiceHeader(invoice, context);
 
     // var numberOfItems = invoice.referencesOrder?.length ?? 0;
     var theme = Theme.of(context);
@@ -187,7 +189,6 @@ class _InvoiceCardState extends State<InvoiceCard> {
                 subCardColor: subCardColor,
                 descriptionPadding: descriptionPadding,
                 cardData: widget.cardData,
-                invoice: invoice,
                 big: false),
             // Text.rich(
             //     textAlign: TextAlign.left,
@@ -244,7 +245,6 @@ class _InvoiceCardState extends State<InvoiceCard> {
 void openDetailView(BuildContext context, Invoice invoice, CardData cardData) {
   Navigator.of(context).push(MaterialPageRoute(
     builder: (context) => DetailInvoicePage(
-      invoice: invoice,
       cardData: cardData,
     ),
   ));

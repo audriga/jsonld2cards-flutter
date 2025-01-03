@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/delivery_information.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/ordered_items.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
-import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/l10n/app_localizations.dart';
 
@@ -14,14 +13,12 @@ class LeistungCard extends StatefulWidget {
     required this.subCardColor,
     required this.descriptionPadding,
     required this.cardData,
-    required this.invoice,
     this.big = true,
   });
 
   final Color subCardColor;
   final EdgeInsets descriptionPadding;
   final CardData cardData;
-  final Invoice invoice;
   final bool big;
 
   @override
@@ -84,7 +81,7 @@ class _LeistungCardState extends State<LeistungCard> {
         renderDeliveryInformation(widget.cardData.markup, context);
     String? invoicingPeriodText = deliveryInformation?.invoicingPeriodText;
     List<Widget> orderedItems = renderOrderedItems(widget.cardData.markup, context);
-    var numberOfItems = widget.invoice.referencesOrder?.length ?? 0;
+    var numberOfItems = orderedItems.length;
     var subtitle = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

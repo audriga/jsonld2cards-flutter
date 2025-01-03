@@ -3,7 +3,7 @@ library card_samples;
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:jsonld2cards/Cards/invoice_card.dart';
+import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/e_invoice_card.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/card_rendering.dart';
@@ -364,7 +364,7 @@ class _XRechnungListState extends State<XRechnungList> {
       try {
         final invoiceSchema = parseAndConvertXInvoice(xmlStrings[i]);
         final cardData = CardData(invoiceSchema, topBar: widget.topBar, preview: widget.preview);
-        widgets.add(InvoiceCard(cardData));
+        widgets.add(EInvoiceCard(cardData));
       } catch (e) {
         widgets.add(ListTile(title: const Text('Error Rendering this file'), subtitle: Text(e.toString())));
       }
