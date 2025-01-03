@@ -186,7 +186,7 @@ Widget? tryRenderCardSingle(CardData cardData) {
 
 Widget renderCardSingle(CardData cardData) {
   // XRE eInvoice Cards are a special case (non-Schema.org)
-  if (cardData.markup['bt_1_invoice_number'] != null) {
+  if (cardData.markup['bt_1_invoice_number'] != null || cardData.markup['bt_3_invoice_type_code'] != null) {
     var card = EInvoiceCard(cardData);
     if (cardData.topBar) {
       return surroundWithTopBar(card);
