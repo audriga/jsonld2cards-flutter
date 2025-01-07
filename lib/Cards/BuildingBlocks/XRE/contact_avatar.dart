@@ -44,6 +44,18 @@ class ContactAvatar extends StatelessWidget {
     }
     if (tryFavIcon && senderAddress != null) {
       var hostName = senderAddress!.hostName;
+      if ([
+        'gmail.com', 'googlemail.com',
+        'gmx.de', 'gmx.net',
+        'web.de',
+        't-online.de',
+        'freenet.de',
+        'mailbox.org',
+        'posteo.de', 'posteo.com',
+      ].contains(hostName)) {
+        // skip fetching the favicon from freemailers
+        return fallback;
+      }
       var ico = 'https://icons.duckduckgo.com/ip3/$hostName.ico';
       try {
         return CircleAvatar(
