@@ -1,16 +1,4 @@
 {
-  "bg_16_payment_instructions": {
-    "bt_81_payment_means_type_code": "Code für den Zahlweg (BT-81)",
-    "bt_82_payment_means_text": "Zahlweg zusätzlich als Textangabe (BT-82)",
-    "bt_83_remittance_information": "Verwendungszweck (BT-83)",
-    "bg_17_credit_transfer": [
-      {
-        "bt_84_payment_id": "IBAN (BT-84)",
-        "bt_85_payment_account_name": "Name des Kontoinhabers (BT-85)",
-        "bt_86_payment_service_provider_identifier": "BIC / SWIFT (BT-86)"
-      }
-    ]
-  },
   "bt_1_invoice_number": "Rechnungsnummer (BT-1)",
   "bt_2_invoice_issue_date": "Rechnungsdatum (BT-2)",
   "bt_3_invoice_type_code": "Code für den Rechnungstyp (BT-3)",
@@ -52,9 +40,9 @@
     "bt_33_seller_additional_legal_information": "Weitere rechtliche Informationen (BT-33)",
     "bt_34_electronic_address": "Elektronische Adresse (E-Mail) des Verkäufers (BT-34)",
     "bg_5_seller_postal_address": {
-      "bt_35_address_line1": "Straße u. Hausnummer / Postfach (BT-35)",
-      "bt_36_address_line2": "Zusätzliche Adresszeile (BT-36)",
-      "bt_162_address_line3": "Weitere zusätzliche Adresszeile (BT-162)",
+      "bt_35_address_line_1": "Straße u. Hausnummer / Postfach (BT-35)",
+      "bt_36_address_line_2": "Zusätzliche Adresszeile (BT-36)",
+      "bt_162_address_line_3": "Weitere zusätzliche Adresszeile (BT-162)",
       "bt_37_city": "Stadt/Ort (BT-37)",
       "bt_38_postal_code": "PLZ (BT-38)",
       "bt_40_country_code": "Ländercode (BT-40)"
@@ -73,9 +61,9 @@
     "bt_48_vat_identifier": "Umsatzsteuer-ID des Käufers (BT-48)",
     "bt_49_electronic_address": "E-Mailadresse zur Rechnungsübermittlung (BT-49)",
     "bg_8_buyer_postal_address": {
-      "bt_50_address_line1": "Straße u. Hausnummer / Postfach (BT-50)",
-      "bt_51_address_line2": "Zusätzliche Adresszeile (BT-51)",
-      "bt_163_address_line3": "Weitere zusätzliche Adresszeile (BT-163)",
+      "bt_50_address_line_1": "Straße u. Hausnummer / Postfach (BT-50)",
+      "bt_51_address_line_2": "Zusätzliche Adresszeile (BT-51)",
+      "bt_163_address_line_3": "Weitere zusätzliche Adresszeile (BT-163)",
       "bt_52_city": "Stadt/Ort (BT-52)",
       "bt_53_postal_code": "PLZ (BT-53)",
       "bt_55_country_code": "Ländercode (BT-55)"
@@ -96,11 +84,12 @@
     "bt_63_vat_identifier": "Umsatzsteuer-ID des steuerlichen Vertreters (BT-63)"
   },
   "bg_12_seller_tax_representative_postal_address": {
-    "bt_64_address_line1": "Straße u. Hausnummer / Postfach (BT-64)",
-    "bt_65_address_line2": "Zusätzliche Adresszeile (BT-65)",
+    "bt_64_address_line_1": "Straße u. Hausnummer / Postfach (BT-64)",
+    "bt_65_address_line_2": "Zusätzliche Adresszeile (BT-65)",
     "bt_66_city": "Stadt/Ort (BT-66)",
     "bt_67_postal_code": "PLZ (BT-67)",
-    "bt_69_country_code": "Ländercode (BT-69)"
+    "bt_69_country_code": "Ländercode (BT-69)",
+    "bt_164_address_line_3": "Weitere zusätzliche Adresszeile (BT-164)"
   },
   "bg_13_delivery_information": {
     "bt_70_deliver_to_party_name": "Vollständiger Firmenname des Waren- bzw. Leistungsempfängers (BT-70)",
@@ -111,13 +100,25 @@
       "bt_74_end_date": "Ende Abrechnungszeitraum (BT-74)"
     },
     "bg_15_deliver_to_address": {
-      "bt_75_address_line1": "Straße u. Hausnummer / Postfach (BT-75)",
-      "bt_76_address_line2": "Zusätzliche Adresszeile (BT-76)",
-      "bt_165_address_line3": "Weitere zusätzliche Adresszeile (BT-165)",
+      "bt_75_address_line_1": "Straße u. Hausnummer / Postfach (BT-75)",
+      "bt_76_address_line_2": "Zusätzliche Adresszeile (BT-76)",
+      "bt_165_address_line_3": "Weitere zusätzliche Adresszeile (BT-165)",
       "bt_77_city": "Stadt/Ort (BT-77)",
       "bt_78_postal_code": "PLZ (BT-78)",
       "bt_80_country_code": "Ländercode (BT-80)"
     }
+  },
+  "bg_16_payment_instructions": {
+    "bt_81_payment_means_type_code": "Code für den Zahlweg (BT-81)",
+    "bt_82_payment_means_text": "Zahlweg zusätzlich als Textangabe (BT-82)",
+    "bt_83_remittance_information": "Verwendungszweck (BT-83)",
+    "bg_17_credit_transfer": [
+      {
+        "bt_84_payment_id": "IBAN (BT-84)",
+        "bt_85_payment_account_name": "Name des Kontoinhabers (BT-85)",
+        "bt_86_payment_service_provider_identifier": "BIC / SWIFT (BT-86)"
+      }
+    ]
   },
   "bg_22_document_totals": {
     "bt_106_sum_invoice_line_net_amount": "Summe aller Positionen (netto) (BT-106)",
@@ -125,6 +126,13 @@
     "bt_112_invoice_total_amount_with_vat": "Gesamtsumme (brutto) (BT-112)",
     "bt_113_paid_amount": "Gezahlter Betrag (BT-113)",
     "bt_115_amount_due_for_payment": "Fälliger Betrag (BT-115)"
+  },
+  "bg_23_vat_breakdown": {
+    "bt_116_vat_category_taxable_amount": "Basisbetrag für die Umsatzsteuerberechnung (BT-116)",
+    "bt_117_vat_category_tax_amount": "Betrag Umsatzsteuer (BT-117)",
+    "bt_118_vat_category_code": "Code der Umsatzsteuerkategorie (BT-118)",
+    "bt_119_vat_category_rate": "Umsatzsteuersatz in Prozent (BT-119)",
+    "bt_120_vat_exemption_reason_text": "Grund für Ausnahme von Umsatzsteuerpflicht, z.B. Reverse Charge (BT-120)"
   },
   "bg_24_additional_supporting_documents": [
     {
@@ -163,9 +171,21 @@
       "bg_29_price_details": {
         "bt_146_item_net_price": "Preis pro Einheit (netto), nach Rabatt (BT-146)"
       },
+      "bg_30_line_vat_information": {
+        "bt_151_invoiced_item_vat_category_code": "Code der Umsatzsteuerkategorie (BT-151)",
+        "bt_152_invoiced_item_vat_rate": "Umsatzsteuersatz in Prozent (BT-152)"
+      },
       "bg_31_item_information": {
         "bt_153_name": "Positionsbezeichnung (BT-153)",
-        "bt_155_sellers_identifier": "Artikelnummer des Verkäufers (BT-155)"
+        "bt_154_description": "Positionsbeschreibung (BT-154)",
+        "bt_155_sellers_identifier": "Artikelnummer des Verkäufers (BT-155)",
+        "bt_156_buyers_identifier": "Artikelnummer des Käufers (BT-156)",
+        "bt_158_classification_identifier": "Kennung der\n          Artikelklassifizierung (BT-158)",
+        "bt_159_country_of_origin": "Ursprungsland des Artikels (BT-159)",
+        "bg_32_item_attributes": {
+          "bt_160_item_attribute_name": "Zusatzinformationen Eigenschaft (BT-160)",
+          "bt_161_item_attribute_value": "Zusatzinformationen Wert (BT-161)"
+        }
       }
     }
   ]

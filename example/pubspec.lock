@@ -943,7 +943,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "259f13b8726c99d7d86dad372ae97c6e4f8590ac"
+      resolved-ref: fbb8e351e1dcca239b388629cbca2d8010f048cf
       url: "git@bitbucket.org:audriga/xrechnung-dart.git"
     source: git
     version: "1.0.0"

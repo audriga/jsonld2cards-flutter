@@ -40,9 +40,9 @@ DeliveryInformation? renderDeliveryInformation(dynamic json, BuildContext contex
       }
       if (bg13DeliveryInformation['bg_15_deliver_to_address']
           case Map<String, dynamic> bg15DeliverToAddress) {
-        var bt75AddressLine1 = bg15DeliverToAddress['bt_75_address_line1'];
-        var bt76AddressLine2 = bg15DeliverToAddress['bt_76_address_line2'];
-        var bt165addressLine3 = bg15DeliverToAddress['bt_165_address_line3'];
+        var bt75AddressLine1 = bg15DeliverToAddress['bt_75_address_line_1'];
+        var bt76AddressLine2 = bg15DeliverToAddress['bt_76_address_line_2'];
+        var bt165addressLine3 = bg15DeliverToAddress['bt_165_address_line_3'];
         var bt77City = bg15DeliverToAddress['bt_77_city'];
         var bt78PostalCode = bg15DeliverToAddress['bt_78_postal_code'];
         var bt80CountryCode = bg15DeliverToAddress['bt_80_country_code'];
