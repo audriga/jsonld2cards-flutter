@@ -7,7 +7,9 @@ import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
-import 'dart:developer' as developer;
+import 'package:logging/logging.dart';
+
+final log = Logger('jsonld2cards.cards.default_card');
 
 class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
   const DefaultMarkupCard(this.cardData, {super.key});
@@ -61,10 +63,7 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
       var imageUrls = metaTags
           .where((script) => script.attributes['name'] == 'twitter:image');
       if (imageUrls.length > 1) {
-        developer.log(
-          'Got more image urls than expected:\n$imageUrls',
-          name: 'jsonld2cards.default_card',
-        );
+        log.warning('Got more image urls than expected:\n$imageUrls');
       }
       if (imageUrls.isNotEmpty) return imageUrls.first.attributes['content'];
     }

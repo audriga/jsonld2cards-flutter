@@ -1,7 +1,7 @@
 library;
 
-import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'Cards/BuildingBlocks/XRE/e_invoice_card.dart';
 import 'Cards/event_card.dart';
 import 'Cards/simple_poll_card.dart';
@@ -26,6 +26,8 @@ import 'Cards/blog_posting_card.dart';
 import 'Cards/place_card.dart';
 import 'Cards/Models/organization_model.dart' as org_model;
 import 'Util/modify_markup.dart';
+
+final log = Logger('jsonld2cards.card_rendering');
 
 // Need material instead of widgets, to get Icons.
 // import 'package:flutter/widgets.dart';
@@ -203,11 +205,10 @@ Widget renderCardSingle(CardData cardData) {
     'https://schema.org/',
     'http://schema.googleapis.com/'
   ].contains(context ?? '')) {
-    developer.log(
+    log.warning(
       'Warning Markup does not contain context tag, '
           'or context tag does not contain one of the known schema contexts '
           'like http://schema.org\n${cardData.markup}',
-      name: 'jsonld2cards.card_rendering',
     );
   }
 

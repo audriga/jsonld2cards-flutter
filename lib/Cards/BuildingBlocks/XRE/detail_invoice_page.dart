@@ -17,10 +17,12 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/mail_header.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
-import 'dart:developer' as developer;
 import 'package:jsonld2cards/l10n/app_localizations.dart';
+import 'package:logging/logging.dart';
 
 import 'hints.dart';
+
+final log = Logger('jsonld2cards.cards.xre.detail_invoice');
 
 class DetailInvoicePage extends StatefulWidget {
   const DetailInvoicePage({
@@ -53,12 +55,11 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
       }
     }
     String? invoiceId;
-    if (json['bt_1_invoice_number'] case String bt1InvoiceNumber){
+    if (json['bt_1_invoice_number'] case String bt1InvoiceNumber) {
       invoiceId = bt1InvoiceNumber;
     }
 
-    List<Widget> attachments =
-        renderAttachments(widget.cardData, context);
+    List<Widget> attachments = renderAttachments(widget.cardData, context);
     var numberOfAttachments = attachments.length; // ?? 0;
     Widget? invoiceHeader = renderEInvoiceHeader(json, context);
     // Widget? paymentStatusRendered;//todo?
@@ -183,15 +184,12 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     try {
       paidBadge = PaidBadge(json: json, context: context);
     } catch (e) {
-      developer.log(
-        'Error rendering paid badge',
-        error: e,
-        name: 'jsonld2cards.invoice',
-      );
+      log.warning('Error rendering paid badge', e);
       // todo error widget
     }
     // todo for i18n need to use plural/ singular for attachment(s), flutter i18n supports this directly
-    String attachmentTileTitle = (attachments.length > 1) ? l.attachments(2): l.attachments(1);
+    String attachmentTileTitle =
+        (attachments.length > 1) ? l.attachments(2) : l.attachments(1);
     return Scaffold(
       appBar: AppBar(
         title: Text(l.details),
@@ -205,10 +203,14 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
               AttachmentHeader(
                   sourceFile: sourceFile, otherAttachments: otherAttachments),
             HintsHeader(hints: widget.cardData.hints),
-            if (widget.cardData.otherAttachments != null) HintsHeader(hints: widget.cardData.otherAttachments!.expand((o) => o.hints).toList()),
+            if (widget.cardData.otherAttachments != null)
+              HintsHeader(
+                  hints: widget.cardData.otherAttachments!
+                      .expand((o) => o.hints)
+                      .toList()),
             if (renderMessageHeader || renderAttachmentsHeader) const Divider(),
             ListTile(
-              title:  Text.rich(
+              title: Text.rich(
                 TextSpan(
                   text: l.invoice,
                   style: const TextStyle(fontWeight: FontWeight.bold),
@@ -222,8 +224,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
             ),
             PersonTile(
               title: l.seller,
-              personData:
-                  PartyData.fromJson(json, PartyType.seller),
+              personData: PartyData.fromJson(json, PartyType.seller),
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
               invoiceId: invoiceId,
@@ -240,8 +241,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 json: json),
             PersonTile(
               title: l.buyer,
-              personData:
-                  PartyData.fromJson(json, PartyType.buyer),
+              personData: PartyData.fromJson(json, PartyType.buyer),
               subCardColor: subCardColor,
               descriptionPadding: descriptionPadding,
               cardData: widget.cardData,
@@ -322,7 +322,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 globalSMLAppContext?.forwardEmailCallback != null)
               ForwardButton(
                 onTap: (e) {
-                  forwardMessage(e,widget.cardData.message!, context);
+                  forwardMessage(e, widget.cardData.message!, context);
                 },
               )
           ],

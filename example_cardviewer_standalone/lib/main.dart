@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'dart:developer' as developer;
 
 import 'package:jsonld2cards/card_viewer.dart';
+import 'package:logging/logging.dart';
 
 import 'Util/globals.dart';
 import 'Util/network.dart';
@@ -12,7 +12,10 @@ import 'path_card_viewer.dart';
 void main() {
   final String fullURL = Uri.base.toString();
   final String? cardIdParameter = Uri.base.queryParameters['cardId'];
-  runApp(MyApp(fullURL: fullURL, cardIdParameter: cardIdParameter,));
+  runApp(MyApp(
+    fullURL: fullURL,
+    cardIdParameter: cardIdParameter,
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -25,8 +28,10 @@ class MyApp extends StatelessWidget {
   static const _darkRed = Color(0xFFAD2300);
   static const _orange = Color(0xFFE14B00);
   static const _brightOrange = Color(0xFFFF6600);
+
   // static const _brightRed = Color(0xFFd50000);
   static const _darkBlue = Color(0xFF00286c);
+
   // static const _reddishBrown = Color(0xFF330000);
 
   // Additional Colors
@@ -48,6 +53,7 @@ class MyApp extends StatelessWidget {
       secondary: _brightOrangeAlt,
     );
 
+    final log = Logger('jsonld2cardsExample.cardViewer.routing');
     final router = GoRouter(
       initialLocation: '/',
       routes: [
@@ -55,40 +61,34 @@ class MyApp extends StatelessWidget {
           path: '/',
           builder: homePageBuilder,
         ),
+        GoRoute(path: CardViewer.routeName, builder: cardViewerBuilder),
         GoRoute(
-          path: CardViewer.routeName,
-          builder: cardViewerBuilder
-        ),
+            path: ExternalCardViewer.routeName, builder: externalViewerBuilder),
         GoRoute(
-          path: ExternalCardViewer.routeName,
-          builder: externalViewerBuilder
-        ),
-        GoRoute(
-          path: '/card_getter',
-          builder: (context, state) {
-            developer.log('stateQueryParams: ${state.uri.queryParameters.toString()} (${state.uri.queryParameters.runtimeType})',
-              name: 'card_viewer_standalone.routing',
-            );
-            bool single = parseSingleArg(state);
+            path: '/card_getter',
+            builder: (context, state) {
+              log.info(
+                  'stateQueryParams: ${state.uri.queryParameters.toString()} (${state.uri.queryParameters.runtimeType})');
+              bool single = parseSingleArg(state);
 
-            return PathCardViewer(cardPath: state.uri.queryParameters['path'], single: single, postFunction: postUrl);
+              return PathCardViewer(
+                  cardPath: state.uri.queryParameters['path'],
+                  single: single,
+                  postFunction: postUrl);
             },
-          routes: [
-            GoRoute(
-              path: ':pathSeg1',
-              builder: (context, state) {
-                final cardPath = state.pathParameters['pathSeg1']!;
-                developer.log('cardPath: $cardPath',
-                  name: 'card_viewer_standalone.routing',
-                );
-                return PathCardViewer(cardPath: cardPath, postFunction: postUrl);
-              },
-            )
-          ]
-        ),
+            routes: [
+              GoRoute(
+                path: ':pathSeg1',
+                builder: (context, state) {
+                  final cardPath = state.pathParameters['pathSeg1']!;
+                  log.info('cardPath: $cardPath');
+                  return PathCardViewer(
+                      cardPath: cardPath, postFunction: postUrl);
+                },
+              )
+            ]),
       ],
     );
-
 
     return MaterialApp.router(
       title: 'Card Viewer',
@@ -108,6 +108,7 @@ class MyApp extends StatelessWidget {
   }
 
   Widget cardViewerBuilder(BuildContext context, GoRouterState state) {
+    final log = Logger('jsonld2cardsExample.cardViewer.routing');
     String? cardId;
     var modalRoute = ModalRoute.of(context);
     var modalRouteArguments = modalRoute?.settings.arguments;
@@ -128,54 +129,64 @@ class MyApp extends StatelessWidget {
         }
       }
     }
-    developer.log(
+    log.info(
       'modalRouteArguments: ${modalRouteArguments.toString()} (${modalRouteArguments.runtimeType})',
-      name: 'card_viewer_standalone.routing',
     );
-    developer.log(
+    log.info(
       'stateQueryParams: ${state.uri.queryParameters.toString()} (${state.uri.queryParameters.runtimeType})',
-      name: 'card_viewer_standalone.routing',
     );
-    developer.log(
+    log.info(
       'cardIdParameter: ${cardIdParameter.toString()} (${cardIdParameter.runtimeType})',
-      name: 'card_viewer_standalone.routing',
     );
-    developer.log(
+    log.info(
       'cardId: ${cardId.toString()}',
-      name: 'card_viewer_standalone.routing',
     );
     return CardViewer(cardId: cardId, postFunction: postUrl);
   }
 
-  Widget homePageBuilder (BuildContext context, GoRouterState state) {
+  Widget homePageBuilder(BuildContext context, GoRouterState state) {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(title: const Text('Card Viewer')),
       body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Welcome to the Card Viewer', style: theme.textTheme.titleMedium,),
-              Text('You can use this to display SML cards someone sent you in your browser!', style: theme.textTheme.bodyMedium,),
-              TextButton(
-                onPressed: () {context.go(Uri(path: CardViewer.routeName, queryParameters: {'cardId': '647a21b24a917'}).toString());},
-                child: const Text('Try it out. Click here to go to a LiveLocation Card!'),),
-            ],
-          )
-      ),
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Welcome to the Card Viewer',
+            style: theme.textTheme.titleMedium,
+          ),
+          Text(
+            'You can use this to display SML cards someone sent you in your browser!',
+            style: theme.textTheme.bodyMedium,
+          ),
+          TextButton(
+            onPressed: () {
+              context.go(Uri(
+                  path: CardViewer.routeName,
+                  queryParameters: {'cardId': '647a21b24a917'}).toString());
+            },
+            child: const Text(
+                'Try it out. Click here to go to a LiveLocation Card!'),
+          ),
+        ],
+      )),
     );
   }
 
-
   Widget externalViewerBuilder(BuildContext context, GoRouterState state) {
-    developer.log('stateQueryParams: ${state.uri.queryParameters.toString()} (${state.uri.queryParameters.runtimeType})',
-      name: 'card_viewer_standalone.routing',
-    );
+    final log = Logger('jsonld2cardsExample.cardViewer.routing');
+    log.info(
+        'stateQueryParams: ${state.uri.queryParameters.toString()} (${state.uri.queryParameters.runtimeType})');
     bool single = parseSingleArg(state);
     bool visualDebug = parseVisualDebugArg(state);
 
-    return ExternalCardViewer(source: state.uri.queryParameters['source'], single: single, postFunction: postUrl, visualDebug: visualDebug);
+    return ExternalCardViewer(
+        source: state.uri.queryParameters['source'],
+        single: single,
+        postFunction: postUrl,
+        visualDebug: visualDebug);
   }
 
   /// Gets the value of the boolean query parameter 'single'

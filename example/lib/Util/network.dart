@@ -3,9 +3,11 @@ library;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:developer' as developer;
+import 'package:logging/logging.dart';
 
 import 'globals.dart';
+
+final log = Logger('jsonld2cardsExample.example.network');
 
 /// Posts given data to given URI, and shows a success message in snackbar on success
 /// This is copied over from SMLApp, where it is also used for FormRendering Purposes.
@@ -16,12 +18,13 @@ import 'globals.dart';
 ///
 /// Making the caller supply a function like this one solves this problem, but I'm not
 /// sure if it is the nicest solution to this problem.
-void postUrl(Uri uriToPost, {String successMessage = 'Sent data', dynamic dataToPost}) {
+void postUrl(Uri uriToPost,
+    {String successMessage = 'Sent data', dynamic dataToPost}) {
   try {
-
     Future<http.Response> resp;
     if (dataToPost == null) {
-      resp = http.post(uriToPost,
+      resp = http.post(
+        uriToPost,
       );
     } else {
       var encodedPostData = jsonEncode(dataToPost);
@@ -34,25 +37,15 @@ void postUrl(Uri uriToPost, {String successMessage = 'Sent data', dynamic dataTo
       );
     }
 
-    developer.log(
-      'Sent post request',
-      name: 'jsonld2cards.http',
-    );
+    log.info('Sent post request');
     resp.then((value) => {
-      developer.log(
-        'Received response${value.body}',
-        name: 'jsonld2cards.network',
-      ),
-    });
+          log.info('Received response${value.body}'),
+        });
     snackBarKey.currentState?.showSnackBar(SnackBar(
       content: Text(successMessage),
     ));
   } on Error catch (e) {
-    developer.log(
-      'Received error posting',
-      name: 'jsonld2cards.network',
-      error: e,
-    );
+    log.warning('Received error posting', e);
     snackBarKey.currentState?.showSnackBar(const SnackBar(
       content: Text('Error sending content to server'),
     ));

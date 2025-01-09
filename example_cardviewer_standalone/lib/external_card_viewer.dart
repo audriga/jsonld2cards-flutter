@@ -7,9 +7,11 @@ import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:flutter/material.dart';
 import 'package:html2jsonld_dart/html2jsonld_full.dart' as ht2j;
-import 'dart:developer' as developer;
+import 'package:logging/logging.dart';
 
 import 'package:xrechnung_dart/xrechnung_dart.dart';
+
+final log = Logger('jsonld2cardsExample.cardViewer.external');
 
 class ExternalCardViewer extends StatefulWidget {
   const ExternalCardViewer({
@@ -78,62 +80,50 @@ class _ExternalCardViewerState extends State<ExternalCardViewer> {
       return null;
     }
 
-
     try {
       var originalUri = Uri.tryParse(widget.source ?? '');
       if (originalUri?.pathSegments.last.endsWith('.xml') ?? false) {
-        developer.log(
-          'Trying to download and parse xml $sourceUri',
-          name: 'jsonld2cards.external_viewer',
-        );
+        log.info('Trying to download and parse xml $sourceUri');
         var response = await http.get(originalUri!);
         var invoiceSchema = parseAndConvertXInvoice(response.body);
         return jsonEncode(invoiceSchema);
       }
-      String? extractedSchema =
-          await ht2j.enrichedMarkupFromUrl(sourceUri.toString(), downloadImage: true);
-      developer.log(
-        'Requested markup at $sourceUri and got schema ($extractedSchema)',
-        name: 'jsonld2cards.external_viewer',
-      );
+      String? extractedSchema = await ht2j
+          .enrichedMarkupFromUrl(sourceUri.toString(), downloadImage: true);
+      log.info(
+          'Requested markup at $sourceUri and got schema ($extractedSchema)');
       if (extractedSchema == null) {
         return Future.error('Schema empty');
       }
       return extractedSchema;
     } on Error catch (e, st) {
-      developer.log(
-        'Error requesting markup $e',
-        name: 'jsonld2cards.external_viewer',
-        error: e,
-        stackTrace: st,
-      );
+      log.warning('Error requesting markup', e, st);
       return Future.error(e, st);
     }
   }
 }
 
 class FutureCards extends StatelessWidget {
-  const FutureCards({
-    super.key,
-    this.title,
-    required this.futureMarkup,
-    this.single = false,
-    required this.postFunction,
-    this.visualDebug = false,
-    this.sourceUri
-  });
+  const FutureCards(
+      {super.key,
+      this.title,
+      required this.futureMarkup,
+      this.single = false,
+      required this.postFunction,
+      this.visualDebug = false,
+      this.sourceUri});
 
   final String? title;
   final Future<String?> futureMarkup;
   final bool single;
   final PostFunction postFunction;
   final bool visualDebug;
+
   /// Just for debugging purposes
   final Uri? sourceUri;
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
       future: futureMarkup,
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
@@ -146,26 +136,24 @@ class FutureCards extends StatelessWidget {
             String encodedJson = encoder.convert(decodedMarkup);
             if (visualDebug) {
               return Scaffold(
-                body: LayoutBuilder(
-                    builder: (BuildContext context, BoxConstraints constraints) {
-                    return Row(
-                      children: [
-                        SizedBox(
-                            width: constraints.maxWidth /2 - 20,
-                            child: mainWidget
+                body: LayoutBuilder(builder:
+                    (BuildContext context, BoxConstraints constraints) {
+                  return Row(
+                    children: [
+                      SizedBox(
+                          width: constraints.maxWidth / 2 - 20,
+                          child: mainWidget),
+                      const Divider(),
+                      SizedBox(
+                        width: constraints.maxWidth / 2 - 20,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SelectableText(encodedJson),
                         ),
-                        const Divider(),
-                        SizedBox(
-                          width: constraints.maxWidth /2 - 20,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: SelectableText(encodedJson ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                ),
+                      ),
+                    ],
+                  );
+                }),
               );
             } else {
               return mainWidget;
@@ -237,30 +225,36 @@ class DebugRequest extends StatefulWidget {
 
 class _DebugRequestState extends State<DebugRequest> {
   String? result = 'No request yet';
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
           children: [
-            TextButton(onPressed: () async {
-              http.Response response = await http.get(widget.sourceUri);
-              developer.log(
-                'Requested markup at $widget.sourceUri and got response (${response.statusCode}) ${response.body}',
-                name: 'jsonld2cards.card_viewer',
-              );
-              setState(() {
-                result = 'response.statusCode: ${response.statusCode}\n'
-                    'response.body:\n${response.body}';
-              });
-            }, child: const Text('http.get')),
-            TextButton(onPressed: () async {
-              String? response = await ht2j.enrichedMarkupFromUrl(widget.sourceUri.toString(), downloadImage: true);
+            TextButton(
+                onPressed: () async {
+                  http.Response response = await http.get(widget.sourceUri);
+                  log.info(
+                    'Requested markup at $widget.sourceUri and got response (${response.statusCode}) ${response.body}',
+                  );
+                  setState(() {
+                    result = 'response.statusCode: ${response.statusCode}\n'
+                        'response.body:\n${response.body}';
+                  });
+                },
+                child: const Text('http.get')),
+            TextButton(
+                onPressed: () async {
+                  String? response = await ht2j.enrichedMarkupFromUrl(
+                      widget.sourceUri.toString(),
+                      downloadImage: true);
 
-              setState(() {
-                result = response;
-              });
-            }, child: const Text('enrichedMarkupFromUrl')),
+                  setState(() {
+                    result = response;
+                  });
+                },
+                child: const Text('enrichedMarkupFromUrl')),
           ],
         ),
         const Divider(),

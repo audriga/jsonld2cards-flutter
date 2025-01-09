@@ -11,8 +11,10 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/mail_header.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
-import 'dart:developer' as developer;
 import 'package:jsonld2cards/l10n/app_localizations.dart';
+import 'package:logging/logging.dart';
+
+final log = Logger('jsonld2cards.cards.xre.small_invoice');
 
 class EInvoiceCard extends StatefulWidget implements MarkupCard {
   const EInvoiceCard(this.cardData, {super.key});
@@ -124,10 +126,8 @@ class _EInvoiceCardState extends State<EInvoiceCard> {
     try {
       paidBadge = PaidBadge(json: json, context: context);
     } catch (e) {
-      developer.log(
-        'Error rendering paid badge',
-        error: e,
-        name: 'jsonld2cards.invoice',
+      log.warning(
+        'Error rendering paid badge', e
       );
       // todo error widget
     }

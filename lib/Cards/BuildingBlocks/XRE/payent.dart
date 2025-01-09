@@ -1,7 +1,5 @@
 library;
 
-import 'dart:developer' as developer;
-
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/amount_due.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/epc_qr.dart';
@@ -10,6 +8,9 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/skonto.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/xre_format_utils.dart';
 import 'package:jsonld2cards/l10n/app_localizations.dart';
+import 'package:logging/logging.dart';
+
+final log = Logger('jsonld2cards.cards.xre.payment');
 
 class Payment extends StatelessWidget {
   const Payment(
@@ -31,8 +32,7 @@ class Payment extends StatelessWidget {
       skontoInfo = SkontoInfo.skontoInfoFromJson(json, context);
     } catch (e) {
       // potentially show error to user?
-      developer.log('Error in Skonto calculation',
-          name: 'jsonld2cards.xre.payment');
+      log.warning('Error in Skonto calculation', e);
     }
     if (skontoInfo != null && skontoInfo.toPay != skontoInfo.bt115AmountDueAndCurrency.amountPayment) {
       amountRendered = Text.rich(

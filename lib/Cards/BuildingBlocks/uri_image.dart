@@ -6,7 +6,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
-import 'dart:developer' as developer;
+import 'package:logging/logging.dart';
+
+final log = Logger('jsonld2cards.cards.buildingBlocks.uriImage');
 
 /// Renders an image based on the given Uri.
 /// When URI is a http/ https URL pointing to a web resource, returns the corresponding network image
@@ -195,11 +197,7 @@ UriImage? findLeadingImage(Map<String, dynamic> markup,
 
 LoadingErrorWidgetBuilder logAndShowNoImage =
     (context, url, error) {
-      developer.log(
-        'Error rendering leading Image',
-        name: 'jsonld2cards.uri_image',
-        error: error,
-      );
+      log.warning('Error rendering leading Image', error);
       return const SizedBox(width: 0,);
 };
 

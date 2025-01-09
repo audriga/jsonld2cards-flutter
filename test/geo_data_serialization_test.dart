@@ -6,7 +6,6 @@ import 'package:jsonld2cards/GeoData/geo_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
-// import 'dart:developer' as developer;
 
 void main() {
   test('Test geo_data deserialization simple', () {

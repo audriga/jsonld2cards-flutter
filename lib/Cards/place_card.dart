@@ -7,14 +7,16 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/simple_card.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Util/modify_markup.dart';
 import 'package:jsonld2cards/card_data.dart';
+import 'package:logging/logging.dart';
 // import 'BuildingBlocks/potential_actions.dart';
 import '../GeoData/geo_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'dart:developer' as developer;
 
 import 'BuildingBlocks/uri_image.dart';
 import 'markup_card.dart';
+
+final log = Logger('jsonld2cards.cards.place');
 
 class Place extends StatefulWidget implements MarkupCard {
 
@@ -94,10 +96,7 @@ class _PlaceState extends State<Place> {
         );
         setThumb = true;
       } else {
-        developer.log(
-          'Unexpected scheme: ${imageUrl.scheme}\n$imageUrl',
-          name: 'jsonld2cards.card_rendering',
-        );
+        log.warning('Unexpected scheme: ${imageUrl.scheme}\n$imageUrl');
       }
     }
     // can also get url ourselves easily if we want to do that.

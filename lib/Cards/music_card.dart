@@ -7,9 +7,11 @@ import 'package:jsonld2cards/card_data.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'dart:developer' as developer;
+import 'package:logging/logging.dart';
 
 import 'BuildingBlocks/uri_image.dart';
+
+final log = Logger('jsonld2cards.cards.music');
 
 enum MusicType {album, playlist, song}
 class MusicCard extends StatelessWidget implements MarkupCard {
@@ -63,9 +65,8 @@ class MusicCard extends StatelessWidget implements MarkupCard {
       var metaTags = head.getElementsByTagName('meta');
       var imageUrls = metaTags.where((script) => script.attributes['name'] == 'twitter:image');
       if (imageUrls.length > 1) {
-        developer.log(
-          'Got more image urls than expected:\n$imageUrls',
-          name: 'jsonld2cards.card',
+        log.warning(
+          'Got more image urls than expected:\n$imageUrls'
         );
       }
       if (imageUrls.isNotEmpty) return imageUrls.first.attributes['content'];

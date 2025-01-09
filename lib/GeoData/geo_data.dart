@@ -4,11 +4,13 @@ import 'dart:convert';
 
 import 'package:jsonld2cards/Cards/Models/action_model.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
+import 'package:logging/logging.dart';
 
 import 'tile_util.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
-import 'dart:developer' as developer;
+
+final log = Logger('jsonld2cards.geo_data');
 
 class GeoData {
   LatLng latLong;
@@ -194,21 +196,17 @@ class GeoData {
       ); //base64Encode(tileResponse.bodyBytes);
       imgAlt = 'Map tile';
       imgCopyright = '\u{a9} ${DateTime.timestamp().year} OpenStreetMap';
-      developer.log(
+      log.info(
         'Done downloading image',
-        name: 'jsonld2cards.geo_data',
       );
     }).onError((error, stackTrace) {
-      developer.log(
+      log.warning(
         'Error downloading image',
-        name: 'jsonld2cards.geo_data',
-        error: error,
+        error,
       );
     });
-
-    developer.log(
+    log.info(
       'Done waiting to download image',
-      name: 'jsonld2cards.geo_data',
     );
   }
 
@@ -218,20 +216,14 @@ class GeoData {
     // todo language as variable
     var response = await http.get(Uri.parse(url));
     var decodedResponse = jsonDecode(response.body);
-    developer.log(
-      'Reverse Geocoded Position, got\n$decodedResponse',
-      name: 'jsonld2cards.geo_data',
-    );
+    log.info('Reverse Geocoded Position, got\n$decodedResponse');
     if (decodedResponse is Map<String, dynamic>) {
       addressString = decodedResponse['display_name'];
       addressData = decodedResponse['address'];
       name = decodedResponse['namedetails']?['name'];
       extraTags = decodedResponse['extratags'];
     } else {
-      developer.log(
-        'Error decoding reverse geocode request answer',
-        name: 'jsonld2cards.geo_data',
-      );
+      log.warning('Error decoding reverse geocode request answer');
     }
   }
 
@@ -292,10 +284,8 @@ class GeoData {
     }
     bool updateSuccess =
         await http.get(liveUri!).then((http.Response response) {
-      developer.log(
-        'Updated location and got response (${response.statusCode}) ${response.body}',
-        name: 'jsonld2cards.geo_data',
-      );
+      log.warning(
+          'Updated location and got response (${response.statusCode}) ${response.body}');
       try {
         String jsonString = response.body;
         Map<String, dynamic> responseJson = jsonDecode(jsonString);
@@ -303,20 +293,12 @@ class GeoData {
         latLong = LatLng(
             double.parse(geo['latitude']), double.parse(geo['longitude']));
       } on Error catch (e) {
-        developer.log(
-          'Error updating/ parsing location',
-          name: 'jsonld2cards.geo_data',
-          error: e,
-        );
+        log.warning('Error updating/ parsing location', e);
         return false;
       }
       return true;
     }).onError((error, stackTrace) {
-      developer.log(
-        'Error updating location',
-        name: 'jsonld2cards.geo_data',
-        error: error,
-      );
+      log.warning('Error updating location', error);
       return false;
     });
     if (updateSuccess) {
@@ -354,17 +336,12 @@ class GeoData {
           } else if (['http', 'https'].contains(jsonImageUri.scheme)) {
             imageUrl = jsonImageUri;
           } else {
-            developer.log(
-              'Unexpected scheme: ${jsonImageUri.scheme}\n$jsonImageUri',
-              name: 'jsonld2cards.card_rendering',
-            );
+            log.warning(
+                'Unexpected scheme: ${jsonImageUri.scheme}\n$jsonImageUri');
           }
         } else {
           //Unknown scheme
-          developer.log(
-            'ImageUri is not a uri\nimageUri: $contentUrl',
-            name: 'jsonld2cards.geo_data',
-          );
+          log.warning('ImageUri is not a uri\nimageUri: $contentUrl');
         }
       }
       if (image['name'] case String imageName) {
@@ -382,9 +359,8 @@ class GeoData {
       } else if (liveUriVar is String) {
         liveUri = Uri.tryParse(liveUriVar);
       } else {
-        developer.log(
+        log.warning(
           'LiveUri is not a uri or String (${liveUriVar.runtimeType}) liveUriVar: $liveUriVar',
-          name: 'jsonld2cards.geo_data',
         );
       }
     }

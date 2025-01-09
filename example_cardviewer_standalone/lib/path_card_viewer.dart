@@ -4,9 +4,9 @@ import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/Util/conversion.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:developer' as developer;
+import 'package:logging/logging.dart';
 
-
+final log = Logger('jsonld2cardsExample.cardViewer.path_card_viewer');
 
 class PathCardViewer extends StatefulWidget {
   const PathCardViewer({
@@ -21,6 +21,7 @@ class PathCardViewer extends StatefulWidget {
   final String liveLocationAuthority;
   final String liveLocationPathBase;
   final String? cardPath;
+
   /// If set, json should be rendered as a single card.
   /// If false, will render it using  [AdaptiveMultipleCards] feed-view
   final bool single;
@@ -45,13 +46,12 @@ class _PathCardViewerState extends State<PathCardViewer> {
 
   @override
   Widget build(BuildContext context) {
-      return FutureCards(
-        title: title,
-        futureMarkup: futureMarkup,
-        single: widget.single,
-        postFunction: widget.postFunction,
+    return FutureCards(
+      title: title,
+      futureMarkup: futureMarkup,
+      single: widget.single,
+      postFunction: widget.postFunction,
     );
-
   }
 
   Future<String?> fetchMarkup() async {
@@ -69,38 +69,35 @@ class _PathCardViewerState extends State<PathCardViewer> {
 
     try {
       http.Response response = await http.get(sourceUri);
-      developer.log(
+      log.info(
         'Requested markup at $sourceUri and got response (${response.statusCode}) ${response.body}',
-        name: 'jsonld2cards.card_viewer',
       );
       if (response.statusCode >= 400) {
-        return Future.error('Server responded with status code ${response.statusCode}');
+        return Future.error(
+            'Server responded with status code ${response.statusCode}');
       }
       return response.body;
-
     } on Error catch (e, st) {
-      developer.log(
-        'Error requesting markup $e',
-        name: 'jsonld2cards.card_viewer',
-        error: e,
-        stackTrace: st,
-      );
+      log.warning('Error requesting markup', e, st);
       return Future.error(e, st);
     }
   }
 }
 
 class FutureCards extends StatelessWidget {
-
   const FutureCards({
     super.key,
-    this.title, required this.futureMarkup, this.single = false, required this.postFunction,
+    this.title,
+    required this.futureMarkup,
+    this.single = false,
+    required this.postFunction,
   });
 
   final String? title;
   final Future<String?> futureMarkup;
   final bool single;
-  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage}) postFunction;
+  final Function(Uri uriToPost, {dynamic dataToPost, String successMessage})
+      postFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -112,12 +109,21 @@ class FutureCards extends StatelessWidget {
           if (markupString != null && markupString.isNotEmpty) {
             var decodedMarkup = tryDecode(markupString);
             if (single) {
-              return SingleCardDisplay(decodedMarkup: decodedMarkup, postFunction: postFunction,);
+              return SingleCardDisplay(
+                decodedMarkup: decodedMarkup,
+                postFunction: postFunction,
+              );
             }
             if (decodedMarkup is List<dynamic>) {
-              return AdaptiveMultipleCards(title: title, markups: decodedMarkup, postFunction: postFunction);
+              return AdaptiveMultipleCards(
+                  title: title,
+                  markups: decodedMarkup,
+                  postFunction: postFunction);
             } else if (decodedMarkup is Map<String, dynamic>) {
-              return AdaptiveMultipleCards(title: title, markups: [decodedMarkup], postFunction: postFunction);
+              return AdaptiveMultipleCards(
+                  title: title,
+                  markups: [decodedMarkup],
+                  postFunction: postFunction);
             }
             return const Text('Card has unexpected format');
           } else {
@@ -151,5 +157,3 @@ class FutureCards extends StatelessWidget {
     );
   }
 }
-
-

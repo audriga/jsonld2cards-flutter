@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
-import 'dart:developer' as developer;
+import 'package:logging/logging.dart';
+
+final log = Logger('jsonld2cards.cards.xre.contact_avatar');
 
 class ContactAvatar extends StatelessWidget {
   const ContactAvatar({
@@ -61,9 +63,8 @@ class ContactAvatar extends StatelessWidget {
         return CircleAvatar(
           backgroundImage: NetworkImage(ico),
         );
-      } catch (_) {
-        developer.log('Failed networkImage, falling back',
-            name: 'jsonld2cards.xre.avatar');
+      } catch (e) {
+        log.warning('Failed networkImage, falling back', e);
         return fallback;
       }
     }
@@ -140,9 +141,8 @@ class _MailAvatarState extends State<MailAvatar> {
                       backgroundImage: NetworkImage(ico),
                       radius: avatarRadius,
                     );
-                  } catch (_) {
-                    developer.log('Failed networkImage, falling back',
-                        name: 'jsonld2cards.xre.avatar');
+                  } catch (e) {
+                    log.warning('Failed networkImage, falling back', e);
                     return fallbackAvatar;
                   }
                 } else {
@@ -186,7 +186,7 @@ bool dkimHeaderValid(MimeMessage? msg) {
   if (sender != null && sender.hostName == 'audriga.com') {
     var plusParts = sender.email.split('+');
     if (plusParts.length > 1 && plusParts[1].startsWith('dkimvalid')) {
-      developer.log('MOCK Valid DKIM', name: 'jsonld2cards.xre.avatar');
+      log.warning('MOCK Valid DKIM');
       return true;
     }
   }

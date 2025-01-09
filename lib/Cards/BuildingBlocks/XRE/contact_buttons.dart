@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
 import 'package:http/http.dart' as http;
-import 'dart:developer' as developer;
 import 'package:jsonld2cards/l10n/app_localizations.dart';
+import 'package:logging/logging.dart';
+
+final log = Logger('jsonld2cards.contact_buttons');
 
 class EditContactButton extends StatelessWidget {
   const EditContactButton({
@@ -130,7 +132,7 @@ class AddContactButton extends StatelessWidget {
             withThumbnail: true);
         JsonEncoder encoder = const JsonEncoder.withIndent('  ');
         String prettyprint = encoder.convert(c?.toJson());
-        developer.log(prettyprint);
+        log.fine('Saving contact with these parameters $prettyprint');
         FlutterContacts.openExternalEdit(inserted.id,).then(postAddCallback);
       },
       child: Text(l.addToContacts),

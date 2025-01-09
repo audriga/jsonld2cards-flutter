@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/skonto.dart';
-// import 'dart:developer' as developer;
 
 void main() {
   test('Test Skonto segments', () {

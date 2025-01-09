@@ -6,7 +6,6 @@ import 'package:jsonld2cards/Cards/BuildingBlocks/uri_image.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
-import 'dart:developer' as developer;
 
 class BlogPostingCard extends StatelessWidget implements MarkupCard {
   const BlogPostingCard(this.cardData, {super.key});
@@ -16,13 +15,7 @@ class BlogPostingCard extends StatelessWidget implements MarkupCard {
   @override
   Widget build(BuildContext context) {
     // Properties the Card might have
-    
-    // TODO
-      developer.log(
-      'ay caramba',
-      name: 'jsonld2cards.default_card',
-    );
-    String? name = 'ayCaramba';
+    String? name = cardData.markup['headline'] ?? cardData.markup['name'];
     //String? name = cardData.markup['headline'] ?? cardData.markup['name'];
     String? description = cardData.markup['description'];
     var potentialAction = cardData.markup['potentialAction'];

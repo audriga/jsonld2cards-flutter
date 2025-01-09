@@ -1,12 +1,15 @@
 library;
 
+import 'package:logging/logging.dart';
+
 import 'card_rendering.dart';
 import 'Util/conversion.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:developer' as developer;
 
 // import '../Common/constants.dart';
+
+final log = Logger('jsonld2cards.card_viewer');
 
 /// Displays a single card or list of cards, based on the json-ld markup returned
 /// by the http resource (called in fetchMarkup)
@@ -92,21 +95,15 @@ class _CardViewerState extends State<CardViewer> {
 
     try {
       http.Response response = await http.get(sourceUri);
-      developer.log(
+      log.info(
         'Requested markup at $sourceUri and got response (${response.statusCode}) ${response.body}',
-        name: 'jsonld2cards.card_viewer',
       );
       if (response.statusCode >= 400) {
         return Future.error('Server responded with status code ${response.statusCode}');
       }
       return response.body;
     } on Error catch (e, st) {
-      developer.log(
-        'Error requesting markup $e',
-        name: 'jsonld2cards.card_viewer',
-        error: e,
-        stackTrace: st,
-      );
+      log.warning('Error requesting markup', e, st);
       return Future.error(e, st);
     }
 

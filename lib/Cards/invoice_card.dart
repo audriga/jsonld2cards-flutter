@@ -13,8 +13,10 @@ import 'package:jsonld2cards/Cards/Models/invoice_model.dart';
 import 'package:jsonld2cards/Cards/Models/schema_types.dart';
 import 'package:jsonld2cards/Cards/markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
-import 'dart:developer' as developer;
 import 'package:jsonld2cards/l10n/app_localizations.dart';
+import 'package:logging/logging.dart';
+
+final log = Logger('jsonld2cards.cards.invoice');
 
 // TODO XRE Invoice has been moved to a separate class called EInvoice.
 // Should this file be reverted back to support schema.org invoices?
@@ -131,11 +133,7 @@ class _InvoiceCardState extends State<InvoiceCard> {
     try {
       paidBadge = PaidBadge(json: invoice.json, context: context);
     } catch (e) {
-      developer.log(
-        'Error rendering paid badge',
-        error: e,
-        name: 'jsonld2cards.invoice',
-      );
+      log.warning('Error rendering paid badge', e);
       // todo error widget
     }
     Widget cardContent = Padding(
