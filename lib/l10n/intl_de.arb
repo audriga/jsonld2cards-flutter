@@ -119,5 +119,6 @@
   "mutuallyDefined": "Einvernehmlich definiert",
   "payment": "Zahlung",
   "amountTooHigh": "Betrag zu hoch",
-  "noticeXREGeneratedFromPDF": "Diese Rechnung wurde aus einen Anhang extrahiert"
+  "noticeXREGeneratedFromPDF": "Diese Rechnung wurde aus einen Anhang extrahiert",
+  "sMimeInvalid": "S/MIME Signatur ist vorhanden, aber ungültig"
 }

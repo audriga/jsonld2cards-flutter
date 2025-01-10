@@ -822,6 +822,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This invoice has been extracted from an attachment'**
   String get noticeXREGeneratedFromPDF;
+
+  /// No description provided for @sMimeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'S/MIME signature is present, but invalid.'**
+  String get sMimeInvalid;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

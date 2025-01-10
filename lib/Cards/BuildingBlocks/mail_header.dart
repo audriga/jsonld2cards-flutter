@@ -85,7 +85,7 @@ class _MailHeaderState extends State<MailHeader> {
     if (widget.cardData.message != null) {
       avatar = Padding(
         padding: const EdgeInsets.only(right: 4.0),
-        child: MailAvatar(message: widget.cardData.message!),
+        child: MailAvatar(message: widget.cardData.message!, ),
       );
     }
 

@@ -74,7 +74,7 @@ class ContactAvatar extends StatelessWidget {
 
 class MailAvatar extends StatefulWidget {
   const MailAvatar({super.key, required this.message});
-
+  // todo add lock here, if smime valid?
   final MimeMessage message;
 
   @override

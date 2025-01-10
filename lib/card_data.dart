@@ -38,17 +38,24 @@ class CardData {
   List<Attachment>? otherAttachments;
   List<HintData> hints;
 
-  CardData(this.markup,
-      {this.postFunction,
-      this.preview = false,
-      this.topBar = false,
-      this.additionalButtons,
-      this.message,
-      this.showMessageHeader = false,
-      this.sourceFile,
-      this.otherAttachments,
-      List<HintData>? hints})
-      : hints = hints ?? [];
+  // False means either sMime invalid or not present.
+  bool sMimeValid;
+  bool sMimeInvalid;
+
+  CardData(
+    this.markup, {
+    this.postFunction,
+    this.preview = false,
+    this.topBar = false,
+    this.additionalButtons,
+    this.message,
+    this.showMessageHeader = false,
+    this.sourceFile,
+    this.otherAttachments,
+    List<HintData>? hints,
+    this.sMimeValid = false,
+    this.sMimeInvalid = false,
+  }) : hints = hints ?? [];
 
   bool get markupIsList =>
       (markup is List<dynamic>) || (markup is List<Map<String, dynamic>>);
@@ -73,6 +80,8 @@ class CardData {
     Attachment? sourceFile,
     List<Attachment>? otherAttachments,
     List<HintData>? hints,
+    bool? sMimeValid,
+    bool? sMimeInvalid,
   })  : markup = markup ?? o.markup,
         postFunction = postFunction ?? o.postFunction,
         preview = preview ?? o.preview,
@@ -82,5 +91,7 @@ class CardData {
         showMessageHeader = showMessageHeader ?? o.showMessageHeader,
         sourceFile = sourceFile ?? o.sourceFile,
         otherAttachments = otherAttachments ?? o.otherAttachments,
-        hints = hints ?? o.hints;
+        hints = hints ?? o.hints,
+        sMimeValid = sMimeValid ?? o.sMimeValid,
+        sMimeInvalid = sMimeInvalid ?? o.sMimeInvalid;
 }

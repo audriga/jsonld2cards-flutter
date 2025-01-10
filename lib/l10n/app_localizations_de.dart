@@ -770,4 +770,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noticeXREGeneratedFromPDF => 'Diese Rechnung wurde aus einen Anhang extrahiert';
+
+  @override
+  String get sMimeInvalid => 'S/MIME Signatur ist vorhanden, aber ungültig';
 }

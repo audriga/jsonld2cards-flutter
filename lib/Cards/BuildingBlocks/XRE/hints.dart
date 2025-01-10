@@ -20,6 +20,7 @@ enum HintProblemType {
   bt3Not380, // Not a commercial invoice
   bt24Unknown, // BT 24 unknown or unsupported type
   ubl, // We know this is UBL and we still need to do some work with ubl
+  sMimeInvalid, // Mail had SMime Header but was invalid
 }
 
 class HintData {
@@ -98,5 +99,6 @@ class HintsHeader extends StatelessWidget {
     HintProblemType.bt3Not380 => l.xRechnungTypeBT3Not380,
     HintProblemType.bt24Unknown => l.xRechnungSpecificationBT24UnknownUnsupported,
     HintProblemType.ubl => l.xRechnungInUBLFormatNotSupported,
+    HintProblemType.sMimeInvalid => l.sMimeInvalid,
   };
 }

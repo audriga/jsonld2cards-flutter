@@ -770,4 +770,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get noticeXREGeneratedFromPDF => 'This invoice has been extracted from an attachment';
+
+  @override
+  String get sMimeInvalid => 'S/MIME signature is present, but invalid.';
 }

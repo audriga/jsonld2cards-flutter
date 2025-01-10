@@ -119,5 +119,6 @@
   "mutuallyDefined": "Mutually defined",
   "payment": "Payment",
   "amountTooHigh": "Amount too high",
-  "noticeXREGeneratedFromPDF": "This invoice has been extracted from an attachment"
+  "noticeXREGeneratedFromPDF": "This invoice has been extracted from an attachment",
+  "sMimeInvalid": "S/MIME signature is present, but invalid."
 }
