@@ -94,7 +94,11 @@ class _PersonTileState extends State<PersonTile> {
       isValidSeller = widget.cardData.dkimValid;
     }
     var isBuyer = widget.personData?.party == PartyType.buyer;
-    if (isSeller || isBuyer) {
+    var dkimValid = widget.cardData.dkimValid;
+    var sMimeNotInvalid = !widget.cardData.sMimeInvalid;
+    var sMimeValid = widget.cardData.sMimeValid;
+    var dkimNotInvalid = !widget.cardData.dkimInvalid;
+    if ((isSeller || isBuyer) && ((dkimValid && sMimeNotInvalid) || (sMimeValid && dkimNotInvalid))) {
       var pictureAvatar = FutureBuilder(
         future: contact,
         builder: (context, snapshot) => switch (snapshot.connectionState) {
