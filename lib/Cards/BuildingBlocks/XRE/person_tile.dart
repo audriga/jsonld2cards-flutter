@@ -89,16 +89,13 @@ class _PersonTileState extends State<PersonTile> {
     Widget avatar;
 
     var isSeller = widget.personData?.party == PartyType.seller;
-    var isValidSeller = false;
-    if (isSeller) {
-      isValidSeller = widget.cardData.dkimValid;
-    }
     var isBuyer = widget.personData?.party == PartyType.buyer;
     var dkimValid = widget.cardData.dkimValid;
     var sMimeNotInvalid = !widget.cardData.sMimeInvalid;
     var sMimeValid = widget.cardData.sMimeValid;
     var dkimNotInvalid = !widget.cardData.dkimInvalid;
-    if ((isSeller || isBuyer) && ((dkimValid && sMimeNotInvalid) || (sMimeValid && dkimNotInvalid))) {
+    var tryFavIcon = ((dkimValid && sMimeNotInvalid) || (sMimeValid && dkimNotInvalid));
+    if ((isSeller || isBuyer) && tryFavIcon) {
       var pictureAvatar = FutureBuilder(
         future: contact,
         builder: (context, snapshot) => switch (snapshot.connectionState) {
@@ -106,7 +103,6 @@ class _PersonTileState extends State<PersonTile> {
                   contacts: [snapshot.data].nonNulls.toList(),
                   partyData: widget.personData,
                   fallback: fallbackAvatar,
-                  tryFavIcon: isValidSeller,
                   senderAddress: widget.cardData.message?.decodeSender().firstOrNull,
                 ),
           _ => fallbackAvatar
@@ -206,13 +202,11 @@ class _PersonTileState extends State<PersonTile> {
                                 )
                               : AddContactButton(
                                   personData: widget.personData,
-                                  tryFavIcon: isValidSeller,
-                                  senderAddress: widget.cardData.message?.decodeSender().firstOrNull,
+                                  tryFavIcon: tryFavIcon,
                                   postAddCallback: refreshContact),
                           _ => AddContactButton(
                               personData: widget.personData,
-                              tryFavIcon: isValidSeller,
-                              senderAddress: widget.cardData.message?.decodeSender().firstOrNull,
+                              tryFavIcon: tryFavIcon,
                               postAddCallback: refreshContact)
                         },
                       ),

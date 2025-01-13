@@ -1,5 +1,10 @@
 library;
 
+import 'package:enough_mail/codecs.dart';
+import 'package:logging/logging.dart';
+
+final log = Logger('jsonld2cards.xre.trading_party');
+
 enum PartyType {
   seller(
     bgKey: 'bg_4_seller',
@@ -288,4 +293,41 @@ String renderAddressText(PostalAddress address) {
   }
   var addressText = addressBuffer.toString();
   return addressText;
+}
+
+String? getFavIconAddress(PartyData partyData) {
+  MailAddress? partyAddress;
+  if (partyData.electronicAddress != null) {
+    try {
+      partyAddress = MailAddress.parse(partyData.electronicAddress!);
+    } catch (e, st) {
+      log.warning('Error occurred trying to parse party email', e, st);
+    }
+  } else if (partyData.contact.emailAddress != null) {
+    try {
+      partyAddress = MailAddress.parse(partyData.contact.emailAddress!);
+    } catch (e, st) {
+      log.warning('Error occurred trying to parse party contact point email', e, st);
+    }
+  }
+
+
+  if (partyAddress != null) {
+    var hostName = partyAddress.hostName;
+    if ([
+      'gmail.com', 'googlemail.com',
+      'gmx.de', 'gmx.net',
+      'web.de',
+      't-online.de',
+      'freenet.de',
+      'mailbox.org',
+      'posteo.de', 'posteo.com',
+    ].contains(hostName)) {
+      // skip fetching the favicon from freemailers
+      return null;
+    }
+    var ico = 'https://icons.duckduckgo.com/ip3/$hostName.ico';
+    return ico;
+  }
+  return null;
 }

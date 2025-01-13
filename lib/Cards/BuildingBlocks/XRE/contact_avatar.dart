@@ -16,7 +16,7 @@ class ContactAvatar extends StatelessWidget {
     required this.contacts,
     required this.partyData,
     required this.fallback,
-    required this.tryFavIcon,
+    // required this.tryFavIcon,
     this.senderAddress,
   });
 
@@ -24,7 +24,7 @@ class ContactAvatar extends StatelessWidget {
   final List<Contact> contacts;
   final PartyData? partyData;
   final Widget fallback;
-  final bool tryFavIcon; // try to use favicon from mail address
+  // final bool tryFavIcon; // try to use favicon from mail address
   final MailAddress? senderAddress;
 
   @override
@@ -45,37 +45,12 @@ class ContactAvatar extends StatelessWidget {
         }
       }
     }
-    MailAddress? partyAddress;
-    if (partyData!.electronicAddress != null) {
-      try {
-        partyAddress = MailAddress.parse(partyData!.electronicAddress!);
-      } catch (e, st) {
-        log.warning('Error occurred trying to parse party email', e, st);
-      }
-    } else if (partyData!.contact.emailAddress != null) {
-      try {
-        partyAddress = MailAddress.parse(partyData!.contact.emailAddress!);
-      } catch (e, st) {
-        log.warning('Error occurred trying to parse party contact point email', e, st);
-      }
-    }
+    return getFavIconAvatar();
+  }
 
-
-    if (tryFavIcon && partyAddress != null) {
-      var hostName = senderAddress!.hostName;
-      if ([
-        'gmail.com', 'googlemail.com',
-        'gmx.de', 'gmx.net',
-        'web.de',
-        't-online.de',
-        'freenet.de',
-        'mailbox.org',
-        'posteo.de', 'posteo.com',
-      ].contains(hostName)) {
-        // skip fetching the favicon from freemailers
-        return fallback;
-      }
-      var ico = 'https://icons.duckduckgo.com/ip3/$hostName.ico';
+  Widget getFavIconAvatar() {
+    String? ico = getFavIconAddress(partyData!);
+    if (ico != null) {
       try {
         return CircleAvatar(
           backgroundImage: NetworkImage(ico),

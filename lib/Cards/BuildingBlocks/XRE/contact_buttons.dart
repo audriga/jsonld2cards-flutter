@@ -3,7 +3,6 @@ library;
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:enough_mail/codecs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
@@ -11,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:jsonld2cards/l10n/app_localizations.dart';
 import 'package:logging/logging.dart';
 
-final log = Logger('jsonld2cards.contact_buttons');
+final log = Logger('jsonld2cards.xre.contact_buttons');
 
 class EditContactButton extends StatelessWidget {
   const EditContactButton({
@@ -64,13 +63,11 @@ class AddContactButton extends StatelessWidget {
     required this.personData,
     required this.postAddCallback,
     required this.tryFavIcon,
-    required this.senderAddress,
   });
 
   final PartyData? personData;
   final Function(Contact? contact) postAddCallback;
   final bool tryFavIcon;
-  final MailAddress? senderAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -78,14 +75,15 @@ class AddContactButton extends StatelessWidget {
     return TextButton(
       onPressed: () async {
         Uint8List? iconBytes;
-        if (tryFavIcon && senderAddress != null) {
-          var hostName = senderAddress!.hostName;
-          var ico = Uri.tryParse(
-              'https://icons.duckduckgo.com/ip3/$hostName.ico');
-          if (ico != null) {
-            var response = await http.get(ico);
-            if (response.statusCode == 200) {
-              iconBytes = response.bodyBytes;
+        if (tryFavIcon && personData != null) {
+          var icoAddress = getFavIconAddress(personData!);
+          if (icoAddress != null) {
+            var icoUri = Uri.tryParse(icoAddress);
+            if (icoUri != null) {
+              var response = await http.get(icoUri);
+              if (response.statusCode == 200) {
+                iconBytes = response.bodyBytes;
+              }
             }
           }
         }
