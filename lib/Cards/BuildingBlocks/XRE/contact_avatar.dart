@@ -45,7 +45,23 @@ class ContactAvatar extends StatelessWidget {
         }
       }
     }
-    if (tryFavIcon && senderAddress != null) {
+    MailAddress? partyAddress;
+    if (partyData!.electronicAddress != null) {
+      try {
+        partyAddress = MailAddress.parse(partyData!.electronicAddress!);
+      } catch (e, st) {
+        log.warning('Error occurred trying to parse party email', e, st);
+      }
+    } else if (partyData!.contact.emailAddress != null) {
+      try {
+        partyAddress = MailAddress.parse(partyData!.contact.emailAddress!);
+      } catch (e, st) {
+        log.warning('Error occurred trying to parse party contact point email', e, st);
+      }
+    }
+
+
+    if (tryFavIcon && partyAddress != null) {
       var hostName = senderAddress!.hostName;
       if ([
         'gmail.com', 'googlemail.com',
