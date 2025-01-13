@@ -667,7 +667,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get thePDFContainsNoAttachments => 'The PDF contains no attachments';
 
   @override
-  String get theEmailContainsNoXRechnungAttachments => 'The email contains no eInvoice attachments';
+  String get theEmailContainsNonXRechnungAttachments => 'The email contains non-eInvoice attachments';
 
   @override
   String get theEmailContainsNoXRechnung => 'The email contains no eInvoice';

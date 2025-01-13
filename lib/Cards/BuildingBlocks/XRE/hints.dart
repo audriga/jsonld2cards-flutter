@@ -94,7 +94,7 @@ class HintsHeader extends StatelessWidget {
     HintProblemType.failedParseXml => l.theXMLFileNotValidXRechnung,
     HintProblemType.failedParsePdf => l.thePDFContainsAnXMLButNotValidXRechnung,
     HintProblemType.pdfContainsNoAttachments => l.thePDFContainsNoAttachments,
-    HintProblemType.nonXREAttachment => l.theEmailContainsNoXRechnungAttachments,
+    HintProblemType.nonXREAttachment => l.theEmailContainsNonXRechnungAttachments,
     HintProblemType.noStructuredData => l.theEmailContainsNoXRechnung,
     HintProblemType.multipleStructuredData => l.theEmailContainsMultipleXRechnungOnlyOneDisplayed,
     HintProblemType.bt3Not380 => l.xRechnungTypeBT3Not380,

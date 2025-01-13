@@ -85,7 +85,7 @@
   "theXMLFileNotValidXRechnung": "The XML file is not a valid eInvoice",
   "thePDFContainsAnXMLButNotValidXRechnung": "The PDF contains an XML attachment, but it is not a valid eInvoice",
   "thePDFContainsNoAttachments": "The PDF contains no attachments",
-  "theEmailContainsNoXRechnungAttachments": "The email contains no eInvoice attachments",
+  "theEmailContainsNonXRechnungAttachments": "The email contains non-eInvoice attachments",
   "theEmailContainsNoXRechnung": "The email contains no eInvoice",
   "theEmailContainsMultipleXRechnungOnlyOneDisplayed": "The email contains multiple eInvoiceen, only one of them is displayed",
   "xRechnungTypeBT3Not380": "XRechnung type (BT-3) not 380 (Goods/Commercial Invoice)",

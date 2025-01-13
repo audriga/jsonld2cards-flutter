@@ -613,11 +613,11 @@ abstract class AppLocalizations {
   /// **'The PDF contains no attachments'**
   String get thePDFContainsNoAttachments;
 
-  /// No description provided for @theEmailContainsNoXRechnungAttachments.
+  /// No description provided for @theEmailContainsNonXRechnungAttachments.
   ///
   /// In en, this message translates to:
-  /// **'The email contains no eInvoice attachments'**
-  String get theEmailContainsNoXRechnungAttachments;
+  /// **'The email contains non-eInvoice attachments'**
+  String get theEmailContainsNonXRechnungAttachments;
 
   /// No description provided for @theEmailContainsNoXRechnung.
   ///

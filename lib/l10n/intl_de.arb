@@ -85,7 +85,7 @@
   "theXMLFileNotValidXRechnung": "XML datei ist keine gültige XRechung",
   "thePDFContainsAnXMLButNotValidXRechnung": "PDF enthält xml anhang, aber keine gültige XRechnung",
   "thePDFContainsNoAttachments": "PDF enthält keine Anhänge",
-  "theEmailContainsNoXRechnungAttachments": "Mail enthält keine XRechnung Anhänge",
+  "theEmailContainsNonXRechnungAttachments": "Mail enthält nicht-XRechnung Anhänge",
   "theEmailContainsNoXRechnung": "Mail enthält keine XRechnung",
   "theEmailContainsMultipleXRechnungOnlyOneDisplayed": "Mail enthält mehre XRechnungen, nur eine davon wird angezeigt",
   "xRechnungTypeBT3Not380": "XRechnungs Typ (BT-3) nicht 380 (Waren-/ Handelsrechnung)",
