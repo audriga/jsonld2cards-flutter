@@ -776,4 +776,22 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noDKIM => 'Kein DKIM header gefunden';
+
+  @override
+  String get forwardedEmail => 'Email weitergeleitet';
+
+  @override
+  String get couldNotForwardEmail => 'Konnte Email nicht weiterleiten';
+
+  @override
+  String get archivedEmail => 'Emaiil Archiviert';
+
+  @override
+  String get couldNotArchiveEmail => 'Konnte Email nicht archivieren';
+
+  @override
+  String get deletedEmail => 'Email gelöscht';
+
+  @override
+  String get couldNotDeleteEmail => 'Konnte Email nicht löschen';
 }

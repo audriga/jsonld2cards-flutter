@@ -121,5 +121,11 @@
   "amountTooHigh": "Amount too high",
   "noticeXREGeneratedFromPDF": "This invoice has been extracted from an attachment",
   "sMimeInvalid": "S/MIME signature is present, but invalid.",
-  "noDKIM": "No DKIM header was found."
+  "noDKIM": "No DKIM header was found.",
+  "forwardedEmail": "Forwared email",
+  "couldNotForwardEmail": "Could not forward email",
+  "archivedEmail": "Archived email",
+  "couldNotArchiveEmail": "Could not archive email",
+  "deletedEmail": "Deleted email",
+  "couldNotDeleteEmail": "Could not delete email"
 }

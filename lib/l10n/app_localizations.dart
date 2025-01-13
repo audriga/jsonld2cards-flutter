@@ -834,6 +834,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No DKIM header was found.'**
   String get noDKIM;
+
+  /// No description provided for @forwardedEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Forwared email'**
+  String get forwardedEmail;
+
+  /// No description provided for @couldNotForwardEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not forward email'**
+  String get couldNotForwardEmail;
+
+  /// No description provided for @archivedEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived email'**
+  String get archivedEmail;
+
+  /// No description provided for @couldNotArchiveEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not archive email'**
+  String get couldNotArchiveEmail;
+
+  /// No description provided for @deletedEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted email'**
+  String get deletedEmail;
+
+  /// No description provided for @couldNotDeleteEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete email'**
+  String get couldNotDeleteEmail;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

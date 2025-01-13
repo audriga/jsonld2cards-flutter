@@ -121,5 +121,11 @@
   "amountTooHigh": "Betrag zu hoch",
   "noticeXREGeneratedFromPDF": "Diese Rechnung wurde aus einen Anhang extrahiert",
   "sMimeInvalid": "S/MIME Signatur ist vorhanden, aber ungültig",
-  "noDKIM": "Kein DKIM header gefunden"
+  "noDKIM": "Kein DKIM header gefunden",
+  "forwardedEmail": "Email weitergeleitet",
+  "couldNotForwardEmail": "Konnte Email nicht weiterleiten",
+  "archivedEmail": "Emaiil Archiviert",
+  "couldNotArchiveEmail": "Konnte Email nicht archivieren",
+  "deletedEmail": "Email gelöscht",
+  "couldNotDeleteEmail": "Konnte Email nicht löschen"
 }

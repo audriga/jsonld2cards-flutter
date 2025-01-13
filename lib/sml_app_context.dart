@@ -4,6 +4,8 @@ import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 
+import 'l10n/app_localizations.dart';
+
 typedef SendEmailCallback = Function(
     {dynamic dataToSend, String? subject, String? recipient});
 // todo define this for event/ ical potential actions
@@ -20,7 +22,7 @@ typedef SaveFileCallback = Function(
 typedef ForwardFileCallback = Function(
     dynamic fileData, String? mimeType, String? fileName);
 typedef ForwardEmailAddresses = Future<List<String>> Function();
-typedef ForwardEmailCallback = Function(
+typedef ForwardEmailCallback = Future<bool> Function(
     String address, MimeMessage emailToForward);
 typedef ReloadContacts = Function();
 typedef ContactList = Future<List<Contact>> Function();
@@ -28,7 +30,7 @@ typedef FeedbackCallback = Function({String? body});
 typedef ArchiveMessageCallback = Future<bool> Function(MimeMessage message);
 typedef DeleteMessageCallback = Future<DeleteResult> Function(
     MimeMessage message);
-typedef RemoveFromMailListCallback = Future<void> Function(MimeMessage message);
+typedef RemoveFromMailListCallback = void Function(MimeMessage message);
 
 SMLAppContext? globalSMLAppContext;
 
@@ -68,12 +70,12 @@ class SMLAppContext {
   });
 }
 
-void forwardMessage(
-    String emailAddress, MimeMessage message, BuildContext context) {
-  globalSMLAppContext!.forwardEmailCallback!(emailAddress, message);
+Future<void> forwardMessage(
+    String emailAddress, MimeMessage message, BuildContext context) async {
+  var forwardSuccess = await globalSMLAppContext!.forwardEmailCallback!(emailAddress, message);
   if (context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Nachricht weitergeleitet')));
+    AppLocalizations l = AppLocalizations.of(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(forwardSuccess ? l.forwardedEmail: l.couldNotForwardEmail)));
   }
   if (globalSMLAppContext?.removeFromMailListCallback != null) {
     globalSMLAppContext!.removeFromMailListCallback!(message);
@@ -85,16 +87,17 @@ void forwardMessage(
 
 Future<void> archiveMessage(MimeMessage message, BuildContext context) async {
   if (globalSMLAppContext?.archiveMessageCallback != null) {
-    await globalSMLAppContext!.archiveMessageCallback!(message);
+    var archiveSuccess = await globalSMLAppContext!.archiveMessageCallback!(message);
     if (context.mounted) {
+      AppLocalizations l = AppLocalizations.of(context);
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Nachricht archiviert')));
-    }
-    if (globalSMLAppContext?.removeFromMailListCallback != null) {
-      globalSMLAppContext!.removeFromMailListCallback!(message);
+          .showSnackBar( SnackBar(content: Text(archiveSuccess? l.archivedEmail : l.couldNotArchiveEmail)));
     }
     if (context.mounted) {
       Navigator.of(context).pop();
+    }
+    if (globalSMLAppContext?.removeFromMailListCallback != null) {
+      globalSMLAppContext!.removeFromMailListCallback!(message);
     }
   }
 }
@@ -103,8 +106,9 @@ Future<void> deleteMessage(MimeMessage message, BuildContext context) async {
   if (globalSMLAppContext?.deleteMessageCallback != null) {
     await globalSMLAppContext!.deleteMessageCallback!(message);
     if (context.mounted) {
+      AppLocalizations l = AppLocalizations.of(context);
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Nachricht gelöscht')));
+          .showSnackBar(SnackBar(content: Text(l.deletedEmail)));
     }
     if (globalSMLAppContext?.removeFromMailListCallback != null) {
       globalSMLAppContext!.removeFromMailListCallback!(message);
