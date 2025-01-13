@@ -91,9 +91,7 @@ class _PersonTileState extends State<PersonTile> {
     var isSeller = widget.personData?.party == PartyType.seller;
     var isValidSeller = false;
     if (isSeller) {
-      var msg = widget.cardData.message;
-      // todo encoding?
-      isValidSeller = dkimHeaderValid(msg);
+      isValidSeller = widget.cardData.dkimValid;
     }
     var isBuyer = widget.personData?.party == PartyType.buyer;
     if (isSeller || isBuyer) {

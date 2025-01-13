@@ -85,7 +85,7 @@ class _MailHeaderState extends State<MailHeader> {
     if (widget.cardData.message != null) {
       avatar = Padding(
         padding: const EdgeInsets.only(right: 4.0),
-        child: MailAvatar(message: widget.cardData.message!, ),
+        child: MailAvatar(cardData: widget.cardData, ),
       );
     }
 
@@ -113,10 +113,17 @@ class _MailHeaderState extends State<MailHeader> {
           ),
         );
       // }
+        Widget? sMimeLock;
+        if (widget.cardData.sMimeValid) {
+          sMimeLock = Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: Icon(Icons.lock, size: fontSize * 0.6,),
+          );
+        }
       senderWithAvatar = Padding(
         padding: insets,
         child: Row(
-          children: [avatar, senderRendered].nonNulls.toList(),
+          children: [avatar, sMimeLock, senderRendered].nonNulls.toList(),
         ),
       );
     }

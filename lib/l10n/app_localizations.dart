@@ -828,6 +828,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'S/MIME signature is present, but invalid.'**
   String get sMimeInvalid;
+
+  /// No description provided for @noDKIM.
+  ///
+  /// In en, this message translates to:
+  /// **'No DKIM header was found.'**
+  String get noDKIM;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

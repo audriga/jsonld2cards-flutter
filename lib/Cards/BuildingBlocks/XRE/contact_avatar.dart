@@ -4,6 +4,7 @@ import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/trading_party.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:logging/logging.dart';
 
@@ -73,9 +74,8 @@ class ContactAvatar extends StatelessWidget {
 }
 
 class MailAvatar extends StatefulWidget {
-  const MailAvatar({super.key, required this.message});
-  // todo add lock here, if smime valid?
-  final MimeMessage message;
+  const MailAvatar({super.key, required this.cardData});
+  final CardData cardData;
 
   @override
   State<MailAvatar> createState() => _MailAvatarState();
@@ -91,7 +91,7 @@ class _MailAvatarState extends State<MailAvatar> {
     double fontSize = textStyle?.fontSize ?? 12;
     var avatarRadius = fontSize / 2;
     // var senderDKIMValid = dkimHeaderValid(widget.message);
-    var senders = widget.message.decodeSender();
+    var senders = widget.cardData.message!.decodeSender();
     var sender = senders.firstOrNull;
     var personalName = sender?.personalName;
     Widget avatarBase;
@@ -119,7 +119,11 @@ class _MailAvatarState extends State<MailAvatar> {
       radius: avatarRadius,
       child: avatarBase,
     );
-    if (dkimHeaderValid(widget.message) && sender != null) {
+    var dkimValid = widget.cardData.dkimValid;
+    var sMimeNotInvalid = !widget.cardData.sMimeInvalid;
+    var sMimeValid = widget.cardData.sMimeValid;
+    var dkimNotInvalid = !widget.cardData.dkimInvalid;
+    if (((dkimValid && sMimeNotInvalid) || (sMimeValid && dkimNotInvalid))  && sender != null) {
       return FutureBuilder(
         future: futureContact,
         builder: (context, snapshot) =>
@@ -158,7 +162,7 @@ class _MailAvatarState extends State<MailAvatar> {
   }
 
   Future<Contact?> _findContact() async {
-    var senders = widget.message.decodeSender();
+    var senders = widget.cardData.message!.decodeSender();
     var sender = senders.firstOrNull;
     if (sender == null ||
         globalSMLAppContext == null ||
@@ -178,30 +182,3 @@ class _MailAvatarState extends State<MailAvatar> {
   }
 }
 
-bool dkimHeaderValid(MimeMessage? msg) {
-  // todo encoding?
-  var sender = msg
-      ?.decodeSender()
-      .firstOrNull;
-  if (sender != null && sender.hostName == 'audriga.com') {
-    var plusParts = sender.email.split('+');
-    if (plusParts.length > 1 && plusParts[1].startsWith('dkimvalid')) {
-      log.warning('MOCK Valid DKIM');
-      return true;
-    }
-  }
-  var isValid = false;
-  var authResHeader = msg?.headers
-      ?.where((h) => h.name == 'Authentication-Results')
-      .firstOrNull
-      ?.value;
-  if (authResHeader != null && authResHeader.isNotEmpty) {
-    var headerParts = authResHeader.split(';').map((hp) => hp.trim());
-    var dkimPart =
-        headerParts
-            .where((hp) => hp.startsWith('dkim='))
-            .firstOrNull;
-    isValid = dkimPart == 'dkim=pass';
-  }
-  return isValid;
-}

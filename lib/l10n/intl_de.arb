@@ -120,5 +120,6 @@
   "payment": "Zahlung",
   "amountTooHigh": "Betrag zu hoch",
   "noticeXREGeneratedFromPDF": "Diese Rechnung wurde aus einen Anhang extrahiert",
-  "sMimeInvalid": "S/MIME Signatur ist vorhanden, aber ungültig"
+  "sMimeInvalid": "S/MIME Signatur ist vorhanden, aber ungültig",
+  "noDKIM": "Kein DKIM header gefunden"
 }

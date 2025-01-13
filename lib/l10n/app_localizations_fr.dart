@@ -773,4 +773,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get sMimeInvalid => 'S/MIME signature is present, but invalid.';
+
+  @override
+  String get noDKIM => 'No DKIM header was found.';
 }

@@ -21,6 +21,7 @@ enum HintProblemType {
   bt24Unknown, // BT 24 unknown or unsupported type
   ubl, // We know this is UBL and we still need to do some work with ubl
   sMimeInvalid, // Mail had SMime Header but was invalid
+  noDKIM, // DKIM Missing
 }
 
 class HintData {
@@ -100,5 +101,6 @@ class HintsHeader extends StatelessWidget {
     HintProblemType.bt24Unknown => l.xRechnungSpecificationBT24UnknownUnsupported,
     HintProblemType.ubl => l.xRechnungInUBLFormatNotSupported,
     HintProblemType.sMimeInvalid => l.sMimeInvalid,
+    HintProblemType.noDKIM => l.noDKIM,
   };
 }
