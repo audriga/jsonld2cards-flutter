@@ -870,6 +870,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not delete email'**
   String get couldNotDeleteEmail;
+
+  /// No description provided for @movedMailToInbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved email to inbox'**
+  String get movedMailToInbox;
+
+  /// No description provided for @couldNotMoveMailToInbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not move email to inbox'**
+  String get couldNotMoveMailToInbox;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

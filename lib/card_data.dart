@@ -40,10 +40,13 @@ class CardData {
 
   /// True, of sMime valid, false means either sMime invalid or not present.
   bool sMimeValid;
+
   // True means sMime invalid, false means either sMime valid, or not present.
   bool sMimeInvalid;
   bool dkimValid;
   bool dkimInvalid;
+  bool isArchived;
+  bool isDeleted;
 
   CardData(
     this.markup, {
@@ -60,6 +63,8 @@ class CardData {
     this.sMimeInvalid = false,
     this.dkimValid = false,
     this.dkimInvalid = false,
+    this.isArchived = false,
+    this.isDeleted = false,
   }) : hints = hints ?? [];
 
   bool get markupIsList =>
@@ -89,6 +94,8 @@ class CardData {
     bool? sMimeInvalid,
     bool? dkimValid,
     bool? dkimInvalid,
+    bool? isArchived,
+    bool? isDeleted,
   })  : markup = markup ?? o.markup,
         postFunction = postFunction ?? o.postFunction,
         preview = preview ?? o.preview,
@@ -102,5 +109,7 @@ class CardData {
         sMimeValid = sMimeValid ?? o.sMimeValid,
         sMimeInvalid = sMimeInvalid ?? o.sMimeInvalid,
         dkimValid = dkimValid ?? o.dkimValid,
-        dkimInvalid = dkimInvalid ?? o.dkimInvalid;
+        dkimInvalid = dkimInvalid ?? o.dkimInvalid,
+        isArchived = isArchived ?? o.isArchived,
+        isDeleted = isDeleted ?? o.isDeleted;
 }

@@ -127,5 +127,7 @@
   "archivedEmail": "Emaiil Archiviert",
   "couldNotArchiveEmail": "Konnte Email nicht archivieren",
   "deletedEmail": "Email gelöscht",
-  "couldNotDeleteEmail": "Konnte Email nicht löschen"
+  "couldNotDeleteEmail": "Konnte Email nicht löschen",
+  "movedMailToInbox": "Email zur Inbox verschoben",
+  "couldNotMoveMailToInbox": "Konnte Email nicht zur Inbox verschieben"
 }

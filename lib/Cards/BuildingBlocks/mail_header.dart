@@ -59,18 +59,18 @@ class _MailHeaderState extends State<MailHeader> {
           alignment: Alignment.topLeft,
           child: IconButton(
               onPressed: () async {
-                await deleteMessage(widget.cardData.message!, context);
+                !widget.cardData.isDeleted ? await deleteMessage(widget.cardData.message!, context): await moveMessageToInbox(widget.cardData.message!, context);
               },
-              icon: const Icon(Icons.delete)),
+              icon: Icon(!widget.cardData.isDeleted ? Icons.delete : Icons.move_to_inbox)),
         ),
       if (widget.cardData.message != null)
         Align(
           alignment: Alignment.topLeft,
           child: IconButton(
               onPressed: () async {
-                await archiveMessage(widget.cardData.message!, context);
+                !widget.cardData.isArchived ?  await archiveMessage(widget.cardData.message!, context) : await moveMessageToInbox(widget.cardData.message!, context);
               },
-              icon: const Icon(Icons.archive)),
+              icon: Icon(!widget.cardData.isArchived ? Icons.archive : Icons.unarchive)),
         ),
     ];
     ThemeData theme = Theme.of(context);

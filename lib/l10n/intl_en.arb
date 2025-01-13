@@ -127,5 +127,7 @@
   "archivedEmail": "Archived email",
   "couldNotArchiveEmail": "Could not archive email",
   "deletedEmail": "Deleted email",
-  "couldNotDeleteEmail": "Could not delete email"
+  "couldNotDeleteEmail": "Could not delete email",
+  "movedMailToInbox": "Moved email to inbox",
+  "couldNotMoveMailToInbox": "Could not move email to inbox"
 }

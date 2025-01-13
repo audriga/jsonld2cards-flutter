@@ -30,6 +30,8 @@ typedef FeedbackCallback = Function({String? body});
 typedef ArchiveMessageCallback = Future<bool> Function(MimeMessage message);
 typedef DeleteMessageCallback = Future<DeleteResult> Function(
     MimeMessage message);
+typedef MoveMessageToInboxCallback = Future<bool> Function(
+    MimeMessage message);
 typedef RemoveFromMailListCallback = void Function(MimeMessage message);
 
 SMLAppContext? globalSMLAppContext;
@@ -50,6 +52,7 @@ class SMLAppContext {
   FeedbackCallback? feedbackCallback;
   ArchiveMessageCallback? archiveMessageCallback;
   DeleteMessageCallback? deleteMessageCallback;
+  MoveMessageToInboxCallback? moveMessageToInboxCallback;
   RemoveFromMailListCallback? removeFromMailListCallback;
 
   SMLAppContext({
@@ -66,6 +69,7 @@ class SMLAppContext {
     this.contactList,
     this.feedbackCallback,
     this.archiveMessageCallback,
+    this.moveMessageToInboxCallback,
     this.deleteMessageCallback,
   });
 }
@@ -82,6 +86,23 @@ Future<void> forwardMessage(
   }
   if (context.mounted) {
     Navigator.of(context).pop();
+  }
+}
+
+Future<void> moveMessageToInbox(MimeMessage message, BuildContext context) async {
+  if (globalSMLAppContext?.moveMessageToInboxCallback != null) {
+    var moveSuccess = await globalSMLAppContext!.moveMessageToInboxCallback!(message);
+    if (context.mounted) {
+      AppLocalizations l = AppLocalizations.of(context);
+      ScaffoldMessenger.of(context)
+          .showSnackBar( SnackBar(content: Text(moveSuccess? l.movedMailToInbox : l.couldNotMoveMailToInbox)));
+    }
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+    if (globalSMLAppContext?.removeFromMailListCallback != null) {
+      globalSMLAppContext!.removeFromMailListCallback!(message);
+    }
   }
 }
 

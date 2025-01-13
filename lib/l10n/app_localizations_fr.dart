@@ -794,4 +794,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get couldNotDeleteEmail => 'Could not delete email';
+
+  @override
+  String get movedMailToInbox => 'Moved email to inbox';
+
+  @override
+  String get couldNotMoveMailToInbox => 'Could not move email to inbox';
 }
