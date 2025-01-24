@@ -49,7 +49,18 @@ class HintsHeader extends StatelessWidget {
     const insets = EdgeInsets.symmetric(horizontal: 4.0, vertical: 0);
     var headerRows = <Widget>[];
     if (hints.isNotEmpty) {
-      var hintRows = hints.map<Widget>((h) => Row(
+      var hintsToDisplay = <HintData>[];
+      for (var hint in hints) {
+        if (hintsToDisplay.where((dh) => dh.hintProblemType == hint.hintProblemType).firstOrNull case HintData displayHint) {
+          var messages =  [displayHint.message, hint.message].nonNulls;
+          if (messages.isNotEmpty) {
+            displayHint.message = messages.join('\n');
+          }
+        } else {
+          hintsToDisplay.add(hint);
+        }
+      }
+      var hintRows = hintsToDisplay.map<Widget>((h) => Row(
         children: [
           Padding(padding: insets, child: Icon(h.type.icon, size: fontSize + 2,),),
           Expanded(
