@@ -33,7 +33,16 @@ typedef DeleteMessageCallback = Future<DeleteResult> Function(
 typedef MoveMessageToInboxCallback = Future<bool> Function(
     MimeMessage message);
 typedef RemoveFromMailListCallback = void Function(MimeMessage message);
+typedef APIUploadFileCallback = Future<APIUploadResult> Function(
+    dynamic fileData, String? mimeType, String? fileName);
 
+enum APIUploadResultType {noAPIConfigured, success, failure}
+class APIUploadResult {
+  final APIUploadResultType resultType;
+  final Object? error;
+
+  APIUploadResult(this.resultType, [this.error]);
+}
 SMLAppContext? globalSMLAppContext;
 
 class SMLAppContext {
@@ -54,6 +63,7 @@ class SMLAppContext {
   DeleteMessageCallback? deleteMessageCallback;
   MoveMessageToInboxCallback? moveMessageToInboxCallback;
   RemoveFromMailListCallback? removeFromMailListCallback;
+  APIUploadFileCallback? apiUploadFileCallback;
 
   SMLAppContext({
     this.confirmCallback,
@@ -71,6 +81,7 @@ class SMLAppContext {
     this.archiveMessageCallback,
     this.moveMessageToInboxCallback,
     this.deleteMessageCallback,
+    this.apiUploadFileCallback
   });
 }
 
@@ -106,13 +117,15 @@ Future<void> moveMessageToInbox(MimeMessage message, BuildContext context) async
   }
 }
 
-Future<void> archiveMessage(MimeMessage message, BuildContext context) async {
+Future<void> archiveMessage(MimeMessage message, BuildContext context, {bool? snackBar = true}) async {
   if (globalSMLAppContext?.archiveMessageCallback != null) {
     var archiveSuccess = await globalSMLAppContext!.archiveMessageCallback!(message);
-    if (context.mounted) {
-      AppLocalizations l = AppLocalizations.of(context);
-      ScaffoldMessenger.of(context)
-          .showSnackBar( SnackBar(content: Text(archiveSuccess? l.archivedEmail : l.couldNotArchiveEmail)));
+    if (snackBar?? true) {
+      if (context.mounted) {
+        AppLocalizations l = AppLocalizations.of(context);
+        ScaffoldMessenger.of(context)
+            .showSnackBar( SnackBar(content: Text(archiveSuccess? l.archivedEmail : l.couldNotArchiveEmail)));
+      }
     }
     if (context.mounted) {
       Navigator.of(context).pop();

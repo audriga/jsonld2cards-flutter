@@ -166,7 +166,30 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                 },
                 icon: const Icon(Icons.download)),
             IconButton(
-                onPressed: () => apiFeedbackDialog(context),
+                onPressed: () async {
+                  if (widget.cardData.sourceFile?.data case Uint8List data) {
+                    String? fileName = widget.cardData.sourceFile?.filename;
+                    String? mimeType = widget.cardData.sourceFile?.mimeType;
+                    if (globalSMLAppContext?.apiUploadFileCallback != null) {
+                      var result = await globalSMLAppContext!.apiUploadFileCallback!(data, mimeType, fileName);
+                      switch (result.resultType) {
+                        case APIUploadResultType.noAPIConfigured:
+                          if (context.mounted) {
+                            apiFeedbackDialog(context);
+                          }
+                        case APIUploadResultType.success:
+                          if (context.mounted) {
+                            archiveMessage(widget.cardData.message!, context, snackBar: false);
+                          }
+                        case APIUploadResultType.failure:
+                          // TODO: Show some error snackbar for this case.
+                      }
+
+                    }
+                  }
+                  // todo handle if sourceFile is not set
+
+                },
                 icon: const Icon(Icons.cloud_upload)),
             // IconButton(
             //     onPressed: () {},
