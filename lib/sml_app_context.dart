@@ -30,19 +30,31 @@ typedef FeedbackCallback = Function({String? body});
 typedef ArchiveMessageCallback = Future<bool> Function(MimeMessage message);
 typedef DeleteMessageCallback = Future<DeleteResult> Function(
     MimeMessage message);
-typedef MoveMessageToInboxCallback = Future<bool> Function(
-    MimeMessage message);
+typedef MoveMessageToInboxCallback = Future<bool> Function(MimeMessage message);
 typedef RemoveFromMailListCallback = void Function(MimeMessage message);
 typedef APIUploadFileCallback = Future<APIUploadResult> Function(
     dynamic fileData, String? mimeType, String? fileName);
 
-enum APIUploadResultType {noAPIConfigured, success, failure}
+enum APIUploadResultType { noAPIConfigured, success, failure }
+
+enum APIUploadKnownErrorType {
+  badRequest,
+  authenticationRequired,
+  validationError,
+  serverError,
+  fileNull,
+  //Reason is misconfigured api or one that is not supported by this version yet.
+  misconfiguredApi,
+}
+
 class APIUploadResult {
   final APIUploadResultType resultType;
   final Object? error;
+  final APIUploadKnownErrorType? knownErrorType;
 
-  APIUploadResult(this.resultType, [this.error]);
+  APIUploadResult(this.resultType, [this.error, this.knownErrorType]);
 }
+
 SMLAppContext? globalSMLAppContext;
 
 class SMLAppContext {
@@ -65,32 +77,34 @@ class SMLAppContext {
   RemoveFromMailListCallback? removeFromMailListCallback;
   APIUploadFileCallback? apiUploadFileCallback;
 
-  SMLAppContext({
-    this.confirmCallback,
-    this.eventCallback,
-    this.shareAttachmentCallback,
-    this.saveAttachmentCallback,
-    this.shareFileCallback,
-    this.saveFileCallback,
-    this.forwardFileCallback,
-    this.forwardEmailAddresses,
-    this.forwardEmailCallback,
-    this.reloadContacts,
-    this.contactList,
-    this.feedbackCallback,
-    this.archiveMessageCallback,
-    this.moveMessageToInboxCallback,
-    this.deleteMessageCallback,
-    this.apiUploadFileCallback
-  });
+  SMLAppContext(
+      {this.confirmCallback,
+      this.eventCallback,
+      this.shareAttachmentCallback,
+      this.saveAttachmentCallback,
+      this.shareFileCallback,
+      this.saveFileCallback,
+      this.forwardFileCallback,
+      this.forwardEmailAddresses,
+      this.forwardEmailCallback,
+      this.reloadContacts,
+      this.contactList,
+      this.feedbackCallback,
+      this.archiveMessageCallback,
+      this.moveMessageToInboxCallback,
+      this.deleteMessageCallback,
+      this.apiUploadFileCallback});
 }
 
 Future<void> forwardMessage(
     String emailAddress, MimeMessage message, BuildContext context) async {
-  var forwardSuccess = await globalSMLAppContext!.forwardEmailCallback!(emailAddress, message);
+  var forwardSuccess =
+      await globalSMLAppContext!.forwardEmailCallback!(emailAddress, message);
   if (context.mounted) {
     AppLocalizations l = AppLocalizations.of(context);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(forwardSuccess ? l.forwardedEmail: l.couldNotForwardEmail)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:
+            Text(forwardSuccess ? l.forwardedEmail : l.couldNotForwardEmail)));
   }
   if (globalSMLAppContext?.removeFromMailListCallback != null) {
     globalSMLAppContext!.removeFromMailListCallback!(message);
@@ -100,13 +114,16 @@ Future<void> forwardMessage(
   }
 }
 
-Future<void> moveMessageToInbox(MimeMessage message, BuildContext context) async {
+Future<void> moveMessageToInbox(
+    MimeMessage message, BuildContext context) async {
   if (globalSMLAppContext?.moveMessageToInboxCallback != null) {
-    var moveSuccess = await globalSMLAppContext!.moveMessageToInboxCallback!(message);
+    var moveSuccess =
+        await globalSMLAppContext!.moveMessageToInboxCallback!(message);
     if (context.mounted) {
       AppLocalizations l = AppLocalizations.of(context);
-      ScaffoldMessenger.of(context)
-          .showSnackBar( SnackBar(content: Text(moveSuccess? l.movedMailToInbox : l.couldNotMoveMailToInbox)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              moveSuccess ? l.movedMailToInbox : l.couldNotMoveMailToInbox)));
     }
     if (context.mounted) {
       Navigator.of(context).pop();
@@ -117,14 +134,17 @@ Future<void> moveMessageToInbox(MimeMessage message, BuildContext context) async
   }
 }
 
-Future<void> archiveMessage(MimeMessage message, BuildContext context, {bool? snackBar = true}) async {
+Future<void> archiveMessage(MimeMessage message, BuildContext context,
+    {bool? snackBar = true}) async {
   if (globalSMLAppContext?.archiveMessageCallback != null) {
-    var archiveSuccess = await globalSMLAppContext!.archiveMessageCallback!(message);
-    if (snackBar?? true) {
+    var archiveSuccess =
+        await globalSMLAppContext!.archiveMessageCallback!(message);
+    if (snackBar ?? true) {
       if (context.mounted) {
         AppLocalizations l = AppLocalizations.of(context);
-        ScaffoldMessenger.of(context)
-            .showSnackBar( SnackBar(content: Text(archiveSuccess? l.archivedEmail : l.couldNotArchiveEmail)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                archiveSuccess ? l.archivedEmail : l.couldNotArchiveEmail)));
       }
     }
     if (context.mounted) {

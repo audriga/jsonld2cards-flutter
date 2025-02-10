@@ -129,5 +129,30 @@
   "deletedEmail": "Deleted email",
   "couldNotDeleteEmail": "Could not delete email",
   "movedMailToInbox": "Moved email to inbox",
-  "couldNotMoveMailToInbox": "Could not move email to inbox"
+  "couldNotMoveMailToInbox": "Could not move email to inbox",
+  "errorUploadingFile": "Error Uploading File",
+  "badRequest": "Bad Request",
+  "@badRequest": {
+    "description": "Know API Upload Error: Bad Request"
+  },
+  "authenticationRequired": "Authentication Required",
+  "@authenticationRequired": {
+    "description": "Know API Upload Error: Authentication Required"
+  },
+  "validationError": "Validation Error",
+  "@validationError": {
+    "description": "Know API Upload Error: Validation Error"
+  },
+  "serverError": "Server Error",
+  "@serverError": {
+    "description": "Know API Upload Error: Server Error"
+  },
+  "fileNull": "File is Empty or Broken",
+  "@fileNull": {
+    "description": "Know API Upload Error: File Null"
+  },
+  "apiMisconfigured": "API Misconfigured",
+  "@apiMisconfigured": {
+    "description": "Know API Upload Error: API Misconfigured"
+  }
 }

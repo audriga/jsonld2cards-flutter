@@ -882,6 +882,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not move email to inbox'**
   String get couldNotMoveMailToInbox;
+
+  /// No description provided for @errorUploadingFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Error Uploading File'**
+  String get errorUploadingFile;
+
+  /// Know API Upload Error: Bad Request
+  ///
+  /// In en, this message translates to:
+  /// **'Bad Request'**
+  String get badRequest;
+
+  /// Know API Upload Error: Authentication Required
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication Required'**
+  String get authenticationRequired;
+
+  /// Know API Upload Error: Validation Error
+  ///
+  /// In en, this message translates to:
+  /// **'Validation Error'**
+  String get validationError;
+
+  /// Know API Upload Error: Server Error
+  ///
+  /// In en, this message translates to:
+  /// **'Server Error'**
+  String get serverError;
+
+  /// Know API Upload Error: File Null
+  ///
+  /// In en, this message translates to:
+  /// **'File is Empty or Broken'**
+  String get fileNull;
+
+  /// Know API Upload Error: API Misconfigured
+  ///
+  /// In en, this message translates to:
+  /// **'API Misconfigured'**
+  String get apiMisconfigured;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

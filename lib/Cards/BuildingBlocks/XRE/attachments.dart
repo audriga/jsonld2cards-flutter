@@ -129,3 +129,29 @@ void apiFeedbackDialog(BuildContext context) {
     ),
   );
 }
+void apiFailureDialog(BuildContext context, APIUploadResult result) {
+  AppLocalizations l = AppLocalizations.of(context);
+  String? mainErrorMessage = switch (result.knownErrorType) {
+    null => result.error.toString(),
+    APIUploadKnownErrorType.badRequest => l.badRequest,
+    APIUploadKnownErrorType.authenticationRequired => l.authenticationRequired,
+    APIUploadKnownErrorType.validationError => l.validationError,
+    APIUploadKnownErrorType.serverError => l.serverError,
+    APIUploadKnownErrorType.fileNull => l.fileNull,
+    APIUploadKnownErrorType.misconfiguredApi => l.apiMisconfigured,
+  };
+  showDialog(
+    context: context,
+    // todo german translation for these
+    // todo description of the known errors
+    builder: (context) => AlertDialog(
+      title: Text(l.errorUploadingFile),
+      content: Text(mainErrorMessage),
+      actions: [
+        TextButton(
+            onPressed: () => Navigator.pop(context, l.ok),
+            child: Text(l.ok)),
+      ],
+    ),
+  );
+}

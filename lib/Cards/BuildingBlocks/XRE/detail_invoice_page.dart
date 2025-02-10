@@ -182,7 +182,9 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                             archiveMessage(widget.cardData.message!, context, snackBar: false);
                           }
                         case APIUploadResultType.failure:
-                          // TODO: Show some error snackbar for this case.
+                          if (context.mounted) {
+                            apiFailureDialog(context, result);
+                          }
                       }
 
                     }

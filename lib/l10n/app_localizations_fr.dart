@@ -800,4 +800,25 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get couldNotMoveMailToInbox => 'Could not move email to inbox';
+
+  @override
+  String get errorUploadingFile => 'Error Uploading File';
+
+  @override
+  String get badRequest => 'Bad Request';
+
+  @override
+  String get authenticationRequired => 'Authentication Required';
+
+  @override
+  String get validationError => 'Validation Error';
+
+  @override
+  String get serverError => 'Server Error';
+
+  @override
+  String get fileNull => 'File is Empty or Broken';
+
+  @override
+  String get apiMisconfigured => 'API Misconfigured';
 }
