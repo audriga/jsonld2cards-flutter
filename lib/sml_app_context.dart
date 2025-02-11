@@ -33,7 +33,10 @@ typedef DeleteMessageCallback = Future<DeleteResult> Function(
 typedef MoveMessageToInboxCallback = Future<bool> Function(MimeMessage message);
 typedef RemoveFromMailListCallback = void Function(MimeMessage message);
 typedef APIUploadFileCallback = Future<APIUploadResult> Function(
-    dynamic fileData, String? mimeType, String? fileName);
+    dynamic fileData,
+    String? mimeType,
+    String? fileName,
+    Map<String, dynamic> invoice);
 
 enum APIUploadResultType { noAPIConfigured, success, failure }
 

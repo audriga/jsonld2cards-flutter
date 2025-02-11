@@ -171,7 +171,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                     String? fileName = widget.cardData.sourceFile?.filename;
                     String? mimeType = widget.cardData.sourceFile?.mimeType;
                     if (globalSMLAppContext?.apiUploadFileCallback != null) {
-                      var result = await globalSMLAppContext!.apiUploadFileCallback!(data, mimeType, fileName);
+                      var result = await globalSMLAppContext!.apiUploadFileCallback!(data, mimeType, fileName, widget.cardData.markup);
                       switch (result.resultType) {
                         case APIUploadResultType.noAPIConfigured:
                           if (context.mounted) {
