@@ -129,5 +129,12 @@
   "deletedEmail": "Email gelöscht",
   "couldNotDeleteEmail": "Konnte Email nicht löschen",
   "movedMailToInbox": "Email zur Inbox verschoben",
-  "couldNotMoveMailToInbox": "Konnte Email nicht zur Inbox verschieben"
+  "couldNotMoveMailToInbox": "Konnte Email nicht zur Inbox verschieben",
+  "errorUploadingFile": "Fehler beim Dateiupload",
+  "badRequest": "Ungültige Anfrage",
+  "authenticationRequired": "Authentifizierung benötigt",
+  "validationError": "Validierung fehlgeschlagen",
+  "serverError": "Server-Fehler",
+  "fileNull": "Datei ist leer oder beschädigt",
+  "apiMisconfigured": "API falsch konfiguriert"
 }

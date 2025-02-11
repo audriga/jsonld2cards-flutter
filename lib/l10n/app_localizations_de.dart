@@ -802,23 +802,23 @@ class AppLocalizationsDe extends AppLocalizations {
   String get couldNotMoveMailToInbox => 'Konnte Email nicht zur Inbox verschieben';
 
   @override
-  String get errorUploadingFile => 'Error Uploading File';
+  String get errorUploadingFile => 'Fehler beim Dateiupload';
 
   @override
-  String get badRequest => 'Bad Request';
+  String get badRequest => 'Ungültige Anfrage';
 
   @override
-  String get authenticationRequired => 'Authentication Required';
+  String get authenticationRequired => 'Authentifizierung benötigt';
 
   @override
-  String get validationError => 'Validation Error';
+  String get validationError => 'Validierung fehlgeschlagen';
 
   @override
-  String get serverError => 'Server Error';
+  String get serverError => 'Server-Fehler';
 
   @override
-  String get fileNull => 'File is Empty or Broken';
+  String get fileNull => 'Datei ist leer oder beschädigt';
 
   @override
-  String get apiMisconfigured => 'API Misconfigured';
+  String get apiMisconfigured => 'API falsch konfiguriert';
 }
