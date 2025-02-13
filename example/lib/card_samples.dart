@@ -3,8 +3,6 @@ library;
 import 'package:flutter/foundation.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/card_rendering.dart';
-import 'package:jsonld2cards/card_viewer.dart';
-import 'package:jsonld2cards/open_card_viewer_dialog.dart';
 
 import 'util/network.dart';
 import 'dart:convert';
@@ -204,11 +202,6 @@ class _CardSamplesState extends State<CardSamples> {
           }
         }
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.download),
-        onPressed: () => cardViewerDialog(context),
-
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -302,20 +295,4 @@ class FutureBuilderError extends StatelessWidget {
       ],
     );
   }
-}
-
-void cardViewerDialog(BuildContext context) {
-  Future<String?> futureParameters = showDialog<String?>(
-    context: context,
-    builder: (BuildContext context) => OpenCardViewerDialog(),
-  );
-
-  futureParameters.then((cardId) {
-    if (!context.mounted) {
-      return;
-    }
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => CardViewer(cardId: cardId, postFunction: postUrl),
-    ));
-  });
 }
