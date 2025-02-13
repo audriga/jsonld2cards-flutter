@@ -1,7 +1,5 @@
 library;
-
-import 'package:jsonld2cards/util/conversion.dart';
-
+import 'conversion.dart';
 import 'map_tools.dart';
 
 
