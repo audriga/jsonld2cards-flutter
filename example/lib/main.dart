@@ -12,11 +12,7 @@ void main() {
 const _darkRed = Color(0xFFAD2300);
 const _orange = Color(0xFFE14B00);
 const _brightOrange = Color(0xFFFF6600);
-// static const _brightRed = Color(0xFFd50000);
 const _darkBlue = Color(0xFF00286c);
-// static const _reddishBrown = Color(0xFF330000);
-
-// Additional Colors
 const _brightOrangeAlt = Color(0xFFf39c12);
 
 
@@ -66,14 +62,12 @@ class _CardsExampleAppState extends State<CardsExampleApp> {
 
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'JsonLd 2 Cards Example',
       theme: ThemeData(
-        fontFamily: 'Rajdhani',
         colorScheme: audrigaSchemeLight,
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
-        fontFamily: 'Rajdhani',
         colorScheme: audrigaSchemeDark,
         useMaterial3: true,
       ),
