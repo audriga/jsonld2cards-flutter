@@ -1,9 +1,0 @@
-
-/** The style for the DIV where flutter will be rendered, and the CSS fx */
-#flutter_target {
-  border: 1px solid #aaa;
-  width: 320px;
-  height: 200px;
-  border-radius: 0px;
-  transition: all 150ms ease-in;
-}

@@ -1,8 +1,6 @@
 library;
 
 import 'dart:typed_data';
-
-import 'package:enough_mail/mime.dart';
 import 'package:flutter/widgets.dart';
 
 import 'Cards/BuildingBlocks/potential_actions.dart';
@@ -29,7 +27,6 @@ class CardData {
   bool preview;
   bool topBar;
   List<Widget>? additionalButtons;
-  MimeMessage? message;
   bool showMessageHeader;
   Attachment? sourceFile;
   List<Attachment>? otherAttachments;
@@ -50,7 +47,6 @@ class CardData {
     this.preview = false,
     this.topBar = false,
     this.additionalButtons,
-    this.message,
     this.showMessageHeader = false,
     this.sourceFile,
     this.otherAttachments,
@@ -80,7 +76,6 @@ class CardData {
     bool? preview,
     bool? topBar,
     List<Widget>? additionalButtons,
-    MimeMessage? message,
     bool? showMessageHeader,
     Attachment? sourceFile,
     List<Attachment>? otherAttachments,
@@ -95,7 +90,6 @@ class CardData {
         preview = preview ?? o.preview,
         topBar = topBar ?? o.topBar,
         additionalButtons = additionalButtons ?? o.additionalButtons,
-        message = message ?? o.message,
         showMessageHeader = showMessageHeader ?? o.showMessageHeader,
         sourceFile = sourceFile ?? o.sourceFile,
         otherAttachments = otherAttachments ?? o.otherAttachments,

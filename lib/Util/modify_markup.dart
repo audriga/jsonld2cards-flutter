@@ -114,16 +114,6 @@ Map<String, dynamic> addDefaultViewActionToMarkup(Map<String, dynamic> markup) {
   var url = markup['url'];
   if (url == null) return markup;
   // Don't add an action for cid urls. We do that in invoice class.
-  Uri? uri = tryCastOrParse(url);
-  if (uri != null && ['cid','fetchid'].contains(uri.scheme)) {
-    var cidAction = {
-      '@type': 'ViewAction',
-      'url': uri,
-      'muid': markup['muid'], //todo this is a temporary placeholder until I know where in the markup the mail uid will actually be saved
-      'name': 'Share XRechnung',
-      };
-    return appendPotentialActions(markup, [cidAction]);
-  }
   var visitAction = {"@type": "ViewAction", "url": url, "name": "Visit"};
   return appendPotentialActions(markup, [visitAction]);
 }
