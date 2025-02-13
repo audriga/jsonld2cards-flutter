@@ -219,15 +219,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
-  flutter_contacts:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "0cfc89df4e0e095f2a9cc2b4c034aac09c0efa96"
-      url: "https://github.com/audriga/flutter_contacts.git"
-    source: git
-    version: "1.1.7+1"
   flutter_gen:
     dependency: "direct dev"
     description:

@@ -1,14 +1,10 @@
 library;
 
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
-import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/card_rendering.dart';
 import 'package:jsonld2cards/card_viewer.dart';
 import 'package:jsonld2cards/open_card_viewer_dialog.dart';
-import 'package:xrechnung_dart/xrechnung_dart.dart';
 
 import 'Util/network.dart';
 import 'dart:convert';

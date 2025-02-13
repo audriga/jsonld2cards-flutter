@@ -24,12 +24,6 @@ dependencies:
     # The example app is bundled with the plugin so we use a path dependency on
     # the parent directory to use the current plugin's version.
     path: ../
-  html2jsonld_dart:
-    git:
-      url: git@bitbucket.org:audriga/html2jsonld-dart.git
-  xrechnung_dart:
-    git:
-      url: git@bitbucket.org:audriga/xrechnung-dart.git
   http: ^1.2.1
 
   # The following adds the Cupertino Icons font to your application.
