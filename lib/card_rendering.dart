@@ -2,7 +2,6 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'Cards/BuildingBlocks/XRE/e_invoice_card.dart';
 import 'Cards/event_card.dart';
 import 'Cards/simple_poll_card.dart';
 import 'card_data.dart';
@@ -187,16 +186,6 @@ Widget? tryRenderCardSingle(CardData cardData) {
 }
 
 Widget renderCardSingle(CardData cardData) {
-  // XRE eInvoice Cards are a special case (non-Schema.org)
-  if (cardData.markup['bt_1_invoice_number'] != null || cardData.markup['bt_3_invoice_type_code'] != null) {
-    var card = EInvoiceCard(cardData);
-    if (cardData.topBar) {
-      return surroundWithTopBar(card);
-    } else {
-      return card;
-    }
-  }
-
   String? context = cardData.markup['@context'];
   if (![
     'http://schema.org',

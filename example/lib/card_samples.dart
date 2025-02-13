@@ -3,7 +3,6 @@ library;
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:jsonld2cards/Cards/BuildingBlocks/XRE/e_invoice_card.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/card_rendering.dart';
@@ -56,7 +55,6 @@ class _CardSamplesState extends State<CardSamples> {
 
   List<String> assetsToUse = [
     // 'assets/sampleMarkup/zeit_homepage.json', //todo look into fix for this
-    'assets/sampleMarkup/bahn_cii.json',
     'assets/sampleMarkup/invoice_complex.json',
     'assets/sampleMarkup/simplePollUnfilled.json',
     'assets/sampleMarkup/simplePollUpdate2Answers.json',
@@ -198,7 +196,6 @@ class _CardSamplesState extends State<CardSamples> {
                 markups: snapshot.requireData[_selectedAssetIndex],
                 postFunction: postUrl,
               );
-              case 3: return XRechnungList(showSource: showSource, preview: preview, topBar: topBar);
               default: return const Placeholder();
             }
           }  else if (snapshot.hasError) {
@@ -229,11 +226,7 @@ class _CardSamplesState extends State<CardSamples> {
           BottomNavigationBarItem(
             icon: Icon(Icons.account_tree),
             label: 'Adaptive View'
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt),
-            label: 'XRechnung'
-          ),
+          )
         ],
         currentIndex: _selectedScreenIndex,
         onTap: _onItemTapped,
@@ -329,56 +322,4 @@ void cardViewerDialog(BuildContext context) {
         MaterialPageRoute(builder: (context) => CardViewer(cardId: cardId, postFunction: postUrl),
     ));
   });
-}
-
-class XRechnungList extends StatefulWidget {
-  final bool showSource;
-  final bool preview;
-  final bool topBar;
-
-  const XRechnungList({super.key, required this.showSource, required this.preview, required this.topBar});
-
-  @override
-  State<XRechnungList> createState() => _XRechnungListState();
-}
-
-class _XRechnungListState extends State<XRechnungList> {
-  late Future<List<Widget>> xInvoices;
-
-  @override
-  void initState() {
-    super.initState();
-    xInvoices = loadXInvoices();
-  }
-
-  Future<List<Widget>> loadXInvoices() async {
-    const sourceDirPath = '/home/frieder/Documents/xrechnung-js/test/resources/einvoicing-en16931/cii';
-    final sourceDir = Directory(sourceDirPath);
-    final entries = await sourceDir.list().toList();
-    List<File> files = entries.whereType<File>().toList()..sort((a, b) => a.path.compareTo(b.path),);
-    final xmlFiles = files.where((f) => f.path.endsWith('.xml')).toList();
-    final xmlStrings = xmlFiles.map((xmlFile) => xmlFile.readAsStringSync(),).toList();
-    List<Widget> widgets = [];
-    for (int i = 0; i < xmlStrings.length; i++) {
-      widgets.add(Text(xmlFiles[i].path)); //todo can't switch cause these are dynamically added
-      try {
-        final invoiceSchema = parseAndConvertXInvoice(xmlStrings[i]);
-        final cardData = CardData(invoiceSchema, topBar: widget.topBar, preview: widget.preview);
-        widgets.add(EInvoiceCard(cardData));
-      } catch (e) {
-        widgets.add(ListTile(title: const Text('Error Rendering this file'), subtitle: Text(e.toString())));
-      }
-    }
-    return widgets;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(future: xInvoices, builder: (context, snapshot) => switch (snapshot.connectionState) {
-        ConnectionState.none => const Text('Not connected'),
-        ConnectionState.waiting => const Text('Loading'),
-        ConnectionState.active => const Text('Active'),
-        ConnectionState.done =>  ListView(children: snapshot.requireData,)
-        },);
-  }
 }

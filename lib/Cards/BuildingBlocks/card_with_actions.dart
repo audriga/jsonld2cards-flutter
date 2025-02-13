@@ -3,7 +3,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/card_data.dart';
 
-import 'mail_header.dart';
+// import 'mail_header.dart';
 import 'potential_actions.dart';
 
 
@@ -32,11 +32,11 @@ class CardWithActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget? messageHeader;
-    if (cardData.showMessageHeader) {
-      messageHeader = MailHeader(cardData);
-      cardContents.insertAll(0, [messageHeader,const Divider()]);
-    }
+    // Widget? messageHeader;
+    // if (cardData.showMessageHeader) {
+    //   messageHeader = MailHeader(cardData);
+    //   cardContents.insertAll(0, [messageHeader,const Divider()]);
+    // }
     // Showing Buttons for Potential Actions
     if (potentialAction != null) {
       cardContents.add(PotentialActionRow(
