@@ -1,5 +1,5 @@
 import 'package:latlong2/latlong.dart';
-import 'package:jsonld2cards/GeoData/tile_util.dart';
+import 'package:jsonld2cards/geo_data/tile_util.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'dart:developer';
 

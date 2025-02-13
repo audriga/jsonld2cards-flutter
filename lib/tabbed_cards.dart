@@ -1,11 +1,11 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:jsonld2cards/Cards/markup_card.dart';
+import 'package:jsonld2cards/cards/markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/card_rendering.dart';
 
-// import 'Cards/BuildingBlocks/potential_actions.dart';
+// import 'Cards/building_blocks/potential_actions.dart';
 
 class TabbedMultiCard extends StatefulWidget implements MarkupCard {
   const TabbedMultiCard(

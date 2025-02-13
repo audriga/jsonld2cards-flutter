@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'Util/globals.dart';
+import 'util/globals.dart';
 import 'card_samples.dart';
 
 void main() {

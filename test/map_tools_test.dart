@@ -3,7 +3,7 @@
 
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:jsonld2cards/Util/map_tools.dart';
+import 'package:jsonld2cards/util/map_tools.dart';
 
 void main() {
   // test('Test Map Flattening', () {
