@@ -7,14 +7,12 @@ void main() {
   runApp(const CardsExampleApp());
 }
 
-
 // Logo Colors
 const _darkRed = Color(0xFFAD2300);
 const _orange = Color(0xFFE14B00);
 const _brightOrange = Color(0xFFFF6600);
 const _darkBlue = Color(0xFF00286c);
 const _brightOrangeAlt = Color(0xFFf39c12);
-
 
 class CardsExampleApp extends StatefulWidget {
   const CardsExampleApp({super.key});
@@ -59,8 +57,6 @@ class _CardsExampleAppState extends State<CardsExampleApp> {
   );
   @override
   Widget build(BuildContext context) {
-
-
     return MaterialApp(
       title: 'JsonLd 2 Cards Example',
       theme: ThemeData(
@@ -72,7 +68,9 @@ class _CardsExampleAppState extends State<CardsExampleApp> {
         useMaterial3: true,
       ),
       themeMode: themeMode,
-      home: CardSamples(handleBrightnessChange: handleBrightnessChange,),
+      home: CardSamples(
+        handleBrightnessChange: handleBrightnessChange,
+      ),
       scaffoldMessengerKey: snackBarKey,
     );
   }

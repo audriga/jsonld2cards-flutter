@@ -15,9 +15,7 @@ class CardSamples extends StatefulWidget {
 
   final void Function(ThemeMode useLightMode) handleBrightnessChange;
 
-
-  static const placeMarkup =
-  '''{
+  static const placeMarkup = '''{
   "@context": "https://schema.org",
   "@type": "Place",
   "geo": {
@@ -101,7 +99,8 @@ class _CardSamplesState extends State<CardSamples> {
 
   List<DropdownMenuItem<int>> get assetDropdownItems {
     return List<DropdownMenuItem<int>>.generate(assetsToUse.length, (index) {
-      return DropdownMenuItem<int>(value: index, child: Text(assetsToUse[index]));
+      return DropdownMenuItem<int>(
+          value: index, child: Text(assetsToUse[index]));
     });
   }
 
@@ -115,14 +114,15 @@ class _CardSamplesState extends State<CardSamples> {
     // musicAlbumMarkup = jsonDecode(CardSamples.musicAlbumMarkup);
     placeMarkup = jsonDecode(CardSamples.placeMarkup);
     assetMarkups = loadMarkupsFromAssets();
-    _selectedAssetIndex = assetsToUse.indexOf('assets/sampleMarkup/array_6440.json');
+    _selectedAssetIndex =
+        assetsToUse.indexOf('assets/sampleMarkup/array_6440.json');
   }
 
   Future<List<dynamic>> loadMarkupsFromAssets() async {
     List<dynamic> markups = [];
 
-
-    Iterable<Future<String>> futureAssetStrings = assetsToUse.map((assetPath) => DefaultAssetBundle.of(context).loadString(assetPath));
+    Iterable<Future<String>> futureAssetStrings = assetsToUse.map(
+        (assetPath) => DefaultAssetBundle.of(context).loadString(assetPath));
     for (Future<String> futureAssetString in futureAssetStrings) {
       String assetString = await futureAssetString;
       markups.add(jsonDecode(assetString));
@@ -133,13 +133,18 @@ class _CardSamplesState extends State<CardSamples> {
   List<Widget> itemBuilder(List<dynamic> markups) {
     List<Widget> widgets = [];
     var assetNameIter = assetsToUse.iterator;
-    for (var markup in markups){
+    for (var markup in markups) {
       // Add text widgets on the first screen showing the source of file based markups
-      if (showSource && _selectedScreenIndex == 0 && assetNameIter.moveNext()) widgets.add(Text(assetNameIter.current));
-      var card = renderCardOrErrorCard(markup, preview: preview, topBar: topBar);
+      if (showSource && _selectedScreenIndex == 0 && assetNameIter.moveNext()) {
+        widgets.add(Text(assetNameIter.current));
+      }
+      var card =
+          renderCardOrErrorCard(markup, preview: preview, topBar: topBar);
       widgets.add(card);
     }
-    if (showSource && _selectedScreenIndex == 0) widgets.add(const Text('End of file based markups'));
+    if (showSource && _selectedScreenIndex == 0) {
+      widgets.add(const Text('End of file based markups'));
+    }
     return widgets;
   }
 
@@ -157,51 +162,60 @@ class _CardSamplesState extends State<CardSamples> {
         title: const Text("Templated Cards"),
         actions: [
           IconButton(
-            onPressed: (){
-              widget.handleBrightnessChange(isBright ? ThemeMode.dark : ThemeMode.light);
-              },
+            onPressed: () {
+              widget.handleBrightnessChange(
+                  isBright ? ThemeMode.dark : ThemeMode.light);
+            },
             icon: Icon(isBright ? Icons.dark_mode : Icons.light_mode),
           ),
           IconButton(
-            onPressed: (){widget.handleBrightnessChange(ThemeMode.system);},
+            onPressed: () {
+              widget.handleBrightnessChange(ThemeMode.system);
+            },
             icon: const Icon(Icons.brightness_auto),
           ),
         ],
       ),
       body: FutureBuilder(
-        future: assetMarkups,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            switch(_selectedScreenIndex) {
-              case 0: return ListView(
-                children: [
-                  ...itemBuilder(snapshot.requireData),
-                  // renderCardOrErrorCard(emailMarkupActionGoto, preview: preview, topBar: topBar),
-                  // renderCardOrErrorCard(emailMarkupActionOneClick, preview: preview, topBar: topBar),
-                  // renderCardOrErrorCard(emailMarkupReservationFlightBasic, preview: preview, topBar: topBar),
-                  // renderCardOrErrorCard(emailMarkupReservationFlight, preview: preview, topBar: topBar),
-                  // renderCardOrErrorCard(musicAlbumMarkup, preview: preview, topBar: topBar),
-                  renderCardOrErrorCard(placeMarkup, preview: preview, topBar: topBar),
-                ],
+          future: assetMarkups,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              switch (_selectedScreenIndex) {
+                case 0:
+                  return ListView(
+                    children: [
+                      ...itemBuilder(snapshot.requireData),
+                      // renderCardOrErrorCard(emailMarkupActionGoto, preview: preview, topBar: topBar),
+                      // renderCardOrErrorCard(emailMarkupActionOneClick, preview: preview, topBar: topBar),
+                      // renderCardOrErrorCard(emailMarkupReservationFlightBasic, preview: preview, topBar: topBar),
+                      // renderCardOrErrorCard(emailMarkupReservationFlight, preview: preview, topBar: topBar),
+                      // renderCardOrErrorCard(musicAlbumMarkup, preview: preview, topBar: topBar),
+                      renderCardOrErrorCard(placeMarkup,
+                          preview: preview, topBar: topBar),
+                    ],
+                  );
+                case 1:
+                  return itemBuilder(snapshot.requireData)[_selectedAssetIndex];
+                case 2:
+                  return AdaptiveMultipleCards(
+                    title: 'Adaptive Demo',
+                    markups: snapshot.requireData[_selectedAssetIndex],
+                    postFunction: postUrl,
+                  );
+                default:
+                  return const Placeholder();
+              }
+            } else if (snapshot.hasError) {
+              return FutureBuilderError(
+                error: snapshot.error,
               );
-              case 1: return itemBuilder(snapshot.requireData)[_selectedAssetIndex];
-              case 2: return AdaptiveMultipleCards(
-                title: 'Adaptive Demo',
-                markups: snapshot.requireData[_selectedAssetIndex],
-                postFunction: postUrl,
+            } else {
+              return const SizedBox.square(
+                dimension: 40,
+                child: CircularProgressIndicator(),
               );
-              default: return const Placeholder();
             }
-          }  else if (snapshot.hasError) {
-            return FutureBuilderError(error: snapshot.error,);
-          } else {
-            return const SizedBox.square(
-              dimension: 40,
-              child: CircularProgressIndicator(),
-            );
-          }
-        }
-      ),
+          }),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -213,35 +227,46 @@ class _CardSamplesState extends State<CardSamples> {
             label: 'Single Card',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_tree),
-            label: 'Adaptive View'
-          )
+              icon: Icon(Icons.account_tree), label: 'Adaptive View')
         ],
         currentIndex: _selectedScreenIndex,
         onTap: _onItemTapped,
       ),
       persistentFooterButtons: [
-        if ([0,3].contains(_selectedScreenIndex)) TextButton(
-            onPressed: (){setState(() {showSource = !showSource;});},
-            child: Text('Show source: ${showSource ? 'on' : 'off'}')
-        ),
+        if ([0, 3].contains(_selectedScreenIndex))
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  showSource = !showSource;
+                });
+              },
+              child: Text('Show source: ${showSource ? 'on' : 'off'}')),
         TextButton(
-            onPressed: (){setState(() {preview = !preview;});},
-            child: Text('Preview mode: ${preview ? 'on' : 'off'}')
-        ),
-        if (_selectedScreenIndex < 2) TextButton(
-            onPressed: (){setState(() {topBar = !topBar;});},
-            child: Text('Top bar mode: ${topBar ? 'on' : 'off'}')
-        ),
-        if (_selectedScreenIndex > 0 && _selectedScreenIndex <3) DropdownButton(
-          value: _selectedAssetIndex,
-          items: assetDropdownItems,
-          onChanged: (newIndex) => setState(() {_selectedAssetIndex = newIndex!;}),
-        )
+            onPressed: () {
+              setState(() {
+                preview = !preview;
+              });
+            },
+            child: Text('Preview mode: ${preview ? 'on' : 'off'}')),
+        if (_selectedScreenIndex < 2)
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  topBar = !topBar;
+                });
+              },
+              child: Text('Top bar mode: ${topBar ? 'on' : 'off'}')),
+        if (_selectedScreenIndex > 0 && _selectedScreenIndex < 3)
+          DropdownButton(
+            value: _selectedAssetIndex,
+            items: assetDropdownItems,
+            onChanged: (newIndex) => setState(() {
+              _selectedAssetIndex = newIndex!;
+            }),
+          )
       ],
     );
   }
-
 }
 
 Widget renderCardOrErrorCard(
