@@ -3,6 +3,7 @@ library;
 import 'dart:convert';
 
 import 'package:jsonld2cards/cards/models/action_model.dart';
+import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:jsonld2cards/util/conversion.dart';
 import 'package:logging/logging.dart';
 
@@ -40,12 +41,14 @@ class GeoData {
     this.potentialActions,
   }) {
     if (potentialActions == null || potentialActions!.isEmpty) {
+      var mapViewUrl =
+          globalSMLAppContext?.mapViewUrl ?? 'www.openstreetmap.org';
       potentialActions = [
         Action.fromJson({
           '@type': 'ViewAction',
           'name': 'View',
           'url':
-              'https://www.openstreetmap.org/?mlat=${latLong.latitude}&mlon=${latLong.longitude}',
+              'https://$mapViewUrl/?mlat=${latLong.latitude}&mlon=${latLong.longitude}',
         }),
         Action.fromJson({
           '@type': 'ViewAction',
@@ -185,10 +188,12 @@ class GeoData {
   }
 
   Future<void> downloadImage({int zoom = 18}) async {
+    String tileServer =
+        globalSMLAppContext?.tileServer ?? 'tile.openstreetmap.org';
     TileNumber tileNr =
         TileNumber.fromLatLong(latLong.latitude, latLong.longitude, zoom);
-    imageUrl = Uri.parse(
-        'https://tile.openstreetmap.org/$zoom/${tileNr.x}/${tileNr.y}.png');
+    imageUrl =
+        Uri.parse('https://$tileServer/$zoom/${tileNr.x}/${tileNr.y}.png');
     await http.get(imageUrl!).then((tileResponse) {
       imageB64 = Uri.dataFromBytes(
         tileResponse.bodyBytes,
@@ -211,8 +216,10 @@ class GeoData {
   }
 
   Future<void> reverseGeocode({String languageCode = 'en'}) async {
+    String geocodingServer =
+        globalSMLAppContext?.geocodingServer ?? 'nominatim.openstreetmap.org';
     String url =
-        'https://nominatim.openstreetmap.org/reverse?format=json&lat=${latLong.latitude}&lon=${latLong.longitude}&zoom=18&addressdetails=1&extratags=1&namedetails=1&accept-language=$languageCode';
+        'https://$geocodingServer/reverse?format=json&lat=${latLong.latitude}&lon=${latLong.longitude}&zoom=18&addressdetails=1&extratags=1&namedetails=1&accept-language=$languageCode';
     // todo language as variable
     var response = await http.get(Uri.parse(url));
     var decodedResponse = jsonDecode(response.body);

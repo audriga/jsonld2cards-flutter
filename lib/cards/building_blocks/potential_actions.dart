@@ -265,7 +265,7 @@ class PotentialActionButton extends StatelessWidget {
         {
           var actionName = potentialAction['name'] ?? 'Cancel';
           button = TextButton(
-            onPressed: (preview || globalSMLAppContext?.confirmCallback == null)
+            onPressed: (preview || globalSMLAppContext?.eventCallback == null)
                 ? null
                 : () {
                     var object = potentialAction['object'];

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/sml_app_context.dart';
 import 'package:jsonld2cards/util/conversion.dart';
 import 'package:logging/logging.dart';
 
@@ -80,7 +81,9 @@ class UriImage extends StatelessWidget {
         imageUrl = jsonImageUri;
 
         bool attemptToProxy = false;
-        if (kIsWeb && Uri.base.origin != imageUrl.origin) {
+        if (kIsWeb &&
+            Uri.base.origin != imageUrl.origin &&
+            globalSMLAppContext?.imageProxyUrl != null) {
           attemptToProxy = true;
         }
 
@@ -120,8 +123,9 @@ class UriImage extends StatelessWidget {
   }
 
   Widget proxiedImage(BuildContext context, String url, error) {
+    String? proxyUrl = globalSMLAppContext?.imageProxyUrl;
     return CachedNetworkImage(
-      imageUrl: 'https://www.audriga.eu/test/data/proxyImg.php?url=$url',
+      imageUrl: '$proxyUrl?url=$url',
       placeholder: placeholder,
       width: width,
       height: height,
