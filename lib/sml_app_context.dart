@@ -1,8 +1,8 @@
 library;
 
-import 'package:jsonld2cards/cards/building_blocks/potential_actions.dart';
-import 'package:jsonld2cards/cards/place_card.dart';
-import 'package:jsonld2cards/geo_data/geo_data.dart';
+import 'src/cards/building_blocks/potential_actions.dart';
+import 'src/cards/place_card.dart';
+import 'geo_data/geo_data.dart';
 
 typedef SendEmailCallback = Function(
     {dynamic dataToSend, String? subject, String? recipient});

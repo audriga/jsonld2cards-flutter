@@ -1,6 +1,6 @@
 library;
 
-import 'package:jsonld2cards/cards/models/schema_types.dart';
+import '../cards/models/schema_types.dart';
 
 String titleSourceTemplate(SchemaType type) => switch (type) {
       SchemaType.bakery => '''{{name}}''',

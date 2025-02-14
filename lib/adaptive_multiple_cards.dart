@@ -2,14 +2,14 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
-import 'package:jsonld2cards/cards/building_blocks/potential_actions.dart';
-import 'package:jsonld2cards/cards/building_blocks/uri_image.dart';
-import 'package:jsonld2cards/cards/models/item_list_model.dart';
-import 'package:jsonld2cards/cards/models/list_item_model.dart';
-import 'package:jsonld2cards/cards/models/organization_model.dart';
-import 'package:jsonld2cards/cards/models/thing_model.dart';
-import 'package:jsonld2cards/card_rendering.dart';
-import 'package:jsonld2cards/util/modify_markup.dart';
+import 'src/cards/building_blocks/potential_actions.dart';
+import 'src/cards/building_blocks/uri_image.dart';
+import 'src/cards/models/item_list_model.dart';
+import 'src/cards/models/list_item_model.dart';
+import 'src/cards/models/organization_model.dart';
+import 'src/cards/models/thing_model.dart';
+import 'card_rendering.dart';
+import 'util/modify_markup.dart';
 
 class AdaptiveMultipleCards extends StatelessWidget {
   final String? title;

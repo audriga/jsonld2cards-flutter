@@ -3,7 +3,7 @@ library;
 import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 
-import 'cards/building_blocks/potential_actions.dart';
+import 'src/cards/building_blocks/potential_actions.dart';
 
 class Attachment {
   Uint8List? data;
