@@ -45,9 +45,9 @@ void main() {
 
   test('Test location update', () async {
     String updatedData = '''{"geo":{"latitude": "49.123456789", "longitude": "8.987654321"}}''';
-    http.Response postResponse = await http.post(Uri.parse('https://www.audriga.eu/test/data/data.php'), body: updatedData);
+    http.Response postResponse = await http.post(Uri.parse('http://localhost/test/data/data.php'), body: updatedData);
     String id = postResponse.body;
-    var updateUri = Uri.parse('https://www.audriga.eu/test/data/$id.json');
+    var updateUri = Uri.parse('http://localhosttest/data/$id.json');
     var getResponse = await http.get(updateUri);
     expect(getResponse.body, equals(updatedData));
     var geoData = GeoData(latLong: const LatLng(0, 0), isLive: true, liveUri: updateUri);
