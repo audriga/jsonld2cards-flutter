@@ -1,7 +1,7 @@
 library;
+
 import 'conversion.dart';
 import 'map_tools.dart';
-
 
 /// Removing things we don't want to render in the card
 List<dynamic> removeMarkupClutter(List<dynamic> markupList) {
@@ -18,14 +18,19 @@ List<dynamic> removeMarkupClutter(List<dynamic> markupList) {
     'WebPage'
   ];
 
-  return markupList.where((element) => element is! Map<String,dynamic> || !elementsToRemove.contains(element['@type'])).toList();
+  return markupList
+      .where((element) =>
+          element is! Map<String, dynamic> ||
+          !elementsToRemove.contains(element['@type']))
+      .toList();
 }
 
 /// Creates a new markup that has the given [generatedPotentialActions] appended to the potential action row.
 /// Note this performs a shallow copy where the returned map has a new reference, but any value beside the one for
 /// potentialActions will be the same reference as the input [markup].
 /// See https://www.woolha.com/tutorials/dart-copy-clone-list-shallow-deep-examples for more information on shallow cloning in dart.
-Map<String, dynamic> appendPotentialActions(Map<String, dynamic> markup, List<Map<String, dynamic>> generatedPotentialActions) {
+Map<String, dynamic> appendPotentialActions(Map<String, dynamic> markup,
+    List<Map<String, dynamic>> generatedPotentialActions) {
   // Do noting if the list of potential actions is empty
   if (generatedPotentialActions.isEmpty) return markup;
   var originalActions = markup['potentialAction'];
@@ -35,24 +40,34 @@ Map<String, dynamic> appendPotentialActions(Map<String, dynamic> markup, List<Ma
   if (originalActions == null) {
     markupCopy['potentialAction'] = generatedPotentialActions;
   } else if (originalActions is List) {
-    markupCopy['potentialAction'] = [...originalActions, ...generatedPotentialActions];
+    markupCopy['potentialAction'] = [
+      ...originalActions,
+      ...generatedPotentialActions
+    ];
   } else {
-    markupCopy['potentialAction'] = [originalActions, ...generatedPotentialActions];
+    markupCopy['potentialAction'] = [
+      originalActions,
+      ...generatedPotentialActions
+    ];
   }
   return markupCopy;
 }
 
 /// Finds telephone and email attributes in [markup] and returns a markup with corresponding actions added to it.
 /// This uses [appendPotentialActions]. See its note on shallow copy.
-Map<String, dynamic> enrichMarkupWithEmailAndPhoneActions(Map<String, dynamic> markup) {
-  var phones = findAllRecursive(markup, 'telephone', excluded: ['potentialAction']).whereType<String>();
-  var emails = findAllRecursive(markup, 'email', excluded: ['potentialAction']).whereType<String>();
+Map<String, dynamic> enrichMarkupWithEmailAndPhoneActions(
+    Map<String, dynamic> markup) {
+  var phones =
+      findAllRecursive(markup, 'telephone', excluded: ['potentialAction'])
+          .whereType<String>();
+  var emails = findAllRecursive(markup, 'email', excluded: ['potentialAction'])
+      .whereType<String>();
   if (phones.isNotEmpty || emails.isNotEmpty) {
     var potentialTelActions = phones.map<Map<String, dynamic>>((e) => {
-      '@type': 'CommunicateAction',
-      'name': 'Call $e',
-      'url': 'tel:$e',
-    });
+          '@type': 'CommunicateAction',
+          'name': 'Call $e',
+          'url': 'tel:$e',
+        });
     var potentialMailtoActions = emails.map<Map<String, dynamic>>((e) {
       var mail = e.replaceFirst('mailto:', '');
       return {
@@ -61,7 +76,10 @@ Map<String, dynamic> enrichMarkupWithEmailAndPhoneActions(Map<String, dynamic> m
         'url': 'mailto:$mail',
       };
     });
-    List<Map<String,dynamic>> generatedPotentialActions = [...potentialTelActions, ...potentialMailtoActions];
+    List<Map<String, dynamic>> generatedPotentialActions = [
+      ...potentialTelActions,
+      ...potentialMailtoActions
+    ];
     return appendPotentialActions(markup, generatedPotentialActions);
   }
   return markup;
@@ -116,7 +134,6 @@ Map<String, dynamic> addDefaultViewActionToMarkup(Map<String, dynamic> markup) {
   return appendPotentialActions(markup, [visitAction]);
 }
 
-
 /// When [markup] has uris for stories, video or audio, add corresponding actions to it.
 /// This uses [appendPotentialActions]. See its note on shallow copy.
 Map<String, dynamic> addSpecialViewActionToMarkup(Map<String, dynamic> markup) {
@@ -125,7 +142,8 @@ Map<String, dynamic> addSpecialViewActionToMarkup(Map<String, dynamic> markup) {
   var webStory = markup['webStoryUri'];
   if (webStory != null) {
     var storyAction = {
-      '@type': 'ReadStoryAction', //ReadAction is real, ReadStoryAction is invented by us
+      '@type':
+          'ReadStoryAction', //ReadAction is real, ReadStoryAction is invented by us
       'url': webStory,
       // 'variant': 'WebStory', // this is not real markup
       'name': 'View Story',
@@ -156,30 +174,30 @@ Map<String, dynamic> addSpecialViewActionToMarkup(Map<String, dynamic> markup) {
   return appendPotentialActions(markup, addedActions);
 }
 
-
 /// Returns markup with action to share it added to it.
 /// This is meant for events that get converted to iCalender files.
 /// This uses [appendPotentialActions]. See its note on shallow copy.
-Map<String, dynamic> enrichMarkupWithShareEventAction(Map<String, dynamic> markup) {
+Map<String, dynamic> enrichMarkupWithShareEventAction(
+    Map<String, dynamic> markup) {
   if (markup['@type'] != 'Event') return markup;
-    List<Map<String,dynamic>> generatedPotentialActions = [
-      {
-        '@type': 'ShareAction',
-        'name': 'Export Event',
-        'object': markup,
-        // could also add SML app as target here, similar to this snippet
-        // the target could then contain information as to how to process the object
-        // 'target': {
-        //   '@type': 'EntryPoint',
-        //   'urlTemplate': 'urbanspoon://r/6/92204',
-        //   'actionApplication': {
-        //     '@type': 'SoftwareApplication',
-        //     '@id': '5b23b738-bb64-4829-9296-5bcb59bb0d2d',
-        //     'name': 'Windows Phone App',
-        //     'operatingSystem': 'Windows Phone 8'
-        //   }
-        // }
-      }
-    ];
-    return appendPotentialActions(markup, generatedPotentialActions);
+  List<Map<String, dynamic>> generatedPotentialActions = [
+    {
+      '@type': 'ShareAction',
+      'name': 'Export Event',
+      'object': markup,
+      // could also add SML app as target here, similar to this snippet
+      // the target could then contain information as to how to process the object
+      // 'target': {
+      //   '@type': 'EntryPoint',
+      //   'urlTemplate': 'urbanspoon://r/6/92204',
+      //   'actionApplication': {
+      //     '@type': 'SoftwareApplication',
+      //     '@id': '5b23b738-bb64-4829-9296-5bcb59bb0d2d',
+      //     'name': 'Windows Phone App',
+      //     'operatingSystem': 'Windows Phone 8'
+      //   }
+      // }
+    }
+  ];
+  return appendPotentialActions(markup, generatedPotentialActions);
 }

@@ -12,7 +12,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../util/conversion.dart';
 
 // Todo make String nullable?
-typedef PostFunction = Function(Uri uriToPost, {dynamic dataToPost, String successMessage});
+typedef PostFunction = Function(Uri uriToPost,
+    {dynamic dataToPost, String successMessage});
 
 class PotentialActionRow extends StatelessWidget {
   const PotentialActionRow({
@@ -32,14 +33,14 @@ class PotentialActionRow extends StatelessWidget {
   Widget build(BuildContext context) {
     if (potentialAction is Map<String, dynamic>) {
       Widget button = PotentialActionButton(
-        potentialAction : potentialAction,
+        potentialAction: potentialAction,
         postFunction: postFunction,
         preview: preview,
       );
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          button ,
+          button,
           const SizedBox(width: 8),
         ],
       );
@@ -63,9 +64,11 @@ class PotentialActionRow extends StatelessWidget {
         ),
       );
     }
-    throw FormatException('Potential action is no map or list of maps', potentialAction);
+    throw FormatException(
+        'Potential action is no map or list of maps', potentialAction);
   }
 }
+
 // todo enum for action types
 class PotentialActionButton extends StatelessWidget {
   const PotentialActionButton({
@@ -86,193 +89,245 @@ class PotentialActionButton extends StatelessWidget {
     var actionTarget = potentialAction['target'];
     switch (actionType) {
       case 'CommunicateAction':
-      case 'ViewAction': {
-        button = TextButton(
-          onPressed: preview ? null : () {
-            Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
-            if (uriToLaunch != null) {
-              launchUrl(uriToLaunch);
-            }
-          },
-          child: Text(potentialAction['name'] ?? 'View'),
-        );
-        return button;
-      }
-      case 'TrackAction': {
-        button = TextButton(
-          onPressed: preview ? null : () {
-            Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
-            if (uriToLaunch != null) {
-              launchUrl(uriToLaunch);
-            }
-          },
-          child: Text(potentialAction['name'] ?? 'Track'),
-        );
-        return button;
-      }
-      case 'ConfirmAction': {
-        //todo dynamically support different fillings of ConfirmAction
-        Map<String, dynamic>? handler = potentialAction['handler'];
-        String confirmUri = actionTarget ?? '';
-        if (handler != null) {
-          // todo switch depending on handler type?
-          confirmUri = handler['url'];
+      case 'ViewAction':
+        {
+          button = TextButton(
+            onPressed: preview
+                ? null
+                : () {
+                    Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
+                    if (uriToLaunch != null) {
+                      launchUrl(uriToLaunch);
+                    }
+                  },
+            child: Text(potentialAction['name'] ?? 'View'),
+          );
+          return button;
         }
-        var actionName = potentialAction['name'] ?? 'Confirm';
-        button = TextButton(
-          onPressed: preview ? null : () {
-            Uri? uriToPost = tryCastOrParse(confirmUri);
-            if (uriToPost != null) {
-              if (uriToPost.scheme == 'mailto' && globalSMLAppContext?.confirmCallback != null) {
-                potentialAction['@context'] = 'https://schema.org';
-                potentialAction['actionStatus'] = 'CompletedActionStatus';
-                globalSMLAppContext!.confirmCallback!(subject: 'Action $actionName', dataToSend: potentialAction, recipient: uriToPost.path);
-              } else {
-                postFunction(uriToPost, successMessage: 'Sent Confirmation');
-              }
-            }
-          },
-          child: Text(actionName),
-        );
-        return button;
-      }
-      case 'CancelAction' : {
-        var actionName = potentialAction['name'] ?? 'Cancel';
-        button = TextButton(
-          onPressed: preview ? null : () {
-            Uri? uriToPost = tryCastOrParse(actionTarget);
-            if (uriToPost != null) {
-              if (uriToPost.scheme == 'mailto' && globalSMLAppContext?.confirmCallback != null) {
-                potentialAction['@context'] = 'https://schema.org';
-                potentialAction['actionStatus'] = 'CompletedActionStatus';
-                globalSMLAppContext!.confirmCallback!(subject: 'Action $actionName', dataToSend: potentialAction, recipient: uriToPost.path);
-              } else {
-                postFunction(uriToPost, successMessage: 'Sent Cancellation');
-              }
-            }
-          },
-          child: Text(actionName),
-        );
-        return button;
-      }
-      case 'EditAction' : {
-        button = TextButton(
-          onPressed: preview ? null : () {
-            Uri? uriToLaunch = tryCastOrParse(actionTarget);
-            if (uriToLaunch != null) {
-              launchUrl(uriToLaunch);
-            }
-          },
-          child: Text(potentialAction['name'] ?? 'Edit'),
-        );
-        return button;
-      }
-      case 'CheckInAction': {
-        button = TextButton(
-          onPressed: preview ? null : () {
-            Uri? uriToPost = tryCastOrParse(actionTarget);
-            if (uriToPost != null) {
-              postFunction(uriToPost, successMessage: 'Sent Check-In');
-            }
-          },
-          child: const Text('Check In'),
-        );
-        return button;
-      }
+      case 'TrackAction':
+        {
+          button = TextButton(
+            onPressed: preview
+                ? null
+                : () {
+                    Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
+                    if (uriToLaunch != null) {
+                      launchUrl(uriToLaunch);
+                    }
+                  },
+            child: Text(potentialAction['name'] ?? 'Track'),
+          );
+          return button;
+        }
+      case 'ConfirmAction':
+        {
+          //todo dynamically support different fillings of ConfirmAction
+          Map<String, dynamic>? handler = potentialAction['handler'];
+          String confirmUri = actionTarget ?? '';
+          if (handler != null) {
+            // todo switch depending on handler type?
+            confirmUri = handler['url'];
+          }
+          var actionName = potentialAction['name'] ?? 'Confirm';
+          button = TextButton(
+            onPressed: preview
+                ? null
+                : () {
+                    Uri? uriToPost = tryCastOrParse(confirmUri);
+                    if (uriToPost != null) {
+                      if (uriToPost.scheme == 'mailto' &&
+                          globalSMLAppContext?.confirmCallback != null) {
+                        potentialAction['@context'] = 'https://schema.org';
+                        potentialAction['actionStatus'] =
+                            'CompletedActionStatus';
+                        globalSMLAppContext!.confirmCallback!(
+                            subject: 'Action $actionName',
+                            dataToSend: potentialAction,
+                            recipient: uriToPost.path);
+                      } else {
+                        postFunction(uriToPost,
+                            successMessage: 'Sent Confirmation');
+                      }
+                    }
+                  },
+            child: Text(actionName),
+          );
+          return button;
+        }
+      case 'CancelAction':
+        {
+          var actionName = potentialAction['name'] ?? 'Cancel';
+          button = TextButton(
+            onPressed: preview
+                ? null
+                : () {
+                    Uri? uriToPost = tryCastOrParse(actionTarget);
+                    if (uriToPost != null) {
+                      if (uriToPost.scheme == 'mailto' &&
+                          globalSMLAppContext?.confirmCallback != null) {
+                        potentialAction['@context'] = 'https://schema.org';
+                        potentialAction['actionStatus'] =
+                            'CompletedActionStatus';
+                        globalSMLAppContext!.confirmCallback!(
+                            subject: 'Action $actionName',
+                            dataToSend: potentialAction,
+                            recipient: uriToPost.path);
+                      } else {
+                        postFunction(uriToPost,
+                            successMessage: 'Sent Cancellation');
+                      }
+                    }
+                  },
+            child: Text(actionName),
+          );
+          return button;
+        }
+      case 'EditAction':
+        {
+          button = TextButton(
+            onPressed: preview
+                ? null
+                : () {
+                    Uri? uriToLaunch = tryCastOrParse(actionTarget);
+                    if (uriToLaunch != null) {
+                      launchUrl(uriToLaunch);
+                    }
+                  },
+            child: Text(potentialAction['name'] ?? 'Edit'),
+          );
+          return button;
+        }
+      case 'CheckInAction':
+        {
+          button = TextButton(
+            onPressed: preview
+                ? null
+                : () {
+                    Uri? uriToPost = tryCastOrParse(actionTarget);
+                    if (uriToPost != null) {
+                      postFunction(uriToPost, successMessage: 'Sent Check-In');
+                    }
+                  },
+            child: const Text('Check In'),
+          );
+          return button;
+        }
       // case 'ListenAction': {
       //   button = AudioActionButton(preview: preview, potentialAction: potentialAction, actionTarget: actionTarget);
       //   return button;
       // }
       /// Special Case for Live Location
-      case 'UpdateAction': {
-        button = IconButton(
-          onPressed: preview ? null : () async {
-            // Misusing postFunction to call update function.
-            postFunction(Uri.base);
-          },
-          icon: const Icon(Icons.refresh),
-        );
-        return button;
-      }
-      case 'SearchAction': {
-        button = IconButton(
-          onPressed: preview ? null : () {
-            Uri? uriToLaunch = tryCastOrParse(actionTarget);
-            // todo should query for search... But this might be difficult to implement
-            if (uriToLaunch != null) {
-              launchUrl(uriToLaunch);
-            }
-          },
-          icon: const Icon(Icons.search),
-        );
-        return button;
-      }
-      case 'CopyToClipboardAction' : {
-        String nameOfCode = potentialAction['name'] ?? 'Copy';
-        String codeToCopy = potentialAction['description'];
-        button = TextButton.icon(
-          onPressed: preview ? null : () async {
-            await Clipboard.setData(ClipboardData(text: codeToCopy));
-          },
-          label: Text('$nameOfCode: $codeToCopy'),
-          icon: const Icon(Icons.copy),
-        );
-        return button;
-      }
-      case 'ShareAction': {
-        var actionName = potentialAction['name'] ?? 'Cancel';
-        button = TextButton(
-          onPressed: (preview || globalSMLAppContext?.confirmCallback == null) ? null : () {
-            var object = potentialAction['object'];
-            if (object is Map<String, dynamic>  && globalSMLAppContext?.eventCallback != null) {
-              globalSMLAppContext!.eventCallback!(eventData: object);
-            }
-          },
-          child: Text(actionName),
-        );
-       return button;
-      }
-      case 'ReadStoryAction': {
-        Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
-        if (uriToLaunch != null) {
-          button = TextButton.icon(onPressed: () {
-            var controller = WebViewController()
-              ..setJavaScriptMode(JavaScriptMode.unrestricted)
-              ..setNavigationDelegate(
-                NavigationDelegate(
-                  onProgress: (int progress) {
-                    // Update loading bar.
+      case 'UpdateAction':
+        {
+          button = IconButton(
+            onPressed: preview
+                ? null
+                : () async {
+                    // Misusing postFunction to call update function.
+                    postFunction(Uri.base);
                   },
-                  onPageStarted: (String url) {},
-                  onPageFinished: (String url) {},
-                  onHttpError: (HttpResponseError error) {},
-                  onWebResourceError: (WebResourceError error) {},
-                ),
-              )
-              ..loadRequest(uriToLaunch);
-            Navigator.of(context).push(
-             MaterialPageRoute(builder: (context) => Scaffold(
-               appBar: AppBar(title: const Text('Story')),
-               body: WebViewWidget(controller: controller),
-             ),)
+            icon: const Icon(Icons.refresh),
+          );
+          return button;
+        }
+      case 'SearchAction':
+        {
+          button = IconButton(
+            onPressed: preview
+                ? null
+                : () {
+                    Uri? uriToLaunch = tryCastOrParse(actionTarget);
+                    // todo should query for search... But this might be difficult to implement
+                    if (uriToLaunch != null) {
+                      launchUrl(uriToLaunch);
+                    }
+                  },
+            icon: const Icon(Icons.search),
+          );
+          return button;
+        }
+      case 'CopyToClipboardAction':
+        {
+          String nameOfCode = potentialAction['name'] ?? 'Copy';
+          String codeToCopy = potentialAction['description'];
+          button = TextButton.icon(
+            onPressed: preview
+                ? null
+                : () async {
+                    await Clipboard.setData(ClipboardData(text: codeToCopy));
+                  },
+            label: Text('$nameOfCode: $codeToCopy'),
+            icon: const Icon(Icons.copy),
+          );
+          return button;
+        }
+      case 'ShareAction':
+        {
+          var actionName = potentialAction['name'] ?? 'Cancel';
+          button = TextButton(
+            onPressed: (preview || globalSMLAppContext?.confirmCallback == null)
+                ? null
+                : () {
+                    var object = potentialAction['object'];
+                    if (object is Map<String, dynamic> &&
+                        globalSMLAppContext?.eventCallback != null) {
+                      globalSMLAppContext!.eventCallback!(eventData: object);
+                    }
+                  },
+            child: Text(actionName),
+          );
+          return button;
+        }
+      case 'ReadStoryAction':
+        {
+          Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
+          if (uriToLaunch != null) {
+            button = TextButton.icon(
+              onPressed: () {
+                var controller = WebViewController()
+                  ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                  ..setNavigationDelegate(
+                    NavigationDelegate(
+                      onProgress: (int progress) {
+                        // Update loading bar.
+                      },
+                      onPageStarted: (String url) {},
+                      onPageFinished: (String url) {},
+                      onHttpError: (HttpResponseError error) {},
+                      onWebResourceError: (WebResourceError error) {},
+                    ),
+                  )
+                  ..loadRequest(uriToLaunch);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                    appBar: AppBar(title: const Text('Story')),
+                    body: WebViewWidget(controller: controller),
+                  ),
+                ));
+              },
+              label: const Text('View Story'),
+              // icon: const Icon(Icons.read),
             );
-          },
-            label: const Text('View Story'),
-            // icon: const Icon(Icons.read),
-          );
+          }
         }
-      }
-      case 'WatchAction': {
-        Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
-        if (uriToLaunch != null) {
-          button = TextButton.icon(onPressed: () {
-           showDialog(context: context, builder: (context) => VideoPlayerDialog(source: uriToLaunch,),);
-          },
-            label: const Text('Watch'),
-            icon: const Icon(Icons.play_circle),
-          );
+      case 'WatchAction':
+        {
+          Uri? uriToLaunch = tryCastOrParse(potentialAction['url']);
+          if (uriToLaunch != null) {
+            button = TextButton.icon(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => VideoPlayerDialog(
+                    source: uriToLaunch,
+                  ),
+                );
+              },
+              label: const Text('Watch'),
+              icon: const Icon(Icons.play_circle),
+            );
+          }
         }
-      }
     }
     return button;
   }

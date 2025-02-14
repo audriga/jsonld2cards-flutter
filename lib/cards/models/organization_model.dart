@@ -15,10 +15,10 @@ class Organization extends Thing {
 }
 */
 
-
   String? legalName;
   Uri? sameAs;
   PostalAddress? address;
+
   /// logo is an associated logo. Is either [ImageObject]  or URL
   Uri? logoUri;
   ImageObject? logoImgObj;
@@ -26,9 +26,9 @@ class Organization extends Thing {
   Uri? get logo {
     return logoImgObj?.url ?? logoUri;
   }
+
   String? telephone;
   String? email;
-
 
   Organization({
     this.sameAs,
@@ -42,7 +42,7 @@ class Organization extends Thing {
 
   Organization.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     sameAs = tryCastOrParse(json['sameAs']);
-    if (json['address'] case Map<String,dynamic> addressMap) {
+    if (json['address'] case Map<String, dynamic> addressMap) {
       address = PostalAddress.fromJson(addressMap);
     }
     legalName = json['legalName'];

@@ -5,10 +5,10 @@ import 'package:jsonld2cards/cards/models/thing_model.dart';
 
 /// Special case to provide duplicate hash function for jsonld rendered by [MusicCard]
 
-
 class MusicAlbum extends Thing {
   @override
-  int get duplicateHash => type.hashCode ^ name.hashCode ^ description.hashCode ^ url.hashCode;
+  int get duplicateHash =>
+      type.hashCode ^ name.hashCode ^ description.hashCode ^ url.hashCode;
 
   /// Expects [name], [description], and [url] to be given (but all provided by superclass).
   MusicAlbum({super.name, super.description, super.url});
@@ -26,7 +26,8 @@ class MusicAlbum extends Thing {
 /// Playlist or Artist Page
 class MusicGroup extends Thing {
   @override
-  int get duplicateHash => type.hashCode ^ name.hashCode ^ description.hashCode ^ url.hashCode;
+  int get duplicateHash =>
+      type.hashCode ^ name.hashCode ^ description.hashCode ^ url.hashCode;
 
   /// Expects [name], [description], and [url] to be given (but all provided by superclass).
   MusicGroup({super.name, super.description, super.url});
@@ -44,7 +45,8 @@ class MusicGroup extends Thing {
 /// A single song
 class MusicRecording extends Thing {
   @override
-  int get duplicateHash => type.hashCode ^ name.hashCode ^ description.hashCode ^ url.hashCode;
+  int get duplicateHash =>
+      type.hashCode ^ name.hashCode ^ description.hashCode ^ url.hashCode;
 
   /// Expects [name], [description], and [url] to be given (but all provided by superclass).
   MusicRecording({super.name, super.description, super.url});

@@ -13,17 +13,18 @@ import 'building_blocks/uri_image.dart';
 
 final log = Logger('jsonld2cards.cards.music');
 
-enum MusicType {album, playlist, song}
+enum MusicType { album, playlist, song }
+
 class MusicCard extends StatelessWidget implements MarkupCard {
   final MusicType musicType;
 
-  const MusicCard(this.cardData, {
+  const MusicCard(
+    this.cardData, {
     super.key,
     this.musicType = MusicType.album,
   });
 
   final CardData cardData;
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +41,9 @@ class MusicCard extends StatelessWidget implements MarkupCard {
         defaultIcon = Icons.music_note;
         break;
     }
-    Widget defaultAlbumCover =  Icon(defaultIcon);
+    Widget defaultAlbumCover = Icon(defaultIcon);
     UriImage? albumCover = findLeadingImage(cardData.markup);
     Widget leadingImage = albumCover ?? defaultAlbumCover;
-
 
     var potentialAction = cardData.markup['potentialAction'];
 
@@ -58,16 +58,15 @@ class MusicCard extends StatelessWidget implements MarkupCard {
 
   Future<String?> getImageSource(Uri? uri) async {
     if (uri == null) return null;
-    http.Response response =  await http.get(uri);
+    http.Response response = await http.get(uri);
     var parsedResponse = parse(response.body);
     var head = parsedResponse.head;
     if (head != null) {
       var metaTags = head.getElementsByTagName('meta');
-      var imageUrls = metaTags.where((script) => script.attributes['name'] == 'twitter:image');
+      var imageUrls = metaTags
+          .where((script) => script.attributes['name'] == 'twitter:image');
       if (imageUrls.length > 1) {
-        log.warning(
-          'Got more image urls than expected:\n$imageUrls'
-        );
+        log.warning('Got more image urls than expected:\n$imageUrls');
       }
       if (imageUrls.isNotEmpty) return imageUrls.first.attributes['content'];
     }
@@ -75,10 +74,10 @@ class MusicCard extends StatelessWidget implements MarkupCard {
   }
 
   SchemaType get cardType => switch (musicType) {
-    MusicType.album => SchemaType.musicAlbum,
-    MusicType.playlist => SchemaType.musicGroup,
-    MusicType.song => SchemaType.musicRecording,
-  };
+        MusicType.album => SchemaType.musicAlbum,
+        MusicType.playlist => SchemaType.musicGroup,
+        MusicType.song => SchemaType.musicRecording,
+      };
 
   @override
   IconData get tabIcon => cardType.icon!;

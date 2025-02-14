@@ -196,17 +196,20 @@ Widget renderCardSingle(CardData cardData) {
   ].contains(context ?? '')) {
     log.warning(
       'Warning Markup does not contain context tag, '
-          'or context tag does not contain one of the known schema contexts '
-          'like http://schema.org\n${cardData.markup}',
+      'or context tag does not contain one of the known schema contexts '
+      'like http://schema.org\n${cardData.markup}',
     );
   }
 
   /// Look through markup for phone numbers and emails and add corresponding potential actions
-  cardData = CardData.fromOther(cardData, markup: enrichMarkupWithEmailAndPhoneActions(cardData.markup));
+  cardData = CardData.fromOther(cardData,
+      markup: enrichMarkupWithEmailAndPhoneActions(cardData.markup));
 
   /// Add default ViewAction "Visit" to cards that have a url.
-  cardData = CardData.fromOther(cardData, markup: addDefaultViewActionToMarkup(cardData.markup));
-  cardData = CardData.fromOther(cardData, markup: addSpecialViewActionToMarkup(cardData.markup));
+  cardData = CardData.fromOther(cardData,
+      markup: addDefaultViewActionToMarkup(cardData.markup));
+  cardData = CardData.fromOther(cardData,
+      markup: addSpecialViewActionToMarkup(cardData.markup));
 
   String typeName = cardData.markup['@type'];
   var type = getCardType(typeName);
@@ -214,11 +217,13 @@ Widget renderCardSingle(CardData cardData) {
     // Append "Navigate to" and "View" Actions to cards that contain GeoCoordinates.
     // Don't do this for place cards, as they already add these actions themselves.
     // (Especially for liveLocation cards we cant to avoid buttons pointing to stale locations).
-    cardData = CardData.fromOther(cardData, markup: enrichMarkupWithNavigationActions(cardData.markup));
+    cardData = CardData.fromOther(cardData,
+        markup: enrichMarkupWithNavigationActions(cardData.markup));
   }
   if (type == SchemaType.event) {
     /// On event markups, add potentialAction to share the event
-    cardData = CardData.fromOther(cardData, markup: enrichMarkupWithShareEventAction(cardData.markup));
+    cardData = CardData.fromOther(cardData,
+        markup: enrichMarkupWithShareEventAction(cardData.markup));
   }
   late MarkupCard card;
   switch (type) {

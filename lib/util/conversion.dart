@@ -15,7 +15,7 @@ dynamic tryDecode(data) {
 /// a string.
 /// This function takes a [String] or [Uri] as [input] and outputs the corresponding [Uri].
 /// On error (be that null-input, a parse fail or an input of an unexpected type) returns null.
-Uri? tryCastOrParse(dynamic input){
+Uri? tryCastOrParse(dynamic input) {
   if (input == null) {
     return null;
   }
@@ -28,7 +28,7 @@ Uri? tryCastOrParse(dynamic input){
   return null;
 }
 
-num? tryCastOrParseNum(dynamic input){
+num? tryCastOrParseNum(dynamic input) {
   if (input == null) {
     return null;
   }

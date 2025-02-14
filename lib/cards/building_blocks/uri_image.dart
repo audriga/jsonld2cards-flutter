@@ -42,9 +42,9 @@ class UriImage extends StatelessWidget {
   final Color? color;
   final BlendMode? colorBlendMode;
   final FilterQuality filterQuality;
+
   /// Widget displayed while the target failed loading.
   final LoadingErrorWidgetBuilder? errorWidget;
-
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class UriImage extends StatelessWidget {
           attemptToProxy = true;
         }
 
-        String imageUrlString  = imageUrl.toString();
+        String imageUrlString = imageUrl.toString();
         return CachedNetworkImage(
           imageUrl: imageUrlString,
           placeholder: placeholder,
@@ -100,7 +100,8 @@ class UriImage extends StatelessWidget {
           errorWidget: attemptToProxy ? proxiedImage : errorWidget,
         );
       } else {
-        var unexpectedSchemeError = FormatException('Unexpected scheme: ${jsonImageUri.scheme}', content);
+        var unexpectedSchemeError = FormatException(
+            'Unexpected scheme: ${jsonImageUri.scheme}', content);
         if (errorWidget != null) {
           return errorWidget!(context, content, unexpectedSchemeError);
         } else {
@@ -167,7 +168,8 @@ UriImage? findLeadingImage(Map<String, dynamic> markup,
         }
       } else if (image is Map<String, dynamic>) {
         // image is an ImageObject (https://schema.org/ImageObject)
-        var contentUrl = image['contentUrl'] ?? image['url'] ?? image['embedUrl'];
+        var contentUrl =
+            image['contentUrl'] ?? image['url'] ?? image['embedUrl'];
         leadingImage = UriImage(
           content: contentUrl,
           height: size,
@@ -195,16 +197,17 @@ UriImage? findLeadingImage(Map<String, dynamic> markup,
   return leadingImage;
 }
 
-LoadingErrorWidgetBuilder logAndShowNoImage =
-    (context, url, error) {
-      log.warning('Error rendering leading Image', error);
-      return const SizedBox(width: 0,);
+LoadingErrorWidgetBuilder logAndShowNoImage = (context, url, error) {
+  log.warning('Error rendering leading Image', error);
+  return const SizedBox(
+    width: 0,
+  );
 };
 
-Widget brokenImageErrorWidget(context, url, error) =>
-    IconButton(
+Widget brokenImageErrorWidget(context, url, error) => IconButton(
       onPressed: () {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Url: $url\nError: ${error.toString()}')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Url: $url\nError: ${error.toString()}')));
       },
       icon: const Icon(Icons.broken_image),
     );

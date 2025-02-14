@@ -6,17 +6,14 @@ import 'package:jsonld2cards/card_data.dart';
 // import 'mail_header.dart';
 import 'potential_actions.dart';
 
-
 class CardWithActions extends StatelessWidget {
   const CardWithActions(
-      {
-        super.key,
-        required this.cardContents,
-        this.potentialAction,
-        // this.secondaryPotentialAction,
-        // this.secondaryPotentialActionPostFunction,
-        required this.cardData
-      });
+      {super.key,
+      required this.cardContents,
+      this.potentialAction,
+      // this.secondaryPotentialAction,
+      // this.secondaryPotentialActionPostFunction,
+      required this.cardData});
 
   final List<Widget> cardContents;
 

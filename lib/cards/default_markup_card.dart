@@ -36,7 +36,8 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
     }
 
     // Look for images in cardData.markup
-    Widget? leadingImage = findLeadingImage(cardData.markup,
+    Widget? leadingImage = findLeadingImage(
+      cardData.markup,
       imageErrorWidget: logAndShowNoImage,
       size: 32.0, // todo: Maybe find a way to dynamically determine the size?
     );
@@ -49,8 +50,6 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
       cardData: cardData,
     );
   }
-
-
 
   @Deprecated('use html2jsonld version of this instead of own function')
   Future<String?> getImageSource(Uri? uri) async {

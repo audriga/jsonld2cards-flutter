@@ -5,7 +5,10 @@ import 'package:flutter/widgets.dart';
 /// The main content of a card with a three column Layout.
 class ThreeColumnCardContent extends StatelessWidget {
   const ThreeColumnCardContent({
-    super.key, required this.leftColumn, required this.middleColumn, required this.rightColumn,
+    super.key,
+    required this.leftColumn,
+    required this.middleColumn,
+    required this.rightColumn,
   });
 
   final Column leftColumn, middleColumn, rightColumn;

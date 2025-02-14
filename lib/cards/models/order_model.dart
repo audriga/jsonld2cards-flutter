@@ -39,8 +39,6 @@ class QuantitativeValue {
   }
 }
 
-
-
 class Offer {
 /*
 {
@@ -79,10 +77,10 @@ class Offer {
         : null;
     price = json['price']?.toString();
     priceCurrency = json['priceCurrency']?.toString();
-    eligibleQuantity = (json['eligibleQuantity'] != null &&
-        (json['eligibleQuantity'] is Map))
-        ? QuantitativeValue.fromJson(json['eligibleQuantity'])
-        : null;
+    eligibleQuantity =
+        (json['eligibleQuantity'] != null && (json['eligibleQuantity'] is Map))
+            ? QuantitativeValue.fromJson(json['eligibleQuantity'])
+            : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -99,7 +97,6 @@ class Offer {
     return data;
   }
 }
-
 
 // todo this is defined twice, combine both
 class PriceSpecification {
@@ -127,7 +124,6 @@ class PriceSpecification {
     return data;
   }
 }
-
 
 enum OrderStatus {
   orderCancelled,
@@ -169,28 +165,45 @@ OrderStatus? orderStatusFromString(String? orderStatusAsString) {
 }
 
 String orderStatusToString(OrderStatus status) {
-  switch(status) {
-    case OrderStatus.orderCancelled: 'http://schema.org/OrderDelivered';
-    case OrderStatus.orderInTransit: 'http://schema.org/OrderInTransit';
-    case OrderStatus.orderPaymentDue: 'http://schema.org/OrderPaymentDue';
-    case OrderStatus.orderPickupAvailable: 'http://schema.org/OrderPickupAvailable';
-    case OrderStatus.orderProblem: 'http://schema.org/OrderProblem';
-    case OrderStatus.orderProcessing: 'http://schema.org/OrderProcessing';
-    case OrderStatus.orderReturned: 'http://schema.org/OrderReturned';
-    default: return '';
+  switch (status) {
+    case OrderStatus.orderCancelled:
+      'http://schema.org/OrderDelivered';
+    case OrderStatus.orderInTransit:
+      'http://schema.org/OrderInTransit';
+    case OrderStatus.orderPaymentDue:
+      'http://schema.org/OrderPaymentDue';
+    case OrderStatus.orderPickupAvailable:
+      'http://schema.org/OrderPickupAvailable';
+    case OrderStatus.orderProblem:
+      'http://schema.org/OrderProblem';
+    case OrderStatus.orderProcessing:
+      'http://schema.org/OrderProcessing';
+    case OrderStatus.orderReturned:
+      'http://schema.org/OrderReturned';
+    default:
+      return '';
   }
   return '';
 }
+
 String orderStatusToVerbString(OrderStatus status) {
-  switch(status) {
-    case OrderStatus.orderCancelled: 'is delivered';
-    case OrderStatus.orderInTransit: 'is in transit';
-    case OrderStatus.orderPaymentDue: 'payment is due';
-    case OrderStatus.orderPickupAvailable: 'pickup is available';
-    case OrderStatus.orderProblem: 'has a problem';
-    case OrderStatus.orderProcessing: 'is processing';
-    case OrderStatus.orderReturned: 'is returned';
-    default: return '';
+  switch (status) {
+    case OrderStatus.orderCancelled:
+      'is delivered';
+    case OrderStatus.orderInTransit:
+      'is in transit';
+    case OrderStatus.orderPaymentDue:
+      'payment is due';
+    case OrderStatus.orderPickupAvailable:
+      'pickup is available';
+    case OrderStatus.orderProblem:
+      'has a problem';
+    case OrderStatus.orderProcessing:
+      'is processing';
+    case OrderStatus.orderReturned:
+      'is returned';
+    default:
+      return '';
   }
   return '';
 }
@@ -273,7 +286,7 @@ class Order extends Thing {
     super.potentialAction,
   });
 
-  Order.fromJson(Map<String, dynamic> json) : super.fromJson(json){
+  Order.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     // Verifying of context is skipped, as it is already done by renderCard function
     assert(json['@type'] == 'Order', 'Type of Order should always be Order');
     orderedItem = (json['orderedItem'] != null && (json['orderedItem'] is Map))
@@ -287,13 +300,13 @@ class Order extends Thing {
     priceCurrency = json['priceCurrency']?.toString();
     price = json['price']?.toString();
     priceSpecification = (json['priceSpecification'] != null &&
-        (json['priceSpecification'] is Map))
+            (json['priceSpecification'] is Map))
         ? PriceSpecification.fromJson(json['priceSpecification'])
         : null;
     acceptedOffer =
-    (json['acceptedOffer'] != null && (json['acceptedOffer'] is Map))
-        ? Offer.fromJson(json['acceptedOffer'])
-        : null;
+        (json['acceptedOffer'] != null && (json['acceptedOffer'] is Map))
+            ? Offer.fromJson(json['acceptedOffer'])
+            : null;
     url = tryCastOrParse(json['url']);
     potentialAction = json['potentialAction'];
   }

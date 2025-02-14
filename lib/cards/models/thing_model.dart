@@ -23,8 +23,15 @@ class Thing {
   Uri? url;
   String? identifier;
 
-  int get duplicateHash => type.hashCode ^ id.hashCode ^ name.hashCode ^ description.hashCode ^ url.hashCode;
-  String? get descriptionString => (description is List) ? (description as List).whereType<String>().join('\n') : description.toString();
+  int get duplicateHash =>
+      type.hashCode ^
+      id.hashCode ^
+      name.hashCode ^
+      description.hashCode ^
+      url.hashCode;
+  String? get descriptionString => (description is List)
+      ? (description as List).whereType<String>().join('\n')
+      : description.toString();
 
   Thing({
     this.id,
@@ -52,7 +59,7 @@ class Thing {
     name = json['name'];
     potentialAction = json['potentialAction'];
     url = tryCastOrParse(json['url']);
-    if (json['identifier']case String jsonIdentifier) {
+    if (json['identifier'] case String jsonIdentifier) {
       identifier = jsonIdentifier;
     }
   }
@@ -75,6 +82,9 @@ class Thing {
       data['potentialAction'] = potentialAction!.toJson();
     }
     data['url'] = url?.toString();
-    return data..removeWhere((key, value) => value == null,);
+    return data
+      ..removeWhere(
+        (key, value) => value == null,
+      );
   }
 }

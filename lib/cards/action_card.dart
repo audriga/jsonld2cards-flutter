@@ -27,14 +27,14 @@ class ActionCard extends StatelessWidget implements MarkupCard {
       titleTextBuffer.write('${action.name}');
     }
     if (action.actionStatus != null) {
-      titleTextBuffer.write(' ${action_model.actionStatusToVerbString(action.actionStatus!)}');
+      titleTextBuffer.write(
+          ' ${action_model.actionStatusToVerbString(action.actionStatus!)}');
     }
 
     titleText = titleTextBuffer.toString();
     subtitleText = action.verb;
-    
-    leadingImage = Icon(action.icon);
 
+    leadingImage = Icon(action.icon);
 
     return SimpleCard(
       leadingImage: leadingImage,

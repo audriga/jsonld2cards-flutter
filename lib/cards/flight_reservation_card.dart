@@ -8,7 +8,7 @@ import 'package:jsonld2cards/card_data.dart';
 import 'building_blocks/card_with_actions.dart';
 import 'building_blocks/three_column_card_content.dart';
 
-class FlightReservationCard extends StatelessWidget implements MarkupCard{
+class FlightReservationCard extends StatelessWidget implements MarkupCard {
   const FlightReservationCard(this.cardData, {super.key});
 
   final CardData cardData;
@@ -70,7 +70,8 @@ class FlightReservationWidget extends StatelessWidget {
 
     var middleColumn = Column(
       children: [
-        Text('${reservationFor['airline']['iataCode']} ${reservationFor['flightNumber']}'),
+        Text(
+            '${reservationFor['airline']['iataCode']} ${reservationFor['flightNumber']}'),
         const Icon(Icons.flight),
       ],
     );

@@ -75,8 +75,10 @@ class SimpleCardContent extends StatelessWidget {
   /// Image shown on the left of the card.
   /// This can be Map Tile in [Place] or an Album Cover in a [MusicCard]
   final Widget? leadingImage;
+
   /// Top level text to render in a larger font
   final String? titleText;
+
   /// Secondary text to render in a smaller font
   final String? subtitleText;
 
@@ -85,7 +87,13 @@ class SimpleCardContent extends StatelessWidget {
     var cardContents = ListTile(
       leading: leadingImage,
       title: titleText != null ? Text(titleText!) : null,
-      subtitle: subtitleText != null ? Text(subtitleText!, maxLines: 5, overflow: TextOverflow.fade,) : null,
+      subtitle: subtitleText != null
+          ? Text(
+              subtitleText!,
+              maxLines: 5,
+              overflow: TextOverflow.fade,
+            )
+          : null,
     );
     return cardContents;
   }

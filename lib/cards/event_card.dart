@@ -23,7 +23,6 @@ class EventCard extends StatelessWidget implements MarkupCard {
     Widget? leadingImage;
     var titleTextBuffer = StringBuffer(event.name ?? 'Event');
 
-
     var subTitleTextBuffer = StringBuffer();
     if (event.description != null) {
       subTitleTextBuffer.write('${event.description}. ');
@@ -49,7 +48,6 @@ class EventCard extends StatelessWidget implements MarkupCard {
 
     titleText = titleTextBuffer.toString();
     subtitleText = subTitleTextBuffer.toString();
-
 
     return SimpleCard(
       leadingImage: leadingImage,

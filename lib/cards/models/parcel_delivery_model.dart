@@ -1,6 +1,5 @@
 library;
 
-
 // Note: This is a "quick and dirty" model, to make creation of the card easier.
 // Not to be taken as the model to be.
 import 'package:jsonld2cards/cards/models/order_model.dart';
@@ -8,7 +7,6 @@ import 'package:jsonld2cards/cards/models/thing_model.dart';
 
 import 'organization_model.dart';
 import 'product_model.dart';
-
 
 // Part of the https://schema.org/DeliveryMethod enum.
 class ParcelService {

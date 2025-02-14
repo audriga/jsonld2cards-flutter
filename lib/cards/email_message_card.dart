@@ -9,17 +9,18 @@ import 'package:flutter/widgets.dart';
 import 'markup_card.dart';
 
 class EmailMessage extends StatelessWidget implements MarkupCard {
-  const EmailMessage(this.cardData, {super.key,});
+  const EmailMessage(
+    this.cardData, {
+    super.key,
+  });
 
   final CardData cardData;
-
 
   @override
   Widget build(BuildContext context) {
     String? name = cardData.markup['name'];
     String? description = cardData.markup['description'];
     var potentialAction = cardData.markup['potentialAction'];
-
 
     return SimpleCard(
       titleText: name ?? description,

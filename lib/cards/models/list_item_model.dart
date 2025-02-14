@@ -3,12 +3,10 @@ library;
 import 'package:jsonld2cards/cards/models/thing_model.dart';
 
 class ListItem extends Thing {
-
   Thing? item;
   ListItem? nextItem;
   num? position;
   ListItem? previousItem;
-
 
   ListItem({this.item, this.nextItem, this.position, this.previousItem});
 
@@ -36,12 +34,11 @@ class ListItem extends Thing {
       if (jsonItem is Map<String, dynamic>) {
         item = Thing.fromJson(jsonItem);
       }
-
     }
     var jsonPosition = json['position'];
     if (jsonPosition is num) {
       position = jsonPosition;
-    } else if (jsonPosition is String){
+    } else if (jsonPosition is String) {
       position = num.tryParse(jsonPosition);
     }
     var jsonNextItem = json['nextItem'];

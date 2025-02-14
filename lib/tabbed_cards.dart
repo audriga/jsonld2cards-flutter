@@ -12,10 +12,10 @@ class TabbedMultiCard extends StatefulWidget implements MarkupCard {
     this.cardData, {
     super.key,
   })
-      // : markupList = cardData.markupList,
-      //   postFunction = cardData.postFunction,
-      //   preview = cardData.preview,
-      //   topBar = cardData.topBar
+  // : markupList = cardData.markupList,
+  //   postFunction = cardData.postFunction,
+  //   preview = cardData.preview,
+  //   topBar = cardData.topBar
   ;
 
   final CardData cardData;
@@ -44,7 +44,8 @@ class _TabbedMultiCardState extends State<TabbedMultiCard> {
   @override
   Widget build(BuildContext context) {
     if (widget.cardData.markupList.isEmpty) {
-      throw FormatException('Cannot render empty list', widget.cardData.markupList);
+      throw FormatException(
+          'Cannot render empty list', widget.cardData.markupList);
     }
     // if (widget.markupList.length == 1) {
     //   return mustRenderCard(widget.markupList.single,
@@ -66,9 +67,11 @@ class _TabbedMultiCardState extends State<TabbedMultiCard> {
         topBar: false,
       )) as MarkupCard;
       if (card is TabbedMultiCard) {
-        card = NestedMultiCard(CardData.fromOther(card.cardData,
+        card = NestedMultiCard(CardData.fromOther(
+          card.cardData,
           markup: card.cardData.typeFilteredMarkupList,
-          postFunction: widget.cardData.postFunction, //todo I think this constructor call can be replaced with just card.cardData
+          postFunction: widget.cardData
+              .postFunction, //todo I think this constructor call can be replaced with just card.cardData
         ));
       }
       views.add(card);
@@ -88,8 +91,9 @@ class _TabbedMultiCardState extends State<TabbedMultiCard> {
           children: [
             LayoutBuilder(builder: (context, constraints) {
               int maxSizePerTab = 150;
-              bool useSmall = constraints.maxWidth / widget.cardData.markupList.length <
-                  maxSizePerTab;
+              bool useSmall =
+                  constraints.maxWidth / widget.cardData.markupList.length <
+                      maxSizePerTab;
               return TabBar.secondary(
                 onTap: (index) {
                   setState(() {
@@ -110,7 +114,8 @@ class _TabbedMultiCardState extends State<TabbedMultiCard> {
 }
 
 class NestedMultiCard extends StatefulWidget implements MarkupCard {
-  const NestedMultiCard(this.cardData, {
+  const NestedMultiCard(
+    this.cardData, {
     super.key,
     // required this.markupList,
     // required this.postFunction,
@@ -141,9 +146,11 @@ class _NestedMultiCardState extends State<NestedMultiCard> {
     var tabs = <TextButton>[];
     var views = <Widget>[];
     for (int i = 0; i < widget.cardData.markupList.length; i++) {
-      MarkupCard card = mustRenderCardFromCardData(CardData.fromOther(widget.cardData,
-          markup: widget.cardData.markupList[i],
-          topBar: false,)) as MarkupCard;
+      MarkupCard card = mustRenderCardFromCardData(CardData.fromOther(
+        widget.cardData,
+        markup: widget.cardData.markupList[i],
+        topBar: false,
+      )) as MarkupCard;
       views.add(card);
       tabs.add(TextButton(
         onPressed: () {

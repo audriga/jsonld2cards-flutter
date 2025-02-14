@@ -77,7 +77,9 @@ class Product {
       image = tryCastOrParse(jsonImage);
     }
     description = json['description']?.toString();
-    brand = (json['brand'] != null && (json['brand'] is Map)) ? Brand.fromJson(json['brand']) : null;
+    brand = (json['brand'] != null && (json['brand'] is Map))
+        ? Brand.fromJson(json['brand'])
+        : null;
     color = json['color']?.toString();
   }
 

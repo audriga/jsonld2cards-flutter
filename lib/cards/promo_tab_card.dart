@@ -9,7 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'models/organization_model.dart';
 
-
 class PromoTabData {
   Organization? organization;
   EmailMessageData? emailMessage;
@@ -23,12 +22,15 @@ class PromoTabData {
         promotionCards = tryPromotionCards(markupList);
 
   static Organization? tryOrganization(List<Map<String, dynamic>> markupList) {
-    var organizationMarkup = markupList.firstWhere((element) => element['@type'] == 'Organization', orElse: () => {});
+    var organizationMarkup = markupList.firstWhere(
+        (element) => element['@type'] == 'Organization',
+        orElse: () => {});
     if (organizationMarkup.isEmpty) return null;
     return Organization.fromJson(organizationMarkup);
   }
 
-  static EmailMessageData? tryEmailMessageData(List<Map<String, dynamic>> markupList) {
+  static EmailMessageData? tryEmailMessageData(
+      List<Map<String, dynamic>> markupList) {
     var emailMessageMarkup = markupList.firstWhere(
         (element) => element['@type'] == 'EmailMessage',
         orElse: () => {});
@@ -36,25 +38,27 @@ class PromoTabData {
     return EmailMessageData.fromJson(emailMessageMarkup);
   }
 
-  static DiscountOffer? tryDiscountOffer(List<Map<String, dynamic>> markupList) {
+  static DiscountOffer? tryDiscountOffer(
+      List<Map<String, dynamic>> markupList) {
     var discountOfferMarkup = markupList.firstWhere(
         (element) => element['@type'] == 'DiscountOffer',
         orElse: () => {});
     if (discountOfferMarkup.isEmpty) return null;
-    return DiscountOffer.fromJson(
-        discountOfferMarkup);
+    return DiscountOffer.fromJson(discountOfferMarkup);
   }
 
-  static List<PromotionCardData> tryPromotionCards(List<Map<String, dynamic>> markupList) {
-    var promoMarkupList = markupList.where((element) =>
-    element['@type'] == 'PromotionCard').toList()
-      ..sort((a, b) => (a['position'] as int? ?? 0).compareTo(b['position'] as int? ?? 0),);
+  static List<PromotionCardData> tryPromotionCards(
+      List<Map<String, dynamic>> markupList) {
+    var promoMarkupList = markupList
+        .where((element) => element['@type'] == 'PromotionCard')
+        .toList()
+      ..sort(
+        (a, b) =>
+            (a['position'] as int? ?? 0).compareTo(b['position'] as int? ?? 0),
+      );
     return promoMarkupList.map(PromotionCardData.fromJson).toList();
   }
-  
 }
-
-
 
 class EmailMessageData {
   String subjectLine;
@@ -75,7 +79,8 @@ class DiscountOffer {
   DiscountOffer.fromJson(Map<String, dynamic> json)
       : description = json['description'],
         discountCode = json['discountCode'],
-        availabilityStarts = DateTime.tryParse(json['availabilityStarts'] ?? ''),
+        availabilityStarts =
+            DateTime.tryParse(json['availabilityStarts'] ?? ''),
         availabilityEnds = DateTime.tryParse(json['availabilityEnds'] ?? '');
 }
 
@@ -86,7 +91,7 @@ class PromotionCardData {
   num? price;
   String? priceCurrency;
   num? discountValue;
-  
+
   String? get priceInCurrency {
     if (price == null) return null;
     if (priceCurrency == null) return price!.toString();
@@ -103,27 +108,28 @@ class PromotionCardData {
     return formatCurrency(discountedPrice, priceCurrency!);
   }
 
-  static String formatCurrency(num price, String priceCurrency) => switch (priceCurrency) {
-      'USD' => '\$$price',
-      'EUR' => '$price€',
-      _ => '$price $priceCurrency'
-    };
+  static String formatCurrency(num price, String priceCurrency) =>
+      switch (priceCurrency) {
+        'USD' => '\$$price',
+        'EUR' => '$price€',
+        _ => '$price $priceCurrency'
+      };
 
   PromotionCardData.fromJson(Map<String, dynamic> json)
       : image = tryCastOrParse(json['image']),
-        url = (json['url'] == null)? null : (json['url'] is Uri) ? json['url'] : Uri.parse(json['url']),
+        url = (json['url'] == null)
+            ? null
+            : (json['url'] is Uri)
+                ? json['url']
+                : Uri.parse(json['url']),
         headline = json['headline'],
         price = json['price'],
         priceCurrency = json['priceCurrency'],
         discountValue = json['discountValue'];
 }
 
-
 class PromoTabCard extends StatelessWidget implements MarkupCard {
-  PromoTabCard({
-    super.key,
-    required this.cardData
-  }) {
+  PromoTabCard({super.key, required this.cardData}) {
     markupList = cardData.typeFilteredMarkupList;
     preview = cardData.preview;
   }
@@ -155,66 +161,71 @@ class PromoTabCard extends StatelessWidget implements MarkupCard {
     var promoTabData = PromoTabData.fromJsonList(markupList);
     var discountOffer = promoTabData.discountOffer;
 
-
     const promoCardPerScreen = 3;
     const viewportFractionPerItem = 1.0 / promoCardPerScreen;
 
-    return LayoutBuilder(
-        builder: (context, constraints) {
-          final itemWidth = constraints.maxWidth * viewportFractionPerItem;
-          final itemImageHeight = constraints.maxHeight != double.infinity ? constraints.maxHeight -200 : null;
-          var emailMessage = promoTabData.emailMessage;
-          var organization = promoTabData.organization;
-          var promotionCards = promoTabData.promotionCards;
-          return Card(
-              child: Column(
+    return LayoutBuilder(builder: (context, constraints) {
+      final itemWidth = constraints.maxWidth * viewportFractionPerItem;
+      final itemImageHeight = constraints.maxHeight != double.infinity
+          ? constraints.maxHeight - 200
+          : null;
+      var emailMessage = promoTabData.emailMessage;
+      var organization = promoTabData.organization;
+      var promotionCards = promoTabData.promotionCards;
+      return Card(
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              if (organization != null)
+                UriImage(
+                    content: organization.logo,
+                    height: 32.0,
+                    width: 32.0,
+                    fit: BoxFit.scaleDown),
+              Column(
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      if (organization != null) UriImage(
-                          content: organization.logo,
-                          height: 32.0,
-                          width:  32.0,
-                          fit: BoxFit.scaleDown
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (emailMessage != null) Text(
-                            emailMessage.subjectLine,
-                            style: theme.textTheme.titleMedium,
-                            softWrap: true,
-                          ),
-                          if (discountOffer != null) DiscountOfferRow(discountOffer: discountOffer,),
-                        ],
-                      )
-                    ],
-                  ),
-                  if (promotionCards.isNotEmpty) Scrollbar(
-                    controller: _vertical,
-                    child: SingleChildScrollView(
-                      controller: _vertical,
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          for (int i = 0; i < promotionCards.length * 2; ++i)
-                            (i.isOdd) ? const Divider() : PromoItem(
+                  if (emailMessage != null)
+                    Text(
+                      emailMessage.subjectLine,
+                      style: theme.textTheme.titleMedium,
+                      softWrap: true,
+                    ),
+                  if (discountOffer != null)
+                    DiscountOfferRow(
+                      discountOffer: discountOffer,
+                    ),
+                ],
+              )
+            ],
+          ),
+          if (promotionCards.isNotEmpty)
+            Scrollbar(
+              controller: _vertical,
+              child: SingleChildScrollView(
+                controller: _vertical,
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    for (int i = 0; i < promotionCards.length * 2; ++i)
+                      (i.isOdd)
+                          ? const Divider()
+                          : PromoItem(
                               width: itemWidth,
                               imageHeight: itemImageHeight,
                               promoCardData: promotionCards[i ~/ 2],
                               preview: preview,
                             ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
-          );
-        }
-    );
+                  ],
+                ),
+              ),
+            ),
+        ],
+      ));
+    });
   }
 
   @override
@@ -241,40 +252,44 @@ class DiscountOfferRow extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     return Row(
       children: [
-        if (discountOffer.description != null) Container(
-          decoration: const BoxDecoration(
-            color: Colors.lightGreen,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: Text(
-              discountOffer.description!,
+        if (discountOffer.description != null)
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.lightGreen,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              child: Text(
+                discountOffer.description!,
+              ),
             ),
           ),
-        ),
         if (discountOffer.discountCode != null) const Text(' Code '),
-        if (discountOffer.discountCode != null) Container(
-          decoration: BoxDecoration(
-            color: theme.highlightColor,
+        if (discountOffer.discountCode != null)
+          Container(
+            decoration: BoxDecoration(
+              color: theme.highlightColor,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              child: Text(discountOffer.discountCode!),
+            ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: Text(discountOffer.discountCode!),
-          ),
-        ),
-        if (expiryText != null) Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(
-            expiryText,
-            style: theme.textTheme.labelLarge,
-          ),
-        )
+        if (expiryText != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text(
+              expiryText,
+              style: theme.textTheme.labelLarge,
+            ),
+          )
       ],
     );
   }
 }
 
-String? getExpiryText(DateTime? availabilityStarts, DateTime? availabilityEnds) {
+String? getExpiryText(
+    DateTime? availabilityStarts, DateTime? availabilityEnds) {
   var now = DateTime.now();
   if (availabilityStarts == null && availabilityEnds == null) {
     return null;
@@ -299,7 +314,7 @@ String? getExpiryText(DateTime? availabilityStarts, DateTime? availabilityEnds) 
       return 'Starts in ${difference.inHours} hours';
     } else if (availabilityEnds!.isAfter(now)) {
       var difference = availabilityEnds.difference(now);
-     return 'Expires in ${difference.inHours} hours';
+      return 'Expires in ${difference.inHours} hours';
     }
     return 'Expired';
   }
@@ -323,11 +338,14 @@ class PromoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     String? priceInCurrency = promoCardData.priceInCurrency;
     String? discountedPriceInCurrency = promoCardData.discountedPriceInCurrency;
-    bool hasPrice = priceInCurrency != null || discountedPriceInCurrency != null;
+    bool hasPrice =
+        priceInCurrency != null || discountedPriceInCurrency != null;
     var headline = promoCardData.headline;
     var hasHeadline = headline != null;
     return GestureDetector(
-      onTap: (preview || promoCardData.url == null) ? null : () => launchUrl(promoCardData.url!),
+      onTap: (preview || promoCardData.url == null)
+          ? null
+          : () => launchUrl(promoCardData.url!),
       child: SizedBox(
         width: width,
         child: Card(
@@ -342,37 +360,44 @@ class PromoItem extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              imageHeight != null ?
-              ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: imageHeight!),
-                child: UriImage(
-                    content: promoCardData.image,
-                    placeholder: (context, url) => const CircularProgressIndicator(),
-                    fit: BoxFit.scaleDown,
-                ),
-              ) : UriImage(
-                content: promoCardData.image,
-                placeholder: (context, url) => const CircularProgressIndicator(),
-                fit: BoxFit.scaleDown,
-              ),
-              if (hasHeadline || hasPrice)ListTile(
-                title: hasHeadline ? Text(headline, softWrap: true) : null,
-                subtitle: hasPrice ? Text.rich(TextSpan(
-                  children: [
-                    if (priceInCurrency != null) TextSpan(
-                      text: priceInCurrency,
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        decoration: TextDecoration.lineThrough,
+              imageHeight != null
+                  ? ConstrainedBox(
+                      constraints: BoxConstraints(maxHeight: imageHeight!),
+                      child: UriImage(
+                        content: promoCardData.image,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        fit: BoxFit.scaleDown,
                       ),
+                    )
+                  : UriImage(
+                      content: promoCardData.image,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      fit: BoxFit.scaleDown,
                     ),
-                    if (discountedPriceInCurrency != null) TextSpan(
-                      text: ' $discountedPriceInCurrency',
-                    ),
-                  ],
-                )
-                ) : null,
-              ),
+              if (hasHeadline || hasPrice)
+                ListTile(
+                  title: hasHeadline ? Text(headline, softWrap: true) : null,
+                  subtitle: hasPrice
+                      ? Text.rich(TextSpan(
+                          children: [
+                            if (priceInCurrency != null)
+                              TextSpan(
+                                text: priceInCurrency,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                            if (discountedPriceInCurrency != null)
+                              TextSpan(
+                                text: ' $discountedPriceInCurrency',
+                              ),
+                          ],
+                        ))
+                      : null,
+                ),
             ],
           ),
         ),

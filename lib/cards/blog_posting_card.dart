@@ -39,7 +39,8 @@ class BlogPostingCard extends StatelessWidget implements MarkupCard {
     }
 
     // Look for images in cardData.markup
-    Widget? leadingImage = findLeadingImage(cardData.markup,
+    Widget? leadingImage = findLeadingImage(
+      cardData.markup,
       imageErrorWidget: logAndShowNoImage,
       size: 32.0, // todo: Maybe find a way to dynamically determine the size?
     );
@@ -52,9 +53,6 @@ class BlogPostingCard extends StatelessWidget implements MarkupCard {
       cardData: cardData,
     );
   }
-
-
-
 
   SchemaType get cardType => SchemaType.blogPosting;
 

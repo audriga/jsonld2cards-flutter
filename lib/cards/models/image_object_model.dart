@@ -2,7 +2,7 @@ library;
 
 import 'thing_model.dart';
 
-class ImageObject extends Thing{
+class ImageObject extends Thing {
 /*
 {
    "@type": "ImageObject",
@@ -11,7 +11,6 @@ class ImageObject extends Thing{
   "height": 60
 }
 */
-
 
   // Todo still missing contentUrl
   num? width;

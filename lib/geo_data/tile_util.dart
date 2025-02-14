@@ -19,13 +19,14 @@ class TileNumber {
 
   TileNumber.fromLatLong(double latitude, longitude, int zoom) {
     var latRad = toRadians(latitude);
-    x = ((longitude + 180)/ 360 * (1 << zoom) ).floor();
-    y = ((1.0 - log(tan(latRad) + 1.0 / cos(latRad)) / pi) / 2 * (1<<zoom)).floor();
+    x = ((longitude + 180) / 360 * (1 << zoom)).floor();
+    y = ((1.0 - log(tan(latRad) + 1.0 / cos(latRad)) / pi) / 2 * (1 << zoom))
+        .floor();
     if (x < 0) {
       x = 0;
     }
     if (x >= (1 << zoom)) {
-      x= (1 << zoom) - 1;
+      x = (1 << zoom) - 1;
     }
     if (y < 0) {
       y = 0;

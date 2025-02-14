@@ -14,11 +14,13 @@ library;
 // }
 
 const emptyList = <String>[];
+
 /// Finds all occurrences of [searchKey] in [map].
 /// Performs a depth-first recursive search to do so.
 /// Returns the corresponding values.
 /// [excluded] contains keys for which the search does not enter the value/ disregards the value completely.
-List<dynamic> findAllRecursive(Map<String, dynamic> map, String searchKey, {List<String> excluded = emptyList}) {
+List<dynamic> findAllRecursive(Map<String, dynamic> map, String searchKey,
+    {List<String> excluded = emptyList}) {
   var collectedResults = [];
   for (var key in map.keys) {
     if (excluded.contains(key)) continue;
@@ -29,9 +31,10 @@ List<dynamic> findAllRecursive(Map<String, dynamic> map, String searchKey, {List
       var ret = findAllRecursive(value, searchKey, excluded: excluded);
       collectedResults.addAll(ret);
     } else if (value is List) {
-      for (var element in value) { 
+      for (var element in value) {
         if (element is Map<String, dynamic>) {
-          collectedResults.addAll(findAllRecursive(element, searchKey, excluded: excluded));
+          collectedResults
+              .addAll(findAllRecursive(element, searchKey, excluded: excluded));
         }
       }
     }

@@ -14,7 +14,6 @@ class OrderCard extends StatelessWidget implements MarkupCard {
 
   final CardData cardData;
 
-
   @override
   Widget build(BuildContext context) {
     var order = Order.fromJson(cardData.markup);
@@ -35,14 +34,14 @@ class OrderCard extends StatelessWidget implements MarkupCard {
     if (order.acceptedOffer != null) {
       var itemOffered = order.acceptedOffer!.itemOffered;
       if (itemOffered != null) {
-        if (itemOffered.name != null){
+        if (itemOffered.name != null) {
           subTitleTextBuffer.writeln(itemOffered.name);
         }
         if (itemOffered.image != null) {
           leadingImage = UriImage(
             content: itemOffered.image,
             height: 32.0,
-            width:  32.0,
+            width: 32.0,
             fit: BoxFit.scaleDown,
           );
         }
@@ -57,7 +56,6 @@ class OrderCard extends StatelessWidget implements MarkupCard {
 
     titleText = titleTextBuffer.toString();
     subtitleText = subTitleTextBuffer.toString();
-
 
     return SimpleCard(
       leadingImage: leadingImage,

@@ -103,7 +103,6 @@ class _InvoiceCardState extends State<InvoiceCard> {
   }
 }
 
-
 Widget? sellerAndOrCustomerSpansWrapped(Invoice invoice) {
   Widget? seller;
   if (invoice.provider != null) {
@@ -202,7 +201,7 @@ List<TextSpan> createSubtitleTextSpans(
     bool overdue = paymentDueDate.isBefore(DateTime.now());
     subTitleTextSpans.add(TextSpan(
         text:
-        '\nDue ${paymentDueDate.day}.${paymentDueDate.month}.${paymentDueDate.year}', // todo forced format
+            '\nDue ${paymentDueDate.day}.${paymentDueDate.month}.${paymentDueDate.year}', // todo forced format
         style: TextStyle(
           color: overdue ? Colors.red : Colors.green,
         )));
@@ -245,4 +244,3 @@ List<TextSpan> createTitleTextSpans(Invoice invoice) {
   }
   return titleTextSpans;
 }
-

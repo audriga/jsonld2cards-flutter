@@ -3,9 +3,7 @@ library;
 import 'package:jsonld2cards/cards/models/thing_model.dart';
 import 'organization_model.dart';
 
-
 class Event extends Thing {
-
   // Thing? about;
   // // Person? actor
   // Map<String, dynamic>? actor;
@@ -52,16 +50,22 @@ class Event extends Thing {
   Event.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     location = json['location'];
     var untypedStartDate = json['startDate'];
-    if (untypedStartDate is String) startDate = DateTime.tryParse(untypedStartDate);
+    if (untypedStartDate is String) {
+      startDate = DateTime.tryParse(untypedStartDate);
+    }
     var untypedEndDate = json['endDate'];
     if (untypedEndDate is String) endDate = DateTime.tryParse(untypedEndDate);
     var untypedOrganizer = json['organizer'];
     // todo handle lists too, same goes for attendee
-    organizer = (untypedOrganizer != null && (untypedOrganizer is Map<String, dynamic>) && untypedOrganizer['@type'] == 'Organization')
+    organizer = (untypedOrganizer != null &&
+            (untypedOrganizer is Map<String, dynamic>) &&
+            untypedOrganizer['@type'] == 'Organization')
         ? Organization.fromJson(untypedOrganizer)
         : untypedOrganizer;
     var untypedAttendee = json['attendee'];
-    attendee = (untypedAttendee != null && (untypedAttendee is Map<String, dynamic>) && untypedOrganizer['@type'] == 'Organization')
+    attendee = (untypedAttendee != null &&
+            (untypedAttendee is Map<String, dynamic>) &&
+            untypedOrganizer['@type'] == 'Organization')
         ? Organization.fromJson(untypedAttendee)
         : untypedAttendee;
     // originalJson = json;
@@ -77,8 +81,9 @@ class Event extends Thing {
     // this might add a time of midnight to entries that were just dates before
     data['startDate'] = startDate?.toIso8601String();
     data['endDate'] = endDate?.toIso8601String();
-    data['organizer'] = organizer is Organization ? organizer.toJson(): organizer;
-    data['organizer'] = attendee is Organization ? attendee.toJson(): attendee;
+    data['organizer'] =
+        organizer is Organization ? organizer.toJson() : organizer;
+    data['organizer'] = attendee is Organization ? attendee.toJson() : attendee;
     return data;
   }
 }

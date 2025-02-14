@@ -12,13 +12,13 @@ class Attachment {
   String? source;
   String? description;
 
-  Attachment(
-      {this.data,
-      this.filename,
-      this.mimeType,
-      this.source,
-      this.description,
-      });
+  Attachment({
+    this.data,
+    this.filename,
+    this.mimeType,
+    this.source,
+    this.description,
+  });
 }
 
 class CardData {

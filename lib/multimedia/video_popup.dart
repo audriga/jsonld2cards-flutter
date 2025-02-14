@@ -3,7 +3,6 @@ library;
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-
 class VideoPlayerDialog extends StatefulWidget {
   const VideoPlayerDialog({super.key, required this.source});
 
@@ -28,11 +27,13 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
 
     // Initialize the controller and store the Future for later use.
     _initializeVideoPlayerFuture = _controller.initialize();
-    _initializeVideoPlayerFuture.then((value) {
-      setState(() {
-        _controller.play();
-      });
-    },);
+    _initializeVideoPlayerFuture.then(
+      (value) {
+        setState(() {
+          _controller.play();
+        });
+      },
+    );
 
     // Use the controller to loop the video.
     _controller.setLooping(true);

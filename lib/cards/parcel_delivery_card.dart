@@ -9,7 +9,7 @@ import 'building_blocks/card_with_actions.dart';
 import 'building_blocks/three_column_card_content.dart';
 import 'models/parcel_delivery_model.dart';
 
-class ParcelDeliveryCard extends StatelessWidget implements MarkupCard{
+class ParcelDeliveryCard extends StatelessWidget implements MarkupCard {
   const ParcelDeliveryCard(this.cardData, {super.key});
 
   final CardData cardData;
@@ -76,14 +76,12 @@ class ParcelDeliveryCard extends StatelessWidget implements MarkupCard{
         ));
       }
     }
-    
+
     var leftColumn = Column(
       children: childrenInLeftColumn,
     );
 
-    List<Widget> childrenInMiddleColumn = [
-      const Icon(Icons.local_post_office)
-    ];
+    List<Widget> childrenInMiddleColumn = [const Icon(Icons.local_post_office)];
 
     var item = parcelDelivery.itemShipped;
     if (item != null && item.name != null) {
@@ -92,13 +90,13 @@ class ParcelDeliveryCard extends StatelessWidget implements MarkupCard{
         style: theme.textTheme.labelLarge,
       ));
     }
-    if (parcelDelivery.carrier != null && parcelDelivery.carrier!.name != null) {
+    if (parcelDelivery.carrier != null &&
+        parcelDelivery.carrier!.name != null) {
       childrenInMiddleColumn.add(Text(
         parcelDelivery.carrier!.name!,
         style: theme.textTheme.labelMedium,
       ));
     }
-
 
     var middleColumn = Column(
       children: childrenInMiddleColumn,
@@ -119,7 +117,6 @@ class ParcelDeliveryCard extends StatelessWidget implements MarkupCard{
     );
   }
 
-
   SchemaType get cardType => SchemaType.parcelDelivery;
 
   @override
@@ -128,4 +125,3 @@ class ParcelDeliveryCard extends StatelessWidget implements MarkupCard{
   @override
   String get tabName => cardType.tabName;
 }
-

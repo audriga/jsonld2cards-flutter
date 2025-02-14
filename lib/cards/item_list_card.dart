@@ -23,9 +23,7 @@ class ItemListCard extends StatelessWidget implements MarkupCard {
         var item = element.item;
         if (item != null) {
           internalMarkup.add(item.toJson());
-        } else if (element.url != null) {
-
-        }
+        } else if (element.url != null) {}
       } else if (element is Map<String, dynamic>) {
         internalMarkup.add(element);
       }
@@ -33,12 +31,11 @@ class ItemListCard extends StatelessWidget implements MarkupCard {
 
     if (internalMarkup.isEmpty) {
       throw FormatException(
-        'Could not get any valid internal cards!', internalMarkup);
+          'Could not get any valid internal cards!', internalMarkup);
     }
     // todo zeit homepage won't work
     return NestedMultiCard(
-        CardData.fromOther(cardData, markup: internalMarkup)
-    );
+        CardData.fromOther(cardData, markup: internalMarkup));
   }
 
   SchemaType get cardType => SchemaType.itemList;

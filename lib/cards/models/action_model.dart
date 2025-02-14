@@ -31,15 +31,16 @@ ActionStatus? actionStatusFromString(String? actionStatusAsString) {
 }
 
 String actionStatusToString(ActionStatus status) {
-  return switch(status) {
+  return switch (status) {
     ActionStatus.activeActionStatus => 'ActiveActionStatus',
     ActionStatus.completedActionStatus => 'CompletedActionStatus',
     ActionStatus.failedActionStatus => 'FailedActionStatus',
     ActionStatus.potentialActionStatus => 'PotentialActionStatus',
   };
 }
+
 String actionStatusToVerbString(ActionStatus status) {
-  return switch(status) {
+  return switch (status) {
     ActionStatus.activeActionStatus => 'is active',
     ActionStatus.completedActionStatus => 'is complete',
     ActionStatus.failedActionStatus => 'has failed',
@@ -51,6 +52,7 @@ class Action extends Thing {
   /// The specific subtype of action
   late final String _type;
   ActionStatus? actionStatus;
+
   /// Either url or Entry point. Can also be list of those
   dynamic target;
 
@@ -70,7 +72,7 @@ class Action extends Thing {
     };
   }
 
-  Action.fromJson(Map<String, dynamic> json) : super.fromJson(json){
+  Action.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     _type = json['@type'];
     // There are many action subtypes
     // assert(json['@type'] == 'Action', 'Type of Action should always be Action');
@@ -89,6 +91,9 @@ class Action extends Thing {
       data['actionStatus'] = actionStatusToString(actionStatus!);
     }
     data['target'] = target;
-    return data..removeWhere((key, value) => value == null,);
+    return data
+      ..removeWhere(
+        (key, value) => value == null,
+      );
   }
 }

@@ -44,12 +44,17 @@ class SimplePollCard extends StatelessWidget implements MarkupCard {
         Widget? voterIndicator;
         if (hasVotes) {
           totalVotes = simplePoll.choices!.length;
-          votesForThis = simplePoll.choices!.where((element) => element.actionOption == optionName,);
-          percentIndicator = LinearProgressIndicator(value: votesForThis.length / totalVotes,);
+          votesForThis = simplePoll.choices!.where(
+            (element) => element.actionOption == optionName,
+          );
+          percentIndicator = LinearProgressIndicator(
+            value: votesForThis.length / totalVotes,
+          );
           voterIndicator = Text('${votesForThis.length}');
         }
-        var pollTile =  (simplePoll.selectMultiple ?? false)
-            ? CheckboxListTile(controlAffinity: ListTileControlAffinity.leading,
+        var pollTile = (simplePoll.selectMultiple ?? false)
+            ? CheckboxListTile(
+                controlAffinity: ListTileControlAffinity.leading,
                 title: Text(optionName),
                 subtitle: percentIndicator,
                 secondary: voterIndicator,

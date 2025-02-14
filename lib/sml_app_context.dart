@@ -12,8 +12,5 @@ class SMLAppContext {
   SendEmailCallback? confirmCallback;
   EventCallback? eventCallback;
 
-  SMLAppContext({
-    this.confirmCallback,
-    this.eventCallback
-  });
+  SMLAppContext({this.confirmCallback, this.eventCallback});
 }

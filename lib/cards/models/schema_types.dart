@@ -145,22 +145,27 @@ extension SchemaTypeName on SchemaType {
   bool get isSimpleTemplatedType => simpleTemplateTypes.contains(this);
 
   /// Returns true if and only if there exists a card template for this type.
-  bool get isThreeColumnTemplatedType => threeColumnTemplateTypes.contains(this);
+  bool get isThreeColumnTemplatedType =>
+      threeColumnTemplateTypes.contains(this);
 
   int duplicateHash(Map<String, dynamic> json) => switch (this) {
         // SchemaType.emailMessage => 'EmailMessage',
         SchemaType.place => Place.fromJson(json).duplicateHash,
-        SchemaType.musicRecording => MusicRecording.fromJson(json).duplicateHash,
+        SchemaType.musicRecording =>
+          MusicRecording.fromJson(json).duplicateHash,
         SchemaType.musicGroup => MusicGroup.fromJson(json).duplicateHash,
         SchemaType.musicAlbum => MusicAlbum.fromJson(json).duplicateHash,
         // SchemaType.flightReservation => 'FlightReservation',
         SchemaType.order => Order.fromJson(json).duplicateHash,
         SchemaType.invoice => Invoice.fromJson(json).duplicateHash,
-        SchemaType.parcelDelivery => ParcelDelivery.fromJson(json).duplicateHash,
+        SchemaType.parcelDelivery =>
+          ParcelDelivery.fromJson(json).duplicateHash,
         // SchemaType.blogPosting => 'BlogPosting',
         SchemaType.itemList => ItemList.fromJson(json).duplicateHash,
-        SchemaType.confirmAction => schema_action.Action.fromJson(json).duplicateHash,
-        SchemaType.cancelAction => schema_action.Action.fromJson(json).duplicateHash,
+        SchemaType.confirmAction =>
+          schema_action.Action.fromJson(json).duplicateHash,
+        SchemaType.cancelAction =>
+          schema_action.Action.fromJson(json).duplicateHash,
         SchemaType.action => schema_action.Action.fromJson(json).duplicateHash,
         SchemaType.simplePoll => SimplePoll.fromJson(json).duplicateHash,
         // SchemaType.promotionCard => PromotionCardData.fromJson(json).duplicateHash,

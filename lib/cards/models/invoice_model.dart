@@ -5,9 +5,7 @@ import 'package:jsonld2cards/cards/models/thing_model.dart';
 import 'order_model.dart';
 import 'organization_model.dart';
 
-
 class MonetaryAmount extends Thing {
-
   String? currency;
   String? value;
   // todo missing properties
@@ -17,7 +15,7 @@ class MonetaryAmount extends Thing {
     this.value,
   });
 
-  MonetaryAmount.fromJson(Map<String, dynamic> json): super.fromJson(json) {
+  MonetaryAmount.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     currency = json['currency']?.toString();
     value = json['value']?.toString();
   }
@@ -57,7 +55,8 @@ class PriceSpecification extends Thing {
     this.price,
   });
 
-  PriceSpecification.fromJson(Map<String, dynamic> json): super.fromJson(json) {
+  PriceSpecification.fromJson(Map<String, dynamic> json)
+      : super.fromJson(json) {
     price = json['price']?.toString();
   }
 
@@ -116,7 +115,6 @@ class Invoice extends Thing {
   DateTime? dateIssued;
   DateTime? paymentDueDate;
 
-
   Invoice({
     required this.json,
     this.accountId,
@@ -137,10 +135,10 @@ class Invoice extends Thing {
     super.potentialAction,
   });
 
-  Invoice.fromJson(this.json) : super.fromJson(json){
+  Invoice.fromJson(this.json) : super.fromJson(json) {
     accountId = json['accountId']?.toString();
     minimumPaymentDue = (json['minimumPaymentDue'] != null &&
-        (json['minimumPaymentDue'] is Map))
+            (json['minimumPaymentDue'] is Map))
         ? PriceSpecification.fromJson(json['minimumPaymentDue'])
         : null;
     paymentDue = DateTime.tryParse(json['paymentDue'] ?? '');
@@ -163,7 +161,8 @@ class Invoice extends Thing {
       var totalPaymentType = totalPaymentEncoded['@type'];
       if (totalPaymentType is String) {
         totalPaymentDue = switch (totalPaymentType) {
-          'PriceSpecification' => PriceSpecification.fromJson(totalPaymentEncoded),
+          'PriceSpecification' =>
+            PriceSpecification.fromJson(totalPaymentEncoded),
           'MonetaryAmount' => MonetaryAmount.fromJson(totalPaymentEncoded),
           String() => Thing.fromJson(totalPaymentEncoded),
         };
@@ -173,12 +172,17 @@ class Invoice extends Thing {
     // (json['totalPaymentDue'] != null && (json['totalPaymentDue'] is Map))
     //     ? PriceSpecification.fromJson(json['totalPaymentDue'])
     //     : null;
-    confirmationNumber = (json['confirmationNumber'] is String) ? json['confirmationNumber'] : null;
+    confirmationNumber = (json['confirmationNumber'] is String)
+        ? json['confirmationNumber']
+        : null;
     if (json['purchase'] case Map<String, dynamic> purchaseMap) {
       purchase = Order.fromJson(purchaseMap);
     }
     if (json['referencesOrder'] case List referencesOrderJson) {
-      referencesOrder = referencesOrderJson.whereType<Map<String,dynamic>>().map(Order.fromJson).toList();
+      referencesOrder = referencesOrderJson
+          .whereType<Map<String, dynamic>>()
+          .map(Order.fromJson)
+          .toList();
     }
     if (json['paymentMethod'] case String paymentMethodJ) {
       paymentMethod = paymentMethodJ;

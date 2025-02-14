@@ -23,19 +23,21 @@ class AdaptiveMultipleCards extends StatelessWidget {
     required this.postFunction,
   });
 
-
   @override
   Widget build(BuildContext context) {
-    var types = markups.whereType<Map<String,dynamic>>().map((e) => e['@type']);
+    var types =
+        markups.whereType<Map<String, dynamic>>().map((e) => e['@type']);
     Organization? organization;
     Uri? orgLogo;
     Widget? orgLogoWidget;
     if (types.contains('Organization')) {
-      organization = Organization.fromJson(markups.firstWhere((element) => element['@type'] == 'Organization'));
+      organization = Organization.fromJson(
+          markups.firstWhere((element) => element['@type'] == 'Organization'));
       orgLogo = organization.logo;
       // markups.removeWhere((element) => element['@type'] == 'Organization');
     } else if (types.contains('NewsMediaOrganization')) {
-      organization = Organization.fromJson(markups.firstWhere((element) => element['@type'] == 'NewsMediaOrganization'));
+      organization = Organization.fromJson(markups.firstWhere(
+          (element) => element['@type'] == 'NewsMediaOrganization'));
       orgLogo = organization.logo;
     }
     if (orgLogo != null) {
@@ -50,25 +52,28 @@ class AdaptiveMultipleCards extends StatelessWidget {
 
     List<Widget>? breadCrumbButtons;
     if (types.contains('BreadcrumbList')) {
-      var breadCrumbList = ItemList.fromJson(markups.firstWhere((element) => element['@type'] == 'BreadcrumbList'));
+      var breadCrumbList = ItemList.fromJson(markups
+          .firstWhere((element) => element['@type'] == 'BreadcrumbList'));
       // markups.removeWhere((element) => element['@type'] == 'BreadcrumbList');
       var breadCrumbListElement = breadCrumbList.itemListElement;
 
       if (breadCrumbListElement != null && breadCrumbListElement.isNotEmpty) {
-        breadCrumbButtons = List<Widget>.generate(breadCrumbListElement.length * 2 - 1,  (int index) {
+        breadCrumbButtons = List<Widget>.generate(
+            breadCrumbListElement.length * 2 - 1, (int index) {
           if (index.isOdd) return const Text('/');
           final actualIndex = index ~/ 2;
           var crumb = breadCrumbListElement[actualIndex];
           String buttonText;
+
           /// Maybe not necessary to be so diligent with the cases as a BreadcrumbList should only
           /// contain [ListItem]s containing schema.org/WebPage
           if (crumb is ListItem) {
             var crumbItem = crumb.item;
             if (crumbItem != null) {
-              buttonText = crumbItem.name ?? crumbItem.id?.pathSegments.last ?? '';
+              buttonText =
+                  crumbItem.name ?? crumbItem.id?.pathSegments.last ?? '';
             } else {
               buttonText = crumb.name ?? crumb.position?.toString() ?? '';
-
             }
           } else if (crumb is Thing) {
             buttonText = crumb.name ?? crumb.id?.pathSegments.last ?? '';
@@ -78,8 +83,12 @@ class AdaptiveMultipleCards extends StatelessWidget {
             buttonText = '';
           }
           return TextButton(
-              onPressed: (){},
-              child: Text(buttonText, maxLines: 2, overflow: TextOverflow.ellipsis,),
+            onPressed: () {},
+            child: Text(
+              buttonText,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           );
         });
       }
@@ -87,35 +96,43 @@ class AdaptiveMultipleCards extends StatelessWidget {
 
     AppBar? appBar;
     if (breadCrumbButtons != null) {
-      appBar = AppBar(leading: orgLogoWidget, title: Row(mainAxisSize: MainAxisSize.min, children: breadCrumbButtons),);
+      appBar = AppBar(
+        leading: orgLogoWidget,
+        title: Row(mainAxisSize: MainAxisSize.min, children: breadCrumbButtons),
+      );
     } else if (title != null) {
-      appBar = AppBar(leading: orgLogoWidget, title: Text(title!),);
+      appBar = AppBar(
+        leading: orgLogoWidget,
+        title: Text(title!),
+      );
     }
-
 
     final List<Widget> children;
 
     if (types.contains('ItemList')) {
-      var itemList = ItemList.fromJson(markups.firstWhere((element) => element['@type'] == 'ItemList'));
-      var itemListElement  = itemList.itemListElement;
+      var itemList = ItemList.fromJson(
+          markups.firstWhere((element) => element['@type'] == 'ItemList'));
+      var itemListElement = itemList.itemListElement;
       if (itemListElement != null) {
         children = List<Widget>.generate(itemListElement.length, (int index) {
-          return renderCard(itemListElement[index], postFunction: postFunction) ?? const Text('Could not load card');
+          return renderCard(itemListElement[index],
+                  postFunction: postFunction) ??
+              const Text('Could not load card');
         });
       } else {
         // what if there is an item list and remaining array elements?
         children = List<Widget>.generate(markups.length, (int index) {
-          return renderCard(markups[index], postFunction: postFunction) ?? const Text('Could not load card');
+          return renderCard(markups[index], postFunction: postFunction) ??
+              const Text('Could not load card');
         });
       }
     } else {
       var filteredMarkups = removeMarkupClutter(markups);
       children = List<Widget>.generate(filteredMarkups.length, (int index) {
-        return renderCard(filteredMarkups[index], postFunction: postFunction) ?? const Text('Could not load card');
+        return renderCard(filteredMarkups[index], postFunction: postFunction) ??
+            const Text('Could not load card');
       });
     }
-
-
 
     return Scaffold(
         appBar: appBar,
@@ -129,17 +146,18 @@ class AdaptiveMultipleCards extends StatelessWidget {
                 builder: (_) => ListView.builder(
                   itemCount: children.length,
                   itemBuilder: (BuildContext context, int index) =>
-                  children[index],
+                      children[index],
                 ),
               ),
               Breakpoints.mediumAndUp: SlotLayout.from(
                 key: const Key('Body Medium'),
-                builder: (_) =>
-                    LayoutBuilder(
-                        builder: (context, constraints) {
-                          return GridView.count(crossAxisCount: 2,childAspectRatio: constraints.maxWidth / constraints.maxHeight, children: children);
-                      }
-                    ),
+                builder: (_) => LayoutBuilder(builder: (context, constraints) {
+                  return GridView.count(
+                      crossAxisCount: 2,
+                      childAspectRatio:
+                          constraints.maxWidth / constraints.maxHeight,
+                      children: children);
+                }),
               )
             },
           ),

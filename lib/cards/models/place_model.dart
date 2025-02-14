@@ -1,6 +1,5 @@
 library;
 
-
 import 'package:jsonld2cards/cards/models/thing_model.dart';
 import 'package:jsonld2cards/geo_data/geo_data.dart';
 
