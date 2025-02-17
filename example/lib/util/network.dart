@@ -10,7 +10,6 @@ import 'globals.dart';
 final log = Logger('jsonld2cardsExample.example.network');
 
 /// Posts given data to given URI, and shows a success message in snackbar on success
-/// This is copied over from SMLApp, where it is also used for FormRendering Purposes.
 /// This should not be included in the library itself because `snackBarKey`
 /// is the Global Key for the ScaffoldMessengerState of which there should only be one per app
 /// Basically the root problem is that in order to display some feedback to the user,

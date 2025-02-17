@@ -21,25 +21,26 @@ class Attachment {
   });
 }
 
+/// Wrapper object around the schema markup, includes additional data about
+/// how to render it.
 class CardData {
-  dynamic markup; // List<Map<String,dynamic>> or Map<String, dynamic>
+  /// The schema markup to be rendered.
+  /// Should be either `List<Map<String,dynamic>>` or `Map<String, dynamic>`
+  dynamic markup;
+
+  /// The function which is used to post data on action
+  // buttons that post data (f.e. ConfirmAction button). Can be set to a dummy function if not needed.
   PostFunction? postFunction;
+
+  /// Whether the card should be rendered in preview mode. This disables ActionButtons.
   bool preview;
+
+  /// Whether to show a bar on top of the card, indicating the type of the card.
   bool topBar;
+
+  /// Additional buttons that can be rendered after the action buttons.
+  /// Not actually used yet.
   List<Widget>? additionalButtons;
-  bool showMessageHeader;
-  Attachment? sourceFile;
-  List<Attachment>? otherAttachments;
-
-  /// True, of sMime valid, false means either sMime invalid or not present.
-  bool sMimeValid;
-
-  // True means sMime invalid, false means either sMime valid, or not present.
-  bool sMimeInvalid;
-  bool dkimValid;
-  bool dkimInvalid;
-  bool isArchived;
-  bool isDeleted;
 
   CardData(
     this.markup, {
@@ -47,15 +48,6 @@ class CardData {
     this.preview = false,
     this.topBar = false,
     this.additionalButtons,
-    this.showMessageHeader = false,
-    this.sourceFile,
-    this.otherAttachments,
-    this.sMimeValid = false,
-    this.sMimeInvalid = false,
-    this.dkimValid = false,
-    this.dkimInvalid = false,
-    this.isArchived = false,
-    this.isDeleted = false,
   });
 
   bool get markupIsList =>
@@ -89,14 +81,5 @@ class CardData {
         postFunction = postFunction ?? o.postFunction,
         preview = preview ?? o.preview,
         topBar = topBar ?? o.topBar,
-        additionalButtons = additionalButtons ?? o.additionalButtons,
-        showMessageHeader = showMessageHeader ?? o.showMessageHeader,
-        sourceFile = sourceFile ?? o.sourceFile,
-        otherAttachments = otherAttachments ?? o.otherAttachments,
-        sMimeValid = sMimeValid ?? o.sMimeValid,
-        sMimeInvalid = sMimeInvalid ?? o.sMimeInvalid,
-        dkimValid = dkimValid ?? o.dkimValid,
-        dkimInvalid = dkimInvalid ?? o.dkimInvalid,
-        isArchived = isArchived ?? o.isArchived,
-        isDeleted = isDeleted ?? o.isDeleted;
+        additionalButtons = additionalButtons ?? o.additionalButtons;
 }

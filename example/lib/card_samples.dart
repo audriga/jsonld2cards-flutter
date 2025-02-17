@@ -2,6 +2,7 @@ library;
 
 import 'package:flutter/foundation.dart';
 import 'package:jsonld2cards/adaptive_multiple_cards.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'package:jsonld2cards/card_rendering.dart';
 
 import 'util/network.dart';
@@ -275,8 +276,8 @@ Widget renderCardOrErrorCard(
   bool topBar = false,
 }) {
   try {
-    var card = mustRenderCard(markup,
-        postFunction: postUrl, preview: preview, topBar: topBar);
+    var card = mustRenderCardFromCardData(CardData(markup,
+        postFunction: postUrl, preview: preview, topBar: topBar));
     return card;
   } catch (e, st) {
     return Card(

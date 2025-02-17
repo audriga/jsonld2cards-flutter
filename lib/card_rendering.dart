@@ -46,7 +46,7 @@ final log = Logger('jsonld2cards.card_rendering');
 /// for example like so: widget = renderCard(...) ?? alternativeWidget
 ///
 /// See [mustRenderCard] for a function that behaves like this, but always returns a widget.
-// @Deprecated('Use tryRenderCardFromCardData instead')
+@Deprecated('Use tryRenderCardFromCardData instead')
 Widget? renderCard(
   dynamic markup, {
   required PostFunction postFunction,
@@ -66,7 +66,7 @@ Widget? renderCard(
 }
 
 /// Same as [renderCard], but always returns a card, or throws an exception on error.
-// @Deprecated('Use mustRenderCardFromCardData instead')
+@Deprecated('Use mustRenderCardFromCardData instead')
 Widget mustRenderCard(
   dynamic markup, {
   required PostFunction postFunction,
@@ -81,7 +81,6 @@ Widget mustRenderCard(
     ));
 
 Widget? tryRenderCardFromCardData(CardData cardData) {
-  // todo think about error behavior
   try {
     return mustRenderCardFromCardData(cardData);
   } catch (e) {
