@@ -83,7 +83,7 @@ class UriImage extends StatelessWidget {
         bool attemptToProxy = false;
         if (kIsWeb &&
             Uri.base.origin != imageUrl.origin &&
-            globalSMLAppContext?.imageProxyUrl != null) {
+            globalAppContext?.imageProxyUrl != null) {
           attemptToProxy = true;
         }
 
@@ -123,7 +123,7 @@ class UriImage extends StatelessWidget {
   }
 
   Widget proxiedImage(BuildContext context, String url, error) {
-    String? proxyUrl = globalSMLAppContext?.imageProxyUrl;
+    String? proxyUrl = globalAppContext?.imageProxyUrl;
     return CachedNetworkImage(
       imageUrl: '$proxyUrl?url=$url',
       placeholder: placeholder,

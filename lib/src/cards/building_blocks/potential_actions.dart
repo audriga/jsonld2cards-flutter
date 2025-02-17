@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:simple_audio/simple_audio.dart';
 import 'package:jsonld2cards/app_context.dart';
+import '../../../card_data.dart';
 import '../../../util/conversion.dart';
 import '../../multimedia/video_popup.dart';
 
@@ -131,11 +132,11 @@ class PotentialActionButton extends StatelessWidget {
                     Uri? uriToPost = tryCastOrParse(confirmUri);
                     if (uriToPost != null) {
                       if (uriToPost.scheme == 'mailto' &&
-                          globalSMLAppContext?.confirmCallback != null) {
+                          globalAppContext?.confirmCallback != null) {
                         potentialAction['@context'] = 'https://schema.org';
                         potentialAction['actionStatus'] =
                             'CompletedActionStatus';
-                        globalSMLAppContext!.confirmCallback!(
+                        globalAppContext!.confirmCallback!(
                             subject: 'Action $actionName',
                             dataToSend: potentialAction,
                             recipient: uriToPost.path);
@@ -159,11 +160,11 @@ class PotentialActionButton extends StatelessWidget {
                     Uri? uriToPost = tryCastOrParse(actionTarget);
                     if (uriToPost != null) {
                       if (uriToPost.scheme == 'mailto' &&
-                          globalSMLAppContext?.confirmCallback != null) {
+                          globalAppContext?.confirmCallback != null) {
                         potentialAction['@context'] = 'https://schema.org';
                         potentialAction['actionStatus'] =
                             'CompletedActionStatus';
-                        globalSMLAppContext!.confirmCallback!(
+                        globalAppContext!.confirmCallback!(
                             subject: 'Action $actionName',
                             dataToSend: potentialAction,
                             recipient: uriToPost.path);
@@ -260,13 +261,13 @@ class PotentialActionButton extends StatelessWidget {
         {
           var actionName = potentialAction['name'] ?? 'Cancel';
           button = TextButton(
-            onPressed: (preview || globalSMLAppContext?.eventCallback == null)
+            onPressed: (preview || globalAppContext?.eventCallback == null)
                 ? null
                 : () {
                     var object = potentialAction['object'];
                     if (object is Map<String, dynamic> &&
-                        globalSMLAppContext?.eventCallback != null) {
-                      globalSMLAppContext!.eventCallback!(eventData: object);
+                        globalAppContext?.eventCallback != null) {
+                      globalAppContext!.eventCallback!(eventData: object);
                     }
                   },
             child: Text(actionName),

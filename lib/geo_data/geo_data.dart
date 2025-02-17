@@ -42,7 +42,7 @@ class GeoData {
   }) {
     if (potentialActions == null || potentialActions!.isEmpty) {
       var mapViewUrl =
-          globalSMLAppContext?.mapViewUrl ?? 'www.openstreetmap.org';
+          globalAppContext?.mapViewUrl ?? 'www.openstreetmap.org';
       potentialActions = [
         Action.fromJson({
           '@type': 'ViewAction',
@@ -189,7 +189,7 @@ class GeoData {
 
   Future<void> downloadImage({int zoom = 18}) async {
     String tileServer =
-        globalSMLAppContext?.tileServer ?? 'tile.openstreetmap.org';
+        globalAppContext?.tileServer ?? 'tile.openstreetmap.org';
     TileNumber tileNr =
         TileNumber.fromLatLong(latLong.latitude, latLong.longitude, zoom);
     imageUrl =
@@ -217,7 +217,7 @@ class GeoData {
 
   Future<void> reverseGeocode({String languageCode = 'en'}) async {
     String geocodingServer =
-        globalSMLAppContext?.geocodingServer ?? 'nominatim.openstreetmap.org';
+        globalAppContext?.geocodingServer ?? 'nominatim.openstreetmap.org';
     String url =
         'https://$geocodingServer/reverse?format=json&lat=${latLong.latitude}&lon=${latLong.longitude}&zoom=18&addressdetails=1&extratags=1&namedetails=1&accept-language=$languageCode';
     // todo language as variable
