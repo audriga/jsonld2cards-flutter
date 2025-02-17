@@ -123,14 +123,16 @@ class AdaptiveMultipleCards extends StatelessWidget {
       } else {
         // what if there is an item list and remaining array elements?
         children = List<Widget>.generate(markups.length, (int index) {
-          return tryRenderCardFromCardData(CardData(markups[index], postFunction: postFunction)) ??
+          return tryRenderCardFromCardData(
+                  CardData(markups[index], postFunction: postFunction)) ??
               const Text('Could not load card');
         });
       }
     } else {
       var filteredMarkups = removeMarkupClutter(markups);
       children = List<Widget>.generate(filteredMarkups.length, (int index) {
-        return tryRenderCardFromCardData(CardData(filteredMarkups[index], postFunction: postFunction)) ??
+        return tryRenderCardFromCardData(
+                CardData(filteredMarkups[index], postFunction: postFunction)) ??
             const Text('Could not load card');
       });
     }

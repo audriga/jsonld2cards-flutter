@@ -4,6 +4,9 @@ import 'package:flutter/widgets.dart';
 
 import 'src/cards/building_blocks/potential_actions.dart';
 
+typedef PostFunction = Function(Uri uriToPost,
+    {dynamic dataToPost, String successMessage});
+
 /// Wrapper object around the schema markup, includes additional data about
 /// how to render it.
 class CardData {

@@ -10,10 +10,6 @@ import 'package:jsonld2cards/app_context.dart';
 import '../../../util/conversion.dart';
 import '../../multimedia/video_popup.dart';
 
-// Todo make String nullable?
-typedef PostFunction = Function(Uri uriToPost,
-    {dynamic dataToPost, String successMessage});
-
 class PotentialActionRow extends StatelessWidget {
   const PotentialActionRow({
     super.key,
