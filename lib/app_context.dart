@@ -9,7 +9,7 @@ typedef SendEmailCallback = Function(
 // todo define this for event/ ical potential actions
 typedef EventCallback = Function({Map<String, dynamic> eventData});
 
-AppContext? globalSMLAppContext;
+AppContext? globalAppContext;
 
 class AppContext {
   /// [confirmCallback] can be set to a function that can send an email without

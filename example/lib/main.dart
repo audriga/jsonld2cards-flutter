@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/app_context.dart';
 
 import 'util/globals.dart';
 import 'card_samples.dart';
 
 void main() {
+  globalAppContext = AppContext(
+    mapViewUrl: 'www.openstreetmap.org',
+    geocodingServer: 'nominatim.openstreetmap.org',
+    tileServer: 'tile.openstreetmap.org'
+  );
   runApp(const CardsExampleApp());
 }
 
-// Logo Colors
 const _darkRed = Color(0xFFAD2300);
 const _orange = Color(0xFFE14B00);
 const _brightOrange = Color(0xFFFF6600);
