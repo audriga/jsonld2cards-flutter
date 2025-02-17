@@ -66,6 +66,7 @@ The global variable `globalAppContext` can be used for additional configuration,
 the entire package. We recommend setting it for example in the main method of the app.
 
 It can be used to set
+
 * A callback function for confirm/ cancel actions
 * A callback function to share calendar events
 * A url used for image proxying (only relevant if the app is deployed on the web)
