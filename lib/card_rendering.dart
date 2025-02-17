@@ -80,6 +80,8 @@ Widget mustRenderCard(
       topBar: topBar,
     ));
 
+/// Same as [mustRenderCardFromCardData], but fails silently, returns null on
+/// render error instead of throwing.
 Widget? tryRenderCardFromCardData(CardData cardData) {
   try {
     return mustRenderCardFromCardData(cardData);
@@ -88,6 +90,8 @@ Widget? tryRenderCardFromCardData(CardData cardData) {
   }
 }
 
+/// Renders a card, given some [CardData].
+/// Also refer to the documentation of [CardData].
 Widget mustRenderCardFromCardData(CardData cardData) {
   if (cardData.markupIsList) {
     return renderCardMulti(cardData);
