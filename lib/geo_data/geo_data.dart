@@ -41,21 +41,25 @@ class GeoData {
     this.potentialActions,
   }) {
     if (potentialActions == null || potentialActions!.isEmpty) {
-      var mapViewUrl =
-          globalAppContext?.mapViewUrl ?? 'www.openstreetmap.org';
+      var mapViewUri = globalAppContext?.mapViewUri;
+      var mapNavigateUri = globalAppContext?.mapNavigateUri;
       potentialActions = [
-        Action.fromJson({
-          '@type': 'ViewAction',
-          'name': 'View',
-          'url':
-              'https://$mapViewUrl/?mlat=${latLong.latitude}&mlon=${latLong.longitude}',
-        }),
-        Action.fromJson({
-          '@type': 'ViewAction',
-          'name': 'Navigate to',
-          'url':
-              'https://www.google.com/maps/dir/?api=1&destination=${latLong.latitude},${latLong.longitude}',
-        }),
+        if (mapViewUri != null)
+          Action.fromJson({
+            '@type': 'ViewAction',
+            'name': 'View',
+            'url': mapViewUri
+                .replaceFirst('\$LATITUDE', latLong.latitude.toString())
+                .replaceFirst('\$LONGITUDE', latLong.longitude.toString()),
+          }),
+        if (mapNavigateUri != null)
+          Action.fromJson({
+            '@type': 'ViewAction',
+            'name': 'Navigate to',
+            'url': mapNavigateUri
+                .replaceFirst('\$LATITUDE', latLong.latitude.toString())
+                .replaceFirst('\$LONGITUDE', latLong.longitude.toString()),
+          }),
       ];
     }
   }
@@ -216,8 +220,11 @@ class GeoData {
   }
 
   Future<void> reverseGeocode({String languageCode = 'en'}) async {
-    String geocodingServer =
-        globalAppContext?.geocodingServer ?? 'nominatim.openstreetmap.org';
+    String? geocodingServer = globalAppContext?.geocodingServer;
+    if (geocodingServer == null) {
+      log.warning('Can\'t reverse geocode, reverse geocoding server not set.');
+      return;
+    }
     String url =
         'https://$geocodingServer/reverse?format=json&lat=${latLong.latitude}&lon=${latLong.longitude}&zoom=18&addressdetails=1&extratags=1&namedetails=1&accept-language=$languageCode';
     // todo language as variable

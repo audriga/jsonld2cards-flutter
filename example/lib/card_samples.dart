@@ -38,11 +38,6 @@ class _CardSamplesState extends State<CardSamples> {
   bool showSource = false;
   late int _selectedAssetIndex;
 
-  // late Map<String, dynamic> emailMarkupActionGoto;
-  // late Map<String, dynamic> emailMarkupActionOneClick;
-  // late Map<String, dynamic> emailMarkupReservationFlightBasic;
-  // late Map<String, dynamic> emailMarkupReservationFlight;
-  // late Map<String, dynamic> musicAlbumMarkup;
   late Map<String, dynamic> placeMarkup;
   late Future<List<dynamic>> assetMarkups;
 
@@ -108,11 +103,6 @@ class _CardSamplesState extends State<CardSamples> {
   @override
   void initState() {
     super.initState();
-    // emailMarkupActionGoto = jsonDecode(CardSamples.emailMarkupActionGoto);
-    // emailMarkupActionOneClick = jsonDecode(CardSamples.emailMarkupActionOneClick);
-    // emailMarkupReservationFlightBasic = jsonDecode(CardSamples.emailMarkupReservationFlightBasic);
-    // emailMarkupReservationFlight = jsonDecode(CardSamples.emailMarkupReservationFlight);
-    // musicAlbumMarkup = jsonDecode(CardSamples.musicAlbumMarkup);
     placeMarkup = jsonDecode(CardSamples.placeMarkup);
     assetMarkups = loadMarkupsFromAssets();
     _selectedAssetIndex =
@@ -186,11 +176,6 @@ class _CardSamplesState extends State<CardSamples> {
                   return ListView(
                     children: [
                       ...itemBuilder(snapshot.requireData),
-                      // renderCardOrErrorCard(emailMarkupActionGoto, preview: preview, topBar: topBar),
-                      // renderCardOrErrorCard(emailMarkupActionOneClick, preview: preview, topBar: topBar),
-                      // renderCardOrErrorCard(emailMarkupReservationFlightBasic, preview: preview, topBar: topBar),
-                      // renderCardOrErrorCard(emailMarkupReservationFlight, preview: preview, topBar: topBar),
-                      // renderCardOrErrorCard(musicAlbumMarkup, preview: preview, topBar: topBar),
                       renderCardOrErrorCard(placeMarkup,
                           preview: preview, topBar: topBar),
                     ],

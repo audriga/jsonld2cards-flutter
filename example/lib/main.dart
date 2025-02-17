@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:jsonld2cards/app_context.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart' as ld2c_i18n;
 
 import 'util/globals.dart';
 import 'card_samples.dart';
 
 void main() {
+  // Please note: This example uses these specific OpenStreetMap endpoints for
+  // demonstration purposes. When using this library for anything else than testing
+  // consider setting these to other OSM server and check that you are
+  // respecting the server's usage policies.
   globalAppContext = AppContext(
-    mapViewUrl: 'www.openstreetmap.org',
-    geocodingServer: 'nominatim.openstreetmap.org',
-    tileServer: 'tile.openstreetmap.org'
-  );
+      // mapViewUri: 'geo:\$LATITUDE,\$LONGITUDE',
+      mapViewUri:
+          'https://www.openstreetmap.org/?mlat=\$LATITUDE&mlon=\$LONGITUDE',
+      // mapNavigateUri: 'google.navigation:q=\$LATITUDE,\$LONGITUDE',
+      mapNavigateUri:
+          'https://www.google.com/maps/dir/?api=1&destination=\$LATITUDE,\$LONGITUDE',
+      geocodingServer: 'nominatim.openstreetmap.org',
+      tileServer: 'tile.openstreetmap.org');
   runApp(const CardsExampleApp());
 }
 
@@ -77,6 +86,9 @@ class _CardsExampleAppState extends State<CardsExampleApp> {
         handleBrightnessChange: handleBrightnessChange,
       ),
       scaffoldMessengerKey: snackBarKey,
+      localizationsDelegates: const [
+        ld2c_i18n.AppLocalizations.delegate,
+      ],
     );
   }
 }

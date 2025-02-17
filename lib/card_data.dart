@@ -2,8 +2,6 @@ library;
 
 import 'package:flutter/widgets.dart';
 
-import 'src/cards/building_blocks/potential_actions.dart';
-
 typedef PostFunction = Function(Uri uriToPost,
     {dynamic dataToPost, String successMessage});
 

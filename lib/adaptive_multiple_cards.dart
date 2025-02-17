@@ -3,7 +3,6 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:jsonld2cards/card_data.dart';
-import 'src/cards/building_blocks/potential_actions.dart';
 import 'src/cards/building_blocks/uri_image.dart';
 import 'src/cards/models/item_list_model.dart';
 import 'src/cards/models/list_item_model.dart';

@@ -21,32 +21,50 @@ class AppContext {
   /// event. Used in [PotentialActionButton] on button press on ShareAction.
   EventCallback? eventCallback;
 
-  /// [imageProxyUrl] can point to a server that proxies image data with the
-  /// query format `$imageProxyUrl?url=$url`. This can be used for apps deployed
-  /// on the web to avoid images not loading due to CORS.
+  /// [imageProxyUrl] can point to a server that proxies image data.
+  /// This can be used for apps deployed on the web, to avoid images not loading
+  /// due to CORS.
+  /// The url should use the `$IMAGEURL` placeholder (including the dollar symbol).
+  /// For example `https://localhost:8080?url=\$IMAGEURL` for testing.
+  /// If this is not set images will never be proxied.
   String? imageProxyUrl;
 
-  /// [mapViewUrl] is used to create links to locations, for the "View" action
-  /// of [Place] cards. The link is assembled in [GeoData].
-  /// If not set, www.openstreetmap.org will be used.
-  /// Note that the "Navigate to" action always uses a google maps url.
-  String? mapViewUrl;
+  /// [mapViewUri] is used to create links to locations for the "View" action
+  /// of [Place] cards.
+  /// This can either be a https url (for example to an OpenStreetMap instance),
+  /// or use for example the geo schema: `geo:\$LATITUDE,\$LONGITUDE`.
+  /// The uri is assembled in [GeoData]. Use `$LATITUDE` and `$LONGITUDE` as
+  /// placeholders for the coordinates (including the dollar symbol).
+  /// If this is not set, the view button will not be rendered on Location data.
+  String? mapViewUri;
+
+  /// [mapNavigateUri] is used to create links to navigate to a given location.
+  /// This is used for the "Navigate to" action of [Place] cards.
+  /// Like with [mapViewUri] this can either be a https url, or a uri using a
+  /// different scheme. For example on android the `google.navigation` scheme
+  /// (`google.navigation:q=\$LATITUDE,\$LONGITUDE`) can be used to trigger
+  /// navigation in a variety of apps.
+  /// The link is assembled in [GeoData]. Use `$LATITUDE` and `$LONGITUDE` as
+  /// placeholders for the coordinates (including the dollar symbol).
+  /// If this is not set, the navigate to button will not be rendered on
+  /// Location data.
+  String? mapNavigateUri;
 
   /// [tileServer] is the server for map tiles. Used by [GeoData], when refreshing
-  /// the image for liveLocation. If not set tile.openstreetmap.org will be used.
+  /// the image for liveLocation.
   String? tileServer;
 
   /// [geocodingServer] is the server used for reverse geocoding in [GeoData],
-  /// when refreshing a liveLocation. If not set nominatim.openstreetmap.org
-  /// will be used
+  /// when refreshing a liveLocation.
   String? geocodingServer;
 
   AppContext({
     this.confirmCallback,
     this.eventCallback,
     this.imageProxyUrl,
-    this.mapViewUrl,
+    this.mapViewUri,
     this.tileServer,
     this.geocodingServer,
+    this.mapNavigateUri,
   });
 }

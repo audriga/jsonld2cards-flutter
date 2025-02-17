@@ -123,9 +123,9 @@ class UriImage extends StatelessWidget {
   }
 
   Widget proxiedImage(BuildContext context, String url, error) {
-    String? proxyUrl = globalAppContext?.imageProxyUrl;
+    String proxyUrl = globalAppContext!.imageProxyUrl!.replaceFirst('\$IMAGEURL', url);
     return CachedNetworkImage(
-      imageUrl: '$proxyUrl?url=$url',
+      imageUrl: proxyUrl,
       placeholder: placeholder,
       width: width,
       height: height,

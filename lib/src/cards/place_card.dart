@@ -104,7 +104,7 @@ class _PlaceState extends State<Place> {
     List<Map<String, dynamic>> geoActions = [
       navigationPotentialAction(latitude, longitude),
       viewGeoPotentialAction(latitude, longitude),
-    ];
+    ].nonNulls.toList();
 
     if (potentialAction is List) {
       geoActions = potentialAction.whereType<Map<String, dynamic>>().toList();
