@@ -2,6 +2,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
+import 'package:jsonld2cards/card_data.dart';
 import 'src/cards/building_blocks/potential_actions.dart';
 import 'src/cards/building_blocks/uri_image.dart';
 import 'src/cards/models/item_list_model.dart';
@@ -115,21 +116,21 @@ class AdaptiveMultipleCards extends StatelessWidget {
       var itemListElement = itemList.itemListElement;
       if (itemListElement != null) {
         children = List<Widget>.generate(itemListElement.length, (int index) {
-          return renderCard(itemListElement[index],
-                  postFunction: postFunction) ??
+          return tryRenderCardFromCardData(CardData(itemListElement[index],
+                  postFunction: postFunction)) ??
               const Text('Could not load card');
         });
       } else {
         // what if there is an item list and remaining array elements?
         children = List<Widget>.generate(markups.length, (int index) {
-          return renderCard(markups[index], postFunction: postFunction) ??
+          return tryRenderCardFromCardData(CardData(markups[index], postFunction: postFunction)) ??
               const Text('Could not load card');
         });
       }
     } else {
       var filteredMarkups = removeMarkupClutter(markups);
       children = List<Widget>.generate(filteredMarkups.length, (int index) {
-        return renderCard(filteredMarkups[index], postFunction: postFunction) ??
+        return tryRenderCardFromCardData(CardData(filteredMarkups[index], postFunction: postFunction)) ??
             const Text('Could not load card');
       });
     }
