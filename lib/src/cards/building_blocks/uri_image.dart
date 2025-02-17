@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:jsonld2cards/sml_app_context.dart';
+import 'package:jsonld2cards/app_context.dart';
 import 'package:jsonld2cards/util/conversion.dart';
 import 'package:logging/logging.dart';
 

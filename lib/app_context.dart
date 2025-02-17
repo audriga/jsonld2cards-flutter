@@ -9,9 +9,9 @@ typedef SendEmailCallback = Function(
 // todo define this for event/ ical potential actions
 typedef EventCallback = Function({Map<String, dynamic> eventData});
 
-SMLAppContext? globalSMLAppContext;
+AppContext? globalSMLAppContext;
 
-class SMLAppContext {
+class AppContext {
   /// [confirmCallback] can be set to a function that can send an email without
   /// user-interaction. Used in [PotentialActionButton] to send a confirm/ cancel email
   /// on button press.
@@ -41,7 +41,7 @@ class SMLAppContext {
   /// will be used
   String? geocodingServer;
 
-  SMLAppContext({
+  AppContext({
     this.confirmCallback,
     this.eventCallback,
     this.imageProxyUrl,

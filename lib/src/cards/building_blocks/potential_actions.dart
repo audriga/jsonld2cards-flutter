@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:simple_audio/simple_audio.dart';
-import 'package:jsonld2cards/sml_app_context.dart';
+import 'package:jsonld2cards/app_context.dart';
 import '../../../util/conversion.dart';
 import '../../multimedia/video_popup.dart';
 
