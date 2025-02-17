@@ -1,25 +1,8 @@
 library;
 
-import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 
 import 'src/cards/building_blocks/potential_actions.dart';
-
-class Attachment {
-  Uint8List? data;
-  String? filename;
-  String? mimeType;
-  String? source;
-  String? description;
-
-  Attachment({
-    this.data,
-    this.filename,
-    this.mimeType,
-    this.source,
-    this.description,
-  });
-}
 
 /// Wrapper object around the schema markup, includes additional data about
 /// how to render it.
@@ -68,15 +51,6 @@ class CardData {
     bool? preview,
     bool? topBar,
     List<Widget>? additionalButtons,
-    bool? showMessageHeader,
-    Attachment? sourceFile,
-    List<Attachment>? otherAttachments,
-    bool? sMimeValid,
-    bool? sMimeInvalid,
-    bool? dkimValid,
-    bool? dkimInvalid,
-    bool? isArchived,
-    bool? isDeleted,
   })  : markup = markup ?? o.markup,
         postFunction = postFunction ?? o.postFunction,
         preview = preview ?? o.preview,
