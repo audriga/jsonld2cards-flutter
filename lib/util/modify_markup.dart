@@ -112,21 +112,28 @@ Map<String, dynamic> enrichMarkupWithNavigationActions(
   return markup;
 }
 
-Map<String, dynamic>? viewGeoPotentialAction(num latitude, num longitude) => (globalAppContext?.mapViewUri != null) ? {
-      '@type': 'ViewAction',
-      'url': globalAppContext!.mapViewUri!
-          .replaceFirst('\$LATITUDE', latitude.toString())
-          .replaceFirst('\$LONGITUDE', longitude.toString()), //todo android special handling
-      'name': 'View',
-    } : null;
+Map<String, dynamic>? viewGeoPotentialAction(num latitude, num longitude) =>
+    (globalAppContext?.mapViewUri != null)
+        ? {
+            '@type': 'ViewAction',
+            'url': globalAppContext!.mapViewUri!
+                .replaceFirst('\$LATITUDE', latitude.toString())
+                .replaceFirst('\$LONGITUDE',
+                    longitude.toString()), //todo android special handling
+            'name': 'View',
+          }
+        : null;
 
-Map<String, dynamic>? navigationPotentialAction(num latitude, num longitude) =>  (globalAppContext?.mapViewUri != null) ? {
-      '@type': 'ViewAction',
-      'url': globalAppContext!.mapNavigateUri!
-          .replaceFirst('\$LATITUDE', latitude.toString())
-          .replaceFirst('\$LONGITUDE', longitude.toString()),
-      'name': 'Navigate to',
-    } : null;
+Map<String, dynamic>? navigationPotentialAction(num latitude, num longitude) =>
+    (globalAppContext?.mapViewUri != null)
+        ? {
+            '@type': 'ViewAction',
+            'url': globalAppContext!.mapNavigateUri!
+                .replaceFirst('\$LATITUDE', latitude.toString())
+                .replaceFirst('\$LONGITUDE', longitude.toString()),
+            'name': 'Navigate to',
+          }
+        : null;
 
 /// When [markup] has a url, returns a markup with a ViewAction "Visit" added to it.
 /// This uses [appendPotentialActions]. See its note on shallow copy.
