@@ -69,5 +69,6 @@ class AppContext {
     this.tileServer,
     this.geocodingServer,
     this.mapNavigateUri,
+    this.tileCopyright,
   });
 }
