@@ -64,136 +64,13 @@ class GeoData {
     }
   }
 
-  /// Uses https://nominatim.org/release-docs/develop/api/Output/#addressdetails
-  /// and https://nominatim.org/release-docs/develop/api/Reverse/#result-limitation
-  /// to determine zoom level
-  static int detailKeyToZoomLevel(String detailKey) {
-    switch (detailKey) {
-      case 'continent':
-        return 2;
-      case 'country':
-      case 'country_code':
-        return 3;
-      case 'region':
-      case 'state':
-      case 'state_district':
-      case 'county':
-      case 'ISO3166-2-lvl':
-      case 'ISO3166-2-lvl4':
-        return 8;
-      case 'municipality':
-      case 'city':
-      case 'town':
-      case 'village':
-        return 10;
-      case 'city_district':
-      case 'district':
-      case 'borough':
-      case 'suburb':
-      case 'subdivision':
-        return 12;
-      case 'hamlet':
-      case 'croft':
-      case 'isolated_dwelling':
-        return 13;
-      case 'neighbourhood':
-      case 'allotments':
-      case 'quarter':
-        return 14;
-      case 'city_block':
-      case 'residential':
-      case 'farm':
-      case 'farmyard':
-      case 'industrial':
-      case 'commercial':
-      case 'retail':
-        return 15;
-      case 'road':
-        return 16;
-      case 'house_number':
-      case 'house_name':
-        return 18;
-      case 'emergency':
-      case 'historic':
-      case 'military':
-      case 'natural':
-      case 'landuse':
-      case 'place':
-      case 'railway':
-      case 'man_made':
-      case 'aerialway':
-      case 'boundary':
-      case 'amenity':
-      case 'aeroway':
-      case 'club':
-      case 'craft':
-      case 'leisure':
-      case 'office':
-      case 'mountain_pass':
-      case 'shop':
-      case 'tourism':
-      case 'bridge':
-      case 'tunnel':
-      case 'waterway':
-        return 18;
-      case 'postcode':
-        return 12;
-    }
-    return 18;
-  }
-
-  static bool showAsRefineOption(String detailKey) {
-    var allowedOptions = <String>[
-      'country',
-      'region',
-      'state',
-      'county',
-      'city',
-      'town',
-      'village',
-      'city_district',
-      'district',
-      'borough',
-      'suburb',
-      'city_block',
-      'residential',
-      'farm',
-      'farmyard',
-      'industrial',
-      'commercial',
-      'retail',
-      'road',
-      'house_number',
-      'house_name',
-      'emergency',
-      'historic',
-      'military',
-      'natural',
-      'landuse',
-      'place',
-      'railway',
-      'man_made',
-      'aerialway',
-      'boundary',
-      'amenity',
-      'aeroway',
-      'club',
-      'craft',
-      'leisure',
-      'office',
-      'mountain_pass',
-      'shop',
-      'tourism',
-      'bridge',
-      'tunnel',
-      'waterway',
-    ];
-    return allowedOptions.contains(detailKey);
-  }
-
   Future<void> downloadImage({int zoom = 18}) async {
-    String tileServer =
-        globalAppContext?.tileServer ?? 'tile.openstreetmap.org';
+    String? tileServer =
+        globalAppContext?.tileServer;
+    if (tileServer == null) {
+      log.warning('Attempted to download map tile but no tile server configured');
+      return;
+    }
     TileNumber tileNr =
         TileNumber.fromLatLong(latLong.latitude, latLong.longitude, zoom);
     imageUrl =
@@ -204,7 +81,7 @@ class GeoData {
         mimeType: 'image/png',
       ); //base64Encode(tileResponse.bodyBytes);
       imgAlt = 'Map tile';
-      imgCopyright = '\u{a9} ${DateTime.timestamp().year} OpenStreetMap';
+      imgCopyright = globalAppContext?.tileCopyright;
       log.info(
         'Done downloading image',
       );

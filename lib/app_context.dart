@@ -54,6 +54,9 @@ class AppContext {
   /// the image for liveLocation.
   String? tileServer;
 
+  /// Copyright Statement for the copyright holder of the map tiles.
+  String? tileCopyright;
+
   /// [geocodingServer] is the server used for reverse geocoding in [GeoData],
   /// when refreshing a liveLocation.
   String? geocodingServer;
