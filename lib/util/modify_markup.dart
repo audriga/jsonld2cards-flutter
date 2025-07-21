@@ -91,7 +91,8 @@ Map<String, dynamic> enrichMarkupWithEmailAndPhoneActions(
 Map<String, dynamic> enrichMarkupWithNavigationActions(
     Map<String, dynamic> markup) {
   // todo find better permanent solution. Don't add navigate/ view actions to markups that already have them.
-  if (markup['potentialAction'] case List existingPotentialActions) {
+  final existingPotentialActions = markup['potentialAction'];
+  if (existingPotentialActions is List) {
     final existingPotentialActionsTypeFiltered = existingPotentialActions.whereType<Map<String,dynamic>>();
     if (existingPotentialActionsTypeFiltered.any((Map<String, dynamic> action) => action['name'] == 'Navigate to',)) {
       return markup;
