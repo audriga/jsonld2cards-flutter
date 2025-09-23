@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 part 'icon_map.g.dart';
 
-@EmbedLiteral("data/icon_map.json")
+@EmbedLiteral("data/icon_map.json", preprocessors: [])
 const Map<String, int?> iconMap = _$iconMap;
 
 IconData iconFromSchemaType(String schemaType) {
