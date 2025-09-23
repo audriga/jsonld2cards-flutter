@@ -87,3 +87,11 @@ The example app also sets the `globalAppContext`.
 
 We are working on localizing this package. To then use the localized version of this package, you will
 need to add this package's LocalizationsDelegate to your app.
+
+## Icons
+
+We use generated code for an icon map, to re-generate (after changing the map) rum 
+```shell
+dart run build_runner clean
+dart run build_runner build --delete-conflicting-outputs
+```

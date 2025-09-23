@@ -128,7 +128,7 @@ extension SchemaTypeName on SchemaType {
         SchemaType.order => Icons.shopping_bag,
         SchemaType.invoice => Icons.receipt,
         SchemaType.parcelDelivery => Icons.local_shipping,
-        SchemaType.blogPosting => Icons.receipt, // Todo
+        SchemaType.blogPosting => Icons.newspaper,
         SchemaType.itemList => Icons.list,
         SchemaType.confirmAction => Icons.check_circle,
         SchemaType.cancelAction => Icons.cancel,

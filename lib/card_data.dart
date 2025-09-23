@@ -44,6 +44,8 @@ class CardData {
 
   bool get markupIsMap => markup is Map<String, dynamic>;
 
+  String get type => markupIsMap? markup['@type'] ?? 'Thing' : 'List';
+
   /// Creates a card data from some other card data, overriding the set properties.
   CardData.fromOther(
     CardData o, {

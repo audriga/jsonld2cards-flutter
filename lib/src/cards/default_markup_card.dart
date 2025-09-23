@@ -1,6 +1,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:jsonld2cards/icons/icon_map.dart';
 import 'building_blocks/simple_card.dart';
 import 'building_blocks/uri_image.dart';
 import 'markup_card.dart';
@@ -70,8 +71,8 @@ class DefaultMarkupCard extends StatelessWidget implements MarkupCard {
   }
 
   @override
-  IconData get tabIcon => Icons.credit_card;
+  IconData get tabIcon => iconFromSchemaType(cardData.type);
 
   @override
-  String get tabName => 'Default';
+  String get tabName => cardData.type;
 }
