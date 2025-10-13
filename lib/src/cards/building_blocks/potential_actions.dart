@@ -3,6 +3,7 @@ library;
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:simple_audio/simple_audio.dart';
@@ -60,8 +61,7 @@ class PotentialActionRow extends StatelessWidget {
         ),
       );
     }
-    throw FormatException(
-        'Potential action is no map or list of maps', potentialAction);
+    throw FormatException('Potential action is no map or list of maps', potentialAction);
   }
 }
 
@@ -80,7 +80,8 @@ class PotentialActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget button = const Text('Unsupported Action');
+    final l = AppLocalizations.of(context);
+    Widget button = Text(l.unsupported_action);
     String actionType = potentialAction['@type'];
     var actionTarget = potentialAction['target'];
     switch (actionType) {
@@ -96,7 +97,7 @@ class PotentialActionButton extends StatelessWidget {
                       launchUrl(uriToLaunch);
                     }
                   },
-            child: Text(potentialAction['name'] ?? 'View'),
+            child: Text(potentialAction['name'] ?? l.view),
           );
           return button;
         }
@@ -111,7 +112,7 @@ class PotentialActionButton extends StatelessWidget {
                       launchUrl(uriToLaunch);
                     }
                   },
-            child: Text(potentialAction['name'] ?? 'Track'),
+            child: Text(potentialAction['name'] ?? l.track),
           );
           return button;
         }
@@ -124,25 +125,19 @@ class PotentialActionButton extends StatelessWidget {
             // todo switch depending on handler type?
             confirmUri = handler['url'];
           }
-          var actionName = potentialAction['name'] ?? 'Confirm';
+          var actionName = potentialAction['name'] ?? l.confirm;
           button = TextButton(
             onPressed: preview
                 ? null
                 : () {
                     Uri? uriToPost = tryCastOrParse(confirmUri);
                     if (uriToPost != null) {
-                      if (uriToPost.scheme == 'mailto' &&
-                          globalAppContext?.confirmCallback != null) {
+                      if (uriToPost.scheme == 'mailto' && globalAppContext?.confirmCallback != null) {
                         potentialAction['@context'] = 'https://schema.org';
-                        potentialAction['actionStatus'] =
-                            'CompletedActionStatus';
-                        globalAppContext!.confirmCallback!(
-                            subject: 'Action $actionName',
-                            dataToSend: potentialAction,
-                            recipient: uriToPost.path);
+                        potentialAction['actionStatus'] = 'CompletedActionStatus';
+                        globalAppContext!.confirmCallback!(subject: 'Action $actionName', dataToSend: potentialAction, recipient: uriToPost.path);
                       } else {
-                        postFunction(uriToPost,
-                            successMessage: 'Sent Confirmation');
+                        postFunction(uriToPost, successMessage: l.sent_confirmation);
                       }
                     }
                   },
@@ -152,25 +147,19 @@ class PotentialActionButton extends StatelessWidget {
         }
       case 'CancelAction':
         {
-          var actionName = potentialAction['name'] ?? 'Cancel';
+          var actionName = potentialAction['name'] ?? l.cancel;
           button = TextButton(
             onPressed: preview
                 ? null
                 : () {
                     Uri? uriToPost = tryCastOrParse(actionTarget);
                     if (uriToPost != null) {
-                      if (uriToPost.scheme == 'mailto' &&
-                          globalAppContext?.confirmCallback != null) {
+                      if (uriToPost.scheme == 'mailto' && globalAppContext?.confirmCallback != null) {
                         potentialAction['@context'] = 'https://schema.org';
-                        potentialAction['actionStatus'] =
-                            'CompletedActionStatus';
-                        globalAppContext!.confirmCallback!(
-                            subject: 'Action $actionName',
-                            dataToSend: potentialAction,
-                            recipient: uriToPost.path);
+                        potentialAction['actionStatus'] = 'CompletedActionStatus';
+                        globalAppContext!.confirmCallback!(subject: 'Action $actionName', dataToSend: potentialAction, recipient: uriToPost.path);
                       } else {
-                        postFunction(uriToPost,
-                            successMessage: 'Sent Cancellation');
+                        postFunction(uriToPost, successMessage: l.sent_cancellation);
                       }
                     }
                   },
@@ -189,7 +178,7 @@ class PotentialActionButton extends StatelessWidget {
                       launchUrl(uriToLaunch);
                     }
                   },
-            child: Text(potentialAction['name'] ?? 'Edit'),
+            child: Text(potentialAction['name'] ?? l.edit),
           );
           return button;
         }
@@ -201,10 +190,10 @@ class PotentialActionButton extends StatelessWidget {
                 : () {
                     Uri? uriToPost = tryCastOrParse(actionTarget);
                     if (uriToPost != null) {
-                      postFunction(uriToPost, successMessage: 'Sent Check-In');
+                      postFunction(uriToPost, successMessage: l.sent_check_in);
                     }
                   },
-            child: const Text('Check In'),
+            child: Text(l.check_in),
           );
           return button;
         }
@@ -244,7 +233,7 @@ class PotentialActionButton extends StatelessWidget {
         }
       case 'CopyToClipboardAction':
         {
-          String nameOfCode = potentialAction['name'] ?? 'Copy';
+          String nameOfCode = potentialAction['name'] ?? l.copy;
           String codeToCopy = potentialAction['description'];
           button = TextButton.icon(
             onPressed: preview
@@ -259,14 +248,13 @@ class PotentialActionButton extends StatelessWidget {
         }
       case 'ShareAction':
         {
-          var actionName = potentialAction['name'] ?? 'Cancel';
+          var actionName = potentialAction['name'] ?? l.cancel;
           button = TextButton(
             onPressed: (preview || globalAppContext?.eventCallback == null)
                 ? null
                 : () {
                     var object = potentialAction['object'];
-                    if (object is Map<String, dynamic> &&
-                        globalAppContext?.eventCallback != null) {
+                    if (object is Map<String, dynamic> && globalAppContext?.eventCallback != null) {
                       globalAppContext!.eventCallback!(eventData: object);
                     }
                   },
@@ -296,12 +284,12 @@ class PotentialActionButton extends StatelessWidget {
                   ..loadRequest(uriToLaunch);
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => Scaffold(
-                    appBar: AppBar(title: const Text('Story')),
+                    appBar: AppBar(title: Text(l.story)),
                     body: WebViewWidget(controller: controller),
                   ),
                 ));
               },
-              label: const Text('View Story'),
+              label: Text(l.read_story),
               // icon: const Icon(Icons.read),
             );
           }
@@ -319,7 +307,7 @@ class PotentialActionButton extends StatelessWidget {
                   ),
                 );
               },
-              label: const Text('Watch'),
+              label: Text(l.watch),
               icon: const Icon(Icons.play_circle),
             );
           }

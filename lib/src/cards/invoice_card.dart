@@ -6,6 +6,7 @@ import 'models/schema_types.dart';
 import 'markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:logging/logging.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 import 'building_blocks/uri_image.dart';
 
@@ -33,16 +34,18 @@ class _InvoiceCardState extends State<InvoiceCard> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+
     var invoice = Invoice.fromJson(widget.cardData.markup);
 
     Widget? leadingImage;
     var confirmationNumber = invoice.identifier ?? invoice.confirmationNumber;
-    List<TextSpan> titleTextSpans = createTitleTextSpans(invoice);
+    List<TextSpan> titleTextSpans = createTitleTextSpans(invoice, l);
 
     List<TextSpan> subTitleTextSpans =
-        createSubtitleTextSpans(confirmationNumber, invoice);
+        createSubtitleTextSpans(confirmationNumber, invoice, l);
 
-    Widget? sellerAndOrCustomer = sellerAndOrCustomerSpansWrapped(invoice);
+    Widget? sellerAndOrCustomer = sellerAndOrCustomerSpansWrapped(invoice, l);
 
     if ((invoice.broker ?? invoice.provider)?.logo case Uri logo) {
       leadingImage = UriImage(
@@ -103,11 +106,11 @@ class _InvoiceCardState extends State<InvoiceCard> {
   }
 }
 
-Widget? sellerAndOrCustomerSpansWrapped(Invoice invoice) {
+Widget? sellerAndOrCustomerSpansWrapped(Invoice invoice, AppLocalizations l) {
   Widget? seller;
   if (invoice.provider != null) {
     List<TextSpan> sellerSpans = [];
-    sellerSpans.add(const TextSpan(text: 'Seller: '));
+    sellerSpans.add(TextSpan(text: '${l.seller}: '));
     if (invoice.provider!.name != null) {
       sellerSpans.add(TextSpan(
           text: '${invoice.provider!.name}\n',
@@ -124,7 +127,7 @@ Widget? sellerAndOrCustomerSpansWrapped(Invoice invoice) {
   Widget? customer;
   if (invoice.customer != null) {
     List<TextSpan> customerSpans = [];
-    customerSpans.add(const TextSpan(text: 'Customer: '));
+    customerSpans.add(TextSpan(text: '${l.customer}: '));
     if (invoice.customer!.name != null) {
       customerSpans.add(TextSpan(
           text: '${invoice.customer!.name}\n',
@@ -151,42 +154,42 @@ Widget? sellerAndOrCustomerSpansWrapped(Invoice invoice) {
 }
 
 List<TextSpan> createSubtitleTextSpans(
-    String? confirmationNumber, Invoice invoice) {
+    String? confirmationNumber, Invoice invoice, AppLocalizations l) {
   var subTitleTextSpans = <TextSpan>[];
   if (confirmationNumber != null) {
-    var confirmationNr = 'Confirmation number: $confirmationNumber\n';
+    var confirmationNr = '${l.confirmation_number}: $confirmationNumber\n';
     subTitleTextSpans.add(TextSpan(
       text: confirmationNr,
     ));
   }
   if (invoice.accountId != null) {
-    var contractNr = 'Contract Number: ${invoice.accountId}\n';
+    var contractNr = '${l.contract_number}: ${invoice.accountId}\n';
     subTitleTextSpans.add(TextSpan(
       text: contractNr,
     ));
   }
   if (invoice.purchase?.orderNumber case String orderNr) {
-    var orderNrText = 'Order Number: $orderNr\n';
+    var orderNrText = '${l.order_number}: $orderNr\n';
     subTitleTextSpans.add(TextSpan(
       text: orderNrText,
     ));
   }
   var due = invoice.paymentDue;
   if (due != null) {
-    var dueText = 'Due on ${due.day}.${due.month}.${due.year}\n';
+    var dueText = '${l.due_on} ${due.day}.${due.month}.${due.year}\n';
     subTitleTextSpans.add(TextSpan(
       text: dueText,
     ));
   }
   if (invoice.minimumPaymentDue?.price != null) {
     var minimumDue =
-        'Minimum payment due: ${invoice.minimumPaymentDue?.price}\n';
+        '${l.minimum_payment_due}: ${invoice.minimumPaymentDue?.price}\n';
     subTitleTextSpans.add(TextSpan(
       text: minimumDue,
     ));
   }
   if (invoice.totalPaymentDue != null) {
-    var invoiceAmountDescr = 'Invoice Amount: ';
+    var invoiceAmountDescr = '${l.invoice_amount}: ';
     subTitleTextSpans.add(TextSpan(
       text: invoiceAmountDescr,
     ));
@@ -201,7 +204,7 @@ List<TextSpan> createSubtitleTextSpans(
     bool overdue = paymentDueDate.isBefore(DateTime.now());
     subTitleTextSpans.add(TextSpan(
         text:
-            '\nDue ${paymentDueDate.day}.${paymentDueDate.month}.${paymentDueDate.year}', // todo forced format
+            '\n${l.due} ${paymentDueDate.day}.${paymentDueDate.month}.${paymentDueDate.year}', // todo forced format
         style: TextStyle(
           color: overdue ? Colors.red : Colors.green,
         )));
@@ -209,7 +212,7 @@ List<TextSpan> createSubtitleTextSpans(
   return subTitleTextSpans;
 }
 
-List<TextSpan> createTitleTextSpans(Invoice invoice) {
+List<TextSpan> createTitleTextSpans(Invoice invoice, AppLocalizations l) {
   var titleTextSpans = <TextSpan>[];
   if (invoice.broker?.name != null) {
     var brokerName = '${invoice.broker?.name} ';
@@ -222,7 +225,7 @@ List<TextSpan> createTitleTextSpans(Invoice invoice) {
         text: providerName,
         style: const TextStyle(fontWeight: FontWeight.bold)));
   }
-  titleTextSpans.add(const TextSpan(text: 'Rechnung'));
+  titleTextSpans.add(TextSpan(text: l.invoice));
 // if (confirmationNumber != null) {
 //   var invoiceNr = ' $confirmationNumber';
 //   titleTextSpans.add(TextSpan(
