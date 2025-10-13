@@ -90,6 +90,14 @@ Map<String, dynamic> enrichMarkupWithEmailAndPhoneActions(
 /// This uses [appendPotentialActions]. See its note on shallow copy.
 Map<String, dynamic> enrichMarkupWithNavigationActions(
     Map<String, dynamic> markup) {
+  // todo find better permanent solution. Don't add navigate/ view actions to markups that already have them.
+  final existingPotentialActions = markup['potentialAction'];
+  if (existingPotentialActions is List) {
+    final existingPotentialActionsTypeFiltered = existingPotentialActions.whereType<Map<String,dynamic>>();
+    if (existingPotentialActionsTypeFiltered.any((Map<String, dynamic> action) => action['name'] == 'Navigate to',)) {
+      return markup;
+    }
+  }
   var locations = findAllRecursive(markup, 'geo', excluded: ['potentialAction'])
       .whereType<Map<String, dynamic>>()
       .where((element) => element['@type'] == 'GeoCoordinates')
