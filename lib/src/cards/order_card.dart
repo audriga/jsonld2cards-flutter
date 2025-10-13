@@ -6,6 +6,7 @@ import 'models/schema_types.dart';
 import 'markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 import 'models/order_model.dart';
 
@@ -16,15 +17,16 @@ class OrderCard extends StatelessWidget implements MarkupCard {
 
   @override
   Widget build(BuildContext context) {
+    var l = AppLocalizations.of(context);
     var order = Order.fromJson(cardData.markup);
 
     // Setting title and subtitle, depending on available information
     String? titleText;
     String? subtitleText;
     Widget? leadingImage;
-    var titleTextBuffer = StringBuffer('Order');
+    var titleTextBuffer = StringBuffer(l.order);
     if (order.merchant?.name != null) {
-      titleTextBuffer.write(' from ${order.merchant?.name}');
+      titleTextBuffer.write(' ${l.from} ${order.merchant?.name}');
     }
     if (order.orderStatus != null) {
       titleTextBuffer.write(' ${orderStatusToVerbString(order.orderStatus!)}.');

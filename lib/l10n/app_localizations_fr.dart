@@ -106,4 +106,49 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get due => 'Due';
+
+  @override
+  String get order => 'Order';
+
+  @override
+  String get sharedLocation => 'Shared Location';
+
+  @override
+  String get latitude => 'Latitude';
+
+  @override
+  String get longitude => 'Longitude';
+
+  @override
+  String get code => 'Code';
+
+  @override
+  String get hours => 'hours';
+
+  @override
+  String get hours_ago => 'hours ago';
+
+  @override
+  String get hours_expires => 'hours';
+
+  @override
+  String get expiresIn => 'Expires in';
+
+  @override
+  String get startsIn => 'Starts in';
+
+  @override
+  String get started => 'Started';
+
+  @override
+  String get expired => 'Expired';
+
+  @override
+  String get poll => 'Poll';
+
+  @override
+  String get option => 'Option';
+
+  @override
+  String get close => 'Close';
 }

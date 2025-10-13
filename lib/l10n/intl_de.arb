@@ -32,5 +32,20 @@
   "due_on": "Fällig am",
   "minimum_payment_due": "Mindestzahlung",
   "invoice_amount": "Rechnungsbetrag",
-  "due": "Fällig"
+  "due": "Fällig",
+  "order": "Order",
+  "sharedLocation": "Geteilter Ort",
+  "latitude": "Breitengrad",
+  "longitude": "Längengrad",
+  "code": "Code",
+  "hours": "Stunden",
+  "hours_ago": "Stunden",
+  "hours_expires": "Stunden ab",
+  "expiresIn": "Läuft in",
+  "startsIn": "Beginnt in",
+  "startedAgo": "Begann vor",
+  "expired": "Abgelaufen",
+  "poll": "Umfrage",
+  "option": "Option",
+  "close": "Schließen"
 }

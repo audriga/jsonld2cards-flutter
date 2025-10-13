@@ -5,6 +5,7 @@ import 'models/schema_types.dart';
 import 'markup_card.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'building_blocks/card_with_actions.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 // import 'building_blocks/uri_image.dart';
 import 'models/simple_poll_model.dart';
@@ -16,6 +17,8 @@ class SimplePollCard extends StatelessWidget implements MarkupCard {
 
   @override
   Widget build(BuildContext context) {
+    var l = AppLocalizations.of(context);
+
     var simplePoll = SimplePoll.fromJson(cardData.markup);
 
     // Widget? leadingImage;
@@ -23,7 +26,7 @@ class SimplePollCard extends StatelessWidget implements MarkupCard {
     // Setting title and subtitle, depending on available information
     var titleTextBuffer = StringBuffer('');
     var titleTextSpans = <TextSpan>[];
-    String pollName = 'Poll';
+    String pollName = l.poll;
     if (simplePoll.name != null) {
       pollName = '${simplePoll.name}';
     }
@@ -36,7 +39,7 @@ class SimplePollCard extends StatelessWidget implements MarkupCard {
     List<Widget> pollOptions = List<Widget>.generate(
       simplePoll.options?.length ?? 0,
       (index) {
-        var optionName = simplePoll.options![index].name ?? 'Option $index';
+        var optionName = simplePoll.options![index].name ?? '${l.option} $index';
         bool hasVotes = simplePoll.choices?.isNotEmpty ?? false;
         int totalVotes = -1;
         Iterable<ChooseAction>? votesForThis;

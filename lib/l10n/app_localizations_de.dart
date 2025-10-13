@@ -106,4 +106,49 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get due => 'Fällig';
+
+  @override
+  String get order => 'Order';
+
+  @override
+  String get sharedLocation => 'Geteilter Ort';
+
+  @override
+  String get latitude => 'Breitengrad';
+
+  @override
+  String get longitude => 'Längengrad';
+
+  @override
+  String get code => 'Code';
+
+  @override
+  String get hours => 'Stunden';
+
+  @override
+  String get hours_ago => 'Stunden';
+
+  @override
+  String get hours_expires => 'Stunden ab';
+
+  @override
+  String get expiresIn => 'Läuft in';
+
+  @override
+  String get startsIn => 'Beginnt in';
+
+  @override
+  String get started => 'Started';
+
+  @override
+  String get expired => 'Abgelaufen';
+
+  @override
+  String get poll => 'Umfrage';
+
+  @override
+  String get option => 'Option';
+
+  @override
+  String get close => 'Schließen';
 }

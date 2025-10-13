@@ -31,5 +31,20 @@
   "due_on": "Due on",
   "minimum_payment_due": "Minimum payment due",
   "invoice_amount": "Invoice Amount",
-  "due": "Due"
+  "due": "Due",
+  "order": "Order",
+  "sharedLocation": "Shared Location",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
+  "code": "Code",
+  "hours": "hours",
+  "hours_ago": "hours ago",
+  "hours_expires": "hours",
+  "expiresIn": "Expires in",
+  "startsIn": "Starts in",
+  "started": "Started",
+  "expired": "Expired",
+  "poll": "Poll",
+  "option": "Option",
+  "close": "Close"
 }

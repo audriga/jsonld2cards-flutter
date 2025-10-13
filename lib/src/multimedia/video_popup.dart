@@ -2,6 +2,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 class VideoPlayerDialog extends StatefulWidget {
   const VideoPlayerDialog({super.key, required this.source});
@@ -49,6 +50,8 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
 
   @override
   Widget build(BuildContext context) {
+    var l = AppLocalizations.of(context);
+
     return SimpleDialog(
       children: [
         Padding(
@@ -80,7 +83,7 @@ class _VideoPlayerDialogState extends State<VideoPlayerDialog> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Close'),
+              child:  Text(l.close),
             ),
             IconButton(
               onPressed: () {
