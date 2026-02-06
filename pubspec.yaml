@@ -25,7 +25,7 @@ dependencies:
   webview_flutter: ^4.10.0
 #  simple_audio: ^2.0.1
   video_player: ^2.9.2
-  file_picker: ^8.1.4
+  file_picker: ^10.3.10
   path_provider: ^2.1.5
   uuid: ^4.5.1
   open_filex: ^4.6.0
