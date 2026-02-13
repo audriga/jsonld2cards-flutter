@@ -23,7 +23,7 @@ dependencies:
   flutter_adaptive_scaffold: ^0.3.1
   mustache_template: ^2.0.0
   webview_flutter: ^4.10.0
-#  simple_audio: ^2.0.1
+  simple_audio: ^2.0.1
   video_player: ^2.9.2
   file_picker: ^10.3.10
   path_provider: ^2.1.5
