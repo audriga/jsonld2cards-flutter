@@ -3,6 +3,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:jsonld2cards/card_data.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 import 'src/cards/building_blocks/uri_image.dart';
 import 'src/cards/models/item_list_model.dart';
 import 'src/cards/models/list_item_model.dart';
@@ -25,19 +26,18 @@ class AdaptiveMultipleCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var types =
-        markups.whereType<Map<String, dynamic>>().map((e) => e['@type']);
+    final l = AppLocalizations.of(context);
+
+    var types = markups.whereType<Map<String, dynamic>>().map((e) => e['@type']);
     Organization? organization;
     Uri? orgLogo;
     Widget? orgLogoWidget;
     if (types.contains('Organization')) {
-      organization = Organization.fromJson(
-          markups.firstWhere((element) => element['@type'] == 'Organization'));
+      organization = Organization.fromJson(markups.firstWhere((element) => element['@type'] == 'Organization'));
       orgLogo = organization.logo;
       // markups.removeWhere((element) => element['@type'] == 'Organization');
     } else if (types.contains('NewsMediaOrganization')) {
-      organization = Organization.fromJson(markups.firstWhere(
-          (element) => element['@type'] == 'NewsMediaOrganization'));
+      organization = Organization.fromJson(markups.firstWhere((element) => element['@type'] == 'NewsMediaOrganization'));
       orgLogo = organization.logo;
     }
     if (orgLogo != null) {
@@ -52,14 +52,12 @@ class AdaptiveMultipleCards extends StatelessWidget {
 
     List<Widget>? breadCrumbButtons;
     if (types.contains('BreadcrumbList')) {
-      var breadCrumbList = ItemList.fromJson(markups
-          .firstWhere((element) => element['@type'] == 'BreadcrumbList'));
+      var breadCrumbList = ItemList.fromJson(markups.firstWhere((element) => element['@type'] == 'BreadcrumbList'));
       // markups.removeWhere((element) => element['@type'] == 'BreadcrumbList');
       var breadCrumbListElement = breadCrumbList.itemListElement;
 
       if (breadCrumbListElement != null && breadCrumbListElement.isNotEmpty) {
-        breadCrumbButtons = List<Widget>.generate(
-            breadCrumbListElement.length * 2 - 1, (int index) {
+        breadCrumbButtons = List<Widget>.generate(breadCrumbListElement.length * 2 - 1, (int index) {
           if (index.isOdd) return const Text('/');
           final actualIndex = index ~/ 2;
           var crumb = breadCrumbListElement[actualIndex];
@@ -70,8 +68,7 @@ class AdaptiveMultipleCards extends StatelessWidget {
           if (crumb is ListItem) {
             var crumbItem = crumb.item;
             if (crumbItem != null) {
-              buttonText =
-                  crumbItem.name ?? crumbItem.id?.pathSegments.last ?? '';
+              buttonText = crumbItem.name ?? crumbItem.id?.pathSegments.last ?? '';
             } else {
               buttonText = crumb.name ?? crumb.position?.toString() ?? '';
             }
@@ -110,29 +107,22 @@ class AdaptiveMultipleCards extends StatelessWidget {
     final List<Widget> children;
 
     if (types.contains('ItemList')) {
-      var itemList = ItemList.fromJson(
-          markups.firstWhere((element) => element['@type'] == 'ItemList'));
+      var itemList = ItemList.fromJson(markups.firstWhere((element) => element['@type'] == 'ItemList'));
       var itemListElement = itemList.itemListElement;
       if (itemListElement != null) {
         children = List<Widget>.generate(itemListElement.length, (int index) {
-          return tryRenderCardFromCardData(CardData(itemListElement[index],
-                  postFunction: postFunction)) ??
-              const Text('Could not load card');
+          return tryRenderCardFromCardData(CardData(itemListElement[index], postFunction: postFunction)) ?? Text(l.couldNotLoadCard);
         });
       } else {
         // what if there is an item list and remaining array elements?
         children = List<Widget>.generate(markups.length, (int index) {
-          return tryRenderCardFromCardData(
-                  CardData(markups[index], postFunction: postFunction)) ??
-              const Text('Could not load card');
+          return tryRenderCardFromCardData(CardData(markups[index], postFunction: postFunction)) ?? Text(l.couldNotLoadCard);
         });
       }
     } else {
       var filteredMarkups = removeMarkupClutter(markups);
       children = List<Widget>.generate(filteredMarkups.length, (int index) {
-        return tryRenderCardFromCardData(
-                CardData(filteredMarkups[index], postFunction: postFunction)) ??
-            const Text('Could not load card');
+        return tryRenderCardFromCardData(CardData(filteredMarkups[index], postFunction: postFunction)) ?? Text(l.couldNotLoadCard);
       });
     }
 
@@ -147,18 +137,13 @@ class AdaptiveMultipleCards extends StatelessWidget {
                 key: const Key('Body Small'),
                 builder: (_) => ListView.builder(
                   itemCount: children.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      children[index],
+                  itemBuilder: (BuildContext context, int index) => children[index],
                 ),
               ),
               Breakpoints.mediumAndUp: SlotLayout.from(
                 key: const Key('Body Medium'),
                 builder: (_) => LayoutBuilder(builder: (context, constraints) {
-                  return GridView.count(
-                      crossAxisCount: 2,
-                      childAspectRatio:
-                          constraints.maxWidth / constraints.maxHeight,
-                      children: children);
+                  return GridView.count(crossAxisCount: 2, childAspectRatio: constraints.maxWidth / constraints.maxHeight, children: children);
                 }),
               )
             },

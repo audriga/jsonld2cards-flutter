@@ -1,1 +1,5 @@
-{}
+{
+  "sent_confirmation": "Confirmation envoyée",
+  "sent_cancellation": "Annulation envoyée",
+  "sent_check_in": "Enregistrement envoyé"
+ }

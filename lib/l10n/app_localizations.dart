@@ -99,6 +99,294 @@ abstract class AppLocalizations {
     Locale('en'),
     Locale('fr')
   ];
+
+  /// No description provided for @view.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get view;
+
+  /// No description provided for @track.
+  ///
+  /// In en, this message translates to:
+  /// **'Track'**
+  String get track;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @check_in.
+  ///
+  /// In en, this message translates to:
+  /// **'Check In'**
+  String get check_in;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// No description provided for @copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @read_story.
+  ///
+  /// In en, this message translates to:
+  /// **'Read Story'**
+  String get read_story;
+
+  /// No description provided for @story.
+  ///
+  /// In en, this message translates to:
+  /// **'Story'**
+  String get story;
+
+  /// No description provided for @watch.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch'**
+  String get watch;
+
+  /// No description provided for @unsupported_action.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported Action'**
+  String get unsupported_action;
+
+  /// No description provided for @couldNotLoadCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load card'**
+  String get couldNotLoadCard;
+
+  /// No description provided for @sent_confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent Confirmation'**
+  String get sent_confirmation;
+
+  /// No description provided for @sent_cancellation.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent Cancellation'**
+  String get sent_cancellation;
+
+  /// No description provided for @sent_check_in.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent Check-In'**
+  String get sent_check_in;
+
+  /// No description provided for @event.
+  ///
+  /// In en, this message translates to:
+  /// **'Event'**
+  String get event;
+
+  /// No description provided for @from.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get from;
+
+  /// No description provided for @to.
+  ///
+  /// In en, this message translates to:
+  /// **'to'**
+  String get to;
+
+  /// No description provided for @ends.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get ends;
+
+  /// No description provided for @at.
+  ///
+  /// In en, this message translates to:
+  /// **'at'**
+  String get at;
+
+  /// No description provided for @invoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice'**
+  String get invoice;
+
+  /// No description provided for @seller.
+  ///
+  /// In en, this message translates to:
+  /// **'Seller'**
+  String get seller;
+
+  /// No description provided for @customer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get customer;
+
+  /// No description provided for @confirmation_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmation number'**
+  String get confirmation_number;
+
+  /// No description provided for @contract_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Number'**
+  String get contract_number;
+
+  /// No description provided for @order_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Number'**
+  String get order_number;
+
+  /// No description provided for @due_on.
+  ///
+  /// In en, this message translates to:
+  /// **'Due on'**
+  String get due_on;
+
+  /// No description provided for @minimum_payment_due.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum payment due'**
+  String get minimum_payment_due;
+
+  /// No description provided for @invoice_amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice Amount'**
+  String get invoice_amount;
+
+  /// No description provided for @due.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get due;
+
+  /// No description provided for @order.
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get order;
+
+  /// No description provided for @sharedLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared Location'**
+  String get sharedLocation;
+
+  /// No description provided for @latitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get latitude;
+
+  /// No description provided for @longitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get longitude;
+
+  /// No description provided for @code.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get code;
+
+  /// No description provided for @hours.
+  ///
+  /// In en, this message translates to:
+  /// **'hours'**
+  String get hours;
+
+  /// No description provided for @hours_ago.
+  ///
+  /// In en, this message translates to:
+  /// **'hours ago'**
+  String get hours_ago;
+
+  /// No description provided for @hours_expires.
+  ///
+  /// In en, this message translates to:
+  /// **'hours'**
+  String get hours_expires;
+
+  /// No description provided for @expiresIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires in'**
+  String get expiresIn;
+
+  /// No description provided for @startsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts in'**
+  String get startsIn;
+
+  /// No description provided for @started.
+  ///
+  /// In en, this message translates to:
+  /// **'Started'**
+  String get started;
+
+  /// No description provided for @expired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get expired;
+
+  /// No description provided for @poll.
+  ///
+  /// In en, this message translates to:
+  /// **'Poll'**
+  String get poll;
+
+  /// No description provided for @option.
+  ///
+  /// In en, this message translates to:
+  /// **'Option'**
+  String get option;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
 }
 
 class _AppLocalizationsDelegate

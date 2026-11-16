@@ -11,6 +11,7 @@ import 'package:logging/logging.dart';
 import '../../geo_data/geo_data.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 import 'building_blocks/uri_image.dart';
 import 'markup_card.dart';
@@ -60,6 +61,8 @@ class _PlaceState extends State<Place> {
 
   @override
   Widget build(BuildContext context) {
+    var l = AppLocalizations.of(context);
+
     // Otherwise redrawing the widget with a new markup will not result in updated properties
     // Alternatively, if this is a bad practice could also require caller to be carefull to construct a new widget
     // every time the markup changes
@@ -121,8 +124,8 @@ class _PlaceState extends State<Place> {
 
     return SimpleCard(
         leadingImage: _placeThumb,
-        titleText: geoData.name ?? geoData.addressString ?? 'Shared Location',
-        subtitleText: 'Latitude: $latitude, Longitude: $longitude',
+        titleText: geoData.name ?? geoData.addressString ?? l.sharedLocation,
+        subtitleText: '${l.latitude}: $latitude, ${l.longitude}: $longitude',
         potentialAction: geoActions,
         cardData: CardData.fromOther(
           widget.cardData,

@@ -6,6 +6,7 @@ import 'markup_card.dart';
 import 'package:jsonld2cards/util/conversion.dart';
 import 'package:jsonld2cards/card_data.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:jsonld2cards/l10n/app_localizations.dart';
 
 import 'models/organization_model.dart';
 
@@ -245,9 +246,11 @@ class DiscountOfferRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+
     DateTime? availabilityStarts = discountOffer.availabilityStarts;
     DateTime? availabilityEnds = discountOffer.availabilityEnds;
-    var expiryText = getExpiryText(availabilityStarts, availabilityEnds);
+    var expiryText = getExpiryText(availabilityStarts, availabilityEnds, l);
 
     ThemeData theme = Theme.of(context);
     return Row(
@@ -264,7 +267,7 @@ class DiscountOfferRow extends StatelessWidget {
               ),
             ),
           ),
-        if (discountOffer.discountCode != null) const Text(' Code '),
+        if (discountOffer.discountCode != null)  Text(' ${l.code} '),
         if (discountOffer.discountCode != null)
           Container(
             decoration: BoxDecoration(
@@ -289,34 +292,34 @@ class DiscountOfferRow extends StatelessWidget {
 }
 
 String? getExpiryText(
-    DateTime? availabilityStarts, DateTime? availabilityEnds) {
+    DateTime? availabilityStarts, DateTime? availabilityEnds, AppLocalizations l) {
   var now = DateTime.now();
   if (availabilityStarts == null && availabilityEnds == null) {
     return null;
   } else if (availabilityStarts == null && availabilityEnds != null) {
     if (availabilityEnds.isAfter(now)) {
       var difference = availabilityEnds.difference(now);
-      return 'Expires in ${difference.inHours} hours';
+      return '${l.expiresIn} ${difference.inHours} ${l.hours_expires}';
     } else {
-      return 'Expired';
+      return l.expired;
     }
   } else if (availabilityStarts != null && availabilityEnds == null) {
     if (availabilityStarts.isAfter(now)) {
       var difference = availabilityStarts.difference(now);
-      return 'Starts in ${difference.inHours} hours';
+      return '${l.startsIn} ${difference.inHours} ${l.hours}';
     } else {
       var difference = now.difference(availabilityStarts);
-      return 'Started ${difference.inHours} hours ago';
+      return '${l.started} ${difference.inHours} ${l.hours_ago}';
     }
   } else {
     if (availabilityStarts!.isAfter(now)) {
       var difference = availabilityStarts.difference(now);
-      return 'Starts in ${difference.inHours} hours';
+      return '${l.startsIn} ${difference.inHours} ${l.hours}';
     } else if (availabilityEnds!.isAfter(now)) {
       var difference = availabilityEnds.difference(now);
-      return 'Expires in ${difference.inHours} hours';
+      return '${l.expiresIn} ${difference.inHours} ${l.hours_expires}';
     }
-    return 'Expired';
+    return l.expired;
   }
 }
 
