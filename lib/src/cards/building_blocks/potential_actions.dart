@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jsonld2cards/l10n/app_localizations.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:simple_audio/simple_audio.dart';
 import 'package:jsonld2cards/app_context.dart';
 import '../../../card_data.dart';
 import '../../../util/conversion.dart';
@@ -334,7 +334,7 @@ class AudioActionButton extends StatefulWidget {
 }
 
 class _AudioActionButtonState extends State<AudioActionButton> {
-  SimpleAudio? player;
+  AudioPlayer? player;
   bool currentlyPlaying = false;
 
   @override
@@ -345,15 +345,15 @@ class _AudioActionButtonState extends State<AudioActionButton> {
           if (uriToLaunch != null && uriToLaunch.path.endsWith('.mp3')) {
             // todo make list of supported formats
             if (player == null) {
-              await SimpleAudio.init();
-              player = SimpleAudio(shouldNormalizeVolume: false);
-              player!.open(uriToLaunch.toString());
+              player = AudioPlayer();
+              player!.setUrl(uriToLaunch.toString());
+              player?.play();
               setState(() {
                 currentlyPlaying = true;
               });
             } else {
               if (currentlyPlaying) {
-                player!.stop();
+                player!.pause();
                 setState(() {
                   currentlyPlaying = false;
                 });
